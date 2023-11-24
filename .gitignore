@@ -1,0 +1,7 @@
+
+**/__pycache__
+**/.venv
+**/dist
+**/.coverage
+**/coverage.xml
+.env
