@@ -10,6 +10,7 @@ packages = [{include = "task_manager"}]
 python = "^3.8.1"
 django = "^4.2.7"
 gunicorn = "^21.2.0"
+python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
