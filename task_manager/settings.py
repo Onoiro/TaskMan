@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     'webserver',
     '127.0.0.1',
     '0.0.0.0',
+    'https://task-manager-wh08.onrender.com',
 ]
 
 
