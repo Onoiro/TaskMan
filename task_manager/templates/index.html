@@ -5,7 +5,7 @@
 
 {% bootstrap_messages %} -->
 {% csrf_token %}
-<html lang="ru-ru">
+<html lang="eng-ru">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Менеджер задач Hexlet</title>
@@ -17,22 +17,22 @@
       <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="navbar-brand" href="/">Task manager</a>
+            <a class="navbar-brand" href="/">{{ task_manager }}</a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarToggleExternalContent">
               <span class="navbar-toggler-icon"></span>
             </button>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/users/">Users</a>
+            <a class="nav-link" href="/users/">{{ users }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/statuses/">Statuses</a>
+            <a class="nav-link" href="/statuses/">{{ statuses }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/labels/">Labels</a>
+            <a class="nav-link" href="/labels/">{{ labels }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/tasks/">Tasks</a>
+            <a class="nav-link" href="/tasks/">{{ tasks }}</a>
           </li>
           <li class="nav-item">
             <form action="/logout/" method="post">
