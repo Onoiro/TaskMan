@@ -37,7 +37,7 @@
           <li class="nav-item">
             <form action="/logout/" method="post">
               <input type="hidden" name="csrfmiddlewaretoken" value="8eBIRv4dqXrDzYtu7vIKYmU2tUzmverykHu4ZfpuB03Pb8iv0ADObuh7K9tIACYI">
-              <input class="btn nav-link" type="submit" value="Exit">
+              <input class="btn nav-link" type="submit" value="{{ exit }}">
             </form>
           </li>
         </ul>
@@ -48,10 +48,10 @@
       <h1 class="my-4"></h1>
       <div class="card">
         <div class="card-body p-5 bg-light">
-          <div class="display-4">Привет от Хекслета!</div>
-          <p class="lead">Практические курсы по программированию</p>
+          <div class="display-4">{{ hello_from_hexlet }}</div>
+          <p class="lead">{{ coding_courses }}</p>
           <hr>
-          <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">Read more</a>
+          <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">{{ read_more }}</a>
         </div>
       </div>
     </div>
