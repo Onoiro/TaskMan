@@ -166,10 +166,21 @@ category = "main"
 optional = false
 python-versions = ">=2"
 
+[[package]]
+name = "whitenoise"
+version = "6.6.0"
+description = "Radically simplified static file serving for WSGI applications"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+brotli = ["Brotli"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "9e377aa572045a876d29d6503c888fc15d4992d0fc47ff0e004d2e3b19adc139"
+content-hash = "aae7a939a686de0d3105df2a98eeba7fe2e6a5b82acc2910e732ccff093a8f46"
 
 [metadata.files]
 asgiref = [
@@ -245,4 +256,8 @@ typing-extensions = [
 tzdata = [
     {file = "tzdata-2023.3-py2.py3-none-any.whl", hash = "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"},
     {file = "tzdata-2023.3.tar.gz", hash = "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a"},
+]
+whitenoise = [
+    {file = "whitenoise-6.6.0-py3-none-any.whl", hash = "sha256:b1f9db9bf67dc183484d760b99f4080185633136a273a03f6436034a41064146"},
+    {file = "whitenoise-6.6.0.tar.gz", hash = "sha256:8998f7370973447fac1e8ef6e8ded2c5209a7b1f67c1012866dbcd09681c3251"},
 ]
