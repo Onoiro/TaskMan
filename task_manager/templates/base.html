@@ -26,21 +26,21 @@
                 </button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/users/">{{ users }}</a>
+                <a class="nav-link" href="/users/">{% trans "Users" %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/statuses/">{{ statuses }}</a>
+                <a class="nav-link" href="/statuses/">{% trans "Statuses" %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/labels/">{{ labels }}</a>
+                <a class="nav-link" href="/labels/">{% trans "Labels" %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/tasks/">{{ tasks }}</a>
+                <a class="nav-link" href="/tasks/">{% trans "Tasks" %}</a>
             </li>
             <li class="nav-item">
                 <form action="/logout/" method="post">
                 <input type="hidden" name="csrfmiddlewaretoken" value="8eBIRv4dqXrDzYtu7vIKYmU2tUzmverykHu4ZfpuB03Pb8iv0ADObuh7K9tIACYI">
-                <input class="btn nav-link" type="submit" value="{{ exit }}">
+                <input class="btn nav-link" type="submit" value="{% trans exit %}">
                 </form>
             </li>
             </ul>
