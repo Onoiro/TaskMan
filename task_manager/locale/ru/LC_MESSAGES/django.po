@@ -64,10 +64,8 @@ msgstr "Практические курсы по программировани�
 msgid "Read more"
 msgstr "Узнать больше"
 
-#, fuzzy
-#~| msgid "Task manager"
-#~ msgid "Task_manager"
-#~ msgstr "Менеджер задач"
+msgid "Task_manager"
+msgstr "Менеджер задач"
 
-#~ msgid "Exit"
-#~ msgstr "Выход"
+msgid "Exit"
+msgstr "Выход"
