@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-09 20:19+0300\n"
+"POT-Creation-Date: 2023-12-15 20:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,25 +20,31 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: settings.py:125
+#: settings.py:127
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:126
+#: settings.py:128
 msgid "Russian"
 msgstr "Русский"
 
-#: settings.py:127
+#: settings.py:129
 msgid "Spanish"
 msgstr "Испанский"
+
+#: templates/base.html:23
+#, fuzzy
+#| msgid "Task manager"
+msgid "Task_manager"
+msgstr "Менеджер задач"
+
+#: user/views.py:6 views.py:7
+msgid "Users"
+msgstr "Пользователи"
 
 #: views.py:6
 msgid "Task manager"
 msgstr "Менеджер задач"
-
-#: views.py:7
-msgid "Users"
-msgstr "Пользователи"
 
 #: views.py:8
 msgid "Statuses"
