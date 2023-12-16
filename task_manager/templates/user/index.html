@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ users }}</h1>
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">Пользователи</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя пользователя</th>
+            <th>Полное имя</th>
+            <th>Дата создания</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.user_name }}</td>
+                <td>{{ user.fullname}}</td>
+                <td>{{ user.created_at }}</td>
+                <td>
+                    <a href="/users/{{ user.id }}/update/">Изменить</a>
+                    <br>
+                    <a href="/users/{{ user.id }}/delete/">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
