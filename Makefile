@@ -10,3 +10,9 @@ lint:
 
 install:
 	poetry install
+
+migrations:
+	python manage.py makemigrations
+
+shell:
+	python manage.py shell
