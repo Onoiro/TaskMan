@@ -38,6 +38,12 @@
                 <a class="nav-link" href="/tasks/">{% trans "Tasks" %}</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/login/">{% trans "Login" %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users/create/">{% trans "Sign up" %}</a>
+            </li>
+            <li class="nav-item">
                 <form action="/logout/" method="post">
                 <input type="hidden" name="csrfmiddlewaretoken" value="8eBIRv4dqXrDzYtu7vIKYmU2tUzmverykHu4ZfpuB03Pb8iv0ADObuh7K9tIACYI">
                 <input class="btn nav-link" type="submit" value="{{ exit }}">
