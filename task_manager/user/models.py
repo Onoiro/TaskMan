@@ -7,7 +7,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_edit_url(self):
-        return "/users/{}/edit".format(self.ID)
+        return "/users/{}/edit".format(self.id)
 
     def get_delete_url(self):
-        return "/users/{}/delete".format(self.ID)
+        return "/users/{}/delete".format(self.id)
