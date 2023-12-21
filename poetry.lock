@@ -24,6 +24,18 @@ python-versions = ">=3.6"
 tzdata = ["tzdata"]
 
 [[package]]
+name = "dj-database-url"
+version = "2.1.0"
+description = "Use Database URLs in your Django Application."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">=3.2"
+typing-extensions = ">=3.10.0.0"
+
+[[package]]
 name = "django"
 version = "4.2.7"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -180,7 +192,7 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "aae7a939a686de0d3105df2a98eeba7fe2e6a5b82acc2910e732ccff093a8f46"
+content-hash = "25998c9dd7fc70c87b9d31c78991b89cdd8e005fc2931fde02afa79ec20a24a7"
 
 [metadata.files]
 asgiref = [
@@ -204,6 +216,10 @@ backports-zoneinfo = [
     {file = "backports.zoneinfo-0.2.1-cp38-cp38-win32.whl", hash = "sha256:1b13e654a55cd45672cb54ed12148cd33628f672548f373963b0bff67b217328"},
     {file = "backports.zoneinfo-0.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:4a0f800587060bf8880f954dbef70de6c11bbe59c673c3d818921f042f9954a6"},
     {file = "backports.zoneinfo-0.2.1.tar.gz", hash = "sha256:fadbfe37f74051d024037f223b8e001611eac868b5c5b06144ef4d8b799862f2"},
+]
+dj-database-url = [
+    {file = "dj-database-url-2.1.0.tar.gz", hash = "sha256:f2042cefe1086e539c9da39fad5ad7f61173bf79665e69bf7e4de55fa88b135f"},
+    {file = "dj_database_url-2.1.0-py3-none-any.whl", hash = "sha256:04bc34b248d4c21aaa13e4ab419ae6575ef5f10f3df735ce7da97722caa356e0"},
 ]
 django = [
     {file = "Django-4.2.7-py3-none-any.whl", hash = "sha256:e1d37c51ad26186de355cbcec16613ebdabfa9689bbade9c538835205a8abbe9"},
