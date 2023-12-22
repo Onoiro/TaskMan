@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-21 16:15+0300\n"
+"POT-Creation-Date: 2023-12-22 21:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,8 @@ msgstr "Испанский"
 msgid "Task manager"
 msgstr "Менеджер задач"
 
-#: task_manager/templates/base.html:29 task_manager/user/views.py:9
+#: task_manager/templates/base.html:29
+#: task_manager/templates/user/user_list.html:6
 msgid "Users"
 msgstr "Пользователи"
 
@@ -60,9 +61,25 @@ msgstr "Вход"
 msgid "Sign up"
 msgstr "Регистрация"
 
-#: task_manager/user/views.py:11 task_manager/views.py:11
-msgid "Exit"
-msgstr "Выход"
+#: task_manager/templates/user/user_list.html:11
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: task_manager/templates/user/user_list.html:12
+msgid "Fullname"
+msgstr "Полное имя"
+
+#: task_manager/templates/user/user_list.html:13
+msgid "Created at"
+msgstr "Дата создания"
+
+#: task_manager/templates/user/user_list.html:25
+msgid "Edit"
+msgstr "Изменить"
+
+#: task_manager/templates/user/user_list.html:27
+msgid "Delete"
+msgstr "Удалить"
 
 #: task_manager/views.py:8
 msgid "Hello from Hexlet!"
@@ -75,6 +92,10 @@ msgstr "Практические курсы по программировани�
 #: task_manager/views.py:10
 msgid "Read more"
 msgstr "Узнать больше"
+
+#: task_manager/views.py:11
+msgid "Exit"
+msgstr "Выход"
 
 #~ msgid "Task_manager"
 #~ msgstr "Менеджер задач"
