@@ -19,3 +19,7 @@ migrate:
 
 shell:
 	python manage.py shell
+
+# use path=<path to your app> to check your app for russian languge
+check lang:
+	poetry run python3 manage.py runserver & sleep 3 && curl http://127.0.0.1:8000/$(if $(path),$(path),)$(if $(path),/,) -H "Accept-Language: ru" && pkill -f "python3 manage.py runserver"
