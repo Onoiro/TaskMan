@@ -10,5 +10,5 @@ class UserList(ListView):
 
 class UserCreate(CreateView):
     model = User
-    template_name = 'user_create_form.html'
+    template_name = 'user/user_create_form.html'
     fields = ['first_name', 'last_name', 'username', 'password']
