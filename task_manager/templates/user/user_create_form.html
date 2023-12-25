@@ -2,7 +2,8 @@
 {% load i18n %}
 
 {% block content %}
-<h1 class="my-4">Регистрация</h1>
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">Регистрация</h1>
     <form method="post">
         <input type="hidden" name="csrfmiddlewaretoken" value="TDEot3YnXhGDvkSjysuNt3ZraPLn0gIsDQhdImbayCyi7VhRJcNT2QV9xIHMf9wY">
         <div class="mb-3">
@@ -32,4 +33,5 @@
         </div>
         <input class="btn btn-primary" type="submit" value="Зарегистрировать">
     </form>
+</div>
 {% endblock %}
