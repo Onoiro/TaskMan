@@ -2,36 +2,61 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
+<div class="container wrapper flex-grow-1"> 
     <h1 class="my-4">Регистрация</h1>
-    <form method="post">
+    <form method="post" action="{% url 'user-create' %}">
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label" for="id_first_name">Имя</label>
-            <input type="text" name="first_name" maxlength="150" class="form-control" placeholder="Имя" required id="id_first_name">
+            {{ form.first_name }}
         </div>
         <div class="mb-3">
             <label class="form-label" for="id_last_name">Фамилия</label>
-            <input type="text" name="last_name" maxlength="150" class="form-control" placeholder="Фамилия" required id="id_last_name">
+            {{ form.last_name }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="id_username">Имя пользователя</label>
+            {{ form.username }}
+        </div>
+        <div class="form-text">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="id_password">Пароль</label>
+            {{ form.password }}
+        </div>
+        <div class="form-text">
+            <ul><li>Ваш пароль должен содержать как минимум 3 символа.</li></ul>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Зарегистрировать">
+    </form>
+    <!-- <form method="post" action="{% url 'user-create' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="id_first_name">{% trans form.first_name.label %}</label>
+            <input type="text" name="first_name" class="form-control" placeholder="Имя" required id="id_first_name" value="{{ form.first_name.value|default_if_none:'' }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="id_last_name">Фамилия</label>
+            <input type="text" name="last_name" class="form-control" placeholder="Фамилия" required id="id_last_name" value="{{ form.last_name }}">
         </div>
         <div class="mb-3">
         <label class="form-label" for="id_username">Имя пользователя</label>
-        <input type="text" name="username" maxlength="150" autofocus class="form-control" placeholder="Имя пользователя" required id="id_username">
+        <input type="text" name="username" autofocus class="form-control" placeholder="Имя пользователя" required id="id_username" value="{{ form.username }}">
         <div class="form-text">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</div>
         </div>
         <div class="mb-3">
         <label class="form-label" for="id_password1">Пароль</label>
-            <input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="Пароль" required id="id_password1">
+            <input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="Пароль" required id="id_password1" value="{{ form.password }}">
             <div class="form-text">
                 <ul><li>Ваш пароль должен содержать как минимум 3 символа.</li></ul>
             </div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="id_password2">Подтверждение пароля</label>
-            <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" required id="id_password2">
+            <input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="Подтверждение пароля" required id="id_password2" value="{{ form.password }}">
         <div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
         </div>
         <input class="btn btn-primary" type="submit" value="Зарегистрировать">
-    </form>
+    </form> -->
 </div>
 {% endblock %}

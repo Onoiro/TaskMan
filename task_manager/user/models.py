@@ -1,5 +1,4 @@
 from django.db import models
-from django.forms import ModelForm
 from django.core.validators import MinLengthValidator, \
                                    RegexValidator
 
@@ -16,16 +15,10 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user_name
+        return self.username
 
     def get_edit_url(self):
         return "/users/{}/edit".format(self.id)
 
     def get_delete_url(self):
         return "/users/{}/delete".format(self.id)
-
-
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'password']
