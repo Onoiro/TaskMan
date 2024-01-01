@@ -6,12 +6,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 
-
 class UserList(ListView):
     model = User
     form_class = UserForm()
     context_object_name = 'users_list'
     template_name = 'user_list.html'
+
 
 class UserCreate(CreateView):
     model = User
