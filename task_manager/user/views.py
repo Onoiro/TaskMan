@@ -27,5 +27,4 @@ class UserCreate(CreateView):
                 user.save()
                 return redirect(self.success_url)
             else:
-                print('Data is not valid')
                 form = UserForm()
