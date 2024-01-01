@@ -23,9 +23,3 @@ class User(models.Model):
 
     def get_delete_url(self):
         return "/users/{}/delete".format(self.id)
-
-
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'password']
