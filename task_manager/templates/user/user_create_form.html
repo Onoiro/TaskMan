@@ -7,7 +7,7 @@
     <form method="post" action="{% url 'user-create' %}">
         {% csrf_token %}
         <div class="mb-3">
-            <label class="form-label" for="id_first_name">Фамилия</label>
+            <label class="form-label" for="id_first_name">Имя</label>
             <input type="text" name="{{ form.first_name.name }}" class="form-control" placeholder="Имя" required id="id_first_name">
         </div>
         <div class="mb-3">
@@ -17,6 +17,7 @@
         <div class="mb-3">
             <label class="form-label" for="id_username">Имя пользователя</label>
             <input type="text" name="{{ form.username.name }}" autofocus class="form-control" placeholder="Имя пользователя" required id="id_username">
+            <div class="form-text">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</div>
         </div>
         <div class="mb-3">
             <label class="form-label" for="id_password1">Пароль</label>
