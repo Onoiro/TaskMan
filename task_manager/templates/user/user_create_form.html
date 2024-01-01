@@ -7,7 +7,7 @@
     <form method="post" action="{% url 'user-create' %}">
         {% csrf_token %}
         <div class="mb-3">
-            <label class="form-label" for="id_last_name">Фамилия</
+            <label class="form-label" for="id_first_name">Фамилия</label>
             <input type="text" name="{{ form.first_name.name }}" class="form-control" placeholder="Имя" required id="id_first_name">
         </div>
         <div class="mb-3">
