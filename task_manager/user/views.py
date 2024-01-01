@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 
 class UserList(ListView):
     model = User
+    form_class = UserForm()
     context_object_name = 'users_list'
     template_name = 'user_list.html'
 
@@ -15,18 +16,16 @@ class UserList(ListView):
 class UserCreate(CreateView):
     model = User
     form_class = UserForm
-    # fields = ['first_name', 'last_name', 'username', 'password']
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('user-list')
 
-    def post_new(self, request, *args, **kwargs):
-        if request.metod == "POST":
+    def save_user(self, request, *args, **kwargs):
+        if request.method == "POST":
             form = UserForm(request.POST)
             if form.is_valid():
                 user = form.save()
                 user.save()
-                # print(user.username, user.password, user.created_at)
                 return redirect(self.success_url)
-        else:
-            print('Data is not valid')
-            form = UserForm()
+            else:
+                print('Data is not valid')
+                form = UserForm()
