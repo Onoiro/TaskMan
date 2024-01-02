@@ -35,7 +35,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
     form_class = UserForm
     template_name = 'user/user_update.html'
-    success_url = 'user-list'
+    success_url = reverse_lazy('user-list')
 
     def test_func(self):
         user = self.get_object()

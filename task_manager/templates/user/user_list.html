@@ -22,9 +22,9 @@
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
                 <td>{{ user.created_at }}</td>
                 <td>
-                    <a href="/users/{{ user.id }}/update/">{% trans "Edit" %}</a>
+                    <a href="{{ user.id }}/edit/">{% trans "Edit" %}</a>
                     <br>
-                    <a href="/users/{{ user.id }}/delete/">{% trans "Delete" %}</a>
+                    <a href="{{ user.id }}/delete/">{% trans "Delete" %}</a>
                 </td>
             </tr>
             {% endfor %}
