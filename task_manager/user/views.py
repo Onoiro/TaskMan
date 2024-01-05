@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import authenticate, login
 from .models import User
 from .forms import UserForm
 from django.utils.translation import gettext as _
@@ -12,6 +13,15 @@ class UserListView(ListView):
     form_class = UserForm()
     context_object_name = 'users_list'
     template_name = 'user_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавление дополнительной информации в контекст
+        num_visits = self.request.session.get('num_visits', 0)
+        self.request.session['num_visits'] = num_visits+1
+        context['is_authenticated'] = self.request.user.is_authenticated
+        context['num_visits'] = self.request.session.get('num_visits', 0)
+        return context
 
 
 class UserCreateView(CreateView):
