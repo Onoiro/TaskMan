@@ -27,7 +27,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'user:user-list' %}">{% trans "Users" %}</a>
             </li>
-            <!-- <li class="nav-item">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
                 <a class="nav-link" href="/statuses/">{% trans "Statuses" %}</a>
             </li>
             <li class="nav-item">
@@ -35,19 +36,23 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/tasks/">{% trans "Tasks" %}</a>
-            </li> -->
+            </li>
+            {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'user:user-create' %}">{% trans "Sign up" %}</a>
             </li>
-            <!-- <li class="nav-item">
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
                 <form action="/logout/" method="post">
                 <input type="hidden" name="csrfmiddlewaretoken" value="8eBIRv4dqXrDzYtu7vIKYmU2tUzmverykHu4ZfpuB03Pb8iv0ADObuh7K9tIACYI">
                 <input class="btn nav-link" type="submit" value="{{ exit }}">
                 </form>
-            </li> -->
+            </li>
+            {% endif %}
             </ul>
         </div>
         </nav>

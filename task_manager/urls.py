@@ -21,6 +21,7 @@ from .views import IndexView, login_view
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    # path('', include('django.contrib.auth.urls')),
     path('login/', login_view, name='login'),
     path('users/', include('task_manager.user.urls')),
     path('admin/', admin.site.urls),

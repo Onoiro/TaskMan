@@ -30,7 +30,7 @@ class UserCreateView(CreateView):
     model = User
     form_class = UserForm
     template_name = 'user/user_create_form.html'
-    success_url = reverse_lazy('user-list')
+    success_url = reverse_lazy('login')
 
     def save_user(self, request, *args, **kwargs):
         if request.method == "POST":
