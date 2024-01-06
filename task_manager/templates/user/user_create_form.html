@@ -6,22 +6,9 @@
 {% load i18n %}
 
 {% block content %}
-<!-- <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">Регистрация</h1>
-    <form method="post" action="{% url 'user-create' %}" class="form">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-    </form>
-</div> -->
 <div class="container wrapper flex-grow-1"> 
     <h1 class="my-4">Регистрация</h1>
-    <form method="post" action="{% url 'user-create' %}">
+    <form method="post" action="">
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label" for="id_first_name">Имя</label>

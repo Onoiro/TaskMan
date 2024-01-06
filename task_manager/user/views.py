@@ -1,7 +1,9 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from .models import User
 from .forms import UserForm
 from django.utils.translation import gettext as _
