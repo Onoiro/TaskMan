@@ -36,11 +36,18 @@ class UserCreateView(CreateView):
         if request.method == "POST":
             form = UserForm(request.POST)
             if form.is_valid():
-                user = form.save()
-                user.save()
-                return redirect(self.success_url)
-            else:
-                form = UserForm()
+                password = form.cleaned_data.get('password')
+                password_confirm = form.cleaned_data.get('password_confirm')
+                if password == password_confirm:
+                    user = form.save()
+                    user.save()
+                    messages.success(request, 'Пользователь успешно зарегистрирован')
+                    return redirect(self.success_url)
+                else:
+                    messages.error(request, 'The entered passwords do not match.')
+                    form = UserForm()
+            form = UserForm()
+    
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
