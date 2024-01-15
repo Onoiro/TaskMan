@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
+from .user.models import User
 
 
 class IndexView(View):
@@ -23,10 +24,7 @@ class IndexView(View):
 
 
 class LoginView():
-
-    template_name = 'login.html'
-    next_page = 'index.html'
-
+    pass
     
     # def login_view(request):
     #     if request.method == 'POST':
@@ -45,5 +43,4 @@ class LoginView():
     #     return render(request, 'login.html', {'form': form})
 
     class LogoutView():
-        
-        next_page = 'index.html'
+        pass
