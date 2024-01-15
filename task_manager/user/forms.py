@@ -21,6 +21,7 @@ class UserForm(forms.ModelForm):
         password_confirm = cleaned_data.get('password_confirm')
 
         if password != password_confirm:
-            raise ValidationError("Пароли не совпадают")
+            self.add_error('password_confirm', "The entered passwords do not match.")
+            # raise ValidationError("Пароли не совпадают")
 
         return cleaned_data

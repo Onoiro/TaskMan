@@ -33,6 +33,7 @@
         <div class="mb-3">
             <label class="form-label" for="id_password_confirm">Подтверждение пароля</label>
             <input type="password" name="{{ form.password_confirm.name }}" autocomplete="new-password" class="form-control" placeholder="Пароль" required id="id_password_confirm">
+            {{ form.password_confirm.errors }}
             <div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
         </div>
         <input class="btn btn-primary" type="submit" value="Зарегистрировать">
