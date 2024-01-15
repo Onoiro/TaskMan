@@ -8,6 +8,7 @@ from django.urls import reverse
 
 
 class IndexView(View):
+    
     def get(self, request, *args, **kwargs):
         hello_from_hexlet = _("Hello from Hexlet!")
         coding_courses = _('Practical programming courses')
@@ -21,18 +22,28 @@ class IndexView(View):
                                })
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Вы залогинены')
-                return redirect(reverse('index'))
-        messages.error(request, 'Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+class LoginView():
+
+    template_name = 'login.html'
+    next_page = 'index.html'
+
+    
+    # def login_view(request):
+    #     if request.method == 'POST':
+    #         form = AuthenticationForm(data=request.POST)
+    #         if form.is_valid():
+    #             username = form.cleaned_data.get('username')
+    #             password = form.cleaned_data.get('password')
+    #             user = authenticate(username=username, password=password)
+    #             if user is not None:
+    #                 login(request, user)
+    #                 messages.success(request, 'Вы залогинены')
+    #                 return redirect(reverse('index'))
+    #         messages.error(request, 'Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.')
+    #     else:
+    #         form = AuthenticationForm()
+    #     return render(request, 'login.html', {'form': form})
+
+    class LogoutView():
+        
+        next_page = 'index.html'
