@@ -29,15 +29,14 @@ class IndexView(View):
 
 class UserLoginView(LoginView):
 
-    # model = User
-    # form_class = UserLoginForm
-    # template_name = 'login.html'
-    # success_url = reverse_lazy('index')
-
-    def form_valid(self, form):
+    def form_valid(self, form: AuthenticationForm):
         messages.success(self.request, "You successfully logged in")
         return super().form_valid(form)
     
 
 class UserLogoutView(LogoutView):
-    pass
+    
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        messages.info(request, "You are logged out")
+        return response
