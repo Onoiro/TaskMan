@@ -1,7 +1,7 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% bootstrap_messages %}
+
 {% load i18n %}
 
 <!doctype html>
@@ -57,7 +57,7 @@
         </nav>
     {% endblock %}
     </div>
-
+    <div>{% bootstrap_messages %}</div>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
