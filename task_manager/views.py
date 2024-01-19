@@ -5,9 +5,8 @@ from django.views import View
 from django.utils.translation import gettext as _
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
-# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from django.urls import reverse
 from .user.models import User
 from .user.forms import UserLoginForm
 from django.urls import reverse_lazy
@@ -29,11 +28,11 @@ class IndexView(View):
 
 
 class UserLoginView(LoginView):
-    
-    model = User
-    form_class = UserLoginForm
-    template_name = 'login.html'
-    success_url = reverse_lazy('index')
+
+    # model = User
+    # form_class = UserLoginForm
+    # template_name = 'login.html'
+    # success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         messages.success(self.request, "You successfully logged in")
