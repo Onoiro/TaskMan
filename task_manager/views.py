@@ -1,11 +1,16 @@
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.utils.translation import gettext as _
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView, LogoutView
+# from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
 from .user.models import User
+from .user.forms import UserLoginForm
+from django.urls import reverse_lazy
 
 
 class IndexView(View):
@@ -23,24 +28,17 @@ class IndexView(View):
                                })
 
 
-class LoginView():
-    pass
+class UserLoginView(LoginView):
     
-    # def login_view(request):
-    #     if request.method == 'POST':
-    #         form = AuthenticationForm(data=request.POST)
-    #         if form.is_valid():
-    #             username = form.cleaned_data.get('username')
-    #             password = form.cleaned_data.get('password')
-    #             user = authenticate(username=username, password=password)
-    #             if user is not None:
-    #                 login(request, user)
-    #                 messages.success(request, 'Вы залогинены')
-    #                 return redirect(reverse('index'))
-    #         messages.error(request, 'Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.')
-    #     else:
-    #         form = AuthenticationForm()
-    #     return render(request, 'login.html', {'form': form})
+    model = User
+    form_class = UserLoginForm
+    template_name = 'login.html'
+    success_url = reverse_lazy('index')
 
-    class LogoutView():
-        pass
+    def form_valid(self, form):
+        messages.success(self.request, "You successfully logged in")
+        return super().form_valid(form)
+    
+
+class UserLogoutView(LogoutView):
+    pass
