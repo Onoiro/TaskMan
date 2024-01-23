@@ -35,8 +35,8 @@ class UserCreateView(CreateView, SuccessMessageMixin):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'username']
-    template_name = 'user/user_create_form.html'
-    success_url = reverse_lazy('user-update')
+    template_name = 'user/user_update.html'
+    success_url = reverse_lazy('user-list')
 
     def get_queryset(self):
         return super().get_queryset().filter(pk=self.request.user.pk)
