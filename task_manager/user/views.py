@@ -42,7 +42,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     
     def get_success_url(self):
         messages.success(self.request, 'User deleted successfully')
-        return reverse_lazy('user-list')
+        return reverse_lazy('user:user-list')
 
 
 class UserLoginView(LoginView):
