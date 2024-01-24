@@ -40,13 +40,13 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         return super().get_queryset().filter(pk=self.request.user.pk)
-
+    
     def form_valid(self, form):
         messages.success(self.request, 'User updated successfully')
         return super().form_valid(form)
     
     # def get_success_url(self):
-    #     return ('user-list')
+    #     return reverse_lazy('user-list')
     
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
