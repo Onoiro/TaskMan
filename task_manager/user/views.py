@@ -32,21 +32,12 @@ class UserCreateView(CreateView, SuccessMessageMixin):
     #     return reverse_lazy('login')
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
     model = User
-    fields = ['first_name', 'last_name', 'username']
+    form_class = UserRegisterForm
     template_name = 'user/user_update.html'
     success_url = reverse_lazy('user-list')
-
-    def get_queryset(self):
-        return super().get_queryset().filter(pk=self.request.user.pk)
-    
-    def form_valid(self, form):
-        messages.success(self.request, 'User updated successfully')
-        return super().form_valid(form)
-    
-    # def get_success_url(self):
-    #     return reverse_lazy('user-list')
+    success_message = 'User updated successfully'
     
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
