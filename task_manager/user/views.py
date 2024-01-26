@@ -31,6 +31,9 @@ class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
     template_name = 'user/user_update.html'
     success_url = reverse_lazy('user:user-list')
     success_message = 'User updated successfully'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(pk=self.request.user.pk)
     
 
 class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
@@ -39,8 +42,8 @@ class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
     success_url = reverse_lazy('user:user-list')
     success_message = 'User deleted successfully'
 
-    # def get_queryset(self):
-    #     return super().get_queryset().filter(pk=self.request.user.pk)
+    def get_queryset(self):
+        return super().get_queryset().filter(pk=self.request.user.pk)
     
     # def get_success_url(self):
     #     messages.success(self.request, 'User deleted successfully')
