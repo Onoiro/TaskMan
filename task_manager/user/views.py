@@ -1,12 +1,8 @@
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.shortcuts import redirect
 
 from .forms import UserRegisterForm
 from django.contrib.auth.models import User
@@ -44,23 +40,3 @@ class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
 
     def get_queryset(self):
         return super().get_queryset().filter(pk=self.request.user.pk)
-    
-    # def get_success_url(self):
-    #     messages.success(self.request, 'User deleted successfully')
-    #     return reverse_lazy('user:user-list')
-
-
-class UserLoginView(LoginView):
-    template_name = 'login.html'
-
-    def form_valid(self, form: AuthenticationForm):
-        messages.success(self.request, "You successfully logged in")
-        return super().form_valid(form)
-
-
-class UserLogoutView(LogoutView):
-    
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        messages.info(request, "You are logged out")
-        return response

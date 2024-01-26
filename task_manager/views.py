@@ -1,14 +1,11 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
 from django.utils.translation import gettext as _
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .user.models import User
-# from .user.forms import UserLoginForm
 from django.urls import reverse_lazy
 
 
@@ -28,6 +25,7 @@ class IndexView(View):
 
 
 class UserLoginView(LoginView):
+    template_name = 'login.html'
 
     def form_valid(self, form: AuthenticationForm):
         messages.success(self.request, "You successfully logged in")
