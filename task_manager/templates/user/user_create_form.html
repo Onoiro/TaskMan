@@ -6,36 +6,6 @@
 {% block content %}
 <div class="container wrapper flex-grow-1"> 
     <h1 class="my-4">Регистрация</h1>
-    <!-- <form method="post" action="">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label" for="id_first_name">Имя</label>
-            <input type="text" name="{{ form.first_name.name }}" class="form-control" placeholder="Имя" required id="id_first_name">
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="id_last_name">Фамилия</label>
-            <input type="text" name="{{ form.last_name.name }}" class="form-control" placeholder="Фамилия" required id="id_last_name">
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="id_username">Имя пользователя</label>
-            <input type="text" name="{{ form.username.name }}" autofocus class="form-control" placeholder="Имя пользователя" required id="id_username">
-            <div class="form-text">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="id_password">Пароль</label>
-            <input type="password" name="{{ form.password.name }}" autocomplete="new-password" class="form-control" placeholder="Пароль" required id="id_password">
-            <div class="form-text">
-                <ul><li>Ваш пароль должен содержать как минимум 3 символа.</li></ul>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="id_password">Подтверждение пароля</label>
-            <input type="password" name="{{ form.password_confirm.name }}" autocomplete="new-password" class="form-control" placeholder="Пароль" required id="id_password_confirm">
-            {{ form.password_confirm.errors }}
-            <div class="form-text">Для подтверждения введите, пожалуйста, пароль ещё раз.</div>
-        </div>
-        <input class="btn btn-primary" type="submit" value="Зарегистрировать">
-    </form> -->
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
