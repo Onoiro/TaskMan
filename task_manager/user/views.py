@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .forms import UserRegisterForm
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 class UserListView(ListView):
@@ -30,6 +31,15 @@ class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
     success_url = reverse_lazy('user:user-list')
     success_message = 'User updated successfully'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, 'You are not authorized! Please login.')
+            return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(pk=self.request.user.pk)
+
 
 class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
     model = User
@@ -38,3 +48,12 @@ class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = 'User deleted successfully'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, 'You are not authorized! Please login.')
+            return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(pk=self.request.user.pk)
