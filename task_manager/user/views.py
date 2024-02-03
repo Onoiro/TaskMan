@@ -25,6 +25,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
     model = User
     form_class = UserRegisterForm
     template_name = 'user/user_update.html'
+    login_url = 'login'
+    redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = 'User updated successfully'
 
