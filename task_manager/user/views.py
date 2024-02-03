@@ -15,14 +15,14 @@ class UserListView(ListView):
     context_object_name = 'users_list'
     
 
-class UserCreateView(CreateView, SuccessMessageMixin):
+class UserCreateView(SuccessMessageMixin, CreateView):
     form_class = UserRegisterForm
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('login')
     success_message = 'User created successfully'
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
+class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
     form_class = UserRegisterForm
     template_name = 'user/user_update.html'
@@ -41,7 +41,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView, SuccessMessageMixin):
         return super().get_queryset().filter(pk=self.request.user.pk)
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView, SuccessMessageMixin):
+class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = User
     template_name = 'user/user_delete.html'
     login_url = 'login'
