@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import UserRegisterForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.shortcuts import redirect
 
 
 class UserListView(ListView):
@@ -35,10 +36,10 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         if not request.user.is_authenticated:
             messages.error(request, 'You are not authorized! Please login.')
             return super().dispatch(request, *args, **kwargs)
+        if not self.get_object() == self.request.user:
+            messages.error(request, "You don't have permissions to modify another user.")
+            return redirect('user:user-list')
         return super().dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return super().get_queryset().filter(pk=self.request.user.pk)
 
 
 class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
