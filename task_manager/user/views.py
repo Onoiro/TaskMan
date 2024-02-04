@@ -54,7 +54,7 @@ class UserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         if not request.user.is_authenticated:
             messages.error(request, 'You are not authorized! Please login.')
             return super().dispatch(request, *args, **kwargs)
+        if not self.get_object() == self.request.user:
+            messages.error(request, "You don't have permissions to modify another user.")
+            return redirect('user:user-list')
         return super().dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return super().get_queryset().filter(pk=self.request.user.pk)
