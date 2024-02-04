@@ -35,6 +35,5 @@ class UserLoginView(LoginView):
 class UserLogoutView(LogoutView):
     
     def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
         messages.info(request, "You are logged out")
-        return response
+        return super().dispatch(request, *args, **kwargs)
