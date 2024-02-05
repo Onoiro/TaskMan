@@ -4,10 +4,12 @@
 {% load i18n %}
 
 {% block content %}
-<h1 class="my-4">{% trans "Edit user" %}</h1>
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">{% trans "Edit user" %}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{% trans "Edit" %}</button>`
     </form>
+</div>
 {% endblock %}
