@@ -10,13 +10,15 @@
 
 {% block content %}
 
-<h1 class="my-4"> {% trans "Delete user" %}</h1>
-  <form method="post" class="form">
-      {% csrf_token %}
-      <p>{% trans "Are you sure you want to delete" %} {{ object.first_name }} {{ object.last_name }}?</p>
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-danger">
-        {% trans "Yes, delete" %}
-        </button>
-  </form>
+<div class="container wrapper flex-grow-1">
+  <h1 class="my-4"> {% trans "Delete user" %}</h1>
+    <form method="post" class="form">
+        {% csrf_token %}
+        <p>{% trans "Are you sure you want to delete" %} {{ object.first_name }} {{ object.last_name }}?</p>
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-danger">
+          {% trans "Yes, delete" %}
+          </button>
+    </form>
+</div>
 {% endblock %}
