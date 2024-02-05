@@ -5,11 +5,11 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1"> 
-    <h1 class="my-4">Регистрация</h1>
+    <h1 class="my-4">{% trans "Signup" %}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <button type="submit">{% trans "Sign up" %}</button>
     </form>
 </div>
 {% endblock %}
