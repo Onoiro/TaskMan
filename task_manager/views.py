@@ -28,12 +28,12 @@ class UserLoginView(LoginView):
     template_name = 'login.html'
 
     def form_valid(self, form: AuthenticationForm):
-        messages.success(self.request, "You successfully logged in")
+        messages.success(self.request, _("You successfully logged in"))
         return super().form_valid(form)
     
 
 class UserLogoutView(LogoutView):
     
     def dispatch(self, request, *args, **kwargs):
-        messages.info(request, "You are logged out")
+        messages.info(request, _("You are logged out"))
         return super().dispatch(request, *args, **kwargs)
