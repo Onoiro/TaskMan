@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .forms import UserRegisterForm
+from .forms import UserForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -18,7 +18,7 @@ class UserListView(ListView):
     
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    form_class = UserRegisterForm
+    form_class = UserForm
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('login')
     success_message = _('User created successfully')
@@ -37,7 +37,7 @@ class UserPermissions(LoginRequiredMixin):
 
 class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
     model = User
-    form_class = UserRegisterForm
+    form_class = UserForm
     template_name = 'user/user_update.html'
     login_url = 'login'
     redirect_field_name = "redirect_to"
