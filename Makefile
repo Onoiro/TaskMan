@@ -5,6 +5,9 @@ PORT ?= 10000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
+render start:
+	python manage.py migrate && gunicorn task_manager.wsgi:application
+
 lint:
 	poetry run flake8
 
