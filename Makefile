@@ -7,8 +7,14 @@ PORT ?= 10000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
-render start:
+render:
 	$(MANAGE) migrate && gunicorn task_manager.wsgi:application
+
+USERNAME ?= admin
+EMAIL ?= t2way@yandex.ru
+PASSWORD ?= admin
+render createsuperuser:
+	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --noinput && $(MANAGE) changepassword $(USERNAME) $(PASSWORD) && gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
