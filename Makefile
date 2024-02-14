@@ -10,11 +10,11 @@ start:
 render:
 	$(MANAGE) migrate && gunicorn task_manager.wsgi:application
 
-USERNAME ?= admin
+USERNAME ?= abo
 EMAIL ?= t2way@yandex.ru
-PASSWORD ?= admin
+PASSWORD ?= 111
 render createsuperuser:
-	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --noinput && $(MANAGE) changepassword $(USERNAME) $(PASSWORD) && gunicorn task_manager.wsgi:application
+	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --password $(PASSWORD) --noinput && gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
