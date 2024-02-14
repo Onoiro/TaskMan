@@ -14,7 +14,7 @@ USERNAME ?= abo
 EMAIL ?= t2way@yandex.ru
 PASSWORD ?= 111
 render createsuperuser:
-	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --password $(PASSWORD) --noinput && gunicorn task_manager.wsgi:application
+	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --noinput && gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
