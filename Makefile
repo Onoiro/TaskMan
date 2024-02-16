@@ -1,5 +1,8 @@
 MANAGE := poetry run python manage.py
 
+build:
+	./build.sh
+
 dev:
 	$(MANAGE) runserver
 
@@ -7,20 +10,11 @@ PORT ?= 10000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
-render:
-	$(MANAGE) migrate && gunicorn task_manager.wsgi:application
-
-USERNAME ?= abo
-EMAIL ?= t2way@yandex.ru
-PASSWORD ?= 111
-render createsuperuser:
-	$(MANAGE) migrate && $(MANAGE) createsuperuser --username $(USERNAME) --email $(EMAIL) --noinput && gunicorn task_manager.wsgi:application
+start render:
+	gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
-
-install:
-	poetry install
 
 migrations:
 	$(MANAGE) makemigrations
