@@ -22,10 +22,11 @@ class UserTestCase(TestCase):
         self.c = Client()
         # call_command('loaddata', 'new_test_user.json')
         self.user_data = {
-                    'first_name': 'test_first_name',
-                    'last_name': 'test_last_name',
-                    'username': 'test_username',
-                    'password': 'test_password',
+                    'first_name': 'Me',
+                    'last_name': 'M',
+                    'username': 'me',
+                    'password': '111',
+                    # 'password2': 'test_password2'
             }
 
     def test_create_user(self):
