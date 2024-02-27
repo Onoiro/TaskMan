@@ -25,7 +25,7 @@ class UserTestCase(TestCase):
                     'first_name': 'Me',
                     'last_name': 'M',
                     'username': 'me',
-                    'password': '111',
+                    'password': 111,
                     # 'password2': 'test_password2'
             }
 

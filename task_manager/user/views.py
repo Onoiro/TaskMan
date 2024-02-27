@@ -1,3 +1,9 @@
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
+
+import django
+django.setup()
+
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -5,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .forms import UserForm
+from task_manager.user.forms import UserForm
+# from .forms import UserForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
