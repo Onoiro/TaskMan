@@ -46,3 +46,21 @@ class UserTestCase(TestCase):
         user = User.objects.filter(username=self.user_data['username']).first()
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
+
+
+    def test_update_user(self):
+        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
+        user = User.objects.get(username=self.user_data['username'])
+        self.c.force_login(user)
+        new_user_data = {
+            'first_name': 'new_first_name',
+            'last_name': 'new_last_name',
+            'username': 'new_username',
+            'password1': 222,
+            'password2': 222,
+        }
+        response = self.c.post(reverse('user:user-update', args=[user.id]), new_user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        user.refresh_from_db()
+        self.assertEqual(user.first_name, new_user_data['first_name'])
+        self.assertEqual(user.last_name, new_user_data['last_name'])
