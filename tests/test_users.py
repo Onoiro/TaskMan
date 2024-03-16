@@ -10,6 +10,7 @@ from django.urls import reverse
 
 
 class UserTestCase(TestCase):
+    # fixtures = ["tests/fixtures/test_users.json"]
 
     def setUp(self):
         self.c = Client()
