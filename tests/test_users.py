@@ -64,3 +64,11 @@ class UserTestCase(TestCase):
         user.refresh_from_db()
         self.assertEqual(user.first_name, new_user_data['first_name'])
         self.assertEqual(user.last_name, new_user_data['last_name'])
+
+    def test_delete_user(self):
+        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
+        user = User.objects.get(username=self.user_data['username'])
+        self.c.force_login(user)
+        response = self.c.post(reverse('user:user-delete', args=[user.id]), self.user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(username=self.user_data['username']).exists())
