@@ -21,6 +21,7 @@ class UserTestCase(TestCase):
                     'password2': 111,
             }
 
+
     def test_create_user_response_200(self):
         response = self.c.post(reverse('user:user-create'), self.user_data, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -64,6 +65,7 @@ class UserTestCase(TestCase):
         user.refresh_from_db()
         self.assertEqual(user.first_name, new_user_data['first_name'])
         self.assertEqual(user.last_name, new_user_data['last_name'])
+
 
     def test_delete_user(self):
         self.c.post(reverse('user:user-create'), self.user_data, follow=True)
