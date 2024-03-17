@@ -10,14 +10,14 @@ from django.urls import reverse
 
 
 class UserTestCase(TestCase):
-    # fixtures = ["tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_users.json"]
 
     def setUp(self):
         self.c = Client()
         self.user_data = {
-                    'first_name': 'Me',
-                    'last_name': 'M',
-                    'username': 'me',
+                    'first_name': 'New',
+                    'last_name': 'N',
+                    'username': 'new',
                     'password1': 111,
                     'password2': 111,
             }
@@ -51,21 +51,19 @@ class UserTestCase(TestCase):
 
 
     def test_update_user(self):
-        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
-        user = User.objects.get(username=self.user_data['username'])
+        user = User.objects.get(username="he")
         self.c.force_login(user)
         new_user_data = {
-            'first_name': 'new_first_name',
-            'last_name': 'new_last_name',
-            'username': 'new_username',
+            'first_name': 'He',
+            'last_name': 'H',
+            'username': 'him',
             'password1': 222,
-            'password2': 222,
+            'password2': 222
         }
         response = self.c.post(reverse('user:user-update', args=[user.id]), new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user.refresh_from_db()
-        self.assertEqual(user.first_name, new_user_data['first_name'])
-        self.assertEqual(user.last_name, new_user_data['last_name'])
+        self.assertEqual(user.username, new_user_data['username'])
 
 
     def test_delete_user(self):
