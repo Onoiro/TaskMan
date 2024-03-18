@@ -39,13 +39,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='password',
-            field=models.CharField(default='', max_length=100, validators=[django.core.validators.MinLengthValidator(3)]),
+            field=models.CharField(default='',
+                                   max_length=100,
+                                   validators=[django.core.validators.
+                                               MinLengthValidator(3)]),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='user',
             name='username',
-            field=models.CharField(default='', max_length=150, unique=True, validators=[django.core.validators.RegexValidator('^[a-zA-Z0-9.@_+-]+$')]),
+            field=models.CharField(default='',
+                                   max_length=150,
+                                   unique=True,
+                                   validators=[django.core.
+                                               validators.
+                                               RegexValidator
+                                               ('^[a-zA-Z0-9.@_+-]+$')]),
             preserve_default=False,
         ),
     ]

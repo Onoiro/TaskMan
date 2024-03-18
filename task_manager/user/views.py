@@ -1,9 +1,3 @@
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
-
-import django
-django.setup()
-
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -12,17 +6,21 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
-# from .forms import UserForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import redirect
+
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
+django.setup()
 
 
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
     context_object_name = 'users_list'
-    
+
 
 class UserCreateView(SuccessMessageMixin, CreateView):
     form_class = UserForm
@@ -37,7 +35,9 @@ class UserPermissions(LoginRequiredMixin):
             messages.error(request, _('You are not authorized! Please login.'))
             return super().dispatch(request, *args, **kwargs)
         if not self.get_object() == self.request.user:
-            messages.error(request, _("You don't have permissions to modify another user."))
+            messages.error(request,
+                           _("You don't have permissions \
+                           to modify another user."))
             return redirect('user:user-list')
         return super().dispatch(request, *args, **kwargs)
 

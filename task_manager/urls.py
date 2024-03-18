@@ -21,7 +21,9 @@ from .views import IndexView, UserLoginView, UserLogoutView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
-    path('login/', UserLoginView.as_view(template_name='login.html'), name='login'),
+    path('login/',
+         UserLoginView.as_view(template_name='login.html'),
+         name='login'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('users/', include('task_manager.user.urls')),
     path('admin/', admin.site.urls),

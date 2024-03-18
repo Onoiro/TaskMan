@@ -12,10 +12,10 @@ class UserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username']
 
     password1 = forms.CharField(
-        label =_('Password'),
-        widget =forms.PasswordInput,
-        help_text =_("Your password must contain at least 3 characters."),
-        validators = [
+        label=('Password'),
+        widget=forms.PasswordInput,
+        help_text=_("Your password must contain at least 3 characters."),
+        validators=[
             validators.MinLengthValidator(
                 limit_value=3,
                 message=_("Your password is too short. "
@@ -39,4 +39,3 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
