@@ -15,7 +15,7 @@ from .models import Statuses
 class StatusesListView(ListView):
     model = Statuses
     template_name = 'statuses/statuses_list.html'
-    context_object_name = 'statuses-list'
+    context_object_name = 'statuses_list'
 
 
 class StatusesCreateView(CreateView):
