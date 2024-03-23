@@ -19,7 +19,7 @@ class StatusesListView(ListView):
 
 
 class StatusesCreateView(CreateView):
-    pass
+    template_name = 'statuses/statuse_create_form.html'
 
 
 class StatusesUpdateView(UpdateView):

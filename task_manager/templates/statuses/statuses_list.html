@@ -5,7 +5,8 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">{% trans "Users" %}</h1>
+    <h1 class="my-4">{% trans "Statuses" %}</h1>
+    <a class="btn btn-primary mb-3" href="{% url 'statuses:statuses-create' %}">{% trans "New status" %}</a>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -21,6 +22,11 @@
                 <td>{{ status.id }}</td>
                 <td>{{ status.status_name }}</td>
                 <td>{{ status.created_at }}</td>
+                <td>
+                    <a href="{% url 'statuses:statuses-update' status.id %}">{% trans "Edit" %}</a>
+                    <br>
+                    <a href="{% url 'statuses:statuses-delete' status.id %}">{% trans "Delete" %}</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
