@@ -19,15 +19,19 @@ class StatusesListView(ListView):
     context_object_name = 'statuses_list'
 
 
-class StatusesCreateView(CreateView):
+class StatusesCreateView(SuccessMessageMixin, CreateView):
     form_class = StatusForm
-    template_name = 'statuses/statuse_create_form.html'
+    template_name = 'statuses/statuses_create_form.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status created successfully')
 
 
-class StatusesUpdateView(UpdateView):
-    pass
+class StatusesUpdateView(SuccessMessageMixin, UpdateView):
+    model = Statuses
+    form_class = StatusForm
+    template_name = 'statuses/statuses_update.html'
+    success_url = reverse_lazy('statuses:statuses-list')
+    success_message = _('Status updated successfully')
 
 
 class StatusesDeleteView(DeleteView):
