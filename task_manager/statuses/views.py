@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Statuses
+from task_manager.statuses.forms import StatusForm
 
 # def index(request):
 #     return render(request, 'statuses/statuses.html', context={
@@ -19,7 +20,10 @@ class StatusesListView(ListView):
 
 
 class StatusesCreateView(CreateView):
+    form_class = StatusForm
     template_name = 'statuses/statuse_create_form.html'
+    success_url = reverse_lazy('statuses:statuses-list')
+    success_message = _('Status created successfully')
 
 
 class StatusesUpdateView(UpdateView):
