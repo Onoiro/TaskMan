@@ -34,5 +34,8 @@ class StatusesUpdateView(SuccessMessageMixin, UpdateView):
     success_message = _('Status updated successfully')
 
 
-class StatusesDeleteView(DeleteView):
-    pass
+class StatusesDeleteView(SuccessMessageMixin, DeleteView):
+    model = Statuses
+    template_name = 'statuses/statuses_delete.html'
+    success_url = reverse_lazy('statuses:statuses-list')
+    success_message = _('Status deleted successfully')
