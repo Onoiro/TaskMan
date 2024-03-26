@@ -10,9 +10,18 @@ from .models import Statuses
 from task_manager.statuses.forms import StatusForm
 
 
-class StatusesListView(ListView):
+class StatusesPermissions(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, _('You are not authorized! Please login.'))
+            return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
+
+
+class StatusesListView(StatusesPermissions, ListView):
     model = Statuses
     template_name = 'statuses/statuses_list.html'
+    login_url = 'login'
     context_object_name = 'statuses_list'
 
 
@@ -21,14 +30,6 @@ class StatusesCreateView(SuccessMessageMixin, CreateView):
     template_name = 'statuses/statuses_create_form.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status created successfully')
-
-
-class StatusesPermissions(LoginRequiredMixin):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, _('You are not authorized! Please login.'))
-            return super().dispatch(request, *args, **kwargs)
-        return super().dispatch(request, *args, **kwargs)
 
 
 class StatusesUpdateView(StatusesPermissions, SuccessMessageMixin, UpdateView):
