@@ -16,7 +16,12 @@ class Migration(migrations.Migration):
             name='Statuses',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('status_name', models.CharField(max_length=150, unique=True, validators=[django.core.validators.RegexValidator('^[a-zA-Z0-9]'), django.core.validators.MinLengthValidator(2)])),
+                ('status_name', models.CharField(
+                    max_length=150,
+                    unique=True,
+                    validators=[
+                        django.core.validators.RegexValidator('^[a-zA-Z0-9]'),
+                        django.core.validators.MinLengthValidator(2)])),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
         ),
