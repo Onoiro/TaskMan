@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-10 13:57+0300\n"
+"POT-Creation-Date: 2024-03-27 17:23+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,141 +20,210 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\task_manager\settings.py:143
+#: settings.py:134
 msgid "English"
 msgstr "Английский"
 
-#: .\task_manager\settings.py:144
+#: settings.py:135
 msgid "Russian"
 msgstr "Русский"
 
-#: .\task_manager\settings.py:145
+#: settings.py:136
 msgid "Spanish"
 msgstr "Испанский"
 
-#: .\task_manager\templates\base.html:22
+#: statuses/views.py:16 user/views.py:35
+msgid "You are not authorized! Please login."
+msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
+
+#: statuses/views.py:32
+#, fuzzy
+#| msgid "User created successfully"
+msgid "Status created successfully"
+msgstr "Пользователь успешно зарегистрирован"
+
+#: statuses/views.py:41
+#, fuzzy
+#| msgid "User updated successfully"
+msgid "Status updated successfully"
+msgstr "Пользователь успешно изменен"
+
+#: statuses/views.py:49
+#, fuzzy
+#| msgid "User deleted successfully"
+msgid "Status deleted successfully"
+msgstr "Пользователь успешно удален"
+
+#: templates/base.html:22
 msgid "Task manager"
 msgstr "Менеджер задач"
 
-#: .\task_manager\templates\base.html:28
-#: .\task_manager\templates\user\user_list.html:8
+#: templates/base.html:28 templates/user/user_list.html:8
 msgid "Users"
 msgstr "Пользователи"
 
-#: .\task_manager\templates\base.html:32
+#: templates/base.html:32 templates/statuses/statuses_list.html:8
 msgid "Statuses"
 msgstr "Статусы"
 
-#: .\task_manager\templates\base.html:35
+#: templates/base.html:35
 msgid "Labels"
 msgstr "Метки"
 
-#: .\task_manager\templates\base.html:38
+#: templates/base.html:38
 msgid "Tasks"
 msgstr "Задачи"
 
-#: .\task_manager\templates\base.html:43 .\task_manager\views.py:18
+#: templates/base.html:43 views.py:15
 msgid "Exit"
 msgstr "Выход"
 
-#: .\task_manager\templates\base.html:47 .\task_manager\templates\login.html:8
+#: templates/base.html:47 templates/login.html:8
 msgid "Login"
 msgstr "Вход"
 
-#: .\task_manager\templates\base.html:50
-#: .\task_manager\templates\user\user_create_form.html:12
+#: templates/base.html:50 templates/user/user_create_form.html:12
 msgid "Sign up"
 msgstr "Регистрация"
 
-#: .\task_manager\templates\login.html:12
+#: templates/login.html:12
 msgid "Log in"
 msgstr "Войти"
 
-#: .\task_manager\templates\user\user_create_form.html:8
+#: templates/statuses/statuses_create_form.html:8
+#, fuzzy
+#| msgid "Created at"
+msgid "Create status"
+msgstr "Создать статус"
+
+#: templates/statuses/statuses_create_form.html:12
+#, fuzzy
+#| msgid "Created at"
+msgid "Create"
+msgstr "Создать"
+
+#: templates/statuses/statuses_delete.html:8
+#: templates/statuses/statuses_delete.html:14
+#, fuzzy
+#| msgid "Delete"
+msgid "Delete status"
+msgstr "Удаление статуса"
+
+#: templates/statuses/statuses_delete.html:17
+#: templates/user/user_delete.html:17
+msgid "Are you sure you want to delete"
+msgstr "Вы уверены, что хотите удалить"
+
+#: templates/statuses/statuses_delete.html:20
+#: templates/user/user_delete.html:20
+msgid "Yes, delete"
+msgstr "Да, удалить"
+
+#: templates/statuses/statuses_list.html:9
+msgid "New status"
+msgstr "Создать статус"
+
+#: templates/statuses/statuses_list.html:14
+msgid "Name"
+msgstr "Имя"
+
+#: templates/statuses/statuses_list.html:15 templates/user/user_list.html:15
+msgid "Created at"
+msgstr "Дата создания"
+
+#: templates/statuses/statuses_list.html:26
+#: templates/statuses/statuses_update.html:12 templates/user/user_list.html:27
+#: templates/user/user_update.html:12
+msgid "Edit"
+msgstr "Изменить"
+
+#: templates/statuses/statuses_list.html:28 templates/user/user_list.html:29
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/statuses/statuses_update.html:8
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit status"
+msgstr "Изменение статуса"
+
+#: templates/user/user_create_form.html:8
 #, fuzzy
 #| msgid "Sign up"
 msgid "Signup"
 msgstr "Регистрация"
 
-#: .\task_manager\templates\user\user_delete.html:8
-#: .\task_manager\templates\user\user_delete.html:14
+#: templates/user/user_delete.html:8 templates/user/user_delete.html:14
 #, fuzzy
 #| msgid "Delete"
 msgid "Delete user"
 msgstr "Удалить"
 
-#: .\task_manager\templates\user\user_delete.html:17
-msgid "Are you sure you want to delete"
-msgstr "Вы уверены, что хотите удалить"
-
-#: .\task_manager\templates\user\user_delete.html:20
-msgid "Yes, delete"
-msgstr "Да, удалить"
-
-#: .\task_manager\templates\user\user_list.html:13
+#: templates/user/user_list.html:13
 msgid "User name"
 msgstr "Имя пользователя"
 
-#: .\task_manager\templates\user\user_list.html:14
+#: templates/user/user_list.html:14
 msgid "Fullname"
 msgstr "Полное имя"
 
-#: .\task_manager\templates\user\user_list.html:15
-msgid "Created at"
-msgstr "Дата создания"
-
-#: .\task_manager\templates\user\user_list.html:27
-#: .\task_manager\templates\user\user_update.html:12
-msgid "Edit"
-msgstr "Изменить"
-
-#: .\task_manager\templates\user\user_list.html:29
-msgid "Delete"
-msgstr "Удалить"
-
-#: .\task_manager\templates\user\user_update.html:8
+#: templates/user/user_update.html:8
 #, fuzzy
 #| msgid "Edit"
 msgid "Edit user"
 msgstr "Изменить"
 
-#: .\task_manager\user\views.py:24
+#: user/forms.py:17
+msgid "Your password must contain at least 3 characters."
+msgstr "Ваш пароль должен содержать как минимум 3 символа."
+
+#: user/forms.py:21
+msgid "Your password is too short. It must contain at least 3 characters."
+msgstr "Ваш пароль должен содержать как минимум 3 символа."
+
+#: user/forms.py:25
+msgid "Confirm password"
+msgstr "Подтверждение пароля"
+
+#: user/forms.py:27
+msgid "Please enter your password one more time"
+msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
+
+#: user/views.py:29
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: .\task_manager\user\views.py:30
-msgid "You are not authorized! Please login."
-msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
-
-#: .\task_manager\user\views.py:33
+#: user/views.py:39
+#, fuzzy
+#| msgid "You don't have permissions to modify another user."
 msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
-#: .\task_manager\user\views.py:45
+#: user/views.py:52
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменен"
 
-#: .\task_manager\user\views.py:54
+#: user/views.py:61
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
-#: .\task_manager\views.py:15
+#: views.py:12
 msgid "Hello from Hexlet!"
 msgstr "Привет от Хекслета!"
 
-#: .\task_manager\views.py:16
+#: views.py:13
 msgid "Practical programming courses"
 msgstr "Практические курсы по программированию"
 
-#: .\task_manager\views.py:17
+#: views.py:14
 msgid "Read more"
 msgstr "Узнать больше"
 
-#: .\task_manager\views.py:31
+#: views.py:28
 msgid "You successfully logged in"
 msgstr "Вы залогинены"
 
-#: .\task_manager\views.py:38
+#: views.py:35
 msgid "You are logged out"
 msgstr "Вы разлогинены"
 
