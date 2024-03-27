@@ -16,6 +16,9 @@ start render:
 lint:
 	poetry run flake8
 
+test:
+	$(MANAGE) test
+
 migrations:
 	$(MANAGE) makemigrations
 
