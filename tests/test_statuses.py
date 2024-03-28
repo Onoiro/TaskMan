@@ -48,8 +48,9 @@ class StatusesTestCase(TestCase):
         status.refresh_from_db()
         self.assertEqual(status.name, self.statuses_data['name'])
 
-    # def test_delete_user(self):
-    #     user = User.objects.get(username="he")
-    #     self.c.force_login(user)
-    #     self.c.post(reverse('user:user-delete', args=[user.id]), follow=True)
-    #     self.assertFalse(User.objects.filter(username="he").exists())
+    def test_delete_status(self):
+        user = User.objects.get(username="he")
+        self.c.force_login(user)
+        status = Statuses.objects.get(name="test_status")
+        self.c.post(reverse('statuses:statuses-delete', args=[status.id]), follow=True)
+        self.assertFalse(Statuses.objects.filter(name="test_status").exists())
