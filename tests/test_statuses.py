@@ -1,16 +1,16 @@
 from task_manager.statuses.models import Statuses
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
 
 class StatusesTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_users.json", "tests/fixtures/test_statuses.json"]
 
     def setUp(self):
         self.c = Client()
         self.statuses_data = {
-            'name': 'test_status',
+            'name': 'new_test_status',
         }
 
     def test_create_status_response_200(self):
@@ -36,20 +36,17 @@ class StatusesTestCase(TestCase):
         status = Statuses.objects.filter(name=self.statuses_data['name']).first()
         self.assertEqual(status.name, self.statuses_data['name'])
 
-    # def test_update_status(self):
-    #     user = User.objects.get(username="he")
-    #     self.c.force_login(user)
-    #     status = Statuses.objects.get(name="test_status")
-    #     new_status_data = {
-    #         'name': 'new_test_status'
-    #     }
-    #     response = self.c.post(
-    #         reverse('statuses:statuses-update', args=[status.id]),
-    #         new_status_data,
-    #         follow=True)
-    #     self.assertEqual(response.status_code, 200)
-    #     status.refresh_from_db()
-    #     self.assertEqual(status.name, new_status_data['name'])
+    def test_update_status(self):
+        user = User.objects.get(username="he")
+        self.c.force_login(user)
+        status = Statuses.objects.get(name="test_status")
+        response = self.c.post(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data,
+            follow=True)
+        self.assertEqual(response.status_code, 200)
+        status.refresh_from_db()
+        self.assertEqual(status.name, self.statuses_data['name'])
 
     # def test_delete_user(self):
     #     user = User.objects.get(username="he")
