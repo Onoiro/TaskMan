@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinLengthValidator, RegexValidator
 
 
-class Statuses(models.Model):
+class Status(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=150,
