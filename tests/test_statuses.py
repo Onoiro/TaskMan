@@ -5,7 +5,8 @@ from django.urls import reverse
 
 
 class StatusesTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json", "tests/fixtures/test_statuses.json"]
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_statuses.json"]
 
     def setUp(self):
         self.c = Client()
@@ -20,20 +21,25 @@ class StatusesTestCase(TestCase):
 
     def test_created_status_add_to_db(self):
         old_count = Statuses.objects.count()
-        self.c.post(reverse('statuses:statuses-create'), self.statuses_data, follow=True)
+        self.c.post(reverse('statuses:statuses-create'),
+                    self.statuses_data, follow=True)
         new_count = Statuses.objects.count()
         self.assertEqual(old_count + 1, new_count)
 
     def test_check_for_not_create_status_with_same_name(self):
-        self.c.post(reverse('statuses:statuses-create'), self.statuses_data, follow=True)
+        self.c.post(reverse('statuses:statuses-create'),
+                    self.statuses_data, follow=True)
         statuses_count = Statuses.objects.count()
-        self.c.post(reverse('statuses:statuses-create'), self.statuses_data, follow=True)
+        self.c.post(reverse('statuses:statuses-create'),
+                    self.statuses_data, follow=True)
         new_statuses_count = Statuses.objects.count()
         self.assertEqual(statuses_count, new_statuses_count)
 
     def test_create_status_with_correct_data(self):
-        self.c.post(reverse('statuses:statuses-create'), self.statuses_data, follow=True)
-        status = Statuses.objects.filter(name=self.statuses_data['name']).first()
+        self.c.post(reverse('statuses:statuses-create'),
+                    self.statuses_data, follow=True)
+        status = Statuses.objects.filter(
+            name=self.statuses_data['name']).first()
         self.assertEqual(status.name, self.statuses_data['name'])
 
     def test_update_status(self):
@@ -52,5 +58,6 @@ class StatusesTestCase(TestCase):
         user = User.objects.get(username="he")
         self.c.force_login(user)
         status = Statuses.objects.get(name="test_status")
-        self.c.post(reverse('statuses:statuses-delete', args=[status.id]), follow=True)
+        self.c.post(reverse('statuses:statuses-delete',
+                            args=[status.id]), follow=True)
         self.assertFalse(Statuses.objects.filter(name="test_status").exists())
