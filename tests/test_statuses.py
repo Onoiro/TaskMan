@@ -1,4 +1,4 @@
-from task_manager.statuses.models import Statuses
+from task_manager.statuses.models import Status
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -20,32 +20,32 @@ class StatusesTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_created_status_add_to_db(self):
-        old_count = Statuses.objects.count()
+        old_count = Status.objects.count()
         self.c.post(reverse('statuses:statuses-create'),
                     self.statuses_data, follow=True)
-        new_count = Statuses.objects.count()
+        new_count = Status.objects.count()
         self.assertEqual(old_count + 1, new_count)
 
     def test_check_for_not_create_status_with_same_name(self):
         self.c.post(reverse('statuses:statuses-create'),
                     self.statuses_data, follow=True)
-        statuses_count = Statuses.objects.count()
+        statuses_count = Status.objects.count()
         self.c.post(reverse('statuses:statuses-create'),
                     self.statuses_data, follow=True)
-        new_statuses_count = Statuses.objects.count()
+        new_statuses_count = Status.objects.count()
         self.assertEqual(statuses_count, new_statuses_count)
 
     def test_create_status_with_correct_data(self):
         self.c.post(reverse('statuses:statuses-create'),
                     self.statuses_data, follow=True)
-        status = Statuses.objects.filter(
+        status = Status.objects.filter(
             name=self.statuses_data['name']).first()
         self.assertEqual(status.name, self.statuses_data['name'])
 
     def test_update_status(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
-        status = Statuses.objects.get(name="test_status")
+        status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
             self.statuses_data,
@@ -57,7 +57,7 @@ class StatusesTestCase(TestCase):
     def test_delete_status(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
-        status = Statuses.objects.get(name="test_status")
+        status = Status.objects.get(name="new")
         self.c.post(reverse('statuses:statuses-delete',
                             args=[status.id]), follow=True)
-        self.assertFalse(Statuses.objects.filter(name="test_status").exists())
+        self.assertFalse(Status.objects.filter(name="new").exists())
