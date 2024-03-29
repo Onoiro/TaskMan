@@ -1,3 +1,4 @@
-# from django.contrib import admin
+from django.contrib import admin
+from .models import Statuses
 
-# admin.site.register(Statuses)
+admin.site.register(Statuses)
