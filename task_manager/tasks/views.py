@@ -29,6 +29,10 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task created successfully')
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 
 class TaskUpdateView(SuccessMessageMixin, UpdateView):
     model = Task
