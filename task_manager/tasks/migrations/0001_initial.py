@@ -18,13 +18,32 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=150, unique=True, verbose_name='Name')),
-                ('description', models.TextField(blank=True, verbose_name='Description')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='author_set', to=settings.AUTH_USER_MODEL)),
-                ('executor', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='executor_set', to=settings.AUTH_USER_MODEL, verbose_name='Executor')),
-                ('status', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='statuses.status', verbose_name='Status')),
+                ('id', models.AutoField(
+                    primary_key=True,
+                    serialize=False)),
+                ('name', models.CharField(
+                    max_length=150,
+                    unique=True,
+                    verbose_name='Name')),
+                ('description', models.TextField(
+                    blank=True,
+                    verbose_name='Description')),
+                ('created_at', models.DateTimeField(
+                    auto_now_add=True,
+                    verbose_name='Created at')),
+                ('author', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT,
+                    related_name='author_set',
+                    to=settings.AUTH_USER_MODEL)),
+                ('executor', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT,
+                    related_name='executor_set',
+                    to=settings.AUTH_USER_MODEL,
+                    verbose_name='Executor')),
+                ('status', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT,
+                    to='statuses.status',
+                    verbose_name='Status')),
             ],
         ),
     ]

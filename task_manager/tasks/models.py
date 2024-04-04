@@ -36,4 +36,3 @@ class Task(models.Model):
         auto_now_add=True,
         verbose_name=_('Created at')
     )
-
