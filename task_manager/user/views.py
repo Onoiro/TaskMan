@@ -19,7 +19,6 @@ django.setup()
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
-    context_object_name = 'users_list'
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):

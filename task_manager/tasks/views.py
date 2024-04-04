@@ -20,7 +20,6 @@ from task_manager.tasks.forms import TaskForm
 class TasksListView(ListView):
     model = Task
     template_name = 'tasks/tasks_list.html'
-    context_object_name = 'tasks_list'
 
 
 class TaskCreateView(SuccessMessageMixin, CreateView):

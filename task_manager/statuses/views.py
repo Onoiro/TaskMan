@@ -21,7 +21,6 @@ class StatusesListView(StatusesPermissions, ListView):
     model = Status
     template_name = 'statuses/statuses_list.html'
     login_url = 'login'
-    context_object_name = 'statuses_list'
 
 
 class StatusesCreateView(SuccessMessageMixin, CreateView):
