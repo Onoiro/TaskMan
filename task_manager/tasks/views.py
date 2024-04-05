@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Task
 from task_manager.tasks.forms import TaskForm
+from django.shortcuts import redirect
 
 
 class TaskPermissions(LoginRequiredMixin):
@@ -14,6 +15,17 @@ class TaskPermissions(LoginRequiredMixin):
         if not request.user.is_authenticated:
             messages.error(request, _('You are not authorized! Please login.'))
             return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TaskDeletePermissionMixin():
+    def dispatch(self, request, *args, **kwargs):
+        task = self.get_object()
+        if not task.author == request.user:
+            messages.error(request,
+                           _("Task can only be deleted by its author."))
+                            # Задачу может удалить только ее автор
+            return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -49,7 +61,7 @@ class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
     success_message = _('Task updated successfully')
 
 
-class TaskDeleteView(TaskPermissions, SuccessMessageMixin, DeleteView):
+class TaskDeleteView(TaskDeletePermissionMixin, SuccessMessageMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
     login_url = 'login'
