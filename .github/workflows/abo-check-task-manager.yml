@@ -25,3 +25,6 @@ jobs:
         run: |
           make lint
         continue-on-error: true
+      - name: test with unittest
+        run: |
+          make test
