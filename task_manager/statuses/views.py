@@ -20,7 +20,6 @@ class StatusesPermissions(LoginRequiredMixin):
 class StatusesListView(StatusesPermissions, ListView):
     model = Status
     template_name = 'statuses/statuses_list.html'
-    login_url = 'login'
 
 
 class StatusesCreateView(SuccessMessageMixin, CreateView):
@@ -34,7 +33,6 @@ class StatusesUpdateView(StatusesPermissions, SuccessMessageMixin, UpdateView):
     model = Status
     form_class = StatusForm
     template_name = 'statuses/statuses_update.html'
-    login_url = 'login'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status updated successfully')
 
@@ -42,6 +40,5 @@ class StatusesUpdateView(StatusesPermissions, SuccessMessageMixin, UpdateView):
 class StatusesDeleteView(StatusesPermissions, SuccessMessageMixin, DeleteView):
     model = Status
     template_name = 'statuses/statuses_delete.html'
-    login_url = 'login'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status deleted successfully')

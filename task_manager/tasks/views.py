@@ -32,13 +32,11 @@ class TaskDeletePermissionMixin():
 class TasksListView(TaskPermissions, ListView):
     model = Task
     template_name = 'tasks/tasks_list.html'
-    login_url = 'login'
 
 
 class TaskDetailView(TaskPermissions, DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
-    login_url = 'login'
 
 
 class TaskCreateView(SuccessMessageMixin, CreateView):
@@ -56,7 +54,6 @@ class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_update.html'
-    login_url = 'login'
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task updated successfully')
 
@@ -65,6 +62,5 @@ class TaskDeleteView(TaskDeletePermissionMixin,
                      SuccessMessageMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
-    login_url = 'login'
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task deleted successfully')

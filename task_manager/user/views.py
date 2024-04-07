@@ -45,7 +45,6 @@ class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
     model = User
     form_class = UserForm
     template_name = 'user/user_update.html'
-    login_url = 'login'
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User updated successfully')
@@ -54,7 +53,6 @@ class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
 class UserDeleteView(UserPermissions, SuccessMessageMixin, DeleteView):
     model = User
     template_name = 'user/user_delete.html'
-    login_url = 'login'
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
