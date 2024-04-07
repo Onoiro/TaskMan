@@ -53,8 +53,6 @@ class TaskTestCase(TestCase):
         self.assertEqual(task.name, self.tasks_data['name'])
 
     def test_update_task(self):
-        # user = User.objects.get(username="he")
-        # self.c.force_login(user)
         task = Task.objects.get(name="first task")
         response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
@@ -65,17 +63,16 @@ class TaskTestCase(TestCase):
         self.assertEqual(task.name, self.tasks_data['name'])
 
     def test_delete_task(self):
-        # user = User.objects.get(username="me")
-        # self.c.force_login(user)
         task = Task.objects.get(name="first task")
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
         self.assertFalse(Task.objects.filter(name="new").exists())
     
     def test_delete_task_can_only_author(self):
+        self.c.logout()
         user = User.objects.get(username="he")
         self.c.force_login(user)
         task = Task.objects.get(name="second task")
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
-        self.assertTrue(Task.objects.filter(name="second_task").exists())
+        self.assertTrue(Task.objects.filter(name="second task").exists())
