@@ -28,3 +28,5 @@ jobs:
       - name: test with unittest
         run: |
           make test
+        env:
+          DATABASE_URL: sqlite:///db.sqlite3
