@@ -22,9 +22,9 @@ class TaskDeletePermissionMixin():
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
         if not task.author == request.user:
+            # Задачу может удалить только ее автор
             messages.error(request,
                            _("Task can only be deleted by its author."))
-                            # Задачу может удалить только ее автор
             return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)
 
@@ -61,7 +61,8 @@ class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
     success_message = _('Task updated successfully')
 
 
-class TaskDeleteView(TaskDeletePermissionMixin, SuccessMessageMixin, DeleteView):
+class TaskDeleteView(TaskDeletePermissionMixin,
+                     SuccessMessageMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_delete.html'
     login_url = 'login'

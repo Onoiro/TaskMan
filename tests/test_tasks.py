@@ -26,7 +26,7 @@ class TaskTestCase(TestCase):
 
     def test_create_task_response_200(self):
         response = self.c.post(reverse('tasks:task-create'),
-                            self.tasks_data, follow=True)
+                               self.tasks_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_created_task_add_to_db(self):
@@ -67,7 +67,7 @@ class TaskTestCase(TestCase):
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
         self.assertFalse(Task.objects.filter(name="new").exists())
-    
+
     def test_delete_task_can_only_author(self):
         self.c.logout()
         user = User.objects.get(username="he")
