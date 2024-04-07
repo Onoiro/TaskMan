@@ -28,5 +28,6 @@ jobs:
       - name: test with unittest
         run: |
           make test
+        # will change it tp postgres on render later
         env:
           DATABASE_URL: sqlite:///db.sqlite3
