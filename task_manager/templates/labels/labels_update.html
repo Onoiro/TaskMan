@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">{% trans "Edit label" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% trans "Edit" %}</button>
+    </form>
+</div>
+{% endblock %}
