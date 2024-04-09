@@ -7,10 +7,14 @@ from django.urls import reverse
 
 class LabelsTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json",
+                # "tests/fixtures/test_statuses.json",
+                # "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]
 
     def setUp(self):
+        self.user = User.objects.get(username='me')
         self.c = Client()
+        self.c.force_login(self.user)
         self.labels_data = {
             'name': 'new_test_label',
         }
@@ -44,8 +48,6 @@ class LabelsTestCase(TestCase):
         self.assertEqual(label.name, self.labels_data['name'])
 
     def test_update_label(self):
-        user = User.objects.get(username="me")
-        self.c.force_login(user)
         label = Label.objects.get(name="bug")
         response = self.c.post(
             reverse('labels:labels-update', args=[label.id]),
@@ -56,9 +58,11 @@ class LabelsTestCase(TestCase):
         self.assertEqual(label.name, self.labels_data['name'])
 
     def test_delete_label(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
         label = Label.objects.get(name="bug")
         self.c.post(reverse('labels:labels-delete',
                             args=[label.id]), follow=True)
         self.assertFalse(Label.objects.filter(name="bug").exists())
+
+    # def add_labels_to_task(self):
+    #     task = Task.objects.get(name="first_task")
+        

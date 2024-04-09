@@ -1,4 +1,5 @@
 from task_manager.tasks.models import Task
+from task_manager.tasks.models import Label
 from django.contrib.auth.models import User
 from task_manager.statuses.models import Status
 from django.test import TestCase, Client
@@ -8,20 +9,23 @@ from django.urls import reverse
 class TaskTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json",
                 "tests/fixtures/test_statuses.json",
-                "tests/fixtures/test_tasks.json"]
+                "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_labels.json"]
 
     def setUp(self):
         super().setUp()
         self.user = User.objects.get(username='me')
         self.status = Status.objects.get(name='new')
         self.executor = User.objects.get(username='he')
+        self.labels = Label.objects.get(name='bug')
         self.c = Client()
         self.c.force_login(self.user)
         self.tasks_data = {
             'name': 'new_test_task',
             'description': 'new_test_description',
             'status': self.status.id,
-            'executor': self.executor.id
+            'executor': self.executor.id,
+            'label': self.labels.id
         }
 
     def test_create_task_response_200(self):
