@@ -1,7 +1,5 @@
 from task_manager.tasks.models import Task
-from task_manager.tasks.models import Label
 from django.contrib.auth.models import User
-from task_manager.statuses.models import Status
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -13,19 +11,15 @@ class TaskTestCase(TestCase):
                 "tests/fixtures/test_labels.json"]
 
     def setUp(self):
-        super().setUp()
         self.user = User.objects.get(username='me')
-        self.status = Status.objects.get(name='new')
-        self.executor = User.objects.get(username='he')
-        self.labels = Label.objects.get(name='bug')
         self.c = Client()
         self.c.force_login(self.user)
         self.tasks_data = {
             'name': 'new_test_task',
             'description': 'new_test_description',
-            'status': self.status.id,
-            'executor': self.executor.id,
-            'label': self.labels.id
+            'status': 12,
+            'executor': 12,
+            'label': 1
         }
 
     def test_create_task_response_200(self):
@@ -65,6 +59,11 @@ class TaskTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
+    
+    # def test_add_second_label_to_task(self):
+    #     task = Task.objects.get(name="first task")
+    #     self.c.post(reverse('tasks:task-update', args=[task.id]),)
+    #     pass
 
     def test_delete_task(self):
         task = Task.objects.get(name="first task")
