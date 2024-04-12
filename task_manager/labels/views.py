@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Label
 from task_manager.labels.forms import LabelForm
+from django.shortcuts import redirect
 
 
 class LabelsPermissions(LoginRequiredMixin):
@@ -42,3 +43,13 @@ class LabelsDeleteView(LabelsPermissions, SuccessMessageMixin, DeleteView):
     template_name = 'labels/labels_delete.html'
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label deleted successfully')
+
+    def form_valid(self, form):
+        label = self.get_object()
+        if label.task_set.exists():
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _("Cannot delete label because it is in use"))
+            return redirect('labels:labels-list')
+        return super().form_valid(form)
