@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Status
 from task_manager.statuses.forms import StatusForm
+from django.shortcuts import redirect
 
 
 class StatusesPermissions(LoginRequiredMixin):
@@ -42,3 +43,14 @@ class StatusesDeleteView(StatusesPermissions, SuccessMessageMixin, DeleteView):
     template_name = 'statuses/statuses_delete.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status deleted successfully')
+
+    def form_valid(self, form):
+        status = self.get_object()
+        if status.task_set.exists():
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                _("Cannot delete status because it is in use"))
+            # Невозможно удалить статус, потому что он используется
+            return redirect('statuses:statuses-list')
+        return super().form_valid(form)
