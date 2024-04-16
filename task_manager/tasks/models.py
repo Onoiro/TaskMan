@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django.utils.translation import gettext_lazy as _
+import django_filters
 
 
 class Task(models.Model):
@@ -42,3 +43,6 @@ class Task(models.Model):
         auto_now_add=True,
         verbose_name=_('Created at')
     )
+
+
+
