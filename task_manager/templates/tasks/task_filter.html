@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">{% trans "Tasks" %}</h1>
+    <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
+    <!-- <div class="card mb-3">
+        <div class="card-body bg-light">
+          <form class="form-inline center" method="get">
+            <div class="mb-3"><label class="form-label" for="id_status">{% trans "Status" %}</label><select name="status" class="form-select is-valid" id="id_status">
+        <option value="" selected>---------</option>
+      
+      </select></div>
+            <div class="mb-3"><label class="form-label" for="id_executor">{% trans "Executor" %}</label><select name="executor" class="form-select is-valid" id="id_executor">
+        <option value="" selected>---------</option>
+      
+      </select></div>
+            <div class="mb-3"><label class="form-label" for="id_label">{% trans "Label" %}</label><select name="label" class="form-select is-valid" id="id_label">
+        <option value="" selected>---------</option>
+      </select></div>
+            <div class="mb-3"><div class="form-check"><input type="checkbox" name="self_tasks" class="form-check-input is-valid" id="id_self_tasks"><label class="form-check-label" for="id_self_tasks">Только свои задачи</label></div></div>
+              <input class="btn btn-primary" type="submit" value="Показать">
+          </form>
+        </div>
+      </div> -->
+
+    <form method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" />
+    </form>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Author" %}</th>
+            <th>{% trans "Executor" %}</th>
+            <th>{% trans "Created at" %}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for obj in filter.qs %}
+            <tr>
+                <td>{{ obj.id }}</td>
+                <td><a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a></td>
+                <td>{{ obj.status }}</td>
+                <td>{{ obj.author }}</td>
+                <td>{{ obj.executor }}</td>
+                <td>{{ obj.created_at }}</td>
+                <td>
+                    <a href="{% url 'tasks:task-update' obj.id %}">{% trans "Edit" %}</a>
+                    <br>
+                    <a href="{% url 'tasks:task-delete' obj.id %}">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
