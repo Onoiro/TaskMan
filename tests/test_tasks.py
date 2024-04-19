@@ -59,7 +59,7 @@ class TaskTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
-    
+
     # def test_add_second_label_to_task(self):
     #     task = Task.objects.get(name="first task")
     #     self.c.post(reverse('tasks:task-update', args=[task.id]),)

@@ -25,4 +25,3 @@ urlpatterns = [
          LabelsDeleteView.as_view(),
          name='labels-delete'),
 ]
-

@@ -1,5 +1,4 @@
 from task_manager.labels.models import Label
-from task_manager.tasks.models import Task
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -65,4 +64,3 @@ class LabelsTestCase(TestCase):
 
     # def add_labels_to_task(self):
     #     task = Task.objects.get(name="first_task")
-        

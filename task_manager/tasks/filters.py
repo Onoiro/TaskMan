@@ -13,31 +13,31 @@ class TaskFilter(django_filters.FilterSet):
         queryset=Status.objects.all(),
         label=_('Status'),
         widget=forms.Select
-        )
-    
+    )
+
     executor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
         label=_('Executor'),
         widget=forms.Select
-        )
+    )
 
     labels = django_filters.ModelChoiceFilter(
         queryset=Label.objects.all(),
         label=_('Label'),
         widget=forms.Select
-        )
-    
+    )
+
     self_tasks = django_filters.BooleanFilter(
         field_name='author',
         label=_('Just my tasks'),
         widget=forms.CheckboxInput(),
         method='filter_own_tasks',
     )
-    
+
     class Meta:
         model = Task
         fields = ['status', 'executor', 'labels']
-    
+
     def filter_own_tasks(self, queryset, name, value):
         user = self.request.user
         if value:
