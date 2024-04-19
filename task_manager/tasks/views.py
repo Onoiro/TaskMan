@@ -9,6 +9,7 @@ from .models import Task
 from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect
 from django_filters.views import FilterView
+from task_manager.tasks.filters import TaskFilter
 
 
 class TaskPermissions(LoginRequiredMixin):
@@ -32,8 +33,8 @@ class TaskDeletePermissionMixin():
 
 class TaskFilterView(TaskPermissions, FilterView):
     model = Task
-    # template_name = 'tasks/tasks_list.html'
     template_name = 'tasks/task_filter.html'
+    filterset_class = TaskFilter
 
 
 class TaskDetailView(TaskPermissions, DetailView):

@@ -7,17 +7,13 @@ from task_manager.tasks.views import (
     TaskUpdateView,
     TaskDeleteView
 )
-# from django_filters.views import FilterView
-from task_manager.tasks.models import Task
 
 
 app_name = 'tasks'
 
 
 urlpatterns = [
-#     path('',
-#          TasksListView.as_view(), name='tasks-list'),
-    path('', TaskFilterView.as_view(model=Task), name="tasks-list"),
+    path('', TaskFilterView.as_view(), name="tasks-list"),
     path('<int:pk>',
          TaskDetailView.as_view(), name='task-detail'),
     path('create/',

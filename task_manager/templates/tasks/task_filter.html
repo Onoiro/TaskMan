@@ -7,26 +7,6 @@
 <div class="container wrapper flex-grow-1">
     <h1 class="my-4">{% trans "Tasks" %}</h1>
     <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
-    <!-- <div class="card mb-3">
-        <div class="card-body bg-light">
-          <form class="form-inline center" method="get">
-            <div class="mb-3"><label class="form-label" for="id_status">{% trans "Status" %}</label><select name="status" class="form-select is-valid" id="id_status">
-        <option value="" selected>---------</option>
-      
-      </select></div>
-            <div class="mb-3"><label class="form-label" for="id_executor">{% trans "Executor" %}</label><select name="executor" class="form-select is-valid" id="id_executor">
-        <option value="" selected>---------</option>
-      
-      </select></div>
-            <div class="mb-3"><label class="form-label" for="id_label">{% trans "Label" %}</label><select name="label" class="form-select is-valid" id="id_label">
-        <option value="" selected>---------</option>
-      </select></div>
-            <div class="mb-3"><div class="form-check"><input type="checkbox" name="self_tasks" class="form-check-input is-valid" id="id_self_tasks"><label class="form-check-label" for="id_self_tasks">Только свои задачи</label></div></div>
-              <input class="btn btn-primary" type="submit" value="Показать">
-          </form>
-        </div>
-      </div> -->
-
     <form method="get">
         {{ filter.form.as_p }}
         <input type="submit" />
