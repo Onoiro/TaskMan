@@ -21,13 +21,13 @@ class TaskFilter(django_filters.FilterSet):
         widget=forms.Select
         )
 
-    labels = django_filters.ModelChoiceFilter(
+    label = django_filters.ModelChoiceFilter(
         queryset=Label.objects.all(),
         label=_('Label'),
         widget=forms.Select
         )
     
-    own_tasks = django_filters.BooleanFilter(
+    self_tasks = django_filters.BooleanFilter(
         field_name='author',
         label=_('Just my tasks'),
         widget=forms.CheckboxInput(),
