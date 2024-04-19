@@ -9,7 +9,7 @@
     <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
     <form>
         {{ filter.form.as_p }}
-        <input type="submit" />
+        <input class="btn btn-primary mb-3" type="submit" value="{% trans 'Show' %}">
     </form>
     <table class="table table-striped">
         <thead>
