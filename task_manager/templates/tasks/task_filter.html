@@ -7,7 +7,7 @@
 <div class="container wrapper flex-grow-1">
     <h1 class="my-4">{% trans "Tasks" %}</h1>
     <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
-    <form method="get">
+    <form>
         {{ filter.form.as_p }}
         <input type="submit" />
     </form>
