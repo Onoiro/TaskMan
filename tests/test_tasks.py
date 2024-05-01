@@ -69,7 +69,7 @@ class TaskTestCase(TestCase):
         task = Task.objects.get(name="first task")
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
-        self.assertFalse(Task.objects.filter(name="new").exists())
+        self.assertFalse(Task.objects.filter(name="first task").exists())
 
     def test_delete_task_can_only_author(self):
         self.c.logout()

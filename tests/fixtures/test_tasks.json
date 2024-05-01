@@ -20,7 +20,7 @@
     "fields": {
         "name": "second task",
         "description": "delete task only by its author",
-        "status": 12,
+        "status": 13,
         "executor": 12,
         "author": 10,
         "created_at": "2024-04-06T15:41:40.173Z",
@@ -29,5 +29,5 @@
             5
         ]
     }
-}
+}   
 ]
