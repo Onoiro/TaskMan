@@ -23,7 +23,7 @@ class TaskTestCase(TestCase):
             executor=self.user,
             status=self.status,
             labels=self.label
-            )
+        )
         self.response = self.c.get(reverse('tasks:tasks-list'),
                                    {'executor': self.user.id,
                                     'status': self.status.id,
@@ -32,9 +32,11 @@ class TaskTestCase(TestCase):
 
     def test_task_list_response_200(self):
         self.assertEqual(self.response.status_code, 200)
-    
+
     def test_filter_tasks_by_status_executor_label(self):
-        filtered_task_ids = list(self.filtered_tasks.values_list('id', flat=True))
-        response_task_ids = list(self.response.context['filter'].qs.values_list('id', flat=True))
+        filtered_task_ids = list(
+            self.filtered_tasks.values_list('id', flat=True))
+        response_task_ids = list(
+            self.response.context['filter'].qs.values_list('id', flat=True))
         print(filtered_task_ids, response_task_ids)
         self.assertListEqual(filtered_task_ids, response_task_ids)
