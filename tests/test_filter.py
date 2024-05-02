@@ -65,7 +65,7 @@ class TaskTestCase(TestCase):
             # обеспечивает корректную передачу объекта запроса пользователя
             # в фильтр и позволяет ему правильно применять фильтрацию
             # на основе данных пользователя.
-            )
+        )
         filtered_tasks = filter_set.qs
         for task in filtered_tasks:
             self.assertEqual(task.author, user)
