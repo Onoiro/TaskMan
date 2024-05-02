@@ -3,6 +3,7 @@ from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
+from task_manager.tasks.filters import TaskFilter
 from django.urls import reverse
 
 
@@ -38,5 +39,33 @@ class TaskTestCase(TestCase):
             self.filtered_tasks.values_list('id', flat=True))
         response_task_ids = list(
             self.response.context['filter'].qs.values_list('id', flat=True))
-        print(filtered_task_ids, response_task_ids)
         self.assertListEqual(filtered_task_ids, response_task_ids)
+
+    def test_filter_own_tasks(self):
+        filter_data = {'self_tasks': 'on'}
+        self.c.logout()
+        user = User.objects.get(username="me")
+        self.c.force_login(user)
+        filter_set = TaskFilter(
+            filter_data,
+            queryset=Task.objects.all(),
+            request=self.c.request().wsgi_request
+            # Использовал здесь ответ ChatGPT,
+            # т.к. request=self.c.request давал ошибку:
+            # File "/home/abo/python-project-52/task_manager/tasks/filters.py",
+            # line 44, in filter_own_tasks
+            #     return queryset.filter(author=self.request.user)
+            # AttributeError: 'function' object has no attribute 'user'
+            # Вот объяснение ChatGPT:
+            # Метод wsgi_request преобразует объект запроса,
+            # связанный с тестовым клиентом, в объект,
+            # содержащий полезные атрибуты пользователя, такие как user,
+            # которые могут использоваться для фильтрации данных.
+            # Поэтому использование self.c.request().wsgi_request
+            # обеспечивает корректную передачу объекта запроса пользователя
+            # в фильтр и позволяет ему правильно применять фильтрацию
+            # на основе данных пользователя.
+            )
+        filtered_tasks = filter_set.qs
+        for task in filtered_tasks:
+            self.assertEqual(task.author, user)
