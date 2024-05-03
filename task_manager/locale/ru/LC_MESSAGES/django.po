@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-03 16:15+0300\n"
+"POT-Creation-Date: 2024-05-03 22:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -295,6 +295,10 @@ msgstr "Подтверждение пароля"
 #: user/forms.py:27
 msgid "Please enter your password one more time"
 msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
+
+#: user/forms.py:36
+msgid "The entered passwords do not match."
+msgstr "Введенные пароли не совпадают."
 
 #: user/views.py:28
 msgid "User created successfully"

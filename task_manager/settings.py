@@ -145,6 +145,8 @@ LANGUAGES = [
     ('es', _('Spanish')),
 ]
 
+LOCALE_PATH = 'locale'
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
