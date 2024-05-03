@@ -34,9 +34,9 @@ class UserPermissions(LoginRequiredMixin):
             messages.error(request, _('You are not authorized! Please login.'))
             return super().dispatch(request, *args, **kwargs)
         if not self.get_object() == self.request.user:
-            messages.error(request,
-                           _("You don't have permissions \
-                           to modify another user."))
+            messages.error(
+                request,
+                _("You don't have permissions to modify another user."))
             return redirect('user:user-list')
         return super().dispatch(request, *args, **kwargs)
 
