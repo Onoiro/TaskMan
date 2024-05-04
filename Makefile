@@ -6,12 +6,12 @@ build:
 dev:
 	$(MANAGE) runserver
 
-PORT ?= 10000
-start:
-	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
+# PORT ?= 10000
+# start:
+# 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
-# start render:
-# 	gunicorn task_manager.wsgi:application
+start:
+	gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
