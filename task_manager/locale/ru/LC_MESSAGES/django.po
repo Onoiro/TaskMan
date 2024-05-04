@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-03 22:22+0300\n"
+"POT-Creation-Date: 2024-05-04 20:57+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -264,7 +264,7 @@ msgstr "Регистрация"
 msgid "Delete user"
 msgstr "Удаление пользователя"
 
-#: templates/user/user_list.html:13
+#: templates/user/user_list.html:13 user/forms.py:25 user/forms.py:26
 msgid "User name"
 msgstr "Имя пользователя"
 
@@ -276,27 +276,35 @@ msgstr "Полное имя"
 msgid "Edit user"
 msgstr "Изменение пользователя"
 
-#: user/forms.py:15
+#: user/forms.py:15 user/forms.py:16
+msgid "First name"
+msgstr "Имя"
+
+#: user/forms.py:20 user/forms.py:21
+msgid "Last name"
+msgstr "Фамилия"
+
+#: user/forms.py:30
 msgid "Password"
 msgstr "Пароль"
 
-#: user/forms.py:17
+#: user/forms.py:32
 msgid "Your password must contain at least 3 characters."
 msgstr "Ваш пароль должен содержать как минимум 3 символа."
 
-#: user/forms.py:21
+#: user/forms.py:36
 msgid "Your password is too short. It must contain at least 3 characters."
 msgstr "Ваш пароль должен содержать как минимум 3 символа."
 
-#: user/forms.py:25
+#: user/forms.py:40
 msgid "Confirm password"
 msgstr "Подтверждение пароля"
 
-#: user/forms.py:27
+#: user/forms.py:42
 msgid "Please enter your password one more time"
 msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
 
-#: user/forms.py:36
+#: user/forms.py:51
 msgid "The entered passwords do not match."
 msgstr "Введенные пароли не совпадают."
 
@@ -335,6 +343,9 @@ msgstr "Вы залогинены"
 #: views.py:35
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "Username"
+#~ msgstr "Имя пользователя"
 
 #~ msgid "Task_manager"
 #~ msgstr "Менеджер задач"

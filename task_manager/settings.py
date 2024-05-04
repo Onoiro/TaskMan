@@ -145,7 +145,7 @@ LANGUAGES = [
     ('es', _('Spanish')),
 ]
 
-LOCALE_PATH = 'locale'
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'), )
 
 TIME_ZONE = 'UTC'
 
