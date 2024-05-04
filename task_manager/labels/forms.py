@@ -8,7 +8,7 @@ class LabelForm(forms.ModelForm):
     class Meta:
         model = Label
         fields = ['name']
-    
+
     name = forms.CharField(
         label=_('Name'),
         widget=forms.TextInput(attrs={'placeholder': _('Name')})

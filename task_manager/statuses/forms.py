@@ -8,7 +8,7 @@ class StatusForm(forms.ModelForm):
     class Meta:
         model = Status
         fields = ['name']
-    
+
     name = forms.CharField(
         label=_('Name'),
         widget=forms.TextInput(attrs={'placeholder': _('Name')})
