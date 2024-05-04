@@ -10,8 +10,8 @@ PORT ?= 10000
 start:
 	poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
 
-start render:
-	gunicorn task_manager.wsgi:application
+# start render:
+# 	gunicorn task_manager.wsgi:application
 
 lint:
 	poetry run flake8
@@ -27,9 +27,6 @@ migrate:
 
 shell:
 	$(MANAGE) shell
-
-test:
-	$(MANAGE) test
 
 # use path=<path to app> to check your app for russian language
 check lang:
