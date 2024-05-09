@@ -37,6 +37,7 @@ class UserForm(forms.ModelForm):
                 message=_("Your password is too short. "
                           "It must contain at least 3 characters.")
             )])
+
     password2 = forms.CharField(
         label=_('Confirm password'),
         widget=forms.PasswordInput(
