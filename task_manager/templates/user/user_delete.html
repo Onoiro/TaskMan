@@ -15,10 +15,9 @@
     <form method="post" class="form">
         {% csrf_token %}
         <p>{% trans "Are you sure you want to delete" %} {{ object.first_name }} {{ object.last_name }}?</p>
-          {{ form.as_p }}
-          <button type="submit" class="btn btn-danger">
+        <button type="submit" class="btn btn-danger">
           {% trans "Yes, delete" %}
-          </button>
+        </button>
     </form>
 </div>
 {% endblock %}
