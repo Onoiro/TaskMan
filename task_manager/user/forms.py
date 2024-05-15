@@ -11,22 +11,6 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username']
 
-    first_name = forms.CharField(
-        label=_('First name'),
-        widget=forms.TextInput(attrs={'placeholder': _('First name')})
-    )
-
-    last_name = forms.CharField(
-        label=_('Last name'),
-        widget=forms.TextInput(attrs={'placeholder': _('Last name')})
-    )
-
-    username = forms.CharField(
-        label=_('User name'),
-        widget=forms.TextInput(
-            attrs={'placeholder': _('User name')})
-    )
-
     """ Works correct but if password less then 3 chars """
     """ show only help_text message (not message specified in MinLengthValidator """
     """(_("Your password is too short. It must contain at least 3 characters."))) """

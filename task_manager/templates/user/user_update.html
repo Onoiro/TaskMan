@@ -1,6 +1,6 @@
 {% extends "base.html" %}
+
 {% load django_bootstrap5 %}
-{% bootstrap_messages %}
 {% load i18n %}
 
 {% block content %}
@@ -8,7 +8,7 @@
     <h1 class="my-4">{% trans "Edit user" %}</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         <button type="submit">{% trans "Edit" %}</button>`
     </form>
 </div>
