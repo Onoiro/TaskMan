@@ -9,9 +9,9 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-            <button type="submit" class="btn btn-primary">
-                {% trans "Sign up" %}
-            </button>
+        <button type="submit" class="btn btn-primary">
+            {% trans "Sign up" %}
+        </button>
     </form>
 </div>
 {% endblock %}

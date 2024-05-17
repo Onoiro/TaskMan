@@ -1,6 +1,6 @@
 {% extends "base.html" %}
+
 {% load django_bootstrap5 %}
-{% bootstrap_messages %}
 {% load i18n %}
 
 {% block content %}
@@ -8,8 +8,10 @@
     <h1 class="my-4">{% trans "Edit status" %}</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{% trans "Edit" %}</button>`
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">
+            {% trans "Edit" %}
+        </button>`
     </form>
 </div>
 {% endblock %}
