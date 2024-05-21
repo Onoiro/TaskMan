@@ -47,7 +47,7 @@ jobs:
         env:
           # will change this line to postgres on render later
           DATABASE_URL: sqlite:///db.sqlite3
-          CC_TEST_REPORTER_ID: ${{ secrets.secret }}
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make cov
           debug: true
