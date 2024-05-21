@@ -36,7 +36,7 @@ jobs:
         env:
           DATABASE_URL: sqlite:///db.sqlite3
         
-        -name: Publish code coverage
+      - name: Publish code coverage
           uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
