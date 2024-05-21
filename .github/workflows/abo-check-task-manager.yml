@@ -45,3 +45,8 @@ jobs:
         with:
           coverageCommand: make cov
           debug: true
+      - name: Проверка установленных секретов
+        run: echo "CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID"
+        env:
+          DATABASE_URL: sqlite:///db.sqlite3
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
