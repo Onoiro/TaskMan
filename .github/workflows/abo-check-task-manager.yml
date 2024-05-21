@@ -29,11 +29,11 @@ jobs:
           make lint
         continue-on-error: true
       
-      - name: Проверка установленных секретов
-        run: echo "CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID"
-        env:
-          DATABASE_URL: sqlite:///db.sqlite3
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      # - name: Проверка установленных секретов
+      #   run: echo "CC_TEST_REPORTER_ID=$CC_TEST_REPORTER_ID"
+      #   env:
+      #     DATABASE_URL: sqlite:///db.sqlite3
+      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       
       - name: test with unittest & test coverage
         run: |
@@ -47,7 +47,7 @@ jobs:
         env:
           # will change this line to postgres on render later
           DATABASE_URL: sqlite:///db.sqlite3
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: ${{ secrets.secret }}
         with:
           coverageCommand: make cov
           debug: true
