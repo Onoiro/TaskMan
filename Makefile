@@ -19,6 +19,13 @@ lint:
 test:
 	$(MANAGE) test
 
+cov:
+	poetry run coverage run --source='task_manager' manage.py test && poetry run coverage xml
+
+test-cov:
+	poetry run coverage run manage.py test && poetry run coverage report
+
+
 migrations:
 	$(MANAGE) makemigrations
 
