@@ -31,7 +31,7 @@ jobs:
       
       - name: test with unittest & test coverage
         run: |
-          make test-cov
+          make test
         # will change it tp postgres on render later
         env:
           DATABASE_URL: sqlite:///db.sqlite3
@@ -41,4 +41,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
+          coverageCommand: make test-cov
           debug: true
