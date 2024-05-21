@@ -32,13 +32,15 @@ jobs:
       - name: test with unittest & test coverage
         run: |
           make test
-        # will change it tp postgres on render later
+        # will change it to postgres on render later
         env:
           DATABASE_URL: sqlite:///db.sqlite3
         
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
         env:
+          # will change this line to postgres on render later
+          DATABASE_URL: sqlite:///db.sqlite3
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make test-cov
