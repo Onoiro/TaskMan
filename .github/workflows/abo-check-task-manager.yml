@@ -33,12 +33,12 @@ jobs:
         run: |
           make test
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: sqlite:///db.sqlite3
         
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: sqlite:///db.sqlite3
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make cov
