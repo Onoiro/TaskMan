@@ -12,12 +12,12 @@ class CustomPermissions(LoginRequiredMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserPermissions(CustomPermissions):
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        if not self.get_object() == self.request.user:
-            messages.error(
-                request,
-                _("You don't have permissions to modify another user."))
-            return redirect('user:user-list')
-        return response
+# class UserPermissions(CustomPermissions):
+#     def dispatch(self, request, *args, **kwargs):
+#         response = super().dispatch(request, *args, **kwargs)
+#         if not self.get_object() == self.request.user:
+#             messages.error(
+#                 request,
+#                 _("You don't have permissions to modify another user."))
+#             return redirect('user:user-list')
+#         return response

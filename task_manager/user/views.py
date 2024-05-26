@@ -1,5 +1,6 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+# from django.contrib.auth.mixins import LoginRequiredMixin
+from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
@@ -28,17 +29,28 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_message = _('User created successfully')
 
 
-class UserPermissions(LoginRequiredMixin):
+class UserPermissions(CustomPermissions):
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, _('You are not authorized! Please login.'))
-            return super().dispatch(request, *args, **kwargs)
+        response = super().dispatch(request, *args, **kwargs)
         if not self.get_object() == self.request.user:
             messages.error(
                 request,
                 _("You don't have permissions to modify another user."))
             return redirect('user:user-list')
-        return super().dispatch(request, *args, **kwargs)
+        return response
+
+
+# class UserPermissions(LoginRequiredMixin):
+#     def dispatch(self, request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             messages.error(request, _('You are not authorized! Please login.'))
+#             return super().dispatch(request, *args, **kwargs)
+#         if not self.get_object() == self.request.user:
+#             messages.error(
+#                 request,
+#                 _("You don't have permissions to modify another user."))
+#             return redirect('user:user-list')
+#         return super().dispatch(request, *args, **kwargs)
 
 
 class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
