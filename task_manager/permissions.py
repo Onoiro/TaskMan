@@ -8,16 +8,5 @@ class CustomPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(request, _('You are not authorized! Please login.'))
-            return super().dispatch(request, *args, **kwargs)
+            return redirect('login')
         return super().dispatch(request, *args, **kwargs)
-
-
-# class UserPermissions(CustomPermissions):
-#     def dispatch(self, request, *args, **kwargs):
-#         response = super().dispatch(request, *args, **kwargs)
-#         if not self.get_object() == self.request.user:
-#             messages.error(
-#                 request,
-#                 _("You don't have permissions to modify another user."))
-#             return redirect('user:user-list')
-#         return response

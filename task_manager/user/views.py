@@ -1,5 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-# from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -17,6 +17,20 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
 django.setup()
 
 
+class UserPermissions(CustomPermissions):
+    
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        if not request.user.is_authenticated:
+            return response
+        if not self.get_object() == self.request.user:
+            messages.error(
+                request,
+                _("You don't have permissions to modify another user."))
+            return redirect('user:user-list')
+        return response
+
+
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
@@ -27,17 +41,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('login')
     success_message = _('User created successfully')
-
-
-class UserPermissions(CustomPermissions):
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        if not self.get_object() == self.request.user:
-            messages.error(
-                request,
-                _("You don't have permissions to modify another user."))
-            return redirect('user:user-list')
-        return response
 
 
 # class UserPermissions(LoginRequiredMixin):
