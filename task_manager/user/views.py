@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
 from django.contrib.auth.models import User
+from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -43,19 +44,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_message = _('User created successfully')
 
 
-# class UserPermissions(LoginRequiredMixin):
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             messages.error(request, _('You are not authorized! Please login.'))
-#             return super().dispatch(request, *args, **kwargs)
-#         if not self.get_object() == self.request.user:
-#             messages.error(
-#                 request,
-#                 _("You don't have permissions to modify another user."))
-#             return redirect('user:user-list')
-#         return super().dispatch(request, *args, **kwargs)
-
-
 class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
     model = User
     form_class = UserForm
@@ -71,3 +59,12 @@ class UserDeleteView(UserPermissions, SuccessMessageMixin, DeleteView):
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        user_tasks_as_author = Task.objects.filter(author=self.object)
+        user_tasks_as_executor = Task.objects.filter(executor=self.object)
+        if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
+            messages.error(request, _("Cannot delete a user because it is in use"))
+            return redirect('user:user-list')
+        return super().delete(request, *args, **kwargs)
