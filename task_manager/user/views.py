@@ -1,5 +1,4 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -60,11 +59,11 @@ class UserDeleteView(UserPermissions, SuccessMessageMixin, DeleteView):
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
 
-    def delete(self, request, *args, **kwargs):
+    def form_valid(self, form):
         self.object = self.get_object()
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
-            messages.error(request, _("Cannot delete a user because it is in use"))
+            messages.error(self.request, _("Cannot delete a user because it is in use"))
             return redirect('user:user-list')
-        return super().delete(request, *args, **kwargs)
+        return super().form_valid(form)
