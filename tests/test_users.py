@@ -67,5 +67,7 @@ class UserTestCase(TestCase):
     def test_delete_user(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
-        self.c.post(reverse('user:user-delete', args=[user.id]), follow=True)
+        response = self.c.post(reverse('user:user-delete',
+                                       args=[user.id]), follow=True)
         self.assertFalse(User.objects.filter(username="he").exists())
+        self.assertEqual(response.status_code, 302)
