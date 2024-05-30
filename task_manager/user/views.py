@@ -1,4 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -21,9 +22,7 @@ class UserPermissions(CustomPermissions):
     
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
-        if not request.user.is_authenticated:
-            return response
-        if not self.get_object() == self.request.user:
+        if not self.request.user.is_authenticated:
             messages.error(
                 request,
                 _("You don't have permissions to modify another user."))

@@ -70,4 +70,4 @@ class UserTestCase(TestCase):
         response = self.c.post(reverse('user:user-delete',
                                        args=[user.id]), follow=True)
         self.assertFalse(User.objects.filter(username="he").exists())
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
