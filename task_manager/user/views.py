@@ -22,7 +22,7 @@ class UserPermissions(CustomPermissions):
     
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
-        if not self.request.user.is_authenticated:
+        if self.request.user.pk != self.get_object().pk:
             messages.error(
                 request,
                 _("You don't have permissions to modify another user."))
@@ -57,12 +57,6 @@ class UserDeleteView(UserPermissions, SuccessMessageMixin, DeleteView):
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
-    # def get_queryset(self):
-    #     return super().get_queryset().filter(pk=self.request.user.pk)
-    
-    # def get_success_url(self):
-    #     messages.success(self.request, 'User deleted successfully')
-    #     return reverse_lazy('user:user-list')
 
     def form_valid(self, form):
         self.object = self.get_object()
