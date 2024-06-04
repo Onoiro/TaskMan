@@ -22,14 +22,18 @@ class UserListView(ListView):
     template_name = 'user/user_list.html'
 
 
-class UserCreateView(SuccessMessageMixin, CreateView):
+class UserCreateView(SuccessMessageMixin,
+                     CreateView):
     form_class = UserForm
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('login')
     success_message = _('User created successfully')
 
 
-class UserUpdateView(CustomPermissions, UserPermissions, SuccessMessageMixin, UpdateView):
+class UserUpdateView(CustomPermissions,
+                     UserPermissions,
+                     SuccessMessageMixin,
+                     UpdateView):
     model = User
     form_class = UserForm
     template_name = 'user/user_update.html'
@@ -38,7 +42,10 @@ class UserUpdateView(CustomPermissions, UserPermissions, SuccessMessageMixin, Up
     success_message = _('User updated successfully')
 
 
-class UserDeleteView(CustomPermissions, UserPermissions, SuccessMessageMixin, DeleteView):
+class UserDeleteView(CustomPermissions,
+                     UserPermissions,
+                     SuccessMessageMixin,
+                     DeleteView):
     model = User
     template_name = 'user/user_delete.html'
     success_url = reverse_lazy('user:user-list')
@@ -49,6 +56,7 @@ class UserDeleteView(CustomPermissions, UserPermissions, SuccessMessageMixin, De
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
-            messages.error(self.request, _("Cannot delete a user because it is in use"))
+            messages.error(self.request,
+                           _("Cannot delete a user because it is in use"))
             return redirect('user:user-list')
         return super().form_valid(form)

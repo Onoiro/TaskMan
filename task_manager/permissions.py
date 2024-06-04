@@ -7,19 +7,18 @@ from django.shortcuts import redirect
 class CustomPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request, _('You are not authorized! Please login.'))
+            messages.error(request,
+                           _('You are not authorized! Please login.'))
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
 
 
 class UserPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        print(f"request.user {self.request.user}")
-        print(f"get_object() {self.get_object()}")
         if self.request.user != self.get_object():
             messages.error(
                 request,
-                _("You don't have permissions to modify another user."))
+                _("You don't have permissions to modify another user.")
+                )
             return redirect('user:user-list')
-        return response
+        return super().dispatch(request, *args, **kwargs)
