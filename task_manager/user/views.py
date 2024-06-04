@@ -1,6 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
-from task_manager.permissions import CustomPermissions
+from task_manager.permissions import CustomPermissions, UserPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView
@@ -18,18 +17,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
 django.setup()
 
 
-class UserPermissions(CustomPermissions):
-    
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        if self.request.user.pk != self.get_object().pk:
-            messages.error(
-                request,
-                _("You don't have permissions to modify another user."))
-            return redirect('user:user-list')
-        return response
-
-
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
@@ -42,7 +29,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_message = _('User created successfully')
 
 
-class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
+class UserUpdateView(CustomPermissions, UserPermissions, SuccessMessageMixin, UpdateView):
     model = User
     form_class = UserForm
     template_name = 'user/user_update.html'
@@ -51,10 +38,9 @@ class UserUpdateView(UserPermissions, SuccessMessageMixin, UpdateView):
     success_message = _('User updated successfully')
 
 
-class UserDeleteView(UserPermissions, SuccessMessageMixin, DeleteView):
+class UserDeleteView(CustomPermissions, UserPermissions, SuccessMessageMixin, DeleteView):
     model = User
     template_name = 'user/user_delete.html'
-    redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
 
