@@ -4,7 +4,20 @@ version = "0.1.0"
 description = "Web task management system"
 authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
+requires-python = ">=3.8.0"
+homepage = "https://task-manager-wh08.onrender.com/"
+repository = "https://github.com/Onoiro/python-project-52"
 packages = [{include = "task_manager"}]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Environment :: Web Environment",
+    "Framework :: Django::4.2",
+    "Natural Language :: Russian",
+    "Natural Language :: English",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Office/Business :: Groupware"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
