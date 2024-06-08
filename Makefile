@@ -14,6 +14,9 @@ start:
 # when you want to check code style with flake8
 lint:
 	poetry run flake8
+
+# run tests
+test:
 	$(MANAGE) test
 
 # create & show test-coverage for project in github
