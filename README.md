@@ -4,7 +4,7 @@
 
 ## Welcome to [Task manager](https://task-manager-wh08.onrender.com)
 Task Manager is a web application designed to facilitate task management within an organization or team. It allows users to register, create, and manage tasks efficiently.
-The application is deployed and accessible at the following URL: (https://task-manager-wh08.onrender.com)
+The application is deployed and accessible at the following URL: https://task-manager-wh08.onrender.com
 
 Key features include:
 
