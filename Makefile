@@ -41,11 +41,11 @@ shell:
 
 # add all strings to translate to task_manager/locale/ru/LC_MESSAGES/django.po
 messages:
-	django-admin makemessages -a
+	cd task_manager && django-admin makemessages -a
 
 # make all added translates is compiled
 compile:
-	django-admin compilemessages
+	cd task_manager && django-admin compilemessages
 
 # use path=<path to app> to check your home page for russian language
 check lang:
