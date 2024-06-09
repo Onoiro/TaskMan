@@ -1,7 +1,6 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-
 {% load i18n %}
 
 <!doctype html>
@@ -57,10 +56,13 @@
         </nav>
       </div>
     {% endblock %}
-
-    <div>{% bootstrap_messages %}</div>
-    <div id="content">
-        {% block content %}{% endblock %}
+    
+    <div class="container wrapper flex-grow-1">
+      <div>{% bootstrap_messages %}</div>
+      <div id="content">
+          {% block content %}
+          {% endblock %}
+      </div>
     </div>
     
     <footer>
