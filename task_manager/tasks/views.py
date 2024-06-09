@@ -1,6 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -17,19 +16,10 @@ class TaskPermissions(CustomPermissions):
     pass
 
 
-# class TaskPermissions(LoginRequiredMixin):
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             messages.error(request, _('You are not authorized! Please login.'))
-#             return super().dispatch(request, *args, **kwargs)
-#         return super().dispatch(request, *args, **kwargs)
-
-
 class TaskDeletePermissionMixin():
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
         if not task.author == request.user:
-            # Задачу может удалить только ее автор
             messages.error(request,
                            _("Task can only be deleted by its author."))
             return redirect('tasks:tasks-list')

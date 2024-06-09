@@ -1,6 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -11,16 +10,8 @@ from task_manager.statuses.forms import StatusForm
 from django.shortcuts import redirect
 
 
-
 class StatusesPermissions(CustomPermissions):
     pass
-
-# class StatusesPermissions(LoginRequiredMixin):
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.user.is_authenticated:
-#             messages.error(request, _('You are not authorized! Please login.'))
-#             return super().dispatch(request, *args, **kwargs)
-#         return super().dispatch(request, *args, **kwargs)
 
 
 class StatusesListView(StatusesPermissions, ListView):
