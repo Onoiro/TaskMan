@@ -81,7 +81,7 @@ msgstr "Невозможно удалить статус, потому что о
 #: tasks/filters.py:14 tasks/models.py:23 templates/tasks/task_detail.html:27
 #: templates/tasks/task_filter.html:24
 msgid "Status"
-msgstr "Статусы"
+msgstr "Статус"
 
 #: tasks/filters.py:20 tasks/models.py:29 templates/tasks/task_detail.html:23
 #: templates/tasks/task_filter.html:26
@@ -90,7 +90,7 @@ msgstr "Исполнитель"
 
 #: tasks/filters.py:26
 msgid "Label"
-msgstr "Метки"
+msgstr "Метка"
 
 #: tasks/filters.py:32
 msgid "Just my tasks"
