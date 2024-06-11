@@ -13,7 +13,6 @@ class IndexView(View):
             'hello_from_hexlet': _("Hello from Hexlet!"),
             'coding_courses': _('Practical programming courses'),
             'read_more': _("Read more"),
-            'exit': _("Exit")
         }
         return render(request, 'index.html', context=content)
 
