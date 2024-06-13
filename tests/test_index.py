@@ -49,16 +49,27 @@ class UserLoginViewTestCase(TestCase):
         logged_in = self.client.post(reverse('login'), {
             'username': self.user.username,
             'password': self.password
-            })
+        })
         self.assertTrue(logged_in)
-    
+
     def test_status_code_if_user_login(self):
         response = self.client.post(reverse('login'), {
             'username': self.user.username,
             'password': self.password
-            }, follow=True)
+        }, follow=True)
         self.assertEqual(response.status_code, 200)
-    
+
+    def test_login_incorrect_user(self):
+        response = self.client.post(reverse('login'), {
+            'username': 'wrong_user',
+            'password': 'incorrect_password'
+        })
+        message = _(
+            "Please enter a correct username and password."
+            " Note that both fields may be case-sensitive."
+        )
+        self.assertContains(response, message)
+
     '''I don't understand why this test is fail with no messages at all'''
     # def test_user_login_success_message(self):
     #     response = self.client.post(reverse('login'), {
@@ -69,6 +80,7 @@ class UserLoginViewTestCase(TestCase):
     #     print(messages)
     #     self.assertNotEqual(len(messages), 0)
     #     self.assertEqual(str(messages[0]), _("You successfully logged in"))
+
 
 class UserLogoutViewTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json"]
