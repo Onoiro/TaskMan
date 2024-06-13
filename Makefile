@@ -25,7 +25,7 @@ cov:
 
 # show all files with they test-coverage in %
 test-cov:
-	poetry run coverage run manage.py test && poetry run coverage report
+	poetry run coverage run --source='task_manager' manage.py test && poetry run coverage report
 
 # run local migrations
 migrations:
