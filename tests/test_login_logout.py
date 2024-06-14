@@ -81,6 +81,9 @@ class UserLogoutViewTestCase(TestCase):
     def test_user_logout(self):
         response = self.client.get(reverse('logout'))
         self.assertRedirects(response, reverse('index'))
+
+    def test_get_success_message_when_user_logout(self):
+        response = self.client.get(reverse('logout'))
         messages = list(get_messages(response.wsgi_request))
         # print(messages[0])
         self.assertGreater(len(messages), 0)
