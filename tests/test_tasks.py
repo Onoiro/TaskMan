@@ -130,6 +130,15 @@ class TaskTestCase(TestCase):
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
+    def test_check_message_if_same_task_exist(self):
+        self.tasks_data = {'name': 'first task'}
+        task = Task.objects.get(name="second task")
+        response = self.c.post(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data, follow=True)
+        message = _('Task with this Name already exists.')
+        self.assertContains(response, message)
+
     # def test_add_second_label_to_task(self):
     #     task = Task.objects.get(name="first task")
     #     self.c.post(reverse('tasks:task-update', args=[task.id]),)
