@@ -87,16 +87,16 @@ class LabelsTestCase(TestCase):
         label = Label.objects.get(name="bug")
         response = self.c.post(
             reverse('labels:labels-update', args=[label.id]),
-            self.labels_data,
-            follow=True)
+            self.labels_data, follow=True
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_update_label_content(self):
         label = Label.objects.get(name="bug")
         response = self.c.get(
             reverse('labels:labels-update', args=[label.id]),
-            self.labels_data,
-            follow=True)
+            self.labels_data, follow=True
+        )
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Edit label'))
         self.assertContains(response, _('Edit'))
@@ -109,11 +109,20 @@ class LabelsTestCase(TestCase):
         label.refresh_from_db()
         self.assertEqual(label.name, self.labels_data['name'])
 
+    def test_success_redirect_when_update_label(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.post(
+            reverse('labels:labels-update', args=[label.id]),
+            self.labels_data, follow=True
+        )
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
     def test_get_success_message_when_update_label(self):
         label = Label.objects.get(name="bug")
         response = self.c.post(
             reverse('labels:labels-update', args=[label.id]),
-            self.labels_data, follow=True)
+            self.labels_data, follow=True
+        )
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label updated successfully'))
@@ -157,11 +166,17 @@ class LabelsTestCase(TestCase):
                             args=[label.id]), follow=True)
         self.assertFalse(Label.objects.filter(name="bug").exists())
 
+    def test_success_redirect_when_delete_label(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.post(reverse('labels:labels-delete',
+                               args=[label.id]), follow=True)
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
     def test_check_message_when_delete_label(self):
         label = Label.objects.get(name="bug")
         response = self.c.post(
-            reverse('labels:labels-delete', args=[label.id]),
-            self.labels_data, follow=True)
+            reverse('labels:labels-delete',
+                    args=[label.id]), follow=True)
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label deleted successfully'))
