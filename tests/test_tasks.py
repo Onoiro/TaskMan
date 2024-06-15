@@ -2,6 +2,7 @@ from task_manager.tasks.models import Task
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 
 class TaskTestCase(TestCase):
@@ -21,6 +22,17 @@ class TaskTestCase(TestCase):
             'executor': 12,
             'label': 1
         }
+    
+    def test_tasks_list_content(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, 'ID')
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Status'))
+        self.assertContains(response, _('Author'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Label'))
+        self.assertContains(response, _('Just my tasks'))
 
     def test_create_task_response_200(self):
         response = self.c.post(reverse('tasks:task-create'),

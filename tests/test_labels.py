@@ -23,8 +23,8 @@ class LabelsTestCase(TestCase):
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertContains(response, 'ID')
-        self.assertContains(response, 'Name')
-        self.assertContains(response, 'Created at')
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Created at'))
 
     def test_create_label_response_200(self):
         response = self.c.post(reverse('labels:labels-create'),
