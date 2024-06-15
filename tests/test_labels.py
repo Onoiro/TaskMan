@@ -19,6 +19,10 @@ class LabelsTestCase(TestCase):
         self.labels_data = {
             'name': 'new_test_label',
         }
+
+    def test_labels_list_response_200(self):
+        response = self.c.get(reverse('labels:labels-list'))
+        self.assertEqual(response.status_code, 200)
     
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))

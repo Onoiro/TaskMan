@@ -22,6 +22,10 @@ class TaskTestCase(TestCase):
             'executor': 12,
             'label': 1
         }
+
+    def test_tasks_list_response_200(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
     
     def test_tasks_list_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -38,6 +42,16 @@ class TaskTestCase(TestCase):
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_create_task_content(self):
+        response = self.c.get(reverse('tasks:task-create'))
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Description'))
+        self.assertContains(response, _('Status'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Label'))
+        self.assertContains(response, _('Create task'))
+        self.assertContains(response, _('Create'))
 
     def test_created_task_add_to_db(self):
         old_count = Task.objects.count()
