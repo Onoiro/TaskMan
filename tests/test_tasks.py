@@ -37,6 +37,8 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Label'))
         self.assertContains(response, _('Just my tasks'))
+        self.assertContains(response, _('Tasks'))
+        self.assertContains(response, _('Show'))
 
     def test_create_task_response_200(self):
         response = self.c.post(reverse('tasks:task-create'),
@@ -50,8 +52,11 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Status'))
         self.assertContains(response, _('Executor'))
         self.assertContains(response, _('Label'))
-        self.assertContains(response, _('Create task'))
         self.assertContains(response, _('Create'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bCreate task\b')
+        )
 
     def test_created_task_add_to_db(self):
         old_count = Task.objects.count()
@@ -76,13 +81,37 @@ class TaskTestCase(TestCase):
             name=self.tasks_data['name']).first()
         self.assertEqual(task.name, self.tasks_data['name'])
 
-    def test_update_task(self):
+    def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data,
-            follow=True)
+            self.tasks_data, follow=True
+        )
         self.assertEqual(response.status_code, 200)
+
+    def test_update_task_content(self):
+        task = Task.objects.get(name="first task")
+        response = self.c.get(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data, follow=True
+        )
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Description'))
+        self.assertContains(response, _('Status'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Labels'))
+        self.assertContains(response, _('Edit'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bEdit task\b')
+        )
+
+    def test_update_task_with_correct_data(self):
+        task = Task.objects.get(name="first task")
+        self.c.post(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data, follow=True
+        )
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
