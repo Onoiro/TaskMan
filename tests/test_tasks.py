@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.contrib.messages import get_messages
 
 
 class TaskTestCase(TestCase):
@@ -81,6 +82,20 @@ class TaskTestCase(TestCase):
             name=self.tasks_data['name']).first()
         self.assertEqual(task.name, self.tasks_data['name'])
 
+    def test_get_success_message_when_create_task(self):
+        response = self.c.post(
+            reverse('tasks:task-create'), self.tasks_data, follow=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Task created successfully'))
+
+    def test_check_message_if_same_task_exist(self):
+        self.tasks_data = {'name': 'first task'}
+        response = self.c.post(reverse('tasks:task-create'),
+                               self.tasks_data, follow=True)
+        message = _('Task with this Name already exists.')
+        self.assertContains(response, message)
+
     def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
@@ -123,14 +138,16 @@ class TaskTestCase(TestCase):
     def test_delete_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
-                            args=[task.id]), follow=True)
+                              args=[task.id]), follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_task_content(self):
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
-                            args=[task.id]), follow=True)
-        self.assertContains(response, _('Are you sure you want to delete first task?'))
+                              args=[task.id]), follow=True)
+        self.assertContains(
+            response, _('Are you sure you want to delete first task?')
+        )
         self.assertContains(response, _('Delete task'))
         self.assertContains(response, _('Yes, delete'))
 
@@ -139,6 +156,14 @@ class TaskTestCase(TestCase):
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
         self.assertFalse(Task.objects.filter(name="first task").exists())
+
+    def test_delete_task_check_success_message(self):
+        task = Task.objects.get(name="first task")
+        response = self.c.post(reverse('tasks:task-delete',
+                               args=[task.id]), follow=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Task deleted successfully'))
 
     def test_delete_task_can_only_author(self):
         self.c.logout()
