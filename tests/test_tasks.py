@@ -120,6 +120,20 @@ class TaskTestCase(TestCase):
     #     self.c.post(reverse('tasks:task-update', args=[task.id]),)
     #     pass
 
+    def test_delete_task_response_200(self):
+        task = Task.objects.get(name="first task")
+        response = self.c.get(reverse('tasks:task-delete',
+                            args=[task.id]), follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_task_content(self):
+        task = Task.objects.get(name="first task")
+        response = self.c.get(reverse('tasks:task-delete',
+                            args=[task.id]), follow=True)
+        self.assertContains(response, _('Are you sure you want to delete first task?'))
+        self.assertContains(response, _('Delete task'))
+        self.assertContains(response, _('Yes, delete'))
+
     def test_delete_task(self):
         task = Task.objects.get(name="first task")
         self.c.post(reverse('tasks:task-delete',
