@@ -38,8 +38,11 @@ class LabelsTestCase(TestCase):
     def test_create_label_content(self):
         response = self.c.get(reverse('labels:labels-create'))
         self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Create label'))
         self.assertContains(response, _('Create'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bCreate label\b')
+        )
 
     def test_created_label_add_to_db(self):
         old_count = Label.objects.count()
@@ -98,9 +101,12 @@ class LabelsTestCase(TestCase):
             self.labels_data, follow=True
         )
         self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Edit label'))
         self.assertContains(response, _('Edit'))
         self.assertContains(response, _('bug'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bEdit label\b')
+        )
 
     def test_updated_label_update_in_db(self):
         label = Label.objects.get(name="bug")
