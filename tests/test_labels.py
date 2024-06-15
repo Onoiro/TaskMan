@@ -23,7 +23,7 @@ class LabelsTestCase(TestCase):
     def test_labels_list_response_200(self):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertEqual(response.status_code, 200)
-    
+
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertContains(response, 'ID')
@@ -34,6 +34,12 @@ class LabelsTestCase(TestCase):
         response = self.c.post(reverse('labels:labels-create'),
                                self.labels_data, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_create_label_content(self):
+        response = self.c.get(reverse('labels:labels-create'))
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Create label'))
+        self.assertContains(response, _('Create'))
 
     def test_created_label_add_to_db(self):
         old_count = Label.objects.count()
@@ -85,6 +91,17 @@ class LabelsTestCase(TestCase):
             follow=True)
         self.assertEqual(response.status_code, 200)
 
+    def test_update_label_content(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.get(
+            reverse('labels:labels-update', args=[label.id]),
+            self.labels_data,
+            follow=True)
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Edit label'))
+        self.assertContains(response, _('Edit'))
+        self.assertContains(response, _('bug'))
+
     def test_updated_label_update_in_db(self):
         label = Label.objects.get(name="bug")
         self.c.post(reverse('labels:labels-update', args=[label.id]),
@@ -120,6 +137,20 @@ class LabelsTestCase(TestCase):
         )
         self.assertNotEqual(response.status_code, 302)
 
+    def test_delete_label_response_200(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.post(reverse('labels:labels-delete',
+                               args=[label.id]), follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_label_content(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-delete',
+                              args=[label.id]), follow=True)
+        self.assertContains(response, _('Delete label'))
+        self.assertContains(response, _('Yes, delete'))
+        self.assertContains(response, _('Are you sure you want to delete bug?'))
+
     def test_delete_label(self):
         label = Label.objects.get(name="bug")
         self.c.post(reverse('labels:labels-delete',
@@ -135,5 +166,6 @@ class LabelsTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label deleted successfully'))
 
+    # have to test if delete label is bound to some task
     # def add_labels_to_task(self):
     #     task = Task.objects.get(name="first_task")

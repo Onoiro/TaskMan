@@ -26,7 +26,7 @@ class TaskTestCase(TestCase):
     def test_tasks_list_response_200(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
-    
+
     def test_tasks_list_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, 'ID')
