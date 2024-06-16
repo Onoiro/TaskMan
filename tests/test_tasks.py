@@ -89,7 +89,7 @@ class TaskTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task created successfully'))
 
-    def test_check_message_if_same_task_exist(self):
+    def test_check_message_when_create_task_if_same_task_exist(self):
         self.tasks_data = {'name': 'first task'}
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
@@ -130,7 +130,7 @@ class TaskTestCase(TestCase):
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
-    def test_check_message_if_same_task_exist(self):
+    def test_check_message_when_update_task_if_same_task_exist(self):
         self.tasks_data = {'name': 'first task'}
         task = Task.objects.get(name="second task")
         response = self.c.post(
@@ -174,6 +174,12 @@ class TaskTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task deleted successfully'))
 
+    def test_success_redirect_when_delete_task(self):
+        task = Task.objects.get(name="first task")
+        response = self.c.post(reverse('tasks:task-delete',
+                               args=[task.id]), follow=True)
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
     def test_delete_task_can_only_author(self):
         self.c.logout()
         user = User.objects.get(username="he")
@@ -182,3 +188,26 @@ class TaskTestCase(TestCase):
         self.c.post(reverse('tasks:task-delete',
                             args=[task.id]), follow=True)
         self.assertTrue(Task.objects.filter(name="second task").exists())
+
+    def test_check_message_when_delete_user_is_not_author_of_task(self):
+        self.c.logout()
+        user = User.objects.get(username="he")
+        self.c.force_login(user)
+        task = Task.objects.get(name="second task")
+        response = self.c.post(reverse('tasks:task-delete',
+                                       args=[task.id]), follow=True)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(
+            str(messages[0]),
+            _('Task can only be deleted by its author.')
+        )
+
+    def test_no_redirect_when_not_delete_task(self):
+        self.c.logout()
+        user = User.objects.get(username="he")
+        self.c.force_login(user)
+        task = Task.objects.get(name="second task")
+        response = self.c.post(reverse('tasks:task-delete',
+                                       args=[task.id]), follow=True)
+        self.assertNotEqual(response.status_code, 302)
