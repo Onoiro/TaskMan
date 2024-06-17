@@ -8,8 +8,8 @@ from django.utils.translation import gettext as _
 
 class LabelsTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json",
-                # "tests/fixtures/test_statuses.json",
-                # "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_statuses.json",
+                "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]
 
     def setUp(self):
@@ -164,29 +164,37 @@ class LabelsTestCase(TestCase):
                               args=[label.id]), follow=True)
         self.assertContains(response, _('Delete label'))
         self.assertContains(response, _('Yes, delete'))
-        self.assertContains(response, _('Are you sure you want to delete bug?'))
+        self.assertContains(response,
+                            _('Are you sure you want to delete bug?'))
 
-    def test_delete_label(self):
+    def test_can_not_delete_label_bound_with_task(self):
         label = Label.objects.get(name="bug")
         self.c.post(reverse('labels:labels-delete',
                             args=[label.id]), follow=True)
-        self.assertFalse(Label.objects.filter(name="bug").exists())
+        self.assertTrue(Label.objects.filter(name="bug").exists())
 
-    def test_success_redirect_when_delete_label(self):
+    def test_check_message_when_can_not_delete_label(self):
         label = Label.objects.get(name="bug")
         response = self.c.post(reverse('labels:labels-delete',
                                args=[label.id]), follow=True)
-        self.assertRedirects(response, reverse('labels:labels-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                         _('Cannot delete label because it is in use'))
+
+    def test_delete_label_successfully(self):
+        label = Label.objects.get(name="feature")
+        response = self.c.post(
+            reverse('labels:labels-delete',
+                    args=[label.id]), follow=True)
+        self.assertFalse(Label.objects.filter(name="feature").exists())
 
     def test_check_message_when_delete_label(self):
-        label = Label.objects.get(name="bug")
+        label = Label.objects.get(name="feature")
         response = self.c.post(
             reverse('labels:labels-delete',
                     args=[label.id]), follow=True)
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('Label deleted successfully'))
-
-    # have to test if delete label is bound to some task
-    # def add_labels_to_task(self):
-    #     task = Task.objects.get(name="first_task")
+        self.assertEqual(str(messages[0]),
+                         _('Label deleted successfully'))

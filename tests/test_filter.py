@@ -17,7 +17,7 @@ class TaskTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(username='he')
         self.status = Status.objects.get(name='at work')
-        self.label = Label.objects.get(name='feature')
+        self.label = Label.objects.get(name='bug')
         self.c = Client()
         self.c.force_login(self.user)
         self.filtered_tasks = Task.objects.filter(
