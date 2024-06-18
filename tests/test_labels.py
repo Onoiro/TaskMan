@@ -86,6 +86,14 @@ class LabelsTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label created successfully'))
 
+    def test_can_not_create_label_with_empty_name(self):
+        self.labels_data = {'name': ' '}
+        response = self.c.post(reverse('labels:labels-create'),
+                               self.labels_data, follow=True)
+        self.assertFalse(Label.objects.filter(name=" ").exists())
+        message = _('This field is required.')
+        self.assertContains(response, message)
+
     def test_update_label_response_200(self):
         label = Label.objects.get(name="bug")
         response = self.c.post(
@@ -141,6 +149,17 @@ class LabelsTestCase(TestCase):
             self.labels_data, follow=True
         )
         message = _('Label with this Name already exists.')
+        self.assertContains(response, message)
+
+    def test_can_not_set_empty_name_when_update_label(self):
+        label = Label.objects.get(name="bug")
+        self.labels_data = {'name': ' '}
+        response = self.c.post(
+            reverse('labels:labels-update', args=[label.id]),
+            self.labels_data, follow=True
+        )
+        self.assertFalse(Label.objects.filter(name=" ").exists())
+        message = _('This field is required.')
         self.assertContains(response, message)
 
     def test_no_redirect_when_not_update_label(self):

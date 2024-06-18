@@ -139,11 +139,6 @@ class TaskTestCase(TestCase):
         message = _('Task with this Name already exists.')
         self.assertContains(response, message)
 
-    # def test_add_second_label_to_task(self):
-    #     task = Task.objects.get(name="first task")
-    #     self.c.post(reverse('tasks:task-update', args=[task.id]),)
-    #     pass
-
     def test_delete_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
