@@ -2,6 +2,7 @@ from task_manager.statuses.models import Status
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 
 class StatusesTestCase(TestCase):
@@ -9,10 +10,24 @@ class StatusesTestCase(TestCase):
                 "tests/fixtures/test_statuses.json"]
 
     def setUp(self):
+        self.user = User.objects.get(username='me')
         self.c = Client()
+        self.c.force_login(self.user)
         self.statuses_data = {
             'name': 'new_test_status',
         }
+    
+    def test_statuses_list_response_200(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_statuses_list_content(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        self.assertContains(response, 'ID')
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Statuses'))
+        self.assertContains(response, _('New status'))
 
     def test_create_status_response_200(self):
         response = self.c.post(reverse('statuses:statuses-create'),
