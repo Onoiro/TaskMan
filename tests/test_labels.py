@@ -182,10 +182,15 @@ class LabelsTestCase(TestCase):
         self.assertEqual(str(messages[0]),
                          _('Cannot delete label because it is in use'))
 
+    def test_check_redirect_when_not_delete_label(self):
+        label = Label.objects.get(name="bug")
+        response = self.c.post(reverse('labels:labels-delete',
+                               args=[label.id]), follow=True)
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
     def test_delete_label_successfully(self):
         label = Label.objects.get(name="feature")
-        response = self.c.post(
-            reverse('labels:labels-delete',
+        self.c.post(reverse('labels:labels-delete',
                     args=[label.id]), follow=True)
         self.assertFalse(Label.objects.filter(name="feature").exists())
 
@@ -198,3 +203,9 @@ class LabelsTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Label deleted successfully'))
+
+    def test_check_redirect_when_delete_label(self):
+        label = Label.objects.get(name="feature")
+        response = self.c.post(reverse('labels:labels-delete',
+                               args=[label.id]), follow=True)
+        self.assertRedirects(response, reverse('labels:labels-list'))
