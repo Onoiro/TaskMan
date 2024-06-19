@@ -20,6 +20,8 @@ class LabelsTestCase(TestCase):
             'name': 'new_test_label',
         }
 
+    # list
+
     def test_labels_list_response_200(self):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertEqual(response.status_code, 200)
@@ -30,19 +32,32 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Created at'))
 
-    def test_create_label_response_200(self):
-        response = self.c.post(reverse('labels:labels-create'),
+    # create
+
+    def test_get_create_label_response_200_check_content(self):
+        response = self.c.get(reverse('labels:labels-create'),
                                self.labels_data, follow=True)
         self.assertEqual(response.status_code, 200)
-
-    def test_create_label_content(self):
-        response = self.c.get(reverse('labels:labels-create'))
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Create'))
         self.assertRegex(
             response.content.decode('utf-8'),
             _(r'\bCreate label\b')
         )
+
+    # def test_create_label_content(self):
+    #     response = self.c.get(reverse('labels:labels-create'))
+    #     self.assertContains(response, _('Name'))
+    #     self.assertContains(response, _('Create'))
+    #     self.assertRegex(
+    #         response.content.decode('utf-8'),
+    #         _(r'\bCreate label\b')
+    #     )
+
+    def test_post_create_label_response_200(self):
+        response = self.c.post(reverse('labels:labels-create'),
+                               self.labels_data, follow=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_created_label_add_to_db(self):
         old_count = Label.objects.count()
@@ -93,6 +108,8 @@ class LabelsTestCase(TestCase):
         self.assertFalse(Label.objects.filter(name=" ").exists())
         message = _('This field is required.')
         self.assertContains(response, message)
+
+    # update
 
     def test_update_label_response_200(self):
         label = Label.objects.get(name="bug")
@@ -170,6 +187,8 @@ class LabelsTestCase(TestCase):
             self.labels_data, follow=True
         )
         self.assertNotEqual(response.status_code, 302)
+
+    # delete
 
     def test_delete_label_response_200(self):
         label = Label.objects.get(name="bug")

@@ -32,14 +32,9 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
 
-    # create
+    # create  
 
-    def test_create_status_response_200(self):
-        response = self.c.post(reverse('statuses:statuses-create'),
-                               self.statuses_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-
-    def test_check_create_status_content(self):
+    def test_get_create_status_response_200_and_check_content(self):
         response = self.c.get(reverse('statuses:statuses-create'))
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Create'))
@@ -47,6 +42,12 @@ class StatusesTestCase(TestCase):
             response.content.decode('utf-8'),
             _(r'\bCreate status\b')
         )
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_status_response_200(self):
+        response = self.c.post(reverse('statuses:statuses-create'),
+                               self.statuses_data, follow=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_created_status_add_to_db(self):
         old_count = Status.objects.count()
@@ -168,6 +169,23 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, message)
 
     # delete
+
+    def test_delete_status_response_200(self):
+        status = Status.objects.get(name="new")
+        response = self.c.post(
+            reverse('statuses:statuses-delete', args=[status.id]),
+            self.statuses_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+
+    # def test_delete_status_content(self):
+    #     label = Label.objects.get(name="bug")
+    #     response = self.c.get(reverse('labels:labels-delete',
+    #                           args=[label.id]), follow=True)
+    #     self.assertContains(response, _('Delete label'))
+    #     self.assertContains(response, _('Yes, delete'))
+    #     self.assertContains(response,
+    #                         _('Are you sure you want to delete bug?'))
 
     def test_delete_status(self):
         user = User.objects.get(username="he")
