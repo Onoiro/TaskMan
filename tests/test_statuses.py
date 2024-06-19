@@ -120,17 +120,52 @@ class StatusesTestCase(TestCase):
             _(r'\bEdit status\b')
         )
 
-    def test_update_status(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
+    def test_updated_status_update_in_db(self):
+        status = Status.objects.get(name="new")
+        self.c.post(reverse('statuses:statuses-update', args=[status.id]),
+                    self.statuses_data, follow=True)
+        status.refresh_from_db()
+        self.assertEqual(status.name, self.statuses_data['name'])
+
+    def test_success_redirect_when_update_status(self):
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
-            self.statuses_data,
-            follow=True)
-        self.assertEqual(response.status_code, 200)
-        status.refresh_from_db()
-        self.assertEqual(status.name, self.statuses_data['name'])
+            self.statuses_data, follow=True
+        )
+        self.assertRedirects(response, reverse('statuses:statuses-list'))
+
+    def test_get_success_message_when_update_status(self):
+        status = Status.objects.get(name="new")
+        response = self.c.post(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data, follow=True
+        )
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Status updated successfully'))
+
+    def test_check_can_not_update_status_if_same_status_exist(self):
+        status = Status.objects.get(name="new")
+        self.statuses_data = {'name': 'at work'}
+        response = self.c.post(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data, follow=True
+        )
+        message = _('Status with this Name already exists.')
+        self.assertContains(response, message)
+        self.assertNotEqual(response.status_code, 302)
+
+    def test_can_not_set_empty_name_when_update_status(self):
+        status = Status.objects.get(name="new")
+        self.statuses_data = {'name': ' '}
+        response = self.c.post(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data, follow=True
+        )
+        self.assertFalse(Status.objects.filter(name=" ").exists())
+        message = _('This field is required.')
+        self.assertContains(response, message)
 
     # delete
 
