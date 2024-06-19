@@ -18,6 +18,8 @@ class StatusesTestCase(TestCase):
             'name': 'new_test_status',
         }
 
+    # list
+
     def test_statuses_list_response_200(self):
         response = self.c.get(reverse('statuses:statuses-list'))
         self.assertEqual(response.status_code, 200)
@@ -29,6 +31,8 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
+
+    # create
 
     def test_create_status_response_200(self):
         response = self.c.post(reverse('statuses:statuses-create'),
@@ -94,6 +98,28 @@ class StatusesTestCase(TestCase):
         message = _('This field is required.')
         self.assertContains(response, message)
 
+    # update
+
+    def test_update_status_response_200(self):
+        status = Status.objects.get(name="new")
+        response = self.c.post(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_check_update_status_content(self):
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            self.statuses_data, follow=True)
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Edit'))
+        self.assertContains(response, _('new'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bEdit status\b')
+        )
+
     def test_update_status(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
@@ -105,6 +131,8 @@ class StatusesTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         status.refresh_from_db()
         self.assertEqual(status.name, self.statuses_data['name'])
+
+    # delete
 
     def test_delete_status(self):
         user = User.objects.get(username="he")
