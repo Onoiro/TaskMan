@@ -8,7 +8,9 @@ from django.utils.translation import gettext as _
 
 class StatusesTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json",
-                "tests/fixtures/test_statuses.json"]
+                "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_statuses.json",
+                "tests/fixtures/test_labels.json"]
 
     def setUp(self):
         self.user = User.objects.get(username='me')
@@ -32,7 +34,7 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
 
-    # create  
+    # create
 
     def test_get_create_status_response_200_and_check_content(self):
         response = self.c.get(reverse('statuses:statuses-create'))
@@ -61,7 +63,7 @@ class StatusesTestCase(TestCase):
                     self.statuses_data, follow=True)
         statuses_count = Status.objects.count()
         response = self.c.post(reverse('statuses:statuses-create'),
-                    self.statuses_data, follow=True)
+                               self.statuses_data, follow=True)
         new_statuses_count = Status.objects.count()
         self.assertEqual(statuses_count, new_statuses_count)
         message = _('Status with this Name already exists.')
@@ -105,7 +107,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
-                    self.statuses_data, follow=True)
+            self.statuses_data, follow=True)
         status.refresh_from_db()
         self.assertEqual(status.name, self.statuses_data['name'])
         self.assertRedirects(response, reverse('statuses:statuses-list'))
@@ -129,8 +131,7 @@ class StatusesTestCase(TestCase):
         self.statuses_data = {'name': ' '}
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
-            self.statuses_data, follow=True
-        )
+            self.statuses_data, follow=True)
         self.assertFalse(Status.objects.filter(name=" ").exists())
         message = _('This field is required.')
         self.assertContains(response, message)
@@ -141,7 +142,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.get(
             reverse('statuses:statuses-delete',
-            args=[status.id]), follow=True)
+                    args=[status.id]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Delete status'))
         self.assertContains(response, _('Yes, delete'))
@@ -149,37 +150,26 @@ class StatusesTestCase(TestCase):
                             _('Are you sure you want to delete new?'))
 
     def test_delete_status_successfully(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
-        status = Status.objects.get(name="new")
+        status = Status.objects.get(name="testing")
         response = self.c.post(
             reverse('statuses:statuses-delete',
-            args=[status.id]), follow=True)
+                    args=[status.id]), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Status.objects.filter(name="new").exists())
+        self.assertFalse(Status.objects.filter(name="testing").exists())
         self.assertRedirects(response, reverse('statuses:statuses-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Status deleted successfully'))
 
-    # def test_can_not_delete_status_bound_with_task(self):
-    #     status = Status.objects.get(name="new")
-    #     self.c.post(reverse('statuses:statuses-delete',
-    #                         args=[status.id]), follow=True)
-    #     self.assertTrue(Status.objects.filter(name="new").exists())
-
-    # def test_check_message_when_can_not_delete_label(self):
-    #     label = Label.objects.get(name="bug")
-    #     response = self.c.post(reverse('labels:labels-delete',
-    #                            args=[label.id]), follow=True)
-    #     messages = list(get_messages(response.wsgi_request))
-    #     self.assertGreater(len(messages), 0)
-    #     self.assertEqual(str(messages[0]),
-    #                      _('Cannot delete label because it is in use'))
-
-    # def test_check_redirect_when_not_delete_label(self):
-    #     label = Label.objects.get(name="bug")
-    #     response = self.c.post(reverse('labels:labels-delete',
-    #                            args=[label.id]), follow=True)
-    #     self.assertRedirects(response, reverse('labels:labels-list'))
+    def test_can_not_delete_status_bound_with_task(self):
+        status = Status.objects.get(name="new")
+        response = self.c.post(
+            reverse('statuses:statuses-delete',
+                    args=[status.id]), follow=True)
+        self.assertTrue(Status.objects.filter(name="new").exists())
+        self.assertRedirects(response, reverse('statuses:statuses-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                         _('Cannot delete status because it is in use'))

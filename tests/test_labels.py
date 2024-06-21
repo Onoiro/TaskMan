@@ -36,7 +36,7 @@ class LabelsTestCase(TestCase):
 
     def test_get_create_label_response_200_check_content(self):
         response = self.c.get(reverse('labels:labels-create'),
-                               self.labels_data, follow=True)
+                              self.labels_data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Create'))
@@ -217,7 +217,7 @@ class LabelsTestCase(TestCase):
         response = self.c.post(reverse('labels:labels-delete',
                                args=[label.id]), follow=True)
         self.assertRedirects(response, reverse('labels:labels-list'))
-    
+
     def test_can_not_delete_label_bound_with_task(self):
         label = Label.objects.get(name="bug")
         self.c.post(reverse('labels:labels-delete',
