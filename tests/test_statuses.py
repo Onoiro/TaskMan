@@ -58,17 +58,6 @@ class StatusesTestCase(TestCase):
         new_count = Status.objects.count()
         self.assertEqual(old_count + 1, new_count)
 
-    def test_check_for_not_create_status_with_same_name(self):
-        self.c.post(reverse('statuses:statuses-create'),
-                    self.statuses_data, follow=True)
-        statuses_count = Status.objects.count()
-        response = self.c.post(reverse('statuses:statuses-create'),
-                               self.statuses_data, follow=True)
-        new_statuses_count = Status.objects.count()
-        self.assertEqual(statuses_count, new_statuses_count)
-        message = _('Status with this Name already exists.')
-        self.assertContains(response, message)
-
     def test_create_status_with_correct_data(self):
         response = self.c.post(reverse('statuses:statuses-create'),
                                self.statuses_data, follow=True)
@@ -79,6 +68,17 @@ class StatusesTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Status created successfully'))
+
+    def test_check_for_do_not_create_status_with_same_name(self):
+        self.c.post(reverse('statuses:statuses-create'),
+                    self.statuses_data, follow=True)
+        statuses_count = Status.objects.count()
+        response = self.c.post(reverse('statuses:statuses-create'),
+                               self.statuses_data, follow=True)
+        new_statuses_count = Status.objects.count()
+        self.assertEqual(statuses_count, new_statuses_count)
+        message = _('Status with this Name already exists.')
+        self.assertContains(response, message)
 
     def test_can_not_create_status_with_empty_name(self):
         self.statuses_data = {'name': ' '}
@@ -103,7 +103,7 @@ class StatusesTestCase(TestCase):
             _(r'\bEdit status\b')
         )
 
-    def test_updated_status_update_in_db(self):
+    def test_update_status_successfully(self):
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
