@@ -137,20 +137,6 @@ class LabelsTestCase(TestCase):
 
     # delete
 
-    # def test_check_message_when_can_not_delete_label(self):
-    #     label = Label.objects.get(name="bug")
-    #     response = self.c.post(reverse('labels:labels-delete',
-    #                            args=[label.id]), follow=True)
-    #     messages = list(get_messages(response.wsgi_request))
-    #     self.assertGreater(len(messages), 0)
-    #     self.assertEqual(str(messages[0]),
-    #                      _('Cannot delete label because it is in use'))
-
-    # def test_check_redirect_when_not_delete_label(self):
-    #     label = Label.objects.get(name="bug")
-    #     response = self.c.post(reverse('labels:labels-delete',
-    #                            args=[label.id]), follow=True)
-    #     self.assertRedirects(response, reverse('labels:labels-list'))
     def test_delete_label_response_200(self):
         label = Label.objects.get(name="bug")
         response = self.c.post(reverse('labels:labels-delete',
