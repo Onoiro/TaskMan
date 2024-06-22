@@ -7,6 +7,8 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.messages import get_messages
+from django.utils.translation import gettext as _
 
 
 class UserTestCase(TestCase):
@@ -21,6 +23,22 @@ class UserTestCase(TestCase):
             'password1': 111,
             'password2': 111,
         }
+    
+    # list
+
+    def test_user_list_response_200(self):
+        response = self.c.get(reverse('user:user-list'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_list_content(self):
+        response = self.c.get(reverse('user:user-list'))
+        self.assertContains(response, 'ID')
+        self.assertContains(response, _('User name'))
+        self.assertContains(response, _('Fullname'))
+        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Users'))
+
+    # create
 
     def test_create_user_response_200(self):
         response = self.c.post(reverse('user:user-create'),
@@ -46,6 +64,8 @@ class UserTestCase(TestCase):
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
 
+    # update
+
     def test_update_user(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
@@ -63,6 +83,8 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         user.refresh_from_db()
         self.assertEqual(user.username, new_user_data['username'])
+
+    # delete
 
     def test_delete_user(self):
         user = User.objects.get(username="he")
