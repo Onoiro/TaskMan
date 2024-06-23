@@ -82,6 +82,19 @@ class UserTestCase(TestCase):
         message = _('A user with that username already exists.')
         self.assertContains(response, message)
 
+    def test_can_not_create_user_with_empty_name(self):
+        self.user_data = {'first_name': 'New',
+                          'last_name': 'N',
+                          'username': ' ',
+                          'password1': 111,
+                          'password2': 111
+                    }
+        response = self.c.post(reverse('user:user-create'),
+                               self.user_data, follow=True)
+        self.assertFalse(User.objects.filter(username=" ").exists())
+        message = _('This field is required.')
+        self.assertContains(response, message)
+
     # update
 
     def test_update_user(self):
