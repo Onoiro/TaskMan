@@ -24,6 +24,8 @@ class TaskTestCase(TestCase):
             'label': 1
         }
 
+    # list
+
     def test_tasks_list_response_200(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
@@ -45,6 +47,8 @@ class TaskTestCase(TestCase):
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    # create
 
     def test_create_task_content(self):
         response = self.c.get(reverse('tasks:task-create'))
@@ -96,6 +100,8 @@ class TaskTestCase(TestCase):
         message = _('Task with this Name already exists.')
         self.assertContains(response, message)
 
+    # update
+
     def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
@@ -138,6 +144,8 @@ class TaskTestCase(TestCase):
             self.tasks_data, follow=True)
         message = _('Task with this Name already exists.')
         self.assertContains(response, message)
+
+    # delete
 
     def test_delete_task_response_200(self):
         task = Task.objects.get(name="first task")
