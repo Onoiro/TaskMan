@@ -23,7 +23,7 @@ class UserTestCase(TestCase):
             'password1': 111,
             'password2': 111,
         }
-    
+
     # list
 
     def test_user_list_response_200(self):
@@ -40,29 +40,47 @@ class UserTestCase(TestCase):
 
     # create
 
-    def test_create_user_response_200(self):
+    def test_create_user_page_content(self):
+        response = self.c.get(reverse('user:user-create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('First name'))
+        self.assertContains(response, _('Last name'))
+        self.assertContains(response, _('Username'))
+        self.assertContains(response, _('Password'))
+        self.assertContains(response, _('Confirm password'))
+        self.assertContains(response, _('Signup'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bSign up\b'))
+        # self.assertContains(
+        #     response, _("Required. 150 characters or fewer."\
+        #                 "Letters, digits and @/./+/-/_ only."))
+
+    def test_create_user_successfully(self):
+        old_count = User.objects.count()
         response = self.c.post(reverse('user:user-create'),
                                self.user_data, follow=True)
         self.assertEqual(response.status_code, 200)
-
-    def test_created_user_add_to_db(self):
-        old_count = User.objects.count()
-        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
         new_count = User.objects.count()
         self.assertEqual(old_count + 1, new_count)
+        user = User.objects.filter(username=self.user_data['username']).first()
+        self.assertEqual(user.first_name, self.user_data['first_name'])
+        self.assertEqual(user.last_name, self.user_data['last_name'])
+        self.assertRedirects(response, reverse('login'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('User created successfully'))
 
     def test_check_for_not_create_user_with_same_username(self):
         self.c.post(reverse('user:user-create'), self.user_data, follow=True)
         users_count = User.objects.count()
-        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
+        response = self.c.post(
+            reverse('user:user-create'), self.user_data, follow=True)
         new_users_count = User.objects.count()
         self.assertEqual(users_count, new_users_count)
-
-    def test_create_user_with_correct_data(self):
-        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
-        user = User.objects.filter(username=self.user_data['username']).first()
-        self.assertEqual(user.first_name, self.user_data['first_name'])
-        self.assertEqual(user.last_name, self.user_data['last_name'])
+        self.assertNotEqual(response.status_code, 302)
+        message = _('A user with that username already exists.')
+        self.assertContains(response, message)
 
     # update
 

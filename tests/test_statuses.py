@@ -43,8 +43,7 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, _('Create'))
         self.assertRegex(
             response.content.decode('utf-8'),
-            _(r'\bCreate status\b')
-        )
+            _(r'\bCreate status\b'))
 
     def test_create_status_response_200(self):
         response = self.c.post(reverse('statuses:statuses-create'),
