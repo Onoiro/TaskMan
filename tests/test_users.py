@@ -9,6 +9,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+from django.contrib.auth.hashers import check_password
 
 
 class UserTestCase(TestCase):
@@ -92,23 +93,50 @@ class UserTestCase(TestCase):
 
     # update
 
-    def test_update_user(self):
+    def test_update_user_status_200_and_check_content(self):
+        user = User.objects.get(username="he")
+        self.c.force_login(user)
+        response = self.c.get(
+            reverse('user:user-update', args=[user.id]), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('First name'))
+        self.assertContains(response, _('Last name'))
+        self.assertContains(response, _('Username'))
+        self.assertContains(response, _('Password'))
+        self.assertContains(response, _('Confirm password'))
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bEdit user\b')
+        )
+        self.assertRegex(
+            response.content.decode('utf-8'),
+            _(r'\bEdit\b')
+        )
+        self.assertContains(response, user.first_name)
+        self.assertContains(response, user.last_name)
+        self.assertContains(response, user.username)
+        self.assertContains(response, user.first_name)
+
+    def test_update_user_successfully(self):
         user = User.objects.get(username="he")
         self.c.force_login(user)
         new_user_data = {
-            'first_name': 'He',
-            'last_name': 'H',
+            'first_name': 'Him',
+            'last_name': 'who',
             'username': 'him',
             'password1': 222,
             'password2': 222
         }
         response = self.c.post(
             reverse('user:user-update', args=[user.id]),
-            new_user_data,
-            follow=True)
+            new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user.refresh_from_db()
+        self.assertEqual(user.first_name, new_user_data['first_name'])
+        self.assertEqual(user.last_name, new_user_data['last_name'])
         self.assertEqual(user.username, new_user_data['username'])
+        self.assertTrue(
+            check_password(new_user_data['password1'], user.password))
 
     # delete
 
