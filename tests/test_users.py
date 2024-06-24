@@ -16,13 +16,15 @@ class UserTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json"]
 
     def setUp(self):
+        self.user = User.objects.get(username="he")
         self.c = Client()
+        self.c.force_login(self.user)
         self.user_data = {
             'first_name': 'New',
             'last_name': 'N',
             'username': 'new',
-            'password1': 111,
-            'password2': 111,
+            'password1': 222,
+            'password2': 222,
         }
 
     # list
@@ -73,7 +75,8 @@ class UserTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('User created successfully'))
 
     def test_check_for_not_create_user_with_same_username(self):
-        self.c.post(reverse('user:user-create'), self.user_data, follow=True)
+        self.c.post(
+            reverse('user:user-create'), self.user_data, follow=True)
         users_count = User.objects.count()
         response = self.c.post(
             reverse('user:user-create'), self.user_data, follow=True)
@@ -94,10 +97,8 @@ class UserTestCase(TestCase):
     # update
 
     def test_update_user_status_200_and_check_content(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
         response = self.c.get(
-            reverse('user:user-update', args=[user.id]), follow=True)
+            reverse('user:user-update', args=[self.user.id]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('First name'))
         self.assertContains(response, _('Last name'))
@@ -105,38 +106,55 @@ class UserTestCase(TestCase):
         self.assertContains(response, _('Password'))
         self.assertContains(response, _('Confirm password'))
         self.assertRegex(
-            response.content.decode('utf-8'),
-            _(r'\bEdit user\b')
-        )
+            response.content.decode('utf-8'), _(r'\bEdit user\b'))
         self.assertRegex(
-            response.content.decode('utf-8'),
-            _(r'\bEdit\b')
-        )
-        self.assertContains(response, user.first_name)
-        self.assertContains(response, user.last_name)
-        self.assertContains(response, user.username)
-        self.assertContains(response, user.first_name)
+            response.content.decode('utf-8'), _(r'\bEdit\b'))
+        self.assertContains(response, self.user.first_name)
+        self.assertContains(response, self.user.last_name)
+        self.assertContains(response, self.user.username)
+        self.assertContains(response, self.user.first_name)
 
     def test_update_user_successfully(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
+        response = self.c.post(
+            reverse('user:user-update', args=[self.user.id]),
+            self.user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, self.user_data['first_name'])
+        self.assertEqual(self.user.last_name, self.user_data['last_name'])
+        self.assertEqual(self.user.username, self.user_data['username'])
+        self.assertTrue(
+            check_password(self.user_data['password1'], self.user.password))
+
+    def test_check_can_not_update_user_if_same_user_exist(self):
         new_user_data = {
-            'first_name': 'Him',
-            'last_name': 'who',
-            'username': 'him',
+            'first_name': 'New',
+            'last_name': 'N',
+            'username': 'me',  # username 'me' exists in test_users.json
             'password1': 222,
-            'password2': 222
+            'password2': 222,
         }
         response = self.c.post(
-            reverse('user:user-update', args=[user.id]),
+            reverse('user:user-update', args=[self.user.id]),
             new_user_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-        user.refresh_from_db()
-        self.assertEqual(user.first_name, new_user_data['first_name'])
-        self.assertEqual(user.last_name, new_user_data['last_name'])
-        self.assertEqual(user.username, new_user_data['username'])
-        self.assertTrue(
-            check_password(new_user_data['password1'], user.password))
+        message = _('A user with that username already exists.')
+        self.assertContains(response, message)
+        self.assertNotEqual(response.status_code, 302)
+
+    def test_can_not_set_empty_name_when_update_user(self):
+        new_user_data = {
+            'first_name': 'New',
+            'last_name': 'N',
+            'username': ' ',
+            'password1': 222,
+            'password2': 222,
+        }
+        response = self.c.post(
+            reverse('user:user-update', args=[self.user.id]),
+            new_user_data, follow=True)
+        self.assertFalse(User.objects.filter(username=" ").exists())
+        message = _('This field is required.')
+        self.assertContains(response, message)
 
     # delete
 
