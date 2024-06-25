@@ -43,15 +43,11 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Show'))
 
-    def test_create_task_response_200(self):
-        response = self.c.post(reverse('tasks:task-create'),
-                               self.tasks_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-
     # create
 
-    def test_create_task_content(self):
+    def test_create_task_response_200_and_check_content(self):
         response = self.c.get(reverse('tasks:task-create'))
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
         self.assertContains(response, _('Status'))
@@ -63,40 +59,38 @@ class TaskTestCase(TestCase):
             _(r'\bCreate task\b')
         )
 
+    def test_create_task_response_200(self):
+        response = self.c.post(reverse('tasks:task-create'),
+                               self.tasks_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_created_task_add_to_db(self):
         old_count = Task.objects.count()
-        self.c.post(reverse('tasks:task-create'),
-                    self.tasks_data, follow=True)
+        response = self.c.post(reverse('tasks:task-create'),
+                               self.tasks_data, follow=True)
         new_count = Task.objects.count()
         self.assertEqual(old_count + 1, new_count)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_task_successfully(self):
+        response = self.c.post(reverse('tasks:task-create'),
+                               self.tasks_data, follow=True)
+        task = Task.objects.filter(
+            name=self.tasks_data['name']).first()
+        self.assertEqual(task.name, self.tasks_data['name'])
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Task created successfully'))
 
     def test_check_for_not_create_task_with_same_name(self):
         self.c.post(reverse('tasks:task-create'),
                     self.tasks_data, follow=True)
         tasks_count = Task.objects.count()
-        self.c.post(reverse('tasks:task-create'),
-                    self.tasks_data, follow=True)
-        new_tasks_count = Task.objects.count()
-        self.assertEqual(tasks_count, new_tasks_count)
-
-    def test_create_task_with_correct_data(self):
-        self.c.post(reverse('tasks:task-create'),
-                    self.tasks_data, follow=True)
-        task = Task.objects.filter(
-            name=self.tasks_data['name']).first()
-        self.assertEqual(task.name, self.tasks_data['name'])
-
-    def test_get_success_message_when_create_task(self):
-        response = self.c.post(
-            reverse('tasks:task-create'), self.tasks_data, follow=True)
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('Task created successfully'))
-
-    def test_check_message_when_create_task_if_same_task_exist(self):
-        self.tasks_data = {'name': 'first task'}
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
+        new_tasks_count = Task.objects.count()
+        self.assertEqual(tasks_count, new_tasks_count)
         message = _('Task with this Name already exists.')
         self.assertContains(response, message)
 
