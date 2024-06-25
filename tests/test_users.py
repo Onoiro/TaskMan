@@ -158,10 +158,24 @@ class UserTestCase(TestCase):
 
     # delete
 
-    def test_delete_user(self):
-        user = User.objects.get(username="he")
-        self.c.force_login(user)
+    def test_get_delete_user_response_200_and_check_content(self):
+        response = self.c.get(
+            reverse('user:user-delete',
+                    args=[self.user.id]), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('Delete user'))
+        self.assertContains(response, _('Yes, delete'))
+        self.assertContains(response,
+                            _('Are you sure you want to delete He H?'))
+
+    def test_delete_user_successfully(self):
         response = self.c.post(reverse('user:user-delete',
-                                       args=[user.id]), follow=True)
+                                       args=[self.user.id]), follow=True)
         self.assertFalse(User.objects.filter(username="he").exists())
         self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, reverse('user:user-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                         _('User deleted successfully'))
+
