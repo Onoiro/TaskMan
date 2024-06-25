@@ -13,7 +13,10 @@ from django.contrib.auth.hashers import check_password
 
 
 class UserTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_statuses.json",
+                "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_labels.json"]
 
     def setUp(self):
         self.user = User.objects.get(username="he")
@@ -169,9 +172,13 @@ class UserTestCase(TestCase):
                             _('Are you sure you want to delete He H?'))
 
     def test_delete_user_successfully(self):
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        user = User.objects.get(username="new")
+        self.c.force_login(user)
         response = self.c.post(reverse('user:user-delete',
-                                       args=[self.user.id]), follow=True)
-        self.assertFalse(User.objects.filter(username="he").exists())
+                                       args=[user.id]), follow=True)
+        self.assertFalse(User.objects.filter(username="new").exists())
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('user:user-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -179,3 +186,12 @@ class UserTestCase(TestCase):
         self.assertEqual(str(messages[0]),
                          _('User deleted successfully'))
 
+    def test_can_not_delete_user_bound_with_task(self):
+        response = self.c.post(reverse('user:user-delete',
+                               args=[self.user.id]), follow=True)
+        self.assertTrue(User.objects.filter(username="he").exists())
+        self.assertRedirects(response, reverse('user:user-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                         _('Cannot delete a user because it is in use'))
