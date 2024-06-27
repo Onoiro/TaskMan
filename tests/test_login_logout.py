@@ -10,37 +10,30 @@ class UserLoginViewTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.get(username='he')
-        self.password = self.user.password
+        self.user = User.objects.create_user(username='test_user', password='password')
+        self.client.force_login(self.user)
 
-    def test_login_view_status_code(self):
+    def test_login_view_response_200_and_check_content(self):
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
-
-    def test_login_view_template_used(self):
-        response = self.client.get(reverse('login'))
         self.assertTemplateUsed(response, 'login.html')
-
-    def test_login_view_content(self):
-        response = self.client.get(reverse('login'))
         self.assertContains(response, _("Login"))
         self.assertContains(response, _("Log in"))
         self.assertContains(response, _("Username"))
         self.assertContains(response, _("Password"))
 
     def test_user_login(self):
-        logged_in = self.client.post(reverse('login'), {
-            'username': self.user.username,
-            'password': self.password
-        })
-        self.assertTrue(logged_in)
-
-    def test_status_code_if_user_login(self):
+        self.client.logout()
         response = self.client.post(reverse('login'), {
-            'username': self.user.username,
-            'password': self.password
-        }, follow=True)
-        self.assertEqual(response.status_code, 200)
+            'username': 'test_user',
+            'password': 'password'
+        })
+        self.assertTrue(response)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('index'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertNotEqual(len(messages), 0)
+        self.assertEqual(str(messages[0]), _("You successfully logged in"))
 
     def test_login_incorrect_user(self):
         response = self.client.post(reverse('login'), {
@@ -53,18 +46,6 @@ class UserLoginViewTestCase(TestCase):
         )
         self.assertContains(response, message)
 
-    '''I don't understand why this test is fail with no messages at all'''
-    # def test_user_login_success_message(self):
-    #     response = self.client.post(reverse('login'), {
-    #         'username': self.user.username,
-    #         'password': self.password
-    #         }, follow=True)
-    #     messages = list(get_messages(response.wsgi_request))
-    #     print(messages)
-    #     self.assertNotEqual(len(messages), 0)
-    #     self.assertEqual(str(messages[0]), _("You successfully logged in"))
-
-
 class UserLogoutViewTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json"]
 
@@ -72,7 +53,6 @@ class UserLogoutViewTestCase(TestCase):
         self.client = Client()
         self.user = User.objects.get(username='he')
         self.client.force_login(self.user)
-        # self.password = self.user.password
 
     def test_logout_view_status_code(self):
         response = self.client.get(reverse('logout'))
@@ -85,6 +65,5 @@ class UserLogoutViewTestCase(TestCase):
     def test_get_success_message_when_user_logout(self):
         response = self.client.get(reverse('logout'))
         messages = list(get_messages(response.wsgi_request))
-        # print(messages[0])
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _("You are logged out"))
