@@ -10,7 +10,8 @@ class UserLoginViewTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username='test_user', password='password')
+        self.user = User.objects.create_user(
+            username='test_user', password='password')
         self.client.force_login(self.user)
 
     def test_login_view_response_200_and_check_content(self):
@@ -22,7 +23,7 @@ class UserLoginViewTestCase(TestCase):
         self.assertContains(response, _("Username"))
         self.assertContains(response, _("Password"))
 
-    def test_user_login(self):
+    def test_user_login_successfully(self):
         self.client.logout()
         response = self.client.post(reverse('login'), {
             'username': 'test_user',
@@ -40,11 +41,13 @@ class UserLoginViewTestCase(TestCase):
             'username': 'wrong_user',
             'password': 'incorrect_password'
         })
+        self.assertNotEqual(response.status_code, 302)
         message = _(
             "Please enter a correct username and password."
             " Note that both fields may be case-sensitive."
         )
         self.assertContains(response, message)
+
 
 class UserLogoutViewTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json"]
@@ -54,16 +57,9 @@ class UserLogoutViewTestCase(TestCase):
         self.user = User.objects.get(username='he')
         self.client.force_login(self.user)
 
-    def test_logout_view_status_code(self):
-        response = self.client.get(reverse('logout'))
-        self.assertEqual(response.status_code, 302)
-
     def test_user_logout(self):
         response = self.client.get(reverse('logout'))
         self.assertRedirects(response, reverse('index'))
-
-    def test_get_success_message_when_user_logout(self):
-        response = self.client.get(reverse('logout'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _("You are logged out"))
