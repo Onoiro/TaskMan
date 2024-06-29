@@ -14,6 +14,7 @@ class TaskTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='me')
+        self.task = Task.objects.get(name="first task")
         self.c = Client()
         self.c.force_login(self.user)
         self.tasks_data = {
@@ -42,6 +43,29 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Show'))
+
+    # detail_view
+
+    def test_detail_view_response_200(self):
+        response = self.c.get(
+            reverse('tasks:task-detail', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_view_content(self):
+        response = self.c.get(
+            reverse('tasks:task-detail', args=[self.task.id]))
+        self.assertContains(response, self.task.name)
+        self.assertContains(response, self.task.description)
+        self.assertContains(
+            response,
+            f"{self.task.author.first_name}"
+            f" {self.task.author.last_name}")
+        self.assertContains(
+            response,
+            f"{self.task.executor.first_name}"
+            f" {self.task.executor.last_name}")
+        self.assertContains(response, self.task.status.name)
+        self.assertContains(response, self.task.created_at)
 
     # create
 
