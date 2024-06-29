@@ -4,6 +4,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+from django.utils.dateformat import DateFormat
+from django.utils.formats import get_format
 
 
 class TaskTestCase(TestCase):
@@ -65,7 +67,13 @@ class TaskTestCase(TestCase):
             f"{self.task.executor.first_name}"
             f" {self.task.executor.last_name}")
         self.assertContains(response, self.task.status.name)
-        self.assertContains(response, self.task.created_at)
+        formatted_date = DateFormat(
+            self.task.created_at).format(get_format('DATETIME_FORMAT'))
+        self.assertContains(response, formatted_date)
+        # lbls = []
+        # for label in self.task.labels.name:
+        #     lbls.append(label)
+        # self.assertContains(response, lbls)
 
     # create
 
