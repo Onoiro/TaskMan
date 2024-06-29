@@ -32,7 +32,7 @@ class UserFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn(_(
             'Your password is too short.'
-            'It must contain at least 3 characters.'),
+            ' It must contain at least 3 characters.'),
             form.errors['password1'])
 
     def test_passwords_do_not_match(self):
