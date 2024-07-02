@@ -48,7 +48,7 @@ class TaskTestCase(TestCase):
 
     # detail_view
 
-    def test_detail_view_response_200(self):
+    def test_task_detail_view_response_200(self):
         response = self.c.get(
             reverse('tasks:task-detail', args=[self.task.id]))
         self.assertEqual(response.status_code, 200)
@@ -70,10 +70,10 @@ class TaskTestCase(TestCase):
         formatted_date = DateFormat(
             self.task.created_at).format(get_format('DATETIME_FORMAT'))
         self.assertContains(response, formatted_date)
-        # lbls = []
-        # for label in self.task.labels.name:
-        #     lbls.append(label)
-        # self.assertContains(response, lbls)
+        labels = self.task.labels.all()
+        label_names = [label.name for label in labels]
+        for label_name in label_names:
+            self.assertContains(response, label_name)
 
     # create
 
