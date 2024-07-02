@@ -53,7 +53,19 @@ class TaskTestCase(TestCase):
             reverse('tasks:task-detail', args=[self.task.id]))
         self.assertEqual(response.status_code, 200)
 
-    def test_detail_view_content(self):
+    def test_task_detail_view_static_content(self):
+        response = self.c.get(
+            reverse('tasks:task-detail', args=[self.task.id]))
+        self.assertContains(response, _("Task view"))
+        self.assertContains(response, _('Status'))
+        self.assertContains(response, _('Author'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _("Labels"))
+        self.assertContains(response, _("Edit"))
+        self.assertContains(response, _("Delete"))
+
+    def test_task_detail_view_content(self):
         response = self.c.get(
             reverse('tasks:task-detail', args=[self.task.id]))
         self.assertContains(response, self.task.name)
