@@ -4,6 +4,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+from django.utils.dateformat import DateFormat
+from django.utils.formats import get_format
 
 
 class LabelsTestCase(TestCase):
@@ -24,11 +26,25 @@ class LabelsTestCase(TestCase):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertEqual(response.status_code, 200)
 
-    def test_labels_list_content(self):
+    def test_labels_list_static_content(self):
         response = self.c.get(reverse('labels:labels-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Labels'))
+        self.assertContains(response, _('New label'))
+        self.assertContains(response, _('Edit'))
+        self.assertContains(response, _('Delete'))
+
+    def test_labels_list_content(self):
+        response = self.c.get(reverse('labels:labels-list'))
+        labels = Label.objects.all()
+        for label in labels:
+            self.assertContains(response, label.id)
+            self.assertContains(response, label.name)
+            formatted_date = DateFormat(
+                label.created_at).format(get_format('DATETIME_FORMAT'))
+        self.assertContains(response, formatted_date)
 
     # create
 
