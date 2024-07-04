@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-05 01:00+0300\n"
+"POT-Creation-Date: 2024-07-04 13:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,23 +22,23 @@ msgstr ""
 
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
 #: statuses/forms.py:14 tasks/models.py:14 templates/labels/labels_list.html:14
-#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:23
+#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:26
 msgid "Name"
 msgstr "Имя"
 
-#: labels/views.py:42
+#: labels/views.py:35
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:50
+#: labels/views.py:43
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
 
-#: labels/views.py:57
+#: labels/views.py:50
 msgid "Label deleted successfully"
 msgstr " Метка успешно удалена"
 
-#: labels/views.py:65
+#: labels/views.py:58
 msgid "Cannot delete label because it is in use"
 msgstr "Невозможно удалить метку, потому что она используется"
 
@@ -62,29 +62,29 @@ msgstr "Русский"
 msgid "Spanish"
 msgstr "Испанский"
 
-#: statuses/views.py:35
+#: statuses/views.py:26
 msgid "Status created successfully"
 msgstr "Статус успешно создан"
 
-#: statuses/views.py:43
+#: statuses/views.py:34
 msgid "Status updated successfully"
 msgstr "Статус успешно изменен"
 
-#: statuses/views.py:50
+#: statuses/views.py:41
 msgid "Status deleted successfully"
 msgstr "Статус успешно удален"
 
-#: statuses/views.py:58
+#: statuses/views.py:49
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
 #: tasks/filters.py:14 tasks/models.py:23 templates/tasks/task_detail.html:27
-#: templates/tasks/task_filter.html:24
+#: templates/tasks/task_filter.html:27
 msgid "Status"
 msgstr "Статус"
 
 #: tasks/filters.py:20 tasks/models.py:29 templates/tasks/task_detail.html:23
-#: templates/tasks/task_filter.html:26
+#: templates/tasks/task_filter.html:29
 msgid "Executor"
 msgstr "Исполнитель"
 
@@ -107,27 +107,27 @@ msgstr "Метки"
 
 #: tasks/models.py:43 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
-#: templates/tasks/task_filter.html:27 templates/user/user_list.html:15
+#: templates/tasks/task_filter.html:30 templates/user/user_list.html:15
 msgid "Created at"
 msgstr "Дата создания"
 
-#: tasks/views.py:34
+#: tasks/views.py:24
 msgid "Task can only be deleted by its author."
 msgstr "Задачу может удалить только ее автор"
 
-#: tasks/views.py:54
+#: tasks/views.py:44
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:66
+#: tasks/views.py:56
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:74
+#: tasks/views.py:64
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
-#: templates/base.html:22
+#: templates/base.html:20
 msgid "Task manager"
 msgstr "Менеджер задач"
 
@@ -139,11 +139,11 @@ msgstr "Пользователи"
 msgid "Statuses"
 msgstr "Статусы"
 
-#: templates/base.html:38 templates/tasks/task_filter.html:8
+#: templates/base.html:38 templates/tasks/task_filter.html:7
 msgid "Tasks"
 msgstr "Задачи"
 
-#: templates/base.html:43 views.py:15
+#: templates/base.html:43
 msgid "Exit"
 msgstr "Выход"
 
@@ -151,9 +151,9 @@ msgstr "Выход"
 msgid "Login"
 msgstr "Вход"
 
-#: templates/user/user_create_form.html:13
-msgid "Sign up"
-msgstr "Зарегистрировать"
+#: templates/base.html:50 templates/user/user_create_form.html:8
+msgid "Signup"
+msgstr "Регистрация"
 
 #: templates/labels/labels_create.html:8
 msgid "Create label"
@@ -192,7 +192,7 @@ msgstr "Создать метку"
 #: templates/labels/labels_list.html:26 templates/labels/labels_update.html:13
 #: templates/statuses/statuses_list.html:26
 #: templates/statuses/statuses_update.html:13
-#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:41
+#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:44
 #: templates/tasks/task_update.html:13 templates/user/user_list.html:27
 #: templates/user/user_update.html:13
 msgid "Edit"
@@ -200,7 +200,7 @@ msgstr "Изменить"
 
 #: templates/labels/labels_list.html:28
 #: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:48
-#: templates/tasks/task_filter.html:43 templates/user/user_list.html:29
+#: templates/tasks/task_filter.html:46 templates/user/user_list.html:29
 msgid "Delete"
 msgstr "Удалить"
 
@@ -241,7 +241,7 @@ msgstr "Удаление задачи"
 msgid "Task view"
 msgstr "Просмотр задачи"
 
-#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:25
+#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:28
 msgid "Author"
 msgstr "Автор"
 
@@ -249,11 +249,11 @@ msgstr "Автор"
 msgid "Labels:"
 msgstr "Метки"
 
-#: templates/tasks/task_filter.html:9
+#: templates/tasks/task_filter.html:8
 msgid "New task"
 msgstr "Создать задачу"
 
-#: templates/tasks/task_filter.html:16
+#: templates/tasks/task_filter.html:17
 msgid "Show"
 msgstr "Показать"
 
@@ -261,9 +261,9 @@ msgstr "Показать"
 msgid "Edit task"
 msgstr "Изменение задачи"
 
-#: templates/base.html:50 templates/user/user_create_form.html:8
-msgid "Signup"
-msgstr "Регистрация"
+#: templates/user/user_create_form.html:13
+msgid "Sign up"
+msgstr "Зарегистрировать"
 
 #: templates/user/user_delete.html:8 templates/user/user_delete.html:14
 msgid "Delete user"
@@ -322,23 +322,23 @@ msgstr "Пользователь успешно удален"
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 
-#: views.py:12
+#: views.py:13
 msgid "Hello from Hexlet!"
 msgstr "Привет от Хекслета!"
 
-#: views.py:13
+#: views.py:14
 msgid "Practical programming courses"
 msgstr "Практические курсы по программированию"
 
-#: views.py:14
+#: views.py:15
 msgid "Read more"
 msgstr "Узнать больше"
 
-#: views.py:28
+#: views.py:24
 msgid "You successfully logged in"
 msgstr "Вы залогинены"
 
-#: views.py:35
+#: views.py:31
 msgid "You are logged out"
 msgstr "Вы разлогинены"
 
