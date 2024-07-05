@@ -13,9 +13,9 @@ from django.http import HttpResponse
 
 # use this path '/labels/trigger-error' when need to check connect to rollbar
 def trigger_error(request):
-    # division_by_zero = 1 / 0
-    a = None
-    a.Hello()
+    division_by_zero = 1 / 0
+    # a = None
+    # a.Hello()
     return HttpResponse("This should not be reached")
 
 
