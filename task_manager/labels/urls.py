@@ -1,13 +1,10 @@
 from django.urls import path
-
 from .views import (
     LabelsListView,
     LabelsCreateView,
     LabelsUpdateView,
     LabelsDeleteView
 )
-from . import views
-
 
 app_name = 'labels'
 
