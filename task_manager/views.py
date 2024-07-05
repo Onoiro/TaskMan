@@ -4,6 +4,15 @@ from django.views import View
 from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
+from django.http import HttpResponse
+
+
+# use this path '/trigger-error' when need to check connect to rollbar
+def trigger_error(request):
+    division_by_zero = 1 / 0
+    # a = None
+    # a.Hello()
+    return HttpResponse("This should not be reached")
 
 
 class IndexView(View):

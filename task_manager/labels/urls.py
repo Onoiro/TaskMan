@@ -13,7 +13,6 @@ app_name = 'labels'
 
 
 urlpatterns = [
-    path('trigger-error/', views.trigger_error),
     path('',
          LabelsListView.as_view(),
          name='labels-list'),

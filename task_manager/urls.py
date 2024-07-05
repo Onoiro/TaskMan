@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
+from . import views
 
 
 urlpatterns = [
+    path('trigger-error/', views.trigger_error),
     path('', IndexView.as_view(), name='index'),
     path('login/',
          UserLoginView.as_view(template_name='login.html'),
