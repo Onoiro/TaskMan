@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from unittest.mock import patch
+import os
 
 
 class RollbarTriggerErrorTests(TestCase):
@@ -8,6 +9,7 @@ class RollbarTriggerErrorTests(TestCase):
 
     @patch('rollbar.report_exc_info')  # замена Rollbar на mock-объект
     def test_trigger_error(self, mock_rollbar):
+        print(f"POST_SERVER_ITEM_ACCESS_TOKEN is: {os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN')}")
         """
         Test that a division by zero error occurs and Rollbar is called.
         """
