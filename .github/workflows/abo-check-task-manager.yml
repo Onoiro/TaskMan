@@ -29,6 +29,10 @@ jobs:
           make lint
         continue-on-error: true
       
+      - name: Collect static files
+        run: |
+          poetry run python manage.py collectstatic --noinput
+      
       - name: test with unittest & test coverage
         run: |
           make test
