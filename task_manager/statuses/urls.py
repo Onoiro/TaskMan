@@ -17,7 +17,7 @@ urlpatterns = [
     path('create/',
          StatusesCreateView.as_view(),
          name='statuses-create'),
-    path('<int:pk>/edit/',
+    path('<int:pk>/update/',
          StatusesUpdateView.as_view(),
          name='statuses-update'),
     path('<int:pk>/delete/',
