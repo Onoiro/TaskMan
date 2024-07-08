@@ -37,8 +37,8 @@
                 <td>{{ obj.id }}</td>
                 <td><a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a></td>
                 <td>{{ obj.status }}</td>
-                <td>{{ obj.author }}</td>
-                <td>{{ obj.executor }}</td>
+                <td>{{ obj.author.get_full_name }}</td>
+                <td>{{ obj.executor.get_full_name }}</td>
                 <td>{{ obj.created_at }}</td>
                 <td>
                     <a href="{% url 'tasks:task-update' obj.id %}">{% trans "Edit" %}</a>
