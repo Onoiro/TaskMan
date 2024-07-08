@@ -148,7 +148,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 # LANGUAGE_CODE = 'en-us'
 # LANGUAGE_CODE = 'ru'
-LANGUAGE_CODE = os.getenv('DJANGO_LANGUAGE_CODE', 'en-us')
+LANGUAGE_CODE = os.getenv('DJANGO_LANGUAGE_CODE', 'ru')
 
 LANGUAGES = [
     ('en', _('English')),
