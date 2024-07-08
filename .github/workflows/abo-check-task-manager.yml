@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
+    env:
+      DJANGO_LANGUAGE_CODE: 'en-us'
 
     steps:
       - uses: actions/checkout@v3
