@@ -36,9 +36,10 @@ class TaskFilter(django_filters.FilterSet):
 
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'labels']
+        fields = ['status', 'executor', 'labels', 'self_tasks']
 
     def filter_own_tasks(self, queryset, name, value):
+        user = self.request.user
         if value:
-            return queryset.filter(author=self.request.user)
+            return queryset.filter(author=user)
         return queryset
