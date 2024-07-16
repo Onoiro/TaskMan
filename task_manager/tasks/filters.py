@@ -12,19 +12,22 @@ class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
         queryset=Status.objects.all(),
         label=_('Status'),
-        widget=forms.Select
+        widget=forms.Select,
+        label_suffix="",
     )
 
     executor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
         label=_('Executor'),
-        widget=forms.Select
+        widget=forms.Select,
+        label_suffix="",
     )
 
     labels = django_filters.ModelChoiceFilter(
         queryset=Label.objects.all(),
         label=_('Label'),
-        widget=forms.Select
+        widget=forms.Select,
+        label_suffix="",
     )
 
     self_tasks = django_filters.BooleanFilter(
@@ -32,6 +35,7 @@ class TaskFilter(django_filters.FilterSet):
         label=_('Just my tasks'),
         widget=forms.CheckboxInput(),
         method='filter_own_tasks',
+        label_suffix="",
     )
 
     class Meta:
