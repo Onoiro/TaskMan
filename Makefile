@@ -5,7 +5,7 @@ build:
 
 # run local server
 dev:
-	$(MANAGE) runserver
+	$(MANAGE) runserver 8001
 
 # run production server
 start:

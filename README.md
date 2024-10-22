@@ -57,7 +57,7 @@ make build
 make dev
 
 # open your browser and navigate to:
-http://127.0.0.1:8000/
+http://127.0.0.1:8001/
 
 # run production:
 make start
