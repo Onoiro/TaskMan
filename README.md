@@ -33,8 +33,11 @@ git clone git@github.com:Onoiro/python-project-52.git
 # navigate to the project directory:
 cd python-project-52
 
-# install dependencies, migrate a database, create superuser for admin:
-make build
+# create local project database
+sudo -u postgres createdb --owner=user my_db_name
+
+# set DATABASE_URL to specify the location and connection parameters to your database:
+export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 
 # create .env file contains environment variables:
 touch .env
@@ -46,6 +49,9 @@ nano .env
 DEBUG=True
 DATABASE_URL=postgresql://user:password@connect_url/database
 SECRET_KEY="secret_key"
+
+# install dependencies, migrate a database, create superuser for admin:
+make build
 
 # run app in development mode on local web server:
 make dev
@@ -68,3 +74,4 @@ make test
 * OS Linux  
 * python = ^3.8.1
 * poetry = ^1.2.2
+* postgres = ^12.15
