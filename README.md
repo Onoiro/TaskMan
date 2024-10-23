@@ -33,12 +33,6 @@ git clone git@github.com:Onoiro/python-project-52.git
 # navigate to the project directory:
 cd python-project-52
 
-# create local project database
-sudo -u postgres createdb --owner=user my_db_name
-
-# set DATABASE_URL to specify the location and connection parameters to your database:
-export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
-
 # create .env file contains environment variables:
 touch .env
 
@@ -47,7 +41,7 @@ nano .env
 
 # specify environment variables in .env, for example:
 DEBUG=True
-DATABASE_URL=postgresql://user:password@connect_url/database
+DATABASE_URL=sqlite:///db.sqlite3
 SECRET_KEY="secret_key"
 
 # install dependencies, migrate a database, create superuser for admin:
