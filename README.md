@@ -28,7 +28,7 @@ The Task Manager application is available in two languages:
 To get started with the Task Manager, follow these steps:
 ```bash
 # clone the repository:
-git clone git@github.com:Onoiro/python-project-52.git
+git clone https://github.com/Onoiro/python-project-52.git
 
 # navigate to the project directory:
 cd python-project-52
