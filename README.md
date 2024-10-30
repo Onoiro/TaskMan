@@ -43,6 +43,7 @@ nano .env
 DEBUG=True
 DATABASE_URL=sqlite:///db.sqlite3
 SECRET_KEY="secret_key"
+DJANGO_LANGUAGE_CODE="en-us"
 
 # install dependencies, migrate a database, create superuser for admin:
 make build
