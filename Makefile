@@ -9,7 +9,7 @@ dev:
 
 # run production server
 start:
-	gunicorn task_manager.wsgi:application
+	poetry run gunicorn task_manager.wsgi:application --bind 0.0.0.0:8001
 
 # when you want to check code style with flake8
 lint:
