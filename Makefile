@@ -8,8 +8,9 @@ dev:
 	$(MANAGE) runserver 8001
 
 # run production server
+PORT ?= 8001
 start:
-	poetry run gunicorn task_manager.wsgi:application --bind 0.0.0.0:8001
+	poetry run gunicorn -w 4 -b localhost:$(PORT) task_manager.wsgi:application
 
 # when you want to check code style with flake8
 lint:
