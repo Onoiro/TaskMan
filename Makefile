@@ -10,7 +10,7 @@ dev:
 # run production server
 PORT ?= 8001
 start:
-	poetry run gunicorn -w 4 -b 0.0.0.0:$(PORT) task_manager.wsgi:application
+	poetry run gunicorn -w 4 -b localhost:$(PORT) task_manager.wsgi:application
 
 # when you want to check code style with flake8
 lint:
