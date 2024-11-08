@@ -9,8 +9,8 @@
       <h1 class="my-4"></h1>
       <div class="card">
         <div class="card-body p-5 bg-light">
-          <div class="display-4">{{ hello_from_hexlet }}</div>
-          <p class="lead">{{ coding_courses }}</p>
+          <div class="display-4">{{ welcome }}</div>
+          <p class="lead">{{ description|safe }}</p>
           <hr>
           <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">{{ read_more }}</a>
         </div>

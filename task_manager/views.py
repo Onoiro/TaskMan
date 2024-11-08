@@ -17,8 +17,11 @@ class IndexView(View):
 
     def get(self, request, *args, **kwargs):
         content = {
-            'hello_from_hexlet': _("Hello from Hexlet!"),
-            'coding_courses': _('Practical programming courses'),
+            'welcome': _("Welcome to Task Manager!"),
+            'description': _('Task Manager is a web application designed '
+                             'to manage tasks in an organization or team.<br>'
+                             'Task Manager allows users to register, create '
+                             'and effectively manage tasks.'),
             'read_more': _("Read more"),
         }
         return render(request, 'index.html', context=content)

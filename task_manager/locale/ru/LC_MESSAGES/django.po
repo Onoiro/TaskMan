@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-04 13:33+0300\n"
+"POT-Creation-Date: 2024-11-08 23:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,19 +26,19 @@ msgstr ""
 msgid "Name"
 msgstr "Имя"
 
-#: labels/views.py:35
+#: labels/views.py:26
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:43
+#: labels/views.py:34
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
 
-#: labels/views.py:50
+#: labels/views.py:41
 msgid "Label deleted successfully"
 msgstr " Метка успешно удалена"
 
-#: labels/views.py:58
+#: labels/views.py:49
 msgid "Cannot delete label because it is in use"
 msgstr "Невозможно удалить метку, потому что она используется"
 
@@ -50,15 +50,15 @@ msgstr "Вы не авторизованы! Пожалуйста, выполни
 msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
-#: settings.py:152
+#: settings.py:153
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:153
+#: settings.py:154
 msgid "Russian"
 msgstr "Русский"
 
-#: settings.py:154
+#: settings.py:155
 msgid "Spanish"
 msgstr "Испанский"
 
@@ -83,16 +83,16 @@ msgstr "Невозможно удалить статус, потому что о
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:20 tasks/models.py:29 templates/tasks/task_detail.html:23
+#: tasks/filters.py:21 tasks/models.py:29 templates/tasks/task_detail.html:23
 #: templates/tasks/task_filter.html:29
 msgid "Executor"
 msgstr "Исполнитель"
 
-#: tasks/filters.py:26
+#: tasks/filters.py:28
 msgid "Label"
 msgstr "Метка"
 
-#: tasks/filters.py:32
+#: tasks/filters.py:35
 msgid "Just my tasks"
 msgstr "Только свои задачи"
 
@@ -100,7 +100,7 @@ msgstr "Только свои задачи"
 msgid "Description"
 msgstr "Описание"
 
-#: tasks/models.py:39 templates/base.html:35
+#: tasks/models.py:39 templates/base.html:37
 #: templates/labels/labels_list.html:8
 msgid "Labels"
 msgstr "Метки"
@@ -127,31 +127,31 @@ msgstr "Задача успешно изменена"
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
-#: templates/base.html:20
+#: templates/base.html:22
 msgid "Task manager"
 msgstr "Менеджер задач"
 
-#: templates/base.html:28 templates/user/user_list.html:8
+#: templates/base.html:30 templates/user/user_list.html:8
 msgid "Users"
 msgstr "Пользователи"
 
-#: templates/base.html:32 templates/statuses/statuses_list.html:8
+#: templates/base.html:34 templates/statuses/statuses_list.html:8
 msgid "Statuses"
 msgstr "Статусы"
 
-#: templates/base.html:38 templates/tasks/task_filter.html:7
+#: templates/base.html:40 templates/tasks/task_filter.html:7
 msgid "Tasks"
 msgstr "Задачи"
 
-#: templates/base.html:43
+#: templates/base.html:45
 msgid "Exit"
 msgstr "Выход"
 
-#: templates/base.html:47 templates/login.html:8
+#: templates/base.html:49 templates/login.html:8
 msgid "Login"
 msgstr "Вход"
 
-#: templates/base.html:50 templates/user/user_create_form.html:8
+#: templates/base.html:53 templates/user/user_create_form.html:8
 msgid "Signup"
 msgstr "Регистрация"
 
@@ -322,25 +322,34 @@ msgstr "Пользователь успешно удален"
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 
-#: views.py:13
-msgid "Hello from Hexlet!"
-msgstr "Привет от Хекслета!"
+#: views.py:20
+#msgid "Welcome to Task Manager!"
+#msgstr "Добро пожаловать в Таск-менеджер!"
 
-#: views.py:14
-msgid "Practical programming courses"
-msgstr "Практические курсы по программированию"
+#: views.py:21
+msgid "Task Manager is a web application designed to manage tasks in an "
+"organization or team.<br>Task Manager allows users to register, create and "
+"effectively manage tasks."
+msgstr "Менеджер Задач - приложение для управления задачами в организации или "
+"команде.<br>Регистрируйтесь, создавайте и эффективно управляйте задачами."
 
-#: views.py:15
+#: views.py:25
 msgid "Read more"
 msgstr "Узнать больше"
 
-#: views.py:24
+#: views.py:34
 msgid "You successfully logged in"
 msgstr "Вы залогинены"
 
-#: views.py:31
+#: views.py:41
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "Hello from Hexlet!"
+#~ msgstr "Привет от Хекслета!"
+
+#~ msgid "Practical programming courses"
+#~ msgstr "Практические курсы по программированию"
 
 #~ msgid "First name"
 #~ msgstr "Имя"
