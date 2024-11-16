@@ -4,7 +4,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/python-project-52/test_coverage)
 
 ## Welcome to [Task manager](https://taskman.2-way.ru)
-Task Manager is a web application designed to facilitate task management within an organization or team. It allows users to register, create, and manage tasks efficiently.
+Task Manager is a web application designed to manage tasks in an organization or team. It allows users to register, create, and effectively manage tasks.
 The application is deployed and accessible at the following URL: https://taskman.2-way.ru
 
 Key features include:
