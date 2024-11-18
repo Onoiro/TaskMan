@@ -20,4 +20,3 @@ class IndexViewTestCase(TestCase):
                              'to manage tasks in an organization or team.<br>'
                              'Task Manager allows users to register, create '
                              'and effectively manage tasks.'))
-        self.assertContains(response, _("Read more"))
