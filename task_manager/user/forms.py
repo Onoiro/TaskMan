@@ -8,7 +8,14 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username']
-
+    
+    is_team_admin = forms.BooleanField(
+        required=True,
+        label=_('Register as Team Admin'),
+        widget=forms.CheckboxInput(),
+        help_text=_("Sign up, then create your team.")
+        )
+    
     password1 = forms.CharField(
         required=True,
         label=_('Password'),
@@ -43,4 +50,8 @@ class UserForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
+            is_team_admin = self.cleaned_data['is_team_admin']
+            # team = None
+            # if is_team_admin:
+            #     team = Team.objects.create(name=f"{user.username}'s Team")
         return user
