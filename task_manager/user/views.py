@@ -6,7 +6,8 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from task_manager.user.models import User
 from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
