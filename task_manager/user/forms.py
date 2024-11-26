@@ -9,14 +9,14 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username']
-    
+
     is_team_admin = forms.BooleanField(
         required=False,
         label=_('Register as Team Admin'),
         widget=forms.CheckboxInput(),
         help_text=_("Sign up, then create your team.")
-        )
-    
+    )
+
     password1 = forms.CharField(
         required=True,
         label=_('Password'),

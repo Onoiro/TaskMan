@@ -16,7 +16,9 @@ class IndexViewTestCase(TestCase):
     def test_index_view_content(self):
         response = self.client.get(reverse('index'))
         self.assertContains(response, _("Welcome to Task Manager!"))
-        self.assertContains(response, _('Task Manager is a web application designed '
-                             'to manage tasks in an organization or team.<br>'
-                             'Task Manager allows users to register, create '
-                             'and effectively manage tasks.'))
+        self.assertContains(response, _('Task Manager is a web application '
+                                        'designed to manage tasks '
+                                        'in an organization or team.<br>'
+                                        'Task Manager allows users to '
+                                        'register, create and effectively '
+                                        'manage tasks.'))
