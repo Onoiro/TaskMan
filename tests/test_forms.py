@@ -1,5 +1,6 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from task_manager.user.models import User
 from task_manager.user.forms import UserForm
 from django.utils.translation import gettext as _
 

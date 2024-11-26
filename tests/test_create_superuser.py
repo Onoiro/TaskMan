@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from task_manager.user.models import User
 from django.core.management import call_command
 from django.test import TestCase
 from io import StringIO
