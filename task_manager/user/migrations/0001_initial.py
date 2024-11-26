@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                     max_length=150,
                     verbose_name='first name')),
                 ('last_name', models.CharField(
-                    lank=True,
+                    blank=True,
                     max_length=150,
                     verbose_name='last name')),
                 ('email', models.EmailField(
