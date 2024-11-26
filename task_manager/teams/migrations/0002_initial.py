@@ -18,6 +18,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='team',
             name='team_admin',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='team_admin_set', to=settings.AUTH_USER_MODEL, verbose_name='Team admin'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name='team_admin_set',
+                to=settings.AUTH_USER_MODEL,
+                verbose_name='Team admin'),
         ),
     ]
