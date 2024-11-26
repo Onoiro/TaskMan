@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username']
     
     is_team_admin = forms.BooleanField(
-        required=True,
+        required=False,
         label=_('Register as Team Admin'),
         widget=forms.CheckboxInput(),
         help_text=_("Sign up, then create your team.")
