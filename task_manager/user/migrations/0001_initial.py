@@ -42,7 +42,15 @@ class Migration(migrations.Migration):
                               ' Letters, digits and @/./+/-/_ only.',
                     max_length=150,
                     unique=True,
-                    validators=[django.contrib.auth.validators.UnicodeUsernameValidator()],
+                    validators=[
+                        (
+                            django.
+                            contrib.
+                            auth.
+                            validators.
+                            UnicodeUsernameValidator()
+                        )
+                    ],
                     verbose_name='username')),
                 ('first_name', models.CharField(
                     blank=True,
