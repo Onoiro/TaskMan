@@ -49,9 +49,10 @@ class UserForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
+        user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
         if commit:
             user.save()
-            is_team_admin = self.cleaned_data['is_team_admin']
+            # is_team_admin = self.cleaned_data['is_team_admin']
             # team = None
             # if is_team_admin:
             #     team = Team.objects.create(name=f"{user.username}'s Team")
