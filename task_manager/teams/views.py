@@ -14,12 +14,17 @@ from django.shortcuts import redirect
 def index(request):
     return HttpResponse('teams')
 
-class TeamCreateView(SuccessMessageMixin,
+class TeamCreateView(CustomPermissions,
+                     SuccessMessageMixin,
                      CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
     success_url = reverse_lazy('login')
     success_message = _('Team created successfully')
+
+    def form_valid(self, form):
+        form.instance.team_admin = self.request.user
+        return super().form_valid(form)
 
 
 # class TeamUpdateView(CustomPermissions,
