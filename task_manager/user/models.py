@@ -4,6 +4,13 @@ from django.db import models
 
 class User(AbstractUser):
     is_team_admin = models.BooleanField(default=False)
+    team = models.ForeignKey(
+        'teams.Team',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='team_members'
+    )
 
     def user_str(self):
         return (
