@@ -23,8 +23,14 @@ class TeamCreateView(CustomPermissions,
     success_message = _('Team created successfully')
 
     def form_valid(self, form):
-        form.instance.team_admin = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        team = form.instance
+        team.team_admin = self.request.user
+        team.save()
+
+        # Добавляем админа как члена команды
+        self.request.user.team = team
+        self.request.user.save()
 
 
 # class TeamUpdateView(CustomPermissions,
