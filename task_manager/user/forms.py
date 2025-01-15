@@ -77,7 +77,6 @@ class UserForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
         user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
-        user.team = self.cleaned_data.get('team_name')
         if commit:
             user.save()
             if not user.is_team_admin:

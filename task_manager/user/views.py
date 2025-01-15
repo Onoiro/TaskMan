@@ -27,7 +27,7 @@ class UserCreateView(SuccessMessageMixin,
                      CreateView):
     form_class = UserForm
     template_name = 'user/user_create_form.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('teams:team-create')
     success_message = _('User created successfully')
 
 
