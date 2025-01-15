@@ -22,16 +22,16 @@ class TeamCreateView(SuccessMessageMixin,
     success_message = _('Team created successfully')
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        team = form.instance
+        # do not save to DB at once
+        team = form.save(commit=False) 
+        # set current user as admin
         team.team_admin = self.request.user
         team.save()
-
-        # Добавляем админа как члена команды
+        # add current user as team_admin
         self.request.user.team = team
         self.request.user.save()
 
-        return response
+        return super().form_valid(form)
 
 
 # class TeamUpdateView(CustomPermissions,
