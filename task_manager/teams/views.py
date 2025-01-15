@@ -14,8 +14,7 @@ from django.shortcuts import redirect
 def index(request):
     return HttpResponse('teams')
 
-class TeamCreateView(CustomPermissions,
-                     SuccessMessageMixin,
+class TeamCreateView(SuccessMessageMixin,
                      CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
@@ -31,6 +30,8 @@ class TeamCreateView(CustomPermissions,
         # Добавляем админа как члена команды
         self.request.user.team = team
         self.request.user.save()
+
+        return response
 
 
 # class TeamUpdateView(CustomPermissions,
