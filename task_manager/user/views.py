@@ -11,6 +11,7 @@ from task_manager.user.models import User
 from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth import login
 
 import os
 import django
@@ -29,6 +30,16 @@ class UserCreateView(SuccessMessageMixin,
     template_name = 'user/user_create_form.html'
     success_url = reverse_lazy('teams:team-create')
     success_message = _('User created successfully')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Auto Login after create user
+        login(self.request, self.object)
+        # If user is team_admin redirect to create team
+        if self.object.is_team_admin:
+            return redirect('teams:team-create')
+        # Else redirect to Login
+        return redirect('login')
 
 
 class UserUpdateView(CustomPermissions,
