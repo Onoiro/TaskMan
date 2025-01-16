@@ -39,11 +39,11 @@ class TeamCreateView(SuccessMessageMixin,
 #                      SuccessMessageMixin,
 #                      UpdateView):
 #     model = Team
-#     form_class = UserForm
-#     template_name = 'user/user_update.html'
+#     form_class = TeamForm
+#     template_name = 'teams/team_create_form.html'
 #     redirect_field_name = "redirect_to"
 #     success_url = reverse_lazy('user:user-list')
-#     success_message = _('User updated successfully')
+#     success_message = _('Team updated successfully')
 
 
 # class UserDeleteView(CustomPermissions,

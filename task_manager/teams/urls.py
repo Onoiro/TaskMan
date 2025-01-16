@@ -15,15 +15,15 @@ app_name = 'teams'
 
 from task_manager.teams.views import (
     TeamCreateView,
-    # TeamUpdateView,
+    TeamUpdateView,
     # TeamDeleteView
 )
 
 urlpatterns = [
     path('create/',
          TeamCreateView.as_view(), name='team-create'),
-    # path('<int:pk>/update/',
-    #      TeamUpdateView.as_view(), name='team-update'),
+    path('<int:pk>/update/',
+         TeamUpdateView.as_view(), name='team-update'),
     # path('<int:pk>/delete/',
     #      TeamDeleteView.as_view(), name='team-delete'),
 ]
