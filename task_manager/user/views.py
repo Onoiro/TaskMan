@@ -22,6 +22,16 @@ django.setup()
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
+    
+    def get_queryset(self):
+        current_user = self.request.user
+        if not current_user.is_authenticated:
+            return User.objects.none()
+        # return user himself if he does not have a command
+        if not current_user.team:
+            return User.objects.filter(id=current_user.id)
+        # return all users of the same team
+        return User.objects.filter(team=current_user.team)
 
 
 class UserCreateView(SuccessMessageMixin,
