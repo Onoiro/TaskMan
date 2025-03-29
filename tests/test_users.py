@@ -201,7 +201,7 @@ class UserTestCase(TestCase):
         self.assertEqual(str(messages[0]),
                          _('Cannot delete a user because it is in use'))
 
-def test_can_join_existing_team(self):
+    def test_can_join_existing_team(self):
         team = Team.objects.get(pk=1)
         new_user_data = {
             'first_name': 'Team',
@@ -213,7 +213,7 @@ def test_can_join_existing_team(self):
             'team_name': team.name
         }
         response = self.c.post(reverse('user:user-create'),
-                              new_user_data, follow=True)
+                               new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username='team_member')
         self.assertEqual(user.team, team)

@@ -1,6 +1,6 @@
 from django import forms
 from task_manager.teams.models import Team
-from django.utils.translation import gettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 
 
 class TeamForm(forms.ModelForm):

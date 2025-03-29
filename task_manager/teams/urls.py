@@ -1,5 +1,9 @@
 from django.urls import path
-from task_manager.teams import views
+from task_manager.teams.views import (
+    TeamCreateView,
+    # TeamUpdateView,
+    # TeamDeleteView
+)
 
 # from task_manager.teams.views import (
 #     TeamListView,
@@ -12,12 +16,6 @@ from task_manager.teams import views
 app_name = 'teams'
 
 # urlpatterns = [path('', views.index),]
-
-from task_manager.teams.views import (
-    TeamCreateView,
-    # TeamUpdateView,
-    # TeamDeleteView
-)
 
 urlpatterns = [
     path('create/',

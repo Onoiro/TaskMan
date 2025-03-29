@@ -22,7 +22,7 @@ django.setup()
 class UserListView(ListView):
     model = User
     template_name = 'user/user_list.html'
-    
+
     def get_queryset(self):
         current_user = self.request.user
         if not current_user.is_authenticated:
@@ -42,7 +42,7 @@ class UserCreateView(SuccessMessageMixin,
     success_message = _('User created successfully')
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        # response = super().form_valid(form)
         # Auto Login after create user
         login(self.request, self.object)
         # If user is team_admin redirect to create team
