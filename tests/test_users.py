@@ -46,6 +46,7 @@ class UserTestCase(TestCase):
         self.assertContains(response, 'ID')
         self.assertContains(response, _('User name'))
         self.assertContains(response, _('Fullname'))
+        self.assertContains(response, _('Team admin'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Users'))
 
