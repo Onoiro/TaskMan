@@ -6,6 +6,7 @@
 
 # from django.contrib.auth.models import User
 from task_manager.user.models import User
+from task_manager.teams.models import Team
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -14,7 +15,8 @@ from django.contrib.auth.hashers import check_password
 
 
 class UserTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json",
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json",
                 "tests/fixtures/test_statuses.json",
                 "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]
@@ -29,6 +31,8 @@ class UserTestCase(TestCase):
             'username': 'new',
             'password1': 222,
             'password2': 222,
+            'is_team_admin': True,
+            'team_name': ''
         }
 
     # list
@@ -73,7 +77,7 @@ class UserTestCase(TestCase):
         user = User.objects.filter(username=self.user_data['username']).first()
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse('teams:team-create'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('User created successfully'))
@@ -196,3 +200,21 @@ class UserTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete a user because it is in use'))
+
+def test_can_join_existing_team(self):
+        team = Team.objects.get(pk=1)
+        new_user_data = {
+            'first_name': 'Team',
+            'last_name': 'Member',
+            'username': 'team_member',
+            'password1': '123',
+            'password2': '123',
+            'is_team_admin': False,
+            'team_name': team.name
+        }
+        response = self.c.post(reverse('user:user-create'),
+                              new_user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username='team_member')
+        self.assertEqual(user.team, team)
+        self.assertFalse(user.is_team_admin)
