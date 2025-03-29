@@ -42,7 +42,7 @@ class UserCreateView(SuccessMessageMixin,
     success_message = _('User created successfully')
 
     def form_valid(self, form):
-        # response = super().form_valid(form)
+        super().form_valid(form)
         # Auto Login after create user
         login(self.request, self.object)
         # If user is team_admin redirect to create team
