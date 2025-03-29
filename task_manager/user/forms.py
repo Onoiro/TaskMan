@@ -59,10 +59,14 @@ class UserForm(forms.ModelForm):
         team_name = cleaned_data.get('team_name')
 
         if not is_team_admin and not team_name:
-            raise forms.ValidationError(_("You must either register as team admin or specify team name"))
-        
+            raise forms.ValidationError(_(
+                "You must either register as team admin"
+                " or specify team name"))
+
         if is_team_admin and team_name:
-            raise forms.ValidationError(_("You can't be team admin and join existing team at the same time"))
+            raise forms.ValidationError(_(
+                "You can't be team admin and"
+                " join existing team at the same time"))
 
         if team_name and not is_team_admin:
             try:

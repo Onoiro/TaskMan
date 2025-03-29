@@ -16,7 +16,7 @@ class TeamAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('team_admin')
 

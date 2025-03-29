@@ -61,18 +61,18 @@ class UserFormTestCase(TestCase):
         self.assertTrue(user.is_team_admin)
 
     def test_join_existing_team(self):
-            team = Team.objects.get(pk=1)
-            form_data = {
-                'first_name': 'Team',
-                'last_name': 'Member',
-                'username': 'team_member',
-                'password1': '123',
-                'password2': '123',
-                'is_team_admin': False,
-                'team_name': team.name
-            }
-            form = UserForm(data=form_data)
-            self.assertTrue(form.is_valid())
-            user = form.save()
-            self.assertEqual(user.team, team)
-            self.assertFalse(user.is_team_admin)
+        team = Team.objects.get(pk=1)
+        form_data = {
+            'first_name': 'Team',
+            'last_name': 'Member',
+            'username': 'team_member',
+            'password1': '123',
+            'password2': '123',
+            'is_team_admin': False,
+            'team_name': team.name
+        }
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertEqual(user.team, team)
+        self.assertFalse(user.is_team_admin)

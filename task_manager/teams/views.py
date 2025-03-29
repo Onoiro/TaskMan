@@ -11,8 +11,10 @@ from task_manager.user.models import User
 from task_manager.teams.models import Team
 from django.shortcuts import redirect
 
+
 def index(request):
     return HttpResponse('teams')
+
 
 class TeamCreateView(SuccessMessageMixin,
                      CreateView):
@@ -23,7 +25,7 @@ class TeamCreateView(SuccessMessageMixin,
 
     def form_valid(self, form):
         # do not save to DB at once
-        team = form.save(commit=False) 
+        team = form.save(commit=False)
         # set current user as admin
         team.team_admin = self.request.user
         team.save()
