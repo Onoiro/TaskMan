@@ -5,13 +5,14 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">{% trans "Users" %}</h1>
+    <h1 class="my-4">{{ request.user.team.name }}: {% trans "Users" %}</h1>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
             <th>{% trans "User name" %}</th>
             <th>{% trans "Fullname" %}</th>
+            <th>{% trans "Team admin" %}</th>
             <th>{% trans "Created at" %}</th>
             <th></th>
         </tr>
@@ -22,6 +23,7 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
+                <td>{{ user.is_team_admin }}</td>
                 <td>{{ user.date_joined }}</td>
                 <td>
                     <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
