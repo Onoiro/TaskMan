@@ -53,6 +53,13 @@ class UserForm(forms.ModelForm):
                 _("The entered passwords do not match."))
         return password2
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Если это редактирование существующего пользователя (у пользователя есть pk)
+        if self.instance and self.instance.pk and self.instance.team:
+            # Установить начальное значение для поля team_name
+            self.initial['team_name'] = self.instance.team.name
+
     def clean(self):
         cleaned_data = super().clean()
         is_team_admin = cleaned_data.get('is_team_admin')
@@ -83,7 +90,10 @@ class UserForm(forms.ModelForm):
         user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
         if commit:
             user.save()
-            if not user.is_team_admin:
+            # Если пользователь не администратор команды и указано имя команды
+            team_name = self.cleaned_data.get('team_name')
+            if not user.is_team_admin and team_name:
+                # Используем team из cleaned_data, она должна быть установлена в clean()
                 user.team = self.cleaned_data['team']
                 user.save()
         return user
