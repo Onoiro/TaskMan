@@ -75,40 +75,51 @@ class UserForm(forms.ModelForm):
 
         # If it's an update, we don't allow to change team and user role
         if is_update:
-            # set values from the instance to avoid incorrect validation
-            cleaned_data['is_team_admin'] = self.instance.is_team_admin
-            # If user already has a team, team_name is taken from it,
-            # otherwise it is cleared
-            cleaned_data['team'] = (
-                self.instance.team
-                if self.instance.team
-                else None
-            )
-            cleaned_data['team_name'] = (
-                self.instance.team.name
-                if self.instance.team
-                else ''
-            )
-            return cleaned_data
+            return self._clean_update(cleaned_data)
 
+        self._validate_team_admin_and_team_name(is_team_admin, team_name)
+        self._associate_team(team_name, cleaned_data)
+
+        return cleaned_data
+
+    def _clean_update(self, cleaned_data):
+        # set values from the instance to avoid incorrect validation
+        cleaned_data['is_team_admin'] = self.instance.is_team_admin
+        # If user already has a team, team_name is taken from it,
+        # otherwise it is cleared
+        cleaned_data['team'] = (
+            self.instance.team
+            if self.instance.team
+            else None
+        )
+        cleaned_data['team_name'] = (
+            self.instance.team.name
+            if self.instance.team
+            else ''
+        )
+        return cleaned_data
+
+    def _validate_team_admin_and_team_name(self, is_team_admin, team_name):
         if not is_team_admin and not team_name:
             raise forms.ValidationError(_(
                 "You must either register as team admin"
-                " or specify team name"))
+                " or specify team name"
+            ))
 
         if is_team_admin and team_name:
             raise forms.ValidationError(_(
                 "You can't be team admin and"
-                " join existing team at the same time"))
+                " join existing team at the same time"
+            ))
 
-        if team_name and not is_team_admin:
+    def _associate_team(self, team_name, cleaned_data):
+        # Associating a user with an existing team
+        if team_name:
             try:
                 team = Team.objects.get(name=team_name)
                 cleaned_data['team'] = team
             except Team.DoesNotExist:
                 raise forms.ValidationError(_("There is no such team"))
-
-        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
