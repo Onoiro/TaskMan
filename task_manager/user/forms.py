@@ -1,5 +1,4 @@
 from django import forms
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from task_manager.teams.models import Team
 from django.utils.translation import gettext_lazy as _
@@ -53,17 +52,44 @@ class UserForm(forms.ModelForm):
                 _("The entered passwords do not match."))
         return password2
 
+    # Override the form constructor to add my logic
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Если это редактирование существующего пользователя (у пользователя есть pk)
+        # if this is editing an existing user (the user has a pk)
         if self.instance and self.instance.pk and self.instance.team:
-            # Установить начальное значение для поля team_name
+            # set initial value for team_name field
             self.initial['team_name'] = self.instance.team.name
+            # The readonly attribute (it does not prevent data transfer,
+            # but tells the user that the field cannot be changed)
+            readonly_attr = {'readonly': 'readonly'}
+            self.fields['team_name'].widget.attrs.update(readonly_attr)
+            # The is_team_admin field is hidden
+            # so that the value does not change
+            self.fields['is_team_admin'].widget = forms.HiddenInput()
 
     def clean(self):
         cleaned_data = super().clean()
+        is_update = self.instance and self.instance.pk
         is_team_admin = cleaned_data.get('is_team_admin')
         team_name = cleaned_data.get('team_name')
+
+        # If it's an update, we don't allow to change team and user role
+        if is_update:
+            # set values from the instance to avoid incorrect validation
+            cleaned_data['is_team_admin'] = self.instance.is_team_admin
+            # If user already has a team, team_name is taken from it,
+            # otherwise it is cleared
+            cleaned_data['team'] = (
+                self.instance.team
+                if self.instance.team
+                else None
+            )
+            cleaned_data['team_name'] = (
+                self.instance.team.name
+                if self.instance.team
+                else ''
+            )
+            return cleaned_data
 
         if not is_team_admin and not team_name:
             raise forms.ValidationError(_(
@@ -90,10 +116,8 @@ class UserForm(forms.ModelForm):
         user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
         if commit:
             user.save()
-            # Если пользователь не администратор команды и указано имя команды
             team_name = self.cleaned_data.get('team_name')
             if not user.is_team_admin and team_name:
-                # Используем team из cleaned_data, она должна быть установлена в clean()
                 user.team = self.cleaned_data['team']
                 user.save()
         return user
