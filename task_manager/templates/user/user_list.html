@@ -6,8 +6,10 @@
 {% block content %}
 <div class="container wrapper flex-grow-1">
     <h1 class="my-4">
-        <a href="{% url 'teams:team-detail' request.user.team.id %}">
-        {{ request.user.team.name }}</a>: {% trans "Users" %}
+        {% if request.user.team %}
+            <a href="{% url 'teams:team-detail' request.user.team.id %}">
+            {{ request.user.team.name }}</a>:
+        {% endif %} {% trans "Users" %}
     </h1>
     <table class="table table-striped">
         <thead>
