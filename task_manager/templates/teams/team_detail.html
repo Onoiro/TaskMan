@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1"> 
+    <h1 class="my-4">{{ team.name }}</h1>
+    <span>{{ team.description }}</span>
+</div>
+{% endblock %}
