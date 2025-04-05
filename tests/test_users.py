@@ -200,30 +200,30 @@ class UserTestCase(TestCase):
         self.c.post(reverse('user:user-create'),
                     self.user_data, follow=True)
         new_user = User.objects.get(username="new")
-        
+
         # Create new team with new user as team admin
         team = Team.objects.create(
             name="New Test Team",
             description="Test team description",
             team_admin=new_user
         )
-        
+
         # Try to delete new user
         response = self.c.post(reverse('user:user-delete',
-                                    args=[new_user.id]), follow=True)
-        
+                               args=[new_user.id]), follow=True)
+
         # Check that new user still exist
         self.assertTrue(User.objects.filter(username="new").exists())
-        
+
         # Check for redirect
         self.assertRedirects(response, reverse('user:user-list'))
-        
+
         # Check for error message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                        _('Cannot delete a user because it is team admin'))
-        
+                         _('Cannot delete a user because it is team admin'))
+
         # Delete team after test
         team.delete()
 

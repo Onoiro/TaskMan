@@ -37,6 +37,7 @@ class TeamCreateView(SuccessMessageMixin,
 
         return super().form_valid(form)
 
+
 class TeamDetailView(DetailView):
     model = Team
     template_name = 'teams/team_detail.html'
