@@ -4,6 +4,8 @@ from task_manager.permissions import CustomPermissions, UserPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+
 
 from task_manager.teams.forms import TeamForm
 # from django.contrib.auth.models import User
@@ -34,6 +36,10 @@ class TeamCreateView(SuccessMessageMixin,
         self.request.user.save()
 
         return super().form_valid(form)
+
+class TeamDetailView(DetailView):
+    model = Team
+    template_name = 'teams/team_detail.html'
 
 
 # class TeamUpdateView(CustomPermissions,
