@@ -6,7 +6,6 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from task_manager.tasks.models import Task
 from django.contrib import messages
@@ -75,6 +74,12 @@ class UserDeleteView(CustomPermissions,
 
     def form_valid(self, form):
         self.object = self.get_object()
+
+        if self.object.team_admin_set.exists():
+            messages.error(self.request, 
+                           _("Cannot delete a user because it is team admin"))
+            return redirect('user:user-list')
+        
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():

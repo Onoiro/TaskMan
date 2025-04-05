@@ -1,10 +1,3 @@
-# import os
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_manager.settings")
-
-# import django
-# django.setup()
-
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from task_manager.teams.models import Team
 from django.test import TestCase, Client
@@ -201,6 +194,38 @@ class UserTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete a user because it is in use'))
+
+    def test_can_not_delete_user_being_team_admin(self):
+        # Create new user
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        new_user = User.objects.get(username="new")
+        
+        # Create new team with new user as team admin
+        team = Team.objects.create(
+            name="New Test Team",
+            description="Test team description",
+            team_admin=new_user
+        )
+        
+        # Try to delete new user
+        response = self.c.post(reverse('user:user-delete',
+                                    args=[new_user.id]), follow=True)
+        
+        # Check that new user still exist
+        self.assertTrue(User.objects.filter(username="new").exists())
+        
+        # Check for redirect
+        self.assertRedirects(response, reverse('user:user-list'))
+        
+        # Check for error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                        _('Cannot delete a user because it is team admin'))
+        
+        # Delete team after test
+        team.delete()
 
     def test_can_join_existing_team(self):
         team = Team.objects.get(pk=1)
