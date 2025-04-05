@@ -76,10 +76,10 @@ class UserDeleteView(CustomPermissions,
         self.object = self.get_object()
 
         if self.object.team_admin_set.exists():
-            messages.error(self.request, 
+            messages.error(self.request,
                            _("Cannot delete a user because it is team admin"))
             return redirect('user:user-list')
-        
+
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():

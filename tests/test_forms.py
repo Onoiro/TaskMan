@@ -97,9 +97,9 @@ class UserFormTestCase(TestCase):
         form_data['team_name'] = 'Test Team'
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(
-            _("You can't be team admin and join existing team at the same time"),
-            form.errors['__all__'])
+        self.assertIn(_("You can't be team admin and"
+                      " join existing team at the same time"),
+                      form.errors['__all__'])
 
     def test_nonexistent_team_name(self):
         # The test verifies that the form is invalid
@@ -118,7 +118,7 @@ class UserFormTestCase(TestCase):
         team = Team.objects.get(pk=1)  # Test Team
         user.team = team
         user.save()
-        
+
         form_data = {
             'first_name': 'Updated Me',
             'last_name': 'Updated M',
@@ -138,11 +138,13 @@ class UserFormTestCase(TestCase):
         team = Team.objects.get(pk=1)  # Test Team
         user.team = team
         user.save()
-        
+
         form = UserForm(instance=user)
         self.assertEqual(form.initial['team_name'], team.name)
         self.assertTrue('readonly' in form.fields['team_name'].widget.attrs)
-        self.assertIsInstance(form.fields['is_team_admin'].widget, forms.HiddenInput)
+        self.assertIsInstance(
+            form.fields['is_team_admin'].widget,
+            forms.HiddenInput)
 
     def test_update_user_with_no_team(self):
         # verifies that when a user updates without the team,
@@ -168,7 +170,7 @@ class UserFormTestCase(TestCase):
         team = Team.objects.get(pk=1)  # Test Team
         user.team = team
         user.save()
-        
+
         # try to update user data
         form_data = {
             'first_name': 'New Name',
@@ -182,11 +184,11 @@ class UserFormTestCase(TestCase):
         form = UserForm(data=form_data, instance=user)
         self.assertTrue(form.is_valid())
         updated_user = form.save()
-        
+
         # check for updated first and last names
         self.assertEqual(updated_user.first_name, 'New Name')
         self.assertEqual(updated_user.last_name, 'New Last')
-        
+
         # check for team name and user status still the same
         self.assertEqual(updated_user.team, team)
         self.assertFalse(updated_user.is_team_admin)
