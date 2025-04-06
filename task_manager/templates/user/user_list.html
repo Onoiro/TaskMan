@@ -5,12 +5,17 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">
-        {% if request.user.team %}
-            <a href="{% url 'teams:team-detail' request.user.team.id %}">
-            {{ request.user.team.name }}</a>:
-        {% endif %} {% trans "Users" %}
-    </h1>
+    {% if request.user.team %}
+        <h2 class="my-4">{% trans "Team info " %}</h2>
+        <p>{% trans "team name" %}: {{ request.user.team.name }}</p>
+        <p>{% trans "admin name" %}: {{ request.user.team.team_admin.username }}</p>
+        <p>{% trans "created at" %}: {{ request.user.team.created_at }}</p>
+        <p>{% trans "description" %}: {{ request.user.team.description }}</p>
+        <p>
+            <a href="{% url 'teams:team-update' request.user.team.id %}">{% trans "Edit" %}</a>
+        </p>
+    {% endif %}
+    <h1 class="my-4">{% trans "Users" %}</h1>
     <table class="table table-striped">
         <thead>
         <tr>

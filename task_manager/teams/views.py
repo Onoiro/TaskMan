@@ -8,7 +8,6 @@ from django.views.generic.detail import DetailView
 
 
 from task_manager.teams.forms import TeamForm
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from task_manager.teams.models import Team
 from django.shortcuts import redirect
@@ -40,19 +39,17 @@ class TeamCreateView(SuccessMessageMixin,
 
 class TeamDetailView(DetailView):
     model = Team
-    template_name = 'teams/team_detail.html'
+    template_name = 'user/user_list.html'
 
 
-# class TeamUpdateView(CustomPermissions,
-#                      UserPermissions,
-#                      SuccessMessageMixin,
-#                      UpdateView):
-#     model = Team
-#     form_class = TeamForm
-#     template_name = 'teams/team_create_form.html'
-#     redirect_field_name = "redirect_to"
-#     success_url = reverse_lazy('user:user-list')
-#     success_message = _('Team updated successfully')
+class TeamUpdateView(CustomPermissions,
+                     UpdateView):
+    model = Team
+    form_class = TeamForm
+    template_name = 'teams/team_update.html'
+    redirect_field_name = "redirect_to"
+    success_message = _('Team updated successfully')
+    success_url = reverse_lazy('user:user-list')
 
 
 # class UserDeleteView(CustomPermissions,
