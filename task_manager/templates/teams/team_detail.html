@@ -4,10 +4,14 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1"> 
-    <h1 class="my-4">{% trans "team name" %}: {{ team.name }}</h1>
+<div class="container wrapper flex-grow-1">
+    <h2 class="my-4">{% trans "Team info " %}</h2>
+    <p>{% trans "team name" %}: {{ team.name }}</p>
     <p>{% trans "admin name" %}: {{ team.team_admin.username }}</p>
     <p>{% trans "created at" %}: {{ team.created_at }}</p>
     <p>{% trans "description" %}: {{ team.description }}</p>
+    <p>
+        <a href="{% url 'teams:team-update' team.id %}">{% trans "Edit" %}</a>
+    </p>
 </div>
 {% endblock %}
