@@ -5,7 +5,9 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1"> 
-    <h1 class="my-4">{{ team.name }}</h1>
-    <span>{{ team.description }}</span>
+    <h1 class="my-4">{% trans "team name" %}: {{ team.name }}</h1>
+    <p>{% trans "admin name" %}: {{ team.team_admin.username }}</p>
+    <p>{% trans "created at" %}: {{ team.created_at }}</p>
+    <p>{% trans "description" %}: {{ team.description }}</p>
 </div>
 {% endblock %}
