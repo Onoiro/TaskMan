@@ -1,16 +1,13 @@
 from django.http import HttpResponse
 from django.contrib.messages.views import SuccessMessageMixin
-from task_manager.permissions import CustomPermissions, UserPermissions
+from task_manager.permissions import CustomPermissions, TeamAdminPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 
-
 from task_manager.teams.forms import TeamForm
-from task_manager.user.models import User
 from task_manager.teams.models import Team
-from django.shortcuts import redirect
 
 
 def index(request):
@@ -42,7 +39,9 @@ class TeamDetailView(DetailView):
     template_name = 'user/user_list.html'
 
 
-class TeamUpdateView(CustomPermissions,
+class TeamUpdateView(SuccessMessageMixin,
+                     CustomPermissions,
+                     TeamAdminPermissions,
                      UpdateView):
     model = Team
     form_class = TeamForm
