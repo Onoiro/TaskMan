@@ -5,6 +5,9 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import redirect
 
 from task_manager.teams.forms import TeamForm
 from task_manager.teams.models import Team
@@ -51,11 +54,33 @@ class TeamUpdateView(SuccessMessageMixin,
     success_url = reverse_lazy('user:user-list')
 
 
-class TeamDeleteView(CustomPermissions,
+class TeamDeleteView(SuccessMessageMixin,
+                     CustomPermissions,
                      TeamAdminPermissions,
-                     SuccessMessageMixin,
                      DeleteView):
     model = Team
     template_name = 'teams/team_delete.html'
     success_url = reverse_lazy('user:user-list')
     success_message = _('Team deleted successfully')
+
+    def post(self, request, *args, **kwargs):
+        team = self.get_object()
+        # Check if there are any other members in the team except the admin
+        team_members_count = team.team_members.exclude(
+            id=team.team_admin.id).count()
+
+        if team_members_count > 0:
+            messages.error(
+                request,
+                _("Cannot delete a team because it has members."))
+            return redirect('user:user-list')
+
+        admin_user = team.team_admin
+
+        with transaction.atomic():
+            admin_user.is_team_admin = False
+            admin_user.team = None
+            response = super().post(request, *args, **kwargs)
+            admin_user.save()
+
+        return response
