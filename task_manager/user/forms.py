@@ -100,11 +100,11 @@ class UserForm(forms.ModelForm):
         return cleaned_data
 
     def _validate_team_admin_and_team_name(self, is_team_admin, team_name):
-        if not is_team_admin and not team_name:
-            raise forms.ValidationError(_(
-                "You must either register as team admin"
-                " or specify team name"
-            ))
+        # if not is_team_admin and not team_name:
+        #     raise forms.ValidationError(_(
+        #         "You must either register as team admin"
+        #         " or specify team name"
+        #     ))
 
         if is_team_admin and team_name:
             raise forms.ValidationError(_(
