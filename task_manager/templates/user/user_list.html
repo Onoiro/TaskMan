@@ -13,6 +13,7 @@
         <p>{% trans "description" %}: {{ request.user.team.description }}</p>
         <p>
             <a href="{% url 'teams:team-update' request.user.team.id %}">{% trans "Edit" %}</a>
+            <a href="{% url 'teams:team-delete' request.user.team.id %}">{% trans "Delete" %}</a>
         </p>
     {% endif %}
     <h1 class="my-4">{% trans "Users" %}</h1>

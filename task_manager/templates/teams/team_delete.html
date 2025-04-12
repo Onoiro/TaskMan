@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Delete user" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container wrapper flex-grow-1">
+  <h1 class="my-4"> {% trans "Delete team" %}</h1>
+    <form method="post" class="form">
+        {% csrf_token %}
+        <p>{% trans "Are you sure you want to delete" %} {{ object.name }}?</p>
+        <button type="submit" class="btn btn-danger">
+          {% trans "Yes, delete" %}
+        </button>
+    </form>
+</div>
+{% endblock %}
