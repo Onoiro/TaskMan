@@ -62,6 +62,13 @@ class UserUpdateView(CustomPermissions,
     success_url = reverse_lazy('user:user-list')
     success_message = _('User updated successfully')
 
+    def form_valid(self, form):
+        super().form_valid(form)
+        login(self.request, self.object)
+        if self.object.is_team_admin:
+            return redirect('teams:team-create')
+        return redirect('login')
+
 
 class UserDeleteView(CustomPermissions,
                      UserPermissions,

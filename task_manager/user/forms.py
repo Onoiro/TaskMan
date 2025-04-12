@@ -56,16 +56,21 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # if this is editing an existing user (the user has a pk)
-        if self.instance and self.instance.pk and self.instance.team:
-            # set initial value for team_name field
-            self.initial['team_name'] = self.instance.team.name
-            # The readonly attribute (it does not prevent data transfer,
-            # but tells the user that the field cannot be changed)
-            readonly_attr = {'readonly': 'readonly'}
-            self.fields['team_name'].widget.attrs.update(readonly_attr)
-            # The is_team_admin field is hidden
-            # so that the value does not change
-            self.fields['is_team_admin'].widget = forms.HiddenInput()
+        if self.instance and self.instance.pk:
+            if self.instance.team:
+                # set initial value for team_name field
+                self.initial['team_name'] = self.instance.team.name
+                # The readonly attribute (it does not prevent data transfer,
+                # but tells the user that the field cannot be changed)
+                readonly_attr = {'readonly': 'readonly'}
+                self.fields['team_name'].widget.attrs.update(readonly_attr)
+                # The is_team_admin field is hidden
+                # so that the value does not change
+                self.fields['is_team_admin'].widget = forms.HiddenInput()
+            elif self.instance.is_team_admin:
+                # If the user is a team admin, hide the team_name field
+                self.fields['team_name'].widget = forms.HiddenInput()
+                self.initial['is_team_admin'] = True
 
     def clean(self):
         cleaned_data = super().clean()
@@ -73,12 +78,11 @@ class UserForm(forms.ModelForm):
         is_team_admin = cleaned_data.get('is_team_admin')
         team_name = cleaned_data.get('team_name')
 
-        # If it's an update, we don't allow to change team and user role
-        if is_update:
+        if is_update and (self.instance.team or self.instance.is_team_admin):
             return self._clean_update(cleaned_data)
-
-        self._validate_team_admin_and_team_name(is_team_admin, team_name)
-        self._associate_team(team_name, cleaned_data)
+        else:
+            self._validate_team_admin_and_team_name(is_team_admin, team_name)
+            self._associate_team(team_name, cleaned_data)
 
         return cleaned_data
 
