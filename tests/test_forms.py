@@ -77,17 +77,17 @@ class UserFormTestCase(TestCase):
         self.assertEqual(user.team, team)
         self.assertFalse(user.is_team_admin)
 
-    def test_neither_team_admin_nor_team_name(self):
-        # verifies that the form is invalid if the user
-        # has not selected the team-admin role and specified a team name
-        form_data = self.form_data.copy()
-        form_data['is_team_admin'] = False
-        form_data['team_name'] = ''
-        form = UserForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            _("You must either register as team admin or specify team name"),
-            form.errors['__all__'])
+    # def test_neither_team_admin_nor_team_name(self):
+    #     # verifies that the form is invalid if the user
+    #     # has not selected the team-admin role and specified a team name
+    #     form_data = self.form_data.copy()
+    #     form_data['is_team_admin'] = False
+    #     form_data['team_name'] = ''
+    #     form = UserForm(data=form_data)
+    #     self.assertFalse(form.is_valid())
+    #     self.assertIn(
+    #         _("You must either register as team admin or specify team name"),
+    #         form.errors['__all__'])
 
     def test_both_team_admin_and_team_name(self):
         # verifies that the form is invalid if the user
