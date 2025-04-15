@@ -9,9 +9,16 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">
-            {% trans "Edit" %}
-        </button>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                {% trans "Edit" %}
+            </button>
+            {% if request.user.team %}
+            <a href="{% url 'teams:team-delete' request.user.team.id %}" class="btn btn-danger">
+                {% trans "Delete" %}
+            </a>
+            {% endif %}
+        </div>
     </form>
 </div>
 {% endblock %}
