@@ -40,7 +40,7 @@ class TeamForm(forms.ModelForm):
 
     def save(self, commit=True):
         team = super().save(commit=False)
-        team.set_password(self.cleaned_data['password1'])
+        team.password = self.cleaned_data['password1']
         if commit:
             team.save()
         return team
