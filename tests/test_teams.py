@@ -20,6 +20,8 @@ class TeamTestCase(TestCase):
         self.team_data = {
             'name': 'New Test Team',
             'description': 'This is a new test team',
+            'password1': '111',
+            'password2': '111'
         }
         self.team = Team.objects.get(pk=1)  # Test Team
 
@@ -96,6 +98,8 @@ class TeamTestCase(TestCase):
         updated_team_data = {
             'name': 'Updated Team Name',
             'description': 'Updated description',
+            'password1': '111',
+            'password2': '111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.id]),
@@ -120,6 +124,8 @@ class TeamTestCase(TestCase):
         update_data = {
             'name': second_team.name,
             'description': 'Updated description',
+            'password1': '111',
+            'password2': '111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.id]),
@@ -165,6 +171,8 @@ class TeamTestCase(TestCase):
         updated_data = {
             'name': 'Updated by non-admin',
             'description': 'Should not work',
+            'password1': '111',
+            'password2': '111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.id]),

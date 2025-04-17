@@ -6,7 +6,8 @@
         "name": "Test Team",
         "description": "This is a test team for testing",
         "team_admin": 10,
-        "created_at": "2024-03-17T19:45:51.127Z"
+        "created_at": "2024-03-17T19:45:51.127Z",
+        "password": "pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456"
       }
     },
     {
@@ -16,7 +17,8 @@
         "name": "Another Test Team",
         "description": "Second test team",
         "team_admin": 10,
-        "created_at": "2024-03-17T20:45:51.127Z"
+        "created_at": "2024-03-17T20:45:51.127Z",
+        "password": "pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456"
       }
     }
   ]
