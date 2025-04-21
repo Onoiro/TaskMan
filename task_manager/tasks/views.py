@@ -10,6 +10,7 @@ from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect
 from django_filters.views import FilterView
 from task_manager.tasks.filters import TaskFilter
+from task_manager.user.models import User
 
 
 class TaskPermissions(CustomPermissions):
@@ -26,10 +27,22 @@ class TaskDeletePermissionMixin():
         return super().dispatch(request, *args, **kwargs)
 
 
-class TaskFilterView(TaskPermissions, FilterView):
+class TaskFilterView(FilterView):
     model = Task
     template_name = 'tasks/task_filter.html'
     filterset_class = TaskFilter
+
+    def get_queryset(self):
+        user = self.request.user
+        # show only user tasks if user not in any team
+        if user.team is None:
+            return Task.objects.filter(author=user)
+        # filter users from the same team with current user
+        team_users = User.objects.filter(team=user.team)
+        return Task.objects.filter(
+            author__in=team_users).union(
+            Task.objects.filter(executor__in=team_users)
+        )
 
 
 class TaskDetailView(TaskPermissions, DetailView):
