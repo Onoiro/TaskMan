@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django_filters.views import FilterView
 from task_manager.tasks.filters import TaskFilter
 from task_manager.user.models import User
+from django.db.models import Q
 
 
 class TaskPermissions(CustomPermissions):
@@ -40,8 +41,7 @@ class TaskFilterView(FilterView):
         # filter users from the same team with current user
         team_users = User.objects.filter(team=user.team)
         return Task.objects.filter(
-            author__in=team_users).union(
-            Task.objects.filter(executor__in=team_users)
+            Q(author__in=team_users) | Q(executor__in=team_users)
         )
 
 

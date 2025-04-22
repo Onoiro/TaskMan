@@ -7,12 +7,14 @@ from django.contrib.messages import get_messages
 
 
 class UserLoginViewTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json"]
 
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
-            username='test_user', password='password')
+            username='test_user',
+            password='password')
         self.client.force_login(self.user)
 
     def test_login_view_response_200_and_check_content(self):
@@ -51,7 +53,8 @@ class UserLoginViewTestCase(TestCase):
 
 
 class UserLogoutViewTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json"]
 
     def setUp(self):
         self.client = Client()
