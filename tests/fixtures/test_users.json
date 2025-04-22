@@ -58,5 +58,25 @@
         "groups": [],
         "user_permissions": []
     }
+},
+{
+    "model": "user.User",
+    "pk": 13,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$zhSdaZZ71raPAugvUwfuG4$siRl/h1BQmCR0ydKw2oMIIpoxLiMqxg/DKMmNU4upIH=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "alone",
+        "first_name": "No team",
+        "last_name": "User have no team",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-03-17T19:45:51.127Z",
+        "is_team_admin": false,
+        "team": null,
+        "groups": [],
+        "user_permissions": []
+    }
 }
 ]
