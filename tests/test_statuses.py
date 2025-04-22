@@ -8,7 +8,8 @@ from django.utils.translation import gettext as _
 
 
 class StatusesTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json",
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json",
                 "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_statuses.json",
                 "tests/fixtures/test_labels.json"]
