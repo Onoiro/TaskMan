@@ -149,11 +149,11 @@ class UserFormTestCase(TestCase):
     def test_update_user_with_no_team(self):
         # verifies that when a user updates without the team,
         # the form works correctly
-        user = User.objects.get(pk=12)  # he - user without the team
+        user = User.objects.get(pk=13)  # he - user without the team
         form_data = {
             'first_name': 'Updated He',
             'last_name': 'Updated H',
-            'username': 'he',
+            'username': 'alone',
             'password1': '111',
             'password2': '111',
         }
