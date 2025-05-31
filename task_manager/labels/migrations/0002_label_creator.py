@@ -16,7 +16,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='label',
             name='creator',
-            field=models.ForeignKey(default='26', on_delete=django.db.models.deletion.CASCADE, related_name='created_labels', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                default='26',
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='created_labels',
+                to=settings.AUTH_USER_MODEL
+            ),
             preserve_default=False,
         ),
     ]
