@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Label
 from task_manager.labels.forms import LabelForm
+from task_manager.user.models import User
 from django.shortcuts import redirect
 
 
@@ -17,6 +18,15 @@ class LabelsPermissions(CustomPermissions):
 class LabelsListView(LabelsPermissions, ListView):
     model = Label
     template_name = 'labels/labels_list.html'
+
+    def get_queryset(self):
+        user = self.request.user
+        # show only user tasks if user not in any team
+        if user.team is None:
+            return Label.objects.filter(creator=user)
+        # filter users from the same team with current user
+        team_users = User.objects.filter(team=user.team)
+        return Label.objects.filter(creator__in=team_users)
 
 
 class LabelsCreateView(SuccessMessageMixin, CreateView):
