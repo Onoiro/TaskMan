@@ -25,6 +25,12 @@ class LabelsCreateView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label created successfully')
 
+    def form_valid(self, form):
+        label = form.save(commit=False)
+        label.creator = self.request.user
+        label.save()
+        return super().form_valid(form)
+
 
 class LabelsUpdateView(LabelsPermissions, SuccessMessageMixin, UpdateView):
     model = Label
