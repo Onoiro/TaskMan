@@ -40,13 +40,17 @@ class LabelsTestCase(TestCase):
 
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))
-        labels = Label.objects.all()
+        team_user_ids = User.objects.filter(
+            team=self.user.team).values_list('pk', flat=True)
+        labels = Label.objects.filter(creator__in=team_user_ids)
         for label in labels:
-            self.assertContains(response, label.id)
             self.assertContains(response, label.name)
             formatted_date = DateFormat(
                 label.created_at).format(get_format('DATETIME_FORMAT'))
-        self.assertContains(response, formatted_date)
+            self.assertContains(response, formatted_date)
+        other_labels = Label.objects.exclude(creator__in=team_user_ids)
+        for label in other_labels:
+            self.assertNotContains(response, label.name)
 
     # create
 
