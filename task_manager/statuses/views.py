@@ -7,6 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Status
 from task_manager.statuses.forms import StatusForm
+from task_manager.user.models import User
 from django.shortcuts import redirect
 
 
@@ -17,6 +18,15 @@ class StatusesPermissions(CustomPermissions):
 class StatusesListView(StatusesPermissions, ListView):
     model = Status
     template_name = 'statuses/statuses_list.html'
+
+    def get_queryset(self):
+        user = self.request.user
+        # show only user tasks if user not in any team
+        if user.team is None:
+            return Status.objects.filter(creator=user)
+        # filter users from the same team with current user
+        team_users = User.objects.filter(team=user.team)
+        return Status.objects.filter(creator__in=team_users)
 
 
 class StatusesCreateView(SuccessMessageMixin, CreateView):
