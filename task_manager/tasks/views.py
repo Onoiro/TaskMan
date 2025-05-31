@@ -60,6 +60,11 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
 
 class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
     model = Task
@@ -67,6 +72,11 @@ class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
     template_name = 'tasks/task_update.html'
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task updated successfully')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
 
 
 class TaskDeleteView(TaskDeletePermissionMixin,

@@ -43,6 +43,23 @@ class TaskFilter(django_filters.FilterSet):
         model = Task
         fields = ['status', 'executor', 'labels', 'self_tasks']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.request
+        if request is None:
+            return
+        user = request.user
+        team = user.team
+
+        if team:
+            self.filters['executor'].queryset = User.objects.filter(team=team)
+            self.filters['status'].queryset = Status.objects.filter(creator__team=team)
+            self.filters['labels'].queryset = Label.objects.filter(creator__team=team)
+        else:
+            self.filters['executor'].queryset = User.objects.filter(pk=user.pk)
+            self.filters['status'].queryset = Status.objects.filter(creator=user)
+            self.filters['labels'].queryset = Label.objects.filter(creator=user)
+
     def filter_own_tasks(self, queryset, name, value):
         user = self.request.user
         if value:
