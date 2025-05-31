@@ -35,7 +35,7 @@ class TaskTestCase(TestCase):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
 
-    def test_tasks_list_content(self):
+    def test_tasks_list_static_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
@@ -47,6 +47,17 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Show'))
+
+    def test_tasks_list_content(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        team_user_ids = User.objects.filter(
+            team=self.user.team).values_list('pk', flat=True)
+        tasks = Task.objects.filter(author__in=team_user_ids)
+        for task in tasks:
+            self.assertContains(response, task.name)
+        other_tasks = Task.objects.exclude(author__in=team_user_ids)
+        for task in other_tasks:
+            self.assertNotContains(response, task.name)
 
     # detail_view
 

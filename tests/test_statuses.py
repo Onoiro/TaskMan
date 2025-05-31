@@ -28,13 +28,24 @@ class StatusesTestCase(TestCase):
         response = self.c.get(reverse('statuses:statuses-list'))
         self.assertEqual(response.status_code, 200)
 
-    def test_statuses_list_content(self):
+    def test_statuses_list_static_content(self):
         response = self.c.get(reverse('statuses:statuses-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
+
+    def test_statuses_list_content(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        team_user_ids = User.objects.filter(
+            team=self.user.team).values_list('pk', flat=True)
+        statuses = Status.objects.filter(creator__in=team_user_ids)
+        for status in statuses:
+            self.assertContains(response, status.name)
+        other_statuses = Status.objects.exclude(creator__in=team_user_ids)
+        for status in other_statuses:
+            self.assertNotContains(response, status.name)
 
     # create
 
