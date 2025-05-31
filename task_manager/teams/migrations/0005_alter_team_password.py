@@ -14,6 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='team',
             name='password',
-            field=models.CharField(help_text='Minimum length is 3 characters', max_length=128, validators=[django.core.validators.MinLengthValidator(3)], verbose_name='Team password'),
+            field=models.CharField(
+                help_text='Minimum length is 3 characters',
+                max_length=128,
+                validators=[django.core.validators.MinLengthValidator(3)],
+                verbose_name='Team password'
+            ),
         ),
     ]
