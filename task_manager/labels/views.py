@@ -21,10 +21,8 @@ class LabelsListView(LabelsPermissions, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        # show only user tasks if user not in any team
         if user.team is None:
             return Label.objects.filter(creator=user)
-        # filter users from the same team with current user
         team_users = User.objects.filter(team=user.team)
         return Label.objects.filter(creator__in=team_users)
 

@@ -17,7 +17,10 @@ class TaskForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        # request должен передаваться из представления
+        # The request object is added to the form
+        # via the get_form_kwargs() method in the view.
+        # This is necessary to filter the form fields
+        # depending on the user and their team.
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
         if self.request is None:
@@ -27,19 +30,22 @@ class TaskForm(forms.ModelForm):
         team = user.team
 
         if team is not None:
-            # Только члены команды (или самого себя, если без команды)
-            self.fields['executor'].queryset = User.objects.filter(team=team)
-            self.fields['status'].queryset = Status.objects.filter(
-                creator__team=team
+            self.fields['executor'].queryset = (
+                User.objects.filter(team=team)
             )
-            self.fields['labels'].queryset = Label.objects.filter(
-                creator__team=team
+            self.fields['status'].queryset = (
+                Status.objects.filter(creator__team=team)
+            )
+            self.fields['labels'].queryset = (
+                Label.objects.filter(creator__team=team)
             )
         else:
-            self.fields['executor'].queryset = User.objects.filter(pk=user.pk)
-            self.fields['status'].queryset = Status.objects.filter(
-                creator=user
+            self.fields['executor'].queryset = (
+                User.objects.filter(pk=user.pk)
             )
-            self.fields['labels'].queryset = Label.objects.filter(
-                creator=user
+            self.fields['status'].queryset = (
+                Status.objects.filter(creator=user)
+            )
+            self.fields['labels'].queryset = (
+                Label.objects.filter(creator=user)
             )

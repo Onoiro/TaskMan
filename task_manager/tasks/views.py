@@ -35,7 +35,6 @@ class TaskFilterView(FilterView):
 
     def get_queryset(self):
         user = self.request.user
-        # show only user tasks if user not in any team
         if user.team is None:
             return Task.objects.filter(author=user)
         # filter users from the same team with current user
