@@ -68,7 +68,6 @@ class TeamDeleteView(SuccessMessageMixin,
         # Check if there are any other members in the team except the admin
         team_members_count = team.team_members.exclude(
             id=team.team_admin.id).count()
-
         if team_members_count > 0:
             messages.error(
                 request,
