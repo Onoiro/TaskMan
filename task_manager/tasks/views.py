@@ -14,10 +14,6 @@ from task_manager.user.models import User
 from django.db.models import Q
 
 
-class TaskPermissions(CustomPermissions):
-    pass
-
-
 class TaskDeletePermissionMixin():
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
@@ -44,7 +40,7 @@ class TaskFilterView(FilterView):
         )
 
 
-class TaskDetailView(TaskPermissions, DetailView):
+class TaskDetailView(CustomPermissions, DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
 
@@ -65,7 +61,7 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
         return kwargs
 
 
-class TaskUpdateView(TaskPermissions, SuccessMessageMixin, UpdateView):
+class TaskUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_update.html'

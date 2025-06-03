@@ -11,11 +11,7 @@ from task_manager.user.models import User
 from django.shortcuts import redirect
 
 
-class LabelsPermissions(CustomPermissions):
-    pass
-
-
-class LabelsListView(LabelsPermissions, ListView):
+class LabelsListView(CustomPermissions, ListView):
     model = Label
     template_name = 'labels/labels_list.html'
 
@@ -40,7 +36,7 @@ class LabelsCreateView(SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class LabelsUpdateView(LabelsPermissions, SuccessMessageMixin, UpdateView):
+class LabelsUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     model = Label
     form_class = LabelForm
     template_name = 'labels/labels_update.html'
@@ -48,7 +44,7 @@ class LabelsUpdateView(LabelsPermissions, SuccessMessageMixin, UpdateView):
     success_message = _('Label updated successfully')
 
 
-class LabelsDeleteView(LabelsPermissions, SuccessMessageMixin, DeleteView):
+class LabelsDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
     model = Label
     template_name = 'labels/labels_delete.html'
     success_url = reverse_lazy('labels:labels-list')
