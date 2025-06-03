@@ -11,11 +11,7 @@ from task_manager.user.models import User
 from django.shortcuts import redirect
 
 
-class StatusesPermissions(CustomPermissions):
-    pass
-
-
-class StatusesListView(StatusesPermissions, ListView):
+class StatusesListView(CustomPermissions, ListView):
     model = Status
     template_name = 'statuses/statuses_list.html'
 
@@ -40,7 +36,7 @@ class StatusesCreateView(SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class StatusesUpdateView(StatusesPermissions, SuccessMessageMixin, UpdateView):
+class StatusesUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     model = Status
     form_class = StatusForm
     template_name = 'statuses/statuses_update.html'
@@ -48,7 +44,7 @@ class StatusesUpdateView(StatusesPermissions, SuccessMessageMixin, UpdateView):
     success_message = _('Status updated successfully')
 
 
-class StatusesDeleteView(StatusesPermissions, SuccessMessageMixin, DeleteView):
+class StatusesDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
     model = Status
     template_name = 'statuses/statuses_delete.html'
     success_url = reverse_lazy('statuses:statuses-list')
