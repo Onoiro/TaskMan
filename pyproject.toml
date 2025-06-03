@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "hexlet-code"
-version = "0.1.0"
+name = "task-manager"
+version = "0.2.0"
 description = "Web task management system"
 authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
-homepage = "https://task-manager-wh08.onrender.com/"
+homepage = "https://taskman.2-way.ru"
 repository = "https://github.com/Onoiro/python-project-52"
 packages = [{include = "task_manager"}]
 classifiers = [
