@@ -1,17 +1,17 @@
-<!-- [![Actions Status](https://github.com/Onoiro/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Onoiro/python-project-52/actions) -->
-[![Actions Status](https://github.com/Onoiro/python-project-52/actions/workflows/abo-check-task-manager.yml/badge.svg)](https://github.com/Onoiro/python-project-52/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/maintainability)](https://codeclimate.com/github/Onoiro/python-project-52/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/python-project-52/test_coverage)
+[![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
+[![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check-task-manager.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
+[![Maintainability](https://qlty.sh/badges/8be7044b-186e-41ec-94eb-26e8be04d42b/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/TaskMan)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/TaskMan/test_coverage)
 
-## Welcome to [Task manager](https://taskman.2-way.ru)
-Task Manager is a web application designed to manage tasks in an organization or team. It allows users to register, create, and effectively manage tasks.
+## Welcome to [TaskMan](https://taskman.2-way.ru)
+TaskMan is a web application designed to manage tasks in an organization or team. It allows users to register, create, and effectively manage tasks.
 The application is deployed and accessible at the following URL: https://taskman.2-way.ru
 
 Key features include:
 
 ### Features
 
-- **User Registration**: Users can register to create an account and log in to the Task Manager application.
+- **User Registration**: Users can register to create an account and log in to the TaskMan application.
 - **Task Creation**: Users can create tasks with details such as title and description.
 - **Assign Task**: Each task can be assigned to a specific user who will be responsible for completing it.
 - **Task Status**: Tasks can have various and custom statuses (e.g., To Do, In Progress, Done), making it easy to track progress.
@@ -19,20 +19,20 @@ Key features include:
 
 ### Language Support
 
-The Task Manager application is available in two languages:
+The TaskMan application is available in two languages:
 
 - **English**
 - **Russian**
 
 ### Getting Started with your team
 
-To get started with the Task Manager, follow these steps:
+To get started with the TaskMan, follow these steps:
 ```bash
 # clone the repository:
-git clone https://github.com/Onoiro/python-project-52.git
+git clone https://github.com/Onoiro/TaskMan.git
 
 # navigate to the project directory:
-cd python-project-52
+cd taskman
 
 # create .env file contains environment variables:
 touch .env
