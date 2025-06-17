@@ -1,0 +1,49 @@
+services:
+ db:
+   image: postgres:14
+   container_name: taskman_db
+   environment:
+     POSTGRES_DB: ${POSTGRES_DB}
+     POSTGRES_USER: ${POSTGRES_USER}
+     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+   ports:
+     - "5432:5432"
+   volumes:
+     - postgres_data:/var/lib/postgresql/data
+     - ./backups:/backups
+   healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+   networks:
+      - taskman_network
+   restart: unless-stopped
+ 
+ django-web:
+   build: .
+   container_name: taskman_web
+   environment:
+     DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+     SECRET_KEY: ${SECRET_KEY}
+     PORT: 8001
+   ports:
+      - "127.0.0.1:8001:8001"
+   depends_on:
+      db:
+        condition: service_healthy
+   networks:
+      - taskman_network
+   restart: unless-stopped
+   healthcheck:
+     test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001')"]
+     interval: 30s
+     timeout: 10s
+     retries: 3
+
+volumes:
+   postgres_data:
+
+networks:
+  taskman_network:
+    driver: bridge
