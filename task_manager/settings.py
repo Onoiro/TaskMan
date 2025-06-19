@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
     'webserver',
     '127.0.0.1',
     '0.0.0.0',
-    'task-manager-wh08.onrender.com',
+    'localhost',
     '.taskman.2-way.ru',
     'testserver',
 ]

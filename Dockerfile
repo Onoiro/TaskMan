@@ -22,6 +22,7 @@ FROM python:3.8-slim
 
 RUN apt-get update && apt-get install -y \
     postgresql-client \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /app && useradd -m -r appuser && chown -R appuser /app
