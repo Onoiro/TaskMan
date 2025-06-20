@@ -43,6 +43,11 @@ ALLOWED_HOSTS = [
     'testserver',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8001',
+    'https://taskman.2-way.ru',
+    'https://www.taskman.2-way.ru'
+]
 
 # Application definition
 

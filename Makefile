@@ -220,8 +220,8 @@ images:
 volumes:
 	docker volume ls
 
-# help for Docker commands
-docker-help:
+# help for Docker and non-Docker commands
+help:
 	@echo "Main Docker commands:"
 	@echo "  up              - Start services"
 	@echo "  down            - Stop services"
@@ -233,7 +233,7 @@ docker-help:
 	@echo "  db-shell        - Enter database"
 	@echo "  d-migrate       - Apply migrations"
 	@echo "  d-backup        - Create database backup"
-	@echo "  deploy        - Full deployment"
+	@echo "  deploy          - Full deployment"
 	@echo "  d-clean         - Clean Docker objects"
 	@echo ""
 	@echo "Additional Docker commands:"
@@ -257,10 +257,8 @@ docker-help:
 	@echo "  ps-all          - View all containers"
 	@echo "  images          - View Docker images"
 	@echo "  volumes         - View Docker volumes"
-
-# help for non-Docker commands
-help:
-	@echo "Available commands (non-Docker):"
+	@echo ""
+	@echo "Available non-Docker commands:"
 	@echo "  build           - Install dependencies, collect static, migrations, superuser"
 	@echo "  dev             - Run local server"
 	@echo "  start           - Run production server"
