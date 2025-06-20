@@ -85,7 +85,7 @@ rebuild:
 	docker compose down && docker compose build && docker compose up -d
 
 # view logs of all services
-d-logs:
+logs:
 	docker compose logs -f
 
 # view Django logs
@@ -125,7 +125,7 @@ db-bash:
 # ========================================
 
 # create migrations
-d-makemigrations:
+d-migrations:
 	docker compose exec django-web python manage.py makemigrations
 
 # apply migrations
@@ -147,10 +147,6 @@ d-makemessages:
 # compile translations
 d-compilemessages:
 	docker compose exec django-web python manage.py compilemessages
-
-# run tests
-d-test:
-	docker compose exec django-web python manage.py test
 
 # ========================================
 # Database commands
@@ -179,7 +175,7 @@ d-reset-db:
 # ========================================
 
 # full cycle: stop, build, start, migrate
-d-deploy:
+deploy:
 	docker compose down
 	docker compose build
 	docker compose up -d
@@ -232,13 +228,12 @@ docker-help:
 	@echo "  restart         - Restart services"
 	@echo "  d-build         - Build images"
 	@echo "  rebuild         - Rebuild and start"
-	@echo "  d-logs          - View logs"
+	@echo "  logs            - View logs"
 	@echo "  d-shell         - Enter Django container"
 	@echo "  db-shell        - Enter database"
 	@echo "  d-migrate       - Apply migrations"
-	@echo "  d-test          - Run tests"
 	@echo "  d-backup        - Create database backup"
-	@echo "  d-deploy        - Full deployment"
+	@echo "  deploy        - Full deployment"
 	@echo "  d-clean         - Clean Docker objects"
 	@echo ""
 	@echo "Additional Docker commands:"
@@ -249,7 +244,7 @@ docker-help:
 	@echo "  status          - Service status"
 	@echo "  d-django-shell  - Enter Django shell"
 	@echo "  db-bash         - Enter database container via bash"
-	@echo "  d-makemigrations - Create migrations"
+	@echo "  d-migrations    - Create migrations"
 	@echo "  d-createsuperuser - Create superuser"
 	@echo "  d-collectstatic - Collect static files"
 	@echo "  d-makemessages  - Create translations"
