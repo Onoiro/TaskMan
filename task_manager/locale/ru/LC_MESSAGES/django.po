@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-08 23:51+0300\n"
+"POT-Creation-Date: 2025-06-21 22:47+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,24 +21,25 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
-#: statuses/forms.py:14 tasks/models.py:14 templates/labels/labels_list.html:14
+#: statuses/forms.py:14 tasks/models.py:14 teams/models.py:13
+#: templates/labels/labels_list.html:14
 #: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:26
 msgid "Name"
 msgstr "Имя"
 
-#: labels/views.py:26
+#: labels/views.py:30
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:34
+#: labels/views.py:44
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
 
-#: labels/views.py:41
+#: labels/views.py:51
 msgid "Label deleted successfully"
 msgstr " Метка успешно удалена"
 
-#: labels/views.py:49
+#: labels/views.py:59
 msgid "Cannot delete label because it is in use"
 msgstr "Невозможно удалить метку, потому что она используется"
 
@@ -50,31 +51,39 @@ msgstr "Вы не авторизованы! Пожалуйста, выполни
 msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
-#: settings.py:153
+#: permissions.py:33
+msgid "You don't have permissions to modify this. Only team admin can do this."
+msgstr "У вас нет прав, чтобы сделать это изменение. Это может сделать только администратор команды"
+
+#: permissions.py:21
+msgid "You don't have permissions to modify another user."
+msgstr "У вас нет прав для изменения другого пользователя."
+
+#: settings.py:161 templates/index.html:28
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:154
+#: settings.py:162 templates/index.html:29
 msgid "Russian"
 msgstr "Русский"
 
-#: settings.py:155
+#: settings.py:163
 msgid "Spanish"
 msgstr "Испанский"
 
-#: statuses/views.py:26
+#: statuses/views.py:30
 msgid "Status created successfully"
 msgstr "Статус успешно создан"
 
-#: statuses/views.py:34
+#: statuses/views.py:44
 msgid "Status updated successfully"
 msgstr "Статус успешно изменен"
 
-#: statuses/views.py:41
+#: statuses/views.py:51
 msgid "Status deleted successfully"
 msgstr "Статус успешно удален"
 
-#: statuses/views.py:49
+#: statuses/views.py:59
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
@@ -96,42 +105,94 @@ msgstr "Метка"
 msgid "Just my tasks"
 msgstr "Только свои задачи"
 
-#: tasks/models.py:18
+#: tasks/models.py:18 teams/models.py:23
 msgid "Description"
 msgstr "Описание"
 
-#: tasks/models.py:39 templates/base.html:37
+#: tasks/models.py:39 templates/base.html:37 templates/index.html:23
 #: templates/labels/labels_list.html:8
 msgid "Labels"
 msgstr "Метки"
 
-#: tasks/models.py:43 templates/labels/labels_list.html:15
+#: tasks/models.py:43 teams/models.py:33 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
-#: templates/tasks/task_filter.html:30 templates/user/user_list.html:15
+#: templates/tasks/task_filter.html:30 templates/user/user_list.html:29
 msgid "Created at"
 msgstr "Дата создания"
 
-#: tasks/views.py:24
+#: tasks/views.py:22
 msgid "Task can only be deleted by its author."
 msgstr "Задачу может удалить только ее автор"
 
-#: tasks/views.py:44
+#: tasks/views.py:52
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:56
+#: tasks/views.py:69
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:64
+#: tasks/views.py:82
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
-#: templates/base.html:22
-msgid "Task manager"
-msgstr "Менеджер задач"
+#: teams/forms.py:14 user/forms.py:28
+msgid "Password"
+msgstr "Пароль"
 
-#: templates/base.html:30 templates/user/user_list.html:8
+#: teams/forms.py:16 user/forms.py:30
+msgid "Your password must contain at least 3 characters."
+msgstr "Ваш пароль должен содержать как минимум 3 символа."
+
+#: teams/forms.py:20 user/forms.py:34
+msgid "Confirm password"
+msgstr "Подтверждение пароля"
+
+#: teams/forms.py:22 user/forms.py:36
+msgid "Please enter your password one more time"
+msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
+
+#: teams/forms.py:28 user/forms.py:42
+msgid "Your password is too short. It must contain at least 3 characters."
+msgstr "Введённый пароль слишком короткий. Он должен содержать как минимум 3 символа."
+
+#: teams/forms.py:38 user/forms.py:52
+msgid "The entered passwords do not match."
+msgstr "Введенные пароли не совпадают."
+
+#: teams/models.py:18
+msgid "Team password"
+msgstr "Пароль команды"
+
+#: teams/models.py:19
+msgid "Minimum length is 3 characters"
+msgstr "Минимальная длина 3 символа"
+
+#: teams/models.py:29 templates/user/user_list.html:28
+msgid "Team admin"
+msgstr "Администратор команды"
+
+#: teams/views.py:25
+msgid "Team created successfully"
+msgstr "Команда успешно создана"
+
+#: teams/views.py:53
+msgid "Team updated successfully"
+msgstr "Команда успешно изменена"
+
+#: teams/views.py:64
+msgid "Team deleted successfully"
+msgstr "Команда успешно удалена"
+
+#: teams/views.py:74
+msgid "Cannot delete a team because it has members."
+msgstr "Невозможно удалить команду, потому что в ней есть участники"
+
+#: templates/base.html:22 views.py:20
+msgid "TaskMan"
+msgstr "ТаскМан"
+
+#: templates/base.html:30 templates/user/user_list.html:21
 msgid "Users"
 msgstr "Пользователи"
 
@@ -155,6 +216,46 @@ msgstr "Вход"
 msgid "Signup"
 msgstr "Регистрация"
 
+#: templates/index.html:20
+msgid "Individual & Team Use"
+msgstr "Для индивидуального использования и команд"
+
+#: templates/index.html:20
+msgid "Perfect for personal workflows or isolated team projects"
+msgstr "Подходит для личной работы и изолированных командных проектов"
+
+#: templates/index.html:21
+msgid "Task Creation"
+msgstr "Быстрое создание задач"
+
+#: templates/index.html:21
+msgid "Add titles, descriptions, and assignees in seconds"
+msgstr "Добавляйте названия, описания и исполнителей за считанные секунды"
+
+#: templates/index.html:22
+msgid "Custom Statuses"
+msgstr "Пользовательские статусы"
+
+#: templates/index.html:22
+msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
+msgstr "Отслеживайте прогресс задач (например, «К выполнению», «В процессе», «Готово»)"
+
+#: templates/index.html:23
+msgid "Organize tasks with tags for quick filtering"
+msgstr "Организуйте задачи с помощью тегов для быстрого поиска и фильтрации"
+
+#: templates/index.html:24
+msgid "User-Friendly"
+msgstr "Удобство для пользователя"
+
+#: templates/index.html:24
+msgid "Register once, manage everything"
+msgstr "Один раз зарегистрировались — управляйте всем"
+
+#: templates/index.html:26
+msgid "Language Support"
+msgstr "Поддерживаемые языки"
+
 #: templates/labels/labels_create.html:8
 msgid "Create label"
 msgstr "Создать метку"
@@ -162,6 +263,7 @@ msgstr "Создать метку"
 #: templates/labels/labels_create.html:13
 #: templates/statuses/statuses_create_form.html:13
 #: templates/tasks/task_create_form.html:13
+#: templates/teams/team_create_form.html:13
 msgid "Create"
 msgstr "Создать"
 
@@ -175,13 +277,15 @@ msgstr "Удаление метки"
 
 #: templates/labels/labels_delete.html:17
 #: templates/statuses/statuses_delete.html:17
-#: templates/tasks/task_delete.html:17 templates/user/user_delete.html:17
+#: templates/tasks/task_delete.html:17 templates/teams/team_delete.html:17
+#: templates/user/user_delete.html:17
 msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
 #: templates/labels/labels_delete.html:20
 #: templates/statuses/statuses_delete.html:20
-#: templates/tasks/task_delete.html:20 templates/user/user_delete.html:19
+#: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
+#: templates/user/user_delete.html:19
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
@@ -193,14 +297,16 @@ msgstr "Создать метку"
 #: templates/statuses/statuses_list.html:26
 #: templates/statuses/statuses_update.html:13
 #: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:44
-#: templates/tasks/task_update.html:13 templates/user/user_list.html:27
+#: templates/tasks/task_update.html:13 templates/teams/team_detail.html:14
+#: templates/teams/team_update.html:14 templates/user/user_list.html:42
 #: templates/user/user_update.html:13
 msgid "Edit"
 msgstr "Изменить"
 
 #: templates/labels/labels_list.html:28
 #: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:48
-#: templates/tasks/task_filter.html:46 templates/user/user_list.html:29
+#: templates/tasks/task_filter.html:46 templates/teams/team_update.html:18
+#: templates/user/user_list.html:44
 msgid "Delete"
 msgstr "Удалить"
 
@@ -261,19 +367,60 @@ msgstr "Показать"
 msgid "Edit task"
 msgstr "Изменение задачи"
 
+#: templates/teams/team_create_form.html:8
+msgid "Create Team "
+msgstr "Создание команды"
+
+#: templates/teams/team_delete.html:8 templates/user/user_delete.html:8
+#: templates/user/user_delete.html:14
+msgid "Delete user"
+msgstr "Удаление пользователя"
+
+#: templates/teams/team_delete.html:14
+msgid "Delete team"
+msgstr "Удаление команды"
+
+#: templates/teams/team_detail.html:8
+msgid "Team info "
+msgstr "Информация о команде"
+
+#: templates/teams/team_detail.html:9
+msgid "team name"
+msgstr "название команды"
+
+#: templates/teams/team_detail.html:10 templates/user/user_list.html:18
+msgid "admin name"
+msgstr "администратор"
+
+#: templates/teams/team_detail.html:11 templates/user/user_list.html:19
+msgid "created at"
+msgstr "дата создания"
+
+#: templates/teams/team_detail.html:12 templates/user/user_list.html:17
+msgid "description"
+msgstr "описание"
+
+#: templates/teams/team_update.html:8
+msgid "Edit Team "
+msgstr "Изменение команды"
+
 #: templates/user/user_create_form.html:13
 msgid "Sign up"
 msgstr "Зарегистрировать"
 
-#: templates/user/user_delete.html:8 templates/user/user_delete.html:14
-msgid "Delete user"
-msgstr "Удаление пользователя"
+#: templates/user/user_list.html:9
+msgid "Team"
+msgstr "Команда"
 
-#: templates/user/user_list.html:13
+#: templates/user/user_list.html:15
+msgid "info"
+msgstr "инфо"
+
+#: templates/user/user_list.html:26
 msgid "User name"
 msgstr "Имя пользователя"
 
-#: templates/user/user_list.html:14
+#: templates/user/user_list.html:27
 msgid "Fullname"
 msgstr "Полное имя"
 
@@ -281,69 +428,88 @@ msgstr "Полное имя"
 msgid "Edit user"
 msgstr "Изменение пользователя"
 
-#: user/forms.py:14
-msgid "Password"
-msgstr "Пароль"
+#: user/forms.py:15
+msgid "Register as Team Admin"
+msgstr "Зарегистрироваться как Администратор Команды"
 
-#: user/forms.py:16
-msgid "Your password must contain at least 3 characters."
-msgstr "Ваш пароль должен содержать как минимум 3 символа."
-
-#: user/forms.py:20
-msgid "Confirm password"
-msgstr "Подтверждение пароля"
+#: user/forms.py:17
+msgid "Sign up, then create your team."
+msgstr "Зарегистрируйся, после создай свою команду"
 
 #: user/forms.py:22
-msgid "Please enter your password one more time"
-msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
+msgid "Team Name"
+msgstr "Название команды"
 
-#: user/forms.py:28
-msgid "Your password is too short. It must contain at least 3 characters."
-msgstr ""
-"Введённый пароль слишком короткий. Он должен содержать как минимум 3 символа."
+#: user/forms.py:23
+msgid "Enter team name if you want to join existing team"
+msgstr "Введите название команды, к которой хотите присоединиться"
 
-#: user/forms.py:38
-msgid "The entered passwords do not match."
-msgstr "Введенные пароли не совпадают."
+#: user/forms.py:115
+msgid "You can't be team admin and join existing team at the same time"
+msgstr "Вы не можете быть одновременно Администратором одной команды и участником другой"
 
-#: user/views.py:30
+#: user/forms.py:126
+msgid "There is no such team"
+msgstr "Такой команды не существует"
+
+#: user/views.py:41
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: user/views.py:42
+#: user/views.py:63
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменен"
 
-#: user/views.py:52
+#: user/views.py:80
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
-#: user/views.py:60
+#: user/views.py:87
+msgid "Cannot delete a user because it is team admin"
+msgstr "Невозможно удалить пользователя, являющегося Администратором команды"
+
+#: user/views.py:94
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 
-#: views.py:20
-#msgid "Welcome to Task Manager!"
-#msgstr "Добро пожаловать в Таск-менеджер!"
-
 #: views.py:21
-msgid "Task Manager is a web application designed to manage tasks in an "
-"organization or team.<br>Task Manager allows users to register, create and "
-"effectively manage tasks."
-msgstr "Менеджер Задач - приложение для управления задачами в организации или "
-"команде.<br>Регистрируйтесь, создавайте и эффективно управляйте задачами."
+msgid "Manage Tasks Your Way"
+msgstr "Управляйте задачами по-своему"
 
-#: views.py:25
+#: views.py:22
+msgid ""
+"Whether you're working solo or with multiple independent teams, TaskMan "
+"simplifies task management.<br>Create, assign, and track tasks effortlessly "
+"across projects."
+msgstr ""
+"TaskMan упрощает управление задачами — будь вы одним пользователем "
+" или частью независимой команды. Создавайте, назначайте "
+"и отслеживайте задачи с легкостью в рамках разных проектов."
+
+#: views.py:27
 msgid "Read more"
 msgstr "Узнать больше"
 
-#: views.py:34
+#: views.py:36
 msgid "You successfully logged in"
 msgstr "Вы залогинены"
 
-#: views.py:41
+#: views.py:43
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "Task manager"
+#~ msgstr "Менеджер задач"
+
+# msgid "Welcome to Task Manager!"
+# msgstr "Добро пожаловать в Таск-менеджер!"
+#~ msgid ""
+#~ "Task Manager is a web application designed to manage tasks in an "
+#~ "organization or team.<br>Task Manager allows users to register, create "
+#~ "and effectively manage tasks."
+#~ msgstr ""
+#~ "Менеджер Задач - приложение для управления задачами в организации или "
+#~ "команде.<br>Регистрируйтесь, создавайте и эффективно управляйте задачами."
 
 #~ msgid "Hello from Hexlet!"
 #~ msgstr "Привет от Хекслета!"
@@ -354,11 +520,97 @@ msgstr "Вы разлогинены"
 #~ msgid "First name"
 #~ msgstr "Имя"
 
-#~ msgid "Last name"
-#~ msgstr "Фамилия"
-
 #~ msgid "Username"
 #~ msgstr "Имя пользователя"
 
 #~ msgid "Task_manager"
 #~ msgstr "Менеджер задач"
+
+
+155
+#| msgid "Confirm password"
+#msgid "Team password"
+#msgstr "Подтверждение пароля"
+
+177
+#| msgid "Task created successfully"
+#msgid "Team created successfully"
+#msgstr "Задача успешно создана"
+
+179
+#, fuzzy
+#| msgid "Task updated successfully"
+#msgid "Team updated successfully"
+#msgstr "Задача успешно изменена"
+
+183
+#, fuzzy
+#| msgid "Task deleted successfully"
+#msgid "Team deleted successfully"
+#msgstr "Задача успешно удалена"
+
+187
+#, fuzzy
+#| msgid "Cannot delete a user because it is in use"
+#msgid "Cannot delete a team because it has members."
+#msgstr "Невозможно удалить пользователя, потому что он используется"
+
+191
+#, fuzzy
+#| msgid "Tasks"
+#msgid "TaskMan"
+#msgstr "Задачи"
+
+370
+#, fuzzy
+#| msgid "Created at"
+#msgid "Create Team "
+#msgstr "Дата создания"
+
+379
+#, fuzzy
+#| msgid "Delete task"
+msgid "Delete team"
+msgstr "Удаление задачи"
+
+387
+#, fuzzy
+#| msgid "User name"
+#msgid "team name"
+#msgstr "Имя пользователя"
+
+391
+#, fuzzy
+#| msgid "Last name"
+#msgid "admin name"
+#msgstr "Фамилия"
+
+395
+#, fuzzy
+#| msgid "Created at"
+#msgid "created at"
+#msgstr "Дата создания"
+
+399
+#, fuzzy
+#| msgid "Description"
+#msgid "description"
+#msgstr "Описание"
+
+403
+#, fuzzy
+#| msgid "Edit task"
+#msgid "Edit Team "
+#msgstr "Изменение задачи"
+
+439
+#, fuzzy
+#| msgid "Name"
+#msgid "Team Name"
+#msgstr "Имя"
+
+467
+#, fuzzy
+#| msgid "Cannot delete a user because it is in use"
+#msgid "Cannot delete a user because it is team admin"
+#msgstr "Невозможно удалить пользователя, потому что он используется"
