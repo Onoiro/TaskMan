@@ -20,7 +20,7 @@ class IndexView(View):
             'taskman': _("TaskMan"),
             'manage': _("Manage Tasks Your Way"),
             'description': _("Whether you're working solo"
-                            " or with multiple independent teams, "
+                             " or with multiple independent teams, "
                              "TaskMan simplifies task management.<br>"
                              "Create, assign, and track tasks"
                              " effortlessly across projects."),
