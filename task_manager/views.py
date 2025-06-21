@@ -17,11 +17,13 @@ class IndexView(View):
 
     def get(self, request, *args, **kwargs):
         content = {
-            'welcome': _("Welcome to Task Manager!"),
-            'description': _('Task Manager is a web application designed '
-                             'to manage tasks in an organization or team.<br>'
-                             'Task Manager allows users to register, create '
-                             'and effectively manage tasks.'),
+            'taskman': _("TaskMan"),
+            'manage': _("Manage Tasks Your Way"),
+            'description': _("Whether you're working solo"
+                            " or with multiple independent teams, "
+                             "TaskMan simplifies task management.<br>"
+                             "Create, assign, and track tasks"
+                             " effortlessly across projects."),
             'read_more': _("Read more"),
         }
         return render(request, 'index.html', context=content)
