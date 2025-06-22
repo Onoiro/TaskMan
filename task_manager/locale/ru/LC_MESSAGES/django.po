@@ -21,15 +21,11 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
-#: statuses/forms.py:14 tasks/models.py:14
+#: statuses/forms.py:14 tasks/models.py:14 teams/models.py:13
 #: templates/labels/labels_list.html:14
 #: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:26
 msgid "Name"
 msgstr "Имя"
-
-#: teams/models.py:13
-msgid "Name"
-msgstr "Название"
 
 #: labels/views.py:30
 msgid "Label created successfully"
