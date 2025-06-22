@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-22 22:42+0300\n"
+"POT-Creation-Date: 2025-06-22 23:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -214,6 +214,10 @@ msgstr "Вход"
 #: templates/base.html:53 templates/user/user_create_form.html:8
 msgid "Signup"
 msgstr "Регистрация"
+
+#: templates/index.html:18
+msgid "Features"
+msgstr "Возможности"
 
 #: templates/index.html:20
 msgid "Individual & Team Use"
@@ -444,8 +448,8 @@ msgstr "Введите название команды, к которой хот
 #: user/forms.py:109
 msgid "You can't signup as team admin and join existing team at the same time"
 msgstr ""
-"Вы не можете одновременно зарегистрироваться Администратором и стать участником "
-"какой-либо команды"
+"Вы не можете одновременно зарегистрироваться Администратором и стать "
+"участником какой-либо команды"
 
 #: user/forms.py:120
 msgid "There is no such team"
