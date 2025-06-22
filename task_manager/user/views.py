@@ -84,7 +84,8 @@ class UserDeleteView(CustomPermissions,
 
         if self.object.team_admin_set.exists():
             messages.error(self.request,
-                           _("Cannot delete a user because it is team admin"))
+                           _("Cannot delete a user because it is team admin. "
+                             "Delete the team first."))
             return redirect('user:user-list')
 
         user_tasks_as_author = Task.objects.filter(author=self.object)

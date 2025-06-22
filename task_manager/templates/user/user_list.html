@@ -8,11 +8,10 @@
     {% if request.user.team %}
         <h2 class="my-4">{% trans "Team" %}
             {% if request.user.is_team_admin %}
-                <a href="{% url 'teams:team-update' request.user.team.id %}"> {{ request.user.team.name }}</a>
+                <a href="{% url 'teams:team-update' request.user.team.id %}"> "{{ request.user.team.name }}"</a>
             {% else %}
-                {{ request.user.team.name }}
+                "{{ request.user.team.name }}"
             {% endif %}
-            {% trans "info" %}
         </h2>
         <p>{% trans "description" %}: {{ request.user.team.description }}</p>
         <p>{% trans "admin name" %}: {{ request.user.team.team_admin.username }}</p>
