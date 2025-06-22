@@ -209,7 +209,7 @@ class UserTestCase(TestCase):
         )
 
         # Try to delete new user
-        response = self.c.post(reverse('user:user-delete',
+        response = self.c.get(reverse('user:user-delete',
                                args=[new_user.id]), follow=True)
 
         # Check that new user still exist
@@ -222,7 +222,8 @@ class UserTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                         _('Cannot delete a user because it is team admin'))
+                         _('Cannot delete a user because it is team admin. '
+                          'Delete the team first.'))
 
         # Delete team after test
         team.delete()
