@@ -79,15 +79,17 @@ class UserDeleteView(CustomPermissions,
     success_url = reverse_lazy('user:user-list')
     success_message = _('User deleted successfully')
 
-    def form_valid(self, form):
+    def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-
         if self.object.team_admin_set.exists():
             messages.error(self.request,
                            _("Cannot delete a user because it is team admin. "
                              "Delete the team first."))
             return redirect('user:user-list')
+        return super().get(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        self.object = self.get_object()
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
