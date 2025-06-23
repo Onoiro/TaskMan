@@ -57,9 +57,6 @@ class UserTestCase(TestCase):
         self.assertRegex(
             response.content.decode('utf-8'),
             _(r'\bSign up\b'))
-        # self.assertContains(
-        #     response, _("Required. 150 characters or fewer."\
-        #                 "Letters, digits and @/./+/-/_ only."))
 
     def test_create_user_successfully(self):
         old_count = User.objects.count()
@@ -161,14 +158,18 @@ class UserTestCase(TestCase):
     # delete
 
     def test_get_delete_user_response_200_and_check_content(self):
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        new_user = User.objects.get(username="new")
+        self.c.force_login(new_user)
         response = self.c.get(
             reverse('user:user-delete',
-                    args=[self.user.id]), follow=True)
+                    args=[new_user.id]), follow=False)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Delete user'))
         self.assertContains(response, _('Yes, delete'))
         self.assertContains(response,
-                            _('Are you sure you want to delete He H?'))
+                            _('Are you sure you want to delete New N?'))
 
     def test_delete_user_successfully(self):
         self.c.post(reverse('user:user-create'),
@@ -186,8 +187,8 @@ class UserTestCase(TestCase):
                          _('User deleted successfully'))
 
     def test_can_not_delete_user_bound_with_task(self):
-        response = self.c.post(reverse('user:user-delete',
-                               args=[self.user.id]), follow=True)
+        response = self.c.get(reverse('user:user-delete',
+                                      args=[self.user.id]), follow=True)
         self.assertTrue(User.objects.filter(username="he").exists())
         self.assertRedirects(response, reverse('user:user-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -207,10 +208,11 @@ class UserTestCase(TestCase):
             description="Test team description",
             team_admin=new_user
         )
+        self.c.force_login(new_user)
 
         # Try to delete new user
         response = self.c.get(reverse('user:user-delete',
-                               args=[new_user.id]), follow=True)
+                                      args=[new_user.id]), follow=True)
 
         # Check that new user still exist
         self.assertTrue(User.objects.filter(username="new").exists())
@@ -223,7 +225,7 @@ class UserTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete a user because it is team admin. '
-                          'Delete the team first.'))
+                         'Delete the team first.'))
 
         # Delete team after test
         team.delete()
