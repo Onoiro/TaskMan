@@ -105,11 +105,11 @@ status:
 # ========================================
 
 # enter Django container
-d-shell:
+d-bash:
 	docker compose exec django-web bash
 
 # enter Django shell
-d-django-shell:
+d-shell:
 	docker compose exec django-web python manage.py shell
 
 # enter database container
@@ -133,11 +133,11 @@ d-migrate:
 	docker compose exec django-web python manage.py migrate
 
 # create superuser
-d-createsuperuser:
+d-createsu:
 	docker compose exec django-web python manage.py createsuperuser
 
 # collect static files
-d-collectstatic:
+d-collect:
 	docker compose exec django-web python manage.py collectstatic --no-input
 
 # create translations
@@ -185,7 +185,7 @@ deploy:
 	docker compose exec django-web python manage.py compilemessages
 
 # quick start for development
-d-dev-start:
+d-dev:
 	docker compose up -d
 	sleep 10
 	docker compose exec django-web python manage.py migrate
@@ -229,7 +229,7 @@ help:
 	@echo "  d-build         - Build images"
 	@echo "  rebuild         - Rebuild and start"
 	@echo "  logs            - View logs"
-	@echo "  d-shell         - Enter Django container"
+	@echo "  d-bash          - Enter Django container"
 	@echo "  db-shell        - Enter database"
 	@echo "  d-migrate       - Apply migrations"
 	@echo "  d-backup        - Create database backup"
@@ -242,16 +242,16 @@ help:
 	@echo "  logs-web        - View Django logs"
 	@echo "  logs-db         - View database logs"
 	@echo "  status          - Service status"
-	@echo "  d-django-shell  - Enter Django shell"
+	@echo "  d-shell         - Enter Django shell"
 	@echo "  db-bash         - Enter database container via bash"
 	@echo "  d-migrations    - Create migrations"
-	@echo "  d-createsuperuser - Create superuser"
-	@echo "  d-collectstatic - Collect static files"
+	@echo "  d-createsu      - Create superuser"
+	@echo "  d-collect       - Collect static files"
 	@echo "  d-messages      - Create translations"
 	@echo "  d-compile       - Compile translations"
 	@echo "  d-restore       - Restore database from backup"
 	@echo "  d-reset-db      - Reset and recreate database"
-	@echo "  d-dev-start     - Quick start for development"
+	@echo "  d-dev           - Quick start for development"
 	@echo "  d-clean-all     - Full Docker cleanup (WARNING!)"
 	@echo "  d-space         - View Docker disk usage"
 	@echo "  ps-all          - View all containers"
