@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "TaskMan"
-version = "0.2.0"
+version = "0.2.1"
 description = "Web task management system"
 authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
