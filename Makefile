@@ -141,11 +141,11 @@ d-collectstatic:
 	docker compose exec django-web python manage.py collectstatic --no-input
 
 # create translations
-d-makemessages:
+d-messages:
 	docker compose exec django-web python manage.py makemessages -a
 
 # compile translations
-d-compilemessages:
+d-compile:
 	docker compose exec django-web python manage.py compilemessages
 
 # ========================================
@@ -247,8 +247,8 @@ help:
 	@echo "  d-migrations    - Create migrations"
 	@echo "  d-createsuperuser - Create superuser"
 	@echo "  d-collectstatic - Collect static files"
-	@echo "  d-makemessages  - Create translations"
-	@echo "  d-compilemessages - Compile translations"
+	@echo "  d-messages      - Create translations"
+	@echo "  d-compile       - Compile translations"
 	@echo "  d-restore       - Restore database from backup"
 	@echo "  d-reset-db      - Reset and recreate database"
 	@echo "  d-dev-start     - Quick start for development"
