@@ -6,7 +6,7 @@
 # [TaskMan](https://taskman.2-way.ru)
 TaskMan is a web application designed to manage tasks in organizations and teams. It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
 
-### Features
+## Features
 
 - **User Registration**: Users can register to create an account and log in to the TaskMan application.
 - **Team Management**: Users can create teams and invite other users to join, or work independently without a team
@@ -17,23 +17,24 @@ TaskMan is a web application designed to manage tasks in organizations and teams
 - **Labels**: Organize tasks with custom labels created by team members
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team
 
-### Language Support
+## Language Support
 The TaskMan application is available in two languages:
 - **English**
 - **Russian**
 
-### Requirements
+## Requirements
 - **OS**: Linux (recommended)
 - **Python**: ^3.8.1
 - **Poetry**: ^1.2.2 (for non-Docker setup)
 - **Docker Engine**: ^20.10 (for Docker setup)
 - **Docker Compose**: ^2.0 (for Docker setup)
 
-### Getting Started
+## Getting Started
 
-#### Option 1: Docker Setup (Recommended)
+### Option 1: Docker Setup (Recommended)
 **Prerequisites**
 - Docker and Docker Compose installed on your system
+
 **Quick Start**
 ```bash
 # clone the repository:
@@ -60,22 +61,19 @@ ROLLBAR_ACCESS_TOKEN=your_rollbar_token
 # build and start the application for first time:
 
 # build images
-# docker compose build
-make d-build
+make d-build # docker compose build
 
 # start all services in background
-# docker compose up -d
-make up
+make up # docker compose up -d
 
-# run database migrations and create superuser:
-# docker compose exec django-web python manage.py migrate
-make d-migrate
-# docker compose exec django-web python manage.py createsuperuser
-make d-createsu
+# run database migrations
+make d-migrate # docker compose exec django-web python manage.py migrate
+
+# create superuser
+make d-createsu # docker compose exec django-web python manage.py createsuperuser
 
 # collect static files:
-# docker compose exec django-web python manage.py collectstatic --no-input
-make d-collect
+make d-collect # docker compose exec django-web python manage.py collectstatic --no-input
 ```
 **Access the application**:
 Open your browser and navigate to: http://localhost:8001
@@ -93,7 +91,7 @@ make d-backup # create database backup
 make help # view all available commands
 ```
 
-#### Option 2: Traditional Setup (Without Docker)
+### Option 2: Traditional Setup (Without Docker)
 **Prerequisites**
 - Python 3.8.1 or higher
 - Poetry 1.2.2 or higher
@@ -143,7 +141,7 @@ make compile # compile translations
 make shell # access Django shell
 ```
 
-### Team-Based Workflow
+## Team-Based Workflow
 
 TaskMan implements a team-based isolation system:
 - **Teams**: Users can create teams and invite other members
@@ -152,9 +150,9 @@ TaskMan implements a team-based isolation system:
 - **Filtering**: Task filters show only values created by team members
 - **Independent Work**: Users can also work independently without joining any team
 
-### Development
+## Development
 
-#### Code Quality
+### Code Quality
 ```bash
 # check code style
 make lint
@@ -163,7 +161,7 @@ make test
 # generate test coverage
 make test-cov
 ```
-#### Database Operations
+### Database Operations
 ```bash
 # create new migrations
 make migrations  # or make d-migrations for Docker
@@ -172,18 +170,18 @@ nake migrate     # or make d-migrate for Docker
 # access database shell
 make shell       # or make db-shell for Docker
 ```
-#### Internationalization
+### Internationalization
 ```bash
 # extract translatable strings
 make messages    # or make d-makemessages for Docker
 # compile translations
 make compile     # or make d-compilemessages for Docker
 ```
-#### Production Deployment
+### Production Deployment
 
 For production deployment with Docker:
-**Configure production environment variables**
-**Use the deploy command**:
+- **Configure production environment variables**
+- **Use the deploy command**:
 ```bash
 make deploy
 # docker compose down
@@ -202,7 +200,7 @@ This command will:
 - Collect static files
 - Compile translations
 
-#### Database Backup and Restore
+### Database Backup and Restore
 ```bash
 # create backup
 make d-backup
@@ -212,7 +210,7 @@ make d-restore BACKUP_FILE=backup_filename.sql
 make d-reset-db
 ```
 
-### Troubleshooting
+## Troubleshooting
 **Docker Issues**
 ```bash
 # check service status:
