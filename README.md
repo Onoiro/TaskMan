@@ -3,7 +3,7 @@
 [![Maintainability](https://qlty.sh/badges/8be7044b-186e-41ec-94eb-26e8be04d42b/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/TaskMan)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/TaskMan/test_coverage)
 
-## [TaskMan](https://taskman.2-way.ru)
+# [TaskMan](https://taskman.2-way.ru)
 TaskMan is a web application designed to manage tasks in organizations and teams. It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
 
 ### Features
@@ -81,16 +81,17 @@ make d-collect
 Open your browser and navigate to: http://localhost:8001
 
 **Docker Management Commands**
-
-- **Start services**: make up
-- **Stop services**: make down
-- **View logs**: make logs
-- **Restart services**: make restart
-- **Rebuild and deploy**: make deploy
-- **Enter Django container**: make d-bash
-- **Access database**: make db-shell
-- **Create database backup**: make d-backup
-- **View all available commands**: make help
+```bash
+make up # start services
+make down # stop services
+make logs # view logs
+make restart # restart services
+make deploy # rebuild and deploy
+make d-bash # enter Django container
+make db-shell # access database
+make d-backup # create database backup
+make help # view all available commands
+```
 
 #### Option 2: Traditional Setup (Without Docker)
 **Prerequisites**
@@ -126,29 +127,30 @@ make build
 # run local development server:
 make dev
 ```
-
 **Access the application**:
 Open your browser and navigate to: http://127.0.0.1:8001/
 
 **Traditional Management Commands**
-**Run development server**: make dev
-**Run production server**: make start
-**Run tests**: make test
-**Check code style**: make lint
-**Create migrations**: make migrations
-**Apply migrations**: make migrate
-**Create translations**: make messages
-**Compile translations**: make compile
-**Access Django shell**: make shell
+```bash
+make dev # run development server
+make start # run production server
+make test # run tests
+make lint # check code style
+make migrations # create migrations
+make migrate # apply migrations
+make messages # create translations
+make compile # compile translations
+make shell # access Django shell
+```
 
 ### Team-Based Workflow
 
 TaskMan implements a team-based isolation system:
-**Teams**: Users can create teams and invite other members
-**Task Isolation**: When creating or editing tasks, only team members are available as executors
-**Status & Labels**: Custom statuses and labels are shared only within team members
-**Filtering**: Task filters show only values created by team members
-**Independent Work**: Users can also work independently without joining any team
+- **Teams**: Users can create teams and invite other members
+- **Task Isolation**: When creating or editing tasks, only team members are available as executors
+- **Status & Labels**: Custom statuses and labels are shared only within team members
+- **Filtering**: Task filters show only values created by team members
+- **Independent Work**: Users can also work independently without joining any team
 
 ### Development
 
@@ -156,10 +158,8 @@ TaskMan implements a team-based isolation system:
 ```bash
 # check code style
 make lint
-
 # run tests
 make test
-
 # generate test coverage
 make test-cov
 ```
@@ -167,10 +167,8 @@ make test-cov
 ```bash
 # create new migrations
 make migrations  # or make d-migrations for Docker
-
 # apply migrations
-make migrate     # or make d-migrate for Docker
-
+nake migrate     # or make d-migrate for Docker
 # access database shell
 make shell       # or make db-shell for Docker
 ```
@@ -178,7 +176,6 @@ make shell       # or make db-shell for Docker
 ```bash
 # extract translatable strings
 make messages    # or make d-makemessages for Docker
-
 # compile translations
 make compile     # or make d-compilemessages for Docker
 ```
@@ -209,47 +206,42 @@ This command will:
 ```bash
 # create backup
 make d-backup
-
 # restore from backup
 make d-restore BACKUP_FILE=backup_filename.sql
-
 # reset database completely
 make d-reset-db
 ```
 
-#### Troubleshooting
+### Troubleshooting
 **Docker Issues**
 ```bash
 # check service status:
 make status
-
 # view logs:
 make logs
 # or:
 make logs-web
-
 # clean Docker objects:
 make d-clean
-
 # check disk usage:
 make d-space
 ```
 **Common Solutions**
 - If containers fail to start, check your .env file configuration
 - For database connection issues, ensure PostgreSQL container is healthy
-- Use make help to see all available commands
+- Use 'make help' to see all available commands
 
-#### Contributing
+### Contributing
 - Fork the repository
 - Create a feature branch
 - Make your changes
 - Run tests and linting
 - Submit a pull request
 
-#### License
+### License
 This project is licensed under the MIT License.
 
-#### Links
+### Links
 - Live Application: https://taskman.2-way.ru
 - Repository: https://github.com/Onoiro/taskman
 - Author: Andrey Bogatyrev <mailto:donoriono@gmail.com>
