@@ -1,17 +1,30 @@
 {% load django_bootstrap5 %}
+{% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('{% static "js/sw.js" %}');
+  }
+</script>
 {% load i18n %}
-{% load static %}
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#007bff">
+    <!-- Иконки для разных платформ -->
+    <link rel="icon" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-180x180.png' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>{% block title %}{% trans "TaskMan" %}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
   </head>
   <body class="d-flex flex-column min-vh-100">
 
@@ -22,6 +35,7 @@
             <a class="navbar-brand" href="/">{% trans "TaskMan" %}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
+              <span class="d-inline-block d-lg-none">{% trans "Menu" %}</span>
             </button>
     
             <div class="collapse navbar-collapse" id="navbarsExample09">
@@ -77,7 +91,7 @@
       </div>
     {% endblock %}
     
-    <div class="container wrapper flex-grow-1">
+    <div class="container wrapper flex-grow-1 px-3 px-sm-0">
       <div>{% bootstrap_messages %}</div>
       <div id="content">
           {% block content %}
@@ -86,8 +100,8 @@
     </div>
     
     <footer>
-        <div class="container my-5 pt-4 border-top text-center">
-            <a target="_blank" href="https://github.com/Onoiro">&copy; Abo 2025</a>
+        <div class="container my-3 my-md-5 pt-3 pt-md-4 border-top text-center">
+            <a target="_blank" href="https://github.com/Onoiro" class="text-nowrap">&copy; Abo 2025</a>
         </div>
     </footer>
     
