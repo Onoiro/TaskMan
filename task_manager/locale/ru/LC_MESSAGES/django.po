@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-22 23:04+0300\n"
+"POT-Creation-Date: 2025-06-30 00:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,14 +107,14 @@ msgstr "Только свои задачи"
 msgid "Description"
 msgstr "Описание"
 
-#: tasks/models.py:39 templates/base.html:37 templates/index.html:23
+#: tasks/models.py:39 templates/base.html:77 templates/index.html:23
 #: templates/labels/labels_list.html:8
 msgid "Labels"
 msgstr "Метки"
 
 #: tasks/models.py:43 teams/models.py:33 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
-#: templates/tasks/task_filter.html:30 templates/user/user_list.html:28
+#: templates/tasks/task_filter.html:30 templates/user/user_list.html:34
 msgid "Created at"
 msgstr "Дата создания"
 
@@ -167,7 +167,7 @@ msgstr "Пароль команды"
 msgid "Minimum length is 3 characters"
 msgstr "Минимальная длина 3 символа"
 
-#: teams/models.py:29 templates/user/user_list.html:27
+#: teams/models.py:29 templates/user/user_list.html:33
 msgid "Team admin"
 msgstr "Администратор команды"
 
@@ -187,31 +187,35 @@ msgstr "Команда успешно удалена"
 msgid "Cannot delete a team because it has members."
 msgstr "Невозможно удалить команду, потому что в ней есть участники"
 
-#: templates/base.html:22 views.py:20
+#: templates/base.html:30 templates/base.html:61 views.py:20
 msgid "TaskMan"
 msgstr "ТаскМан"
 
-#: templates/base.html:30 templates/user/user_list.html:20
+#: templates/base.html:64
+msgid "Menu"
+msgstr "Меню"
+
+#: templates/base.html:71 templates/user/user_list.html:26
 msgid "Users"
 msgstr "Пользователи"
 
-#: templates/base.html:34 templates/statuses/statuses_list.html:8
+#: templates/base.html:74 templates/statuses/statuses_list.html:8
 msgid "Statuses"
 msgstr "Статусы"
 
-#: templates/base.html:40 templates/tasks/task_filter.html:7
+#: templates/base.html:80 templates/tasks/task_filter.html:7
 msgid "Tasks"
 msgstr "Задачи"
 
-#: templates/base.html:45
+#: templates/base.html:87
 msgid "Exit"
 msgstr "Выход"
 
-#: templates/base.html:49 templates/login.html:8
+#: templates/base.html:91 templates/login.html:8
 msgid "Login"
 msgstr "Вход"
 
-#: templates/base.html:53 templates/user/user_create_form.html:8
+#: templates/base.html:94 templates/user/user_create_form.html:8
 msgid "Signup"
 msgstr "Регистрация"
 
@@ -303,7 +307,7 @@ msgstr "Создать метку"
 #: templates/statuses/statuses_update.html:13
 #: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:44
 #: templates/tasks/task_update.html:13 templates/teams/team_detail.html:14
-#: templates/teams/team_update.html:14 templates/user/user_list.html:41
+#: templates/teams/team_update.html:14 templates/user/user_list.html:47
 #: templates/user/user_update.html:13
 msgid "Edit"
 msgstr "Изменить"
@@ -311,7 +315,7 @@ msgstr "Изменить"
 #: templates/labels/labels_list.html:28
 #: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:48
 #: templates/tasks/task_filter.html:46 templates/teams/team_update.html:18
-#: templates/user/user_list.html:43
+#: templates/user/user_list.html:49
 msgid "Delete"
 msgstr "Удалить"
 
@@ -393,15 +397,15 @@ msgstr "Информация о команде"
 msgid "team name"
 msgstr "название команды"
 
-#: templates/teams/team_detail.html:10 templates/user/user_list.html:17
+#: templates/teams/team_detail.html:10 templates/user/user_list.html:23
 msgid "admin name"
 msgstr "администратор"
 
-#: templates/teams/team_detail.html:11 templates/user/user_list.html:18
+#: templates/teams/team_detail.html:11 templates/user/user_list.html:24
 msgid "created at"
 msgstr "дата создания"
 
-#: templates/teams/team_detail.html:12 templates/user/user_list.html:16
+#: templates/teams/team_detail.html:12 templates/user/user_list.html:22
 msgid "description"
 msgstr "описание"
 
@@ -417,11 +421,11 @@ msgstr "Зарегистрировать"
 msgid "Team"
 msgstr "Команда"
 
-#: templates/user/user_list.html:25
+#: templates/user/user_list.html:31
 msgid "User name"
 msgstr "Имя пользователя"
 
-#: templates/user/user_list.html:26
+#: templates/user/user_list.html:32
 msgid "Fullname"
 msgstr "Полное имя"
 
@@ -467,13 +471,13 @@ msgstr "Пользователь успешно изменен"
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
-#: user/views.py:87
+#: user/views.py:86
 msgid "Cannot delete a user because it is team admin. Delete the team first."
 msgstr ""
 "Невозможно удалить пользователя, являющегося Администратором команды. "
 "Сначала удалите команду."
 
-#: user/views.py:95
+#: user/views.py:93
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 
