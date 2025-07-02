@@ -40,7 +40,7 @@ jobs:
           make test
         env:
           DATABASE_URL: sqlite:///db.sqlite3
-          # POST_SERVER_ITEM_ACCESS_TOKEN: ${{ secrets.POST_SERVER_ITEM_ACCESS_TOKEN }}
+          POST_SERVER_ITEM_ACCESS_TOKEN: ${{ secrets.POST_SERVER_ITEM_ACCESS_TOKEN }}
         
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.2.0
