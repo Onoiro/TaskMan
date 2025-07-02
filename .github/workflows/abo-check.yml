@@ -2,12 +2,12 @@ name: CI-check
 
 on:
   push:
-    branches: [ main, develop ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-  pull_request:
-    branches: [ main ]
+  #   branches: [ main, develop ]
+  #   paths-ignore:
+  #     - '**.md'
+  #     - 'docs/**'
+  # pull_request:
+  #   branches: [ main ]
 
 env:
   DJANGO_LANGUAGE_CODE: 'en-us'
