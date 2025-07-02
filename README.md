@@ -1,6 +1,5 @@
 [![CI-check](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml)
 [![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
-[![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check-task-manager.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
 [![Maintainability](https://qlty.sh/badges/8be7044b-186e-41ec-94eb-26e8be04d42b/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/TaskMan)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/TaskMan/test_coverage)
 
