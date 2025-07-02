@@ -1,4 +1,4 @@
-FROM python:3.8-slim AS builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
@@ -9,16 +9,18 @@ RUN apt-get update && apt-get install -y \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock README.md ./
 
 RUN pip install --upgrade pip && \
     pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi --no-dev
+    poetry install --no-root --no-interaction --no-ansi --without dev
 
 COPY . .
 
-FROM python:3.8-slim
+RUN poetry install --no-interaction --no-ansi --without dev
+
+FROM python:3.11-slim
 
 RUN apt-get update && apt-get install -y \
     postgresql-client \
@@ -28,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /app && useradd -m -r appuser && chown -R appuser /app
 WORKDIR /app
 
-COPY --from=builder /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY --from=builder --chown=appuser:appuser /app /app

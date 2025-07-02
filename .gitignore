@@ -9,3 +9,5 @@ db.sqlite3
 **/staticfiles
 .ropeproject
 todo.txt
+poetry.lock.backup
+pyproject.toml.backup
