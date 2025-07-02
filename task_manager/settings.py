@@ -81,13 +81,16 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
-ROLLBAR = {
-    'access_token': os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
-    'code_version': '1.0',
-    'branch': 'main',
-    'root': BASE_DIR,
-}
+ENABLE_ROLLBAR = not DEBUG and os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN')
+
+if ENABLE_ROLLBAR:
+    ROLLBAR = {
+        'access_token': os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN'),
+        'environment': 'development' if DEBUG else 'production',
+        'code_version': '1.0',
+        'branch': 'main',
+        'root': BASE_DIR,
+    }
 
 ROOT_URLCONF = 'task_manager.urls'
 
