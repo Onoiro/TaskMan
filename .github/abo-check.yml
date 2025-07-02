@@ -1,0 +1,86 @@
+name: CI-check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DJANGO_LANGUAGE_CODE: 'en-us'
+  DATABASE_URL: sqlite:///db.sqlite3
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: lint-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            lint-${{ runner.os }}-
+      
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry config cache-dir ~/.cache/pypoetry
+          poetry install --only dev
+      
+      - name: Lint with flake8
+        run: make lint
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.11", "3.12"]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: test-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            test-${{ runner.os }}-${{ matrix.python-version }}-
+      
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry config cache-dir ~/.cache/pypoetry
+          poetry install
+      
+      - name: Collect static files
+        run: poetry run python manage.py collectstatic --no-input
+      
+      - name: Run tests
+        run: make test
+      
+      - name: Generate coverage report
+        run: make cov
+        if: matrix.python-version == '3.11'
+      
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v3.2.0
+        if: matrix.python-version == '3.11'
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: echo "Coverage already generated"
+          coverageLocations: coverage.xml:coverage.py
