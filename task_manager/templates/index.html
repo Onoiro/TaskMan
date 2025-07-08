@@ -48,6 +48,24 @@
                   <span><strong>{% trans "Russian" %}</strong></span>
                 </li>
               </ul>
+
+              <!-- Button CTA for mobile -->
+              <div class="d-grid gap-2 d-md-none mt-4">
+                {% if user.is_authenticated %}
+                  <a href="/tasks/" class="btn btn-primary btn-lg">{% trans "Go to Tasks" %}</a>
+                {% else %}
+                  <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg">{% trans "Get Started" %}</a>
+                {% endif %}
+              </div>
+
+              <!-- Button CTA for desktop -->
+              <div class="d-none d-md-block text-center mt-4">
+                {% if user.is_authenticated %}
+                  <a href="/tasks/" class="btn btn-primary btn-lg px-4">{% trans "Go to Tasks" %}</a>
+                {% else %}
+                  <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg px-4">{% trans "Get Started" %}</a>
+                {% endif %}
+              </div>
         </div>
       </div>
     </div>
