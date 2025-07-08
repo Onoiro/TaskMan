@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-30 00:04+0300\n"
+"POT-Creation-Date: 2025-07-08 23:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,15 +57,15 @@ msgstr ""
 "У вас нет прав, чтобы сделать это изменение. Это может сделать только "
 "администратор команды"
 
-#: settings.py:161 templates/index.html:28
+#: settings.py:164 templates/index.html:44
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:162 templates/index.html:29
+#: settings.py:165 templates/index.html:48
 msgid "Russian"
 msgstr "Русский"
 
-#: settings.py:163
+#: settings.py:166
 msgid "Spanish"
 msgstr "Испанский"
 
@@ -107,7 +107,7 @@ msgstr "Только свои задачи"
 msgid "Description"
 msgstr "Описание"
 
-#: tasks/models.py:39 templates/base.html:77 templates/index.html:23
+#: tasks/models.py:39 templates/base.html:95 templates/index.html:33
 #: templates/labels/labels_list.html:8
 msgid "Labels"
 msgstr "Метки"
@@ -187,83 +187,91 @@ msgstr "Команда успешно удалена"
 msgid "Cannot delete a team because it has members."
 msgstr "Невозможно удалить команду, потому что в ней есть участники"
 
-#: templates/base.html:30 templates/base.html:61 views.py:20
+#: templates/base.html:48 templates/base.html:79 views.py:20
 msgid "TaskMan"
 msgstr "ТаскМан"
 
-#: templates/base.html:64
+#: templates/base.html:82
 msgid "Menu"
 msgstr "Меню"
 
-#: templates/base.html:71 templates/user/user_list.html:26
+#: templates/base.html:89 templates/user/user_list.html:26
 msgid "Users"
 msgstr "Пользователи"
 
-#: templates/base.html:74 templates/statuses/statuses_list.html:8
+#: templates/base.html:92 templates/statuses/statuses_list.html:8
 msgid "Statuses"
 msgstr "Статусы"
 
-#: templates/base.html:80 templates/tasks/task_filter.html:7
+#: templates/base.html:98 templates/tasks/task_filter.html:7
 msgid "Tasks"
 msgstr "Задачи"
 
-#: templates/base.html:87
+#: templates/base.html:105
 msgid "Exit"
 msgstr "Выход"
 
-#: templates/base.html:91 templates/login.html:8
+#: templates/base.html:109 templates/login.html:8
 msgid "Login"
 msgstr "Вход"
 
-#: templates/base.html:94 templates/user/user_create_form.html:8
+#: templates/base.html:112 templates/user/user_create_form.html:8
 msgid "Signup"
 msgstr "Регистрация"
 
-#: templates/index.html:18
+#: templates/index.html:17
 msgid "Features"
 msgstr "Возможности"
 
-#: templates/index.html:20
+#: templates/index.html:21
 msgid "Individual & Team Use"
 msgstr "Для индивидуального использования и команд"
 
-#: templates/index.html:20
+#: templates/index.html:21
 msgid "Perfect for personal workflows or isolated team projects"
 msgstr "Подходит для личной работы и изолированных командных проектов"
 
-#: templates/index.html:21
+#: templates/index.html:25
 msgid "Task Creation"
 msgstr "Быстрое создание задач"
 
-#: templates/index.html:21
+#: templates/index.html:25
 msgid "Add titles, descriptions, and assignees in seconds"
 msgstr "Добавляйте названия, описания и исполнителей за считанные секунды"
 
-#: templates/index.html:22
+#: templates/index.html:29
 msgid "Custom Statuses"
 msgstr "Пользовательские статусы"
 
-#: templates/index.html:22
+#: templates/index.html:29
 msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
 msgstr ""
 "Отслеживайте прогресс задач (например, «К выполнению», «В процессе», "
 "«Готово»)"
 
-#: templates/index.html:23
+#: templates/index.html:33
 msgid "Organize tasks with tags for quick filtering"
 msgstr "Организуйте задачи с помощью тегов для быстрого поиска и фильтрации"
 
-#: templates/index.html:24
+#: templates/index.html:37
 msgid "User-Friendly"
 msgstr "Удобство для пользователя"
 
-#: templates/index.html:24
+#: templates/index.html:37
 msgid "Register once, manage everything"
 msgstr "Один раз зарегистрировались — управляйте всем"
 
-#: templates/index.html:26
+#: templates/index.html:40
 msgid "Language Support"
 msgstr "Поддерживаемые языки"
+
+#: templates/index.html:55 templates/index.html:64
+msgid "Go to Tasks"
+msgstr "Перейти к задачам"
+
+#: templates/index.html:57 templates/index.html:66
+msgid "Get Started"
+msgstr "Начать"
 
 #: templates/labels/labels_create.html:8
 msgid "Create label"
