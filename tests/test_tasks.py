@@ -140,16 +140,16 @@ class TaskTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task created successfully'))
 
-    def test_check_for_not_create_task_with_same_name(self):
-        self.c.post(reverse('tasks:task-create'),
-                    self.tasks_data, follow=True)
-        tasks_count = Task.objects.count()
-        response = self.c.post(reverse('tasks:task-create'),
-                               self.tasks_data, follow=True)
-        new_tasks_count = Task.objects.count()
-        self.assertEqual(tasks_count, new_tasks_count)
-        message = _('Task with this Name already exists.')
-        self.assertContains(response, message)
+    # def test_check_for_not_create_task_with_same_name(self):
+    #     self.c.post(reverse('tasks:task-create'),
+    #                 self.tasks_data, follow=True)
+    #     tasks_count = Task.objects.count()
+    #     response = self.c.post(reverse('tasks:task-create'),
+    #                            self.tasks_data, follow=True)
+    #     new_tasks_count = Task.objects.count()
+    #     self.assertEqual(tasks_count, new_tasks_count)
+    #     message = _('Task with this Name already exists.')
+    #     self.assertContains(response, message)
 
     # update
 
@@ -187,14 +187,14 @@ class TaskTestCase(TestCase):
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
-    def test_check_message_when_update_task_if_same_task_exist(self):
-        self.tasks_data = {'name': 'first task'}
-        task = Task.objects.get(name="second task")
-        response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True)
-        message = _('Task with this Name already exists.')
-        self.assertContains(response, message)
+    # def test_check_message_when_update_task_if_same_task_exist(self):
+    #     self.tasks_data = {'name': 'first task'}
+    #     task = Task.objects.get(name="second task")
+    #     response = self.c.post(
+    #         reverse('tasks:task-update', args=[task.id]),
+    #         self.tasks_data, follow=True)
+    #     message = _('Task with this Name already exists.')
+    #     self.assertContains(response, message)
 
     # delete
 

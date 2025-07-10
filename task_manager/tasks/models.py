@@ -9,7 +9,7 @@ class Task(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=150,
-        unique=True,
+        unique=False,
         blank=False,
         verbose_name=_('Name')
     )

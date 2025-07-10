@@ -81,16 +81,16 @@ class StatusesTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Status created successfully'))
 
-    def test_check_for_do_not_create_status_with_same_name(self):
-        self.c.post(reverse('statuses:statuses-create'),
-                    self.statuses_data, follow=True)
-        statuses_count = Status.objects.count()
-        response = self.c.post(reverse('statuses:statuses-create'),
-                               self.statuses_data, follow=True)
-        new_statuses_count = Status.objects.count()
-        self.assertEqual(statuses_count, new_statuses_count)
-        message = _('Status with this Name already exists.')
-        self.assertContains(response, message)
+    # def test_check_for_do_not_create_status_with_same_name(self):
+    #     self.c.post(reverse('statuses:statuses-create'),
+    #                 self.statuses_data, follow=True)
+    #     statuses_count = Status.objects.count()
+    #     response = self.c.post(reverse('statuses:statuses-create'),
+    #                            self.statuses_data, follow=True)
+    #     new_statuses_count = Status.objects.count()
+    #     self.assertEqual(statuses_count, new_statuses_count)
+    #     message = _('Status with this Name already exists.')
+    #     self.assertContains(response, message)
 
     def test_can_not_create_status_with_empty_name(self):
         self.statuses_data = {'name': ' '}
@@ -127,16 +127,16 @@ class StatusesTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Status updated successfully'))
 
-    def test_check_can_not_update_status_if_same_status_exist(self):
-        status = Status.objects.get(name="new")
-        self.statuses_data = {'name': 'at work'}
-        response = self.c.post(
-            reverse('statuses:statuses-update', args=[status.id]),
-            self.statuses_data, follow=True
-        )
-        message = _('Status with this Name already exists.')
-        self.assertContains(response, message)
-        self.assertNotEqual(response.status_code, 302)
+    # def test_check_can_not_update_status_if_same_status_exist(self):
+    #     status = Status.objects.get(name="new")
+    #     self.statuses_data = {'name': 'at work'}
+    #     response = self.c.post(
+    #         reverse('statuses:statuses-update', args=[status.id]),
+    #         self.statuses_data, follow=True
+    #     )
+    #     message = _('Status with this Name already exists.')
+    #     self.assertContains(response, message)
+    #     self.assertNotEqual(response.status_code, 302)
 
     def test_can_not_set_empty_name_when_update_status(self):
         status = Status.objects.get(name="new")

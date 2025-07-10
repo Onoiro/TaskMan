@@ -7,7 +7,7 @@ class Status(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=150,
-        unique=True,
+        unique=False,
         blank=False,
         validators=[RegexValidator('^[a-zA-Z0-9]'), MinLengthValidator(2)]
     )
