@@ -29,7 +29,7 @@
 
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="d-md-table-header-group">
+            <thead class="d-none d-md-table-header-group">
             <tr>
                 <th>ID</th>
                 <th>{% trans "Name" %}</th>
@@ -95,6 +95,12 @@
         
         td:last-child {
             border-bottom: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+    .d-md-table-header-group {
+        display: table-header-group !important;
         }
     }
 </style>
