@@ -48,8 +48,8 @@
                         <a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a>
                     </td>
                     <td data-label="{% trans 'Status' %}">{{ obj.status }}</td>
-                    <td data-label="{% trans 'Author' %}">{{ obj.author.get_full_name }}</td>
-                    <td data-label="{% trans 'Executor' %}">{{ obj.executor.get_full_name }}</td>
+                    <td data-label="{% trans 'Author' %}">{{ obj.author.username }}</td>
+                    <td data-label="{% trans 'Executor' %}">{{ obj.executor.username }}</td>
                     <td data-label="{% trans 'Created at' %}">{{ obj.created_at }}</td>
                     <td>
                         <div class="btn-group-vertical btn-group-sm" role="group">
