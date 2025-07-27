@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-09 00:12+0300\n"
+"POT-Creation-Date: 2025-07-27 17:08+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,8 +23,8 @@ msgstr ""
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
 #: statuses/forms.py:14 tasks/models.py:14 teams/models.py:13
 #: templates/labels/labels_list.html:14
-#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:35
-#: templates/tasks/task_filter.html:47
+#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:47
+#: templates/tasks/task_filter.html:63
 msgid "Name"
 msgstr "Имя"
 
@@ -87,12 +87,12 @@ msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
 #: tasks/filters.py:14 tasks/models.py:23 templates/tasks/task_detail.html:27
-#: templates/tasks/task_filter.html:36 templates/tasks/task_filter.html:50
+#: templates/tasks/task_filter.html:49 templates/tasks/task_filter.html:67
 msgid "Status"
 msgstr "Статус"
 
 #: tasks/filters.py:21 tasks/models.py:29 templates/tasks/task_detail.html:23
-#: templates/tasks/task_filter.html:38 templates/tasks/task_filter.html:52
+#: templates/tasks/task_filter.html:51 templates/tasks/task_filter.html:69
 msgid "Executor"
 msgstr "Исполнитель"
 
@@ -115,7 +115,7 @@ msgstr "Метки"
 
 #: tasks/models.py:43 teams/models.py:33 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
-#: templates/tasks/task_filter.html:39 templates/tasks/task_filter.html:53
+#: templates/tasks/task_filter.html:52 templates/tasks/task_filter.html:70
 #: templates/user/user_list.html:34
 msgid "Created at"
 msgstr "Дата создания"
@@ -315,7 +315,7 @@ msgstr "Создать метку"
 #: templates/labels/labels_list.html:26 templates/labels/labels_update.html:13
 #: templates/statuses/statuses_list.html:26
 #: templates/statuses/statuses_update.html:13
-#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:56
+#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:73
 #: templates/tasks/task_update.html:13 templates/teams/team_detail.html:14
 #: templates/teams/team_update.html:14 templates/user/user_list.html:47
 #: templates/user/user_update.html:13
@@ -324,7 +324,7 @@ msgstr "Изменить"
 
 #: templates/labels/labels_list.html:28
 #: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:48
-#: templates/tasks/task_filter.html:58 templates/teams/team_update.html:18
+#: templates/tasks/task_filter.html:75 templates/teams/team_update.html:18
 #: templates/user/user_list.html:49
 msgid "Delete"
 msgstr "Удалить"
@@ -366,8 +366,8 @@ msgstr "Удаление задачи"
 msgid "Task view"
 msgstr "Просмотр задачи"
 
-#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:37
-#: templates/tasks/task_filter.html:51
+#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:50
+#: templates/tasks/task_filter.html:68
 msgid "Author"
 msgstr "Автор"
 
@@ -382,6 +382,14 @@ msgstr "Создать задачу"
 #: templates/tasks/task_filter.html:23
 msgid "Show"
 msgstr "Показать"
+
+#: templates/tasks/task_filter.html:28
+msgid "Compact view"
+msgstr "Кратко"
+
+#: templates/tasks/task_filter.html:32
+msgid "Full view"
+msgstr "Подробно"
 
 #: templates/tasks/task_update.html:8
 msgid "Edit task"
