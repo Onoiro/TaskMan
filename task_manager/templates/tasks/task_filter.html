@@ -22,6 +22,7 @@
                     <button type="submit" class="btn btn-primary">
                         {% trans "Show" %}
                     </button>
+                    <!-- button for select between full_view or compact_view of task list -->
                     {% if request.GET.full_view %}
                         <a href="?{% for key, value in request.GET.items %}{% if key != 'full_view' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
                             {% trans "Compact view" %}

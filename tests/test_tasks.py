@@ -1,5 +1,4 @@
 from task_manager.tasks.models import Task
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -37,16 +36,60 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_static_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, 'ID')
+        # fields that are always visible
         self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Status'))
-        self.assertContains(response, _('Author'))
-        self.assertContains(response, _('Executor'))
-        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Tasks'))
+        self.assertContains(response, _('Show'))
+        self.assertContains(response, _('Label'))
+        self.assertContains(response, _('Just my tasks'))
+
+        # check that there are no titles for table if not full_view=1
+        self.assertNotContains(response, '<th>ID</th>')
+        self.assertNotContains(response, f'<th>{_("Status")}</th>')
+        self.assertNotContains(response, f'<th>{_("Author")}</th>')
+        self.assertNotContains(response, f'<th>{_("Executor")}</th>')
+        self.assertNotContains(response, f'<th>{_("Created at")}</th>')
+
+    def test_tasks_list_full_view_content(self):
+        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
+        # all fields have to be visible if full_view=1
+        self.assertContains(response, '<th>ID</th>')
+        self.assertContains(response, f'<th>{_("Name")}</th>')
+        self.assertContains(response, f'<th>{_("Status")}</th>')
+        self.assertContains(response, f'<th>{_("Author")}</th>')
+        self.assertContains(response, f'<th>{_("Executor")}</th>')
+        self.assertContains(response, f'<th>{_("Created at")}</th>')
         self.assertContains(response, _('Label'))
         self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Show'))
+
+    def test_tasks_list_compact_view_content(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        # check for main fields visible in compact view
+        self.assertContains(response, f'<th>{_("Name")}</th>')
+        self.assertContains(response, _('Tasks'))
+        self.assertContains(response, _('Show'))
+        self.assertContains(response, _('Full view'))  # toggle button
+
+        # these titles have not be visible in compact view
+        self.assertNotContains(response, '<th>ID</th>')
+        self.assertNotContains(response, f'<th>{_("Status")}</th>')
+        self.assertNotContains(response, f'<th>{_("Author")}</th>')
+        self.assertNotContains(response, f'<th>{_("Executor")}</th>')
+        self.assertNotContains(response, f'<th>{_("Created at")}</th>')
+        self.assertNotContains(response, _('Compact view'))
+
+    def test_tasks_list_view_toggle_buttons(self):
+        # check for right buttons in compact view
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _('Full view'))
+        self.assertNotContains(response, _('Compact view'))
+
+        # check for right buttons in compact full view
+        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
+        self.assertContains(response, _('Compact view'))
+        self.assertNotContains(response, _('Full view'))
 
     def test_tasks_list_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
