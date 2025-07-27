@@ -32,12 +32,12 @@ class TaskFilterView(FilterView):
     def get_queryset(self):
         user = self.request.user
         if user.team is None:
-            return Task.objects.filter(author=user)
+            return Task.objects.filter(author=user).order_by('-created_at')
         # filter users from the same team with current user
         team_users = User.objects.filter(team=user.team)
         return Task.objects.filter(
             Q(author__in=team_users) | Q(executor__in=team_users)
-        )
+        ).order_by('-created_at')
 
 
 class TaskDetailView(CustomPermissions, DetailView):
