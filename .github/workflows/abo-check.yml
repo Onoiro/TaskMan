@@ -79,11 +79,11 @@ jobs:
         run: make cov
         if: matrix.python-version == '3.11'
       
-      - name: Publish code coverage
-        uses: paambaati/codeclimate-action@v3.2.0
-        if: matrix.python-version == '3.11'
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: echo "Coverage already generated"
-          coverageLocations: coverage.xml:coverage.py
+      # - name: Publish code coverage
+      #   uses: paambaati/codeclimate-action@v3.2.0
+      #   if: matrix.python-version == '3.11'
+      #   env:
+      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      #   with:
+      #     coverageCommand: echo "Coverage already generated"
+      #     coverageLocations: coverage.xml:coverage.py
