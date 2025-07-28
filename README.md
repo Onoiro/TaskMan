@@ -1,12 +1,9 @@
 [![CI-check](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml)
 [![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
-<!-- [![Maintainability](https://qlty.sh/badges/8be7044b-186e-41ec-94eb-26e8be04d42b/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/TaskMan) -->
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 
 # [TaskMan](https://taskman.2-way.ru)
 TaskMan is a web application designed to manage tasks in organizations and teams. It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
