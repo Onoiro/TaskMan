@@ -79,6 +79,15 @@ jobs:
         run: make cov
         if: matrix.python-version == '3.11'
       
+      - name: Generate coverage report
+        run: make cov
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        if: matrix.python-version == '3.11'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      
       # - name: Publish code coverage
       #   uses: paambaati/codeclimate-action@v3.2.0
       #   if: matrix.python-version == '3.11'
