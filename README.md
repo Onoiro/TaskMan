@@ -3,8 +3,8 @@
 [![Maintainability](https://qlty.sh/badges/8be7044b-186e-41ec-94eb-26e8be04d42b/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/TaskMan)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3c6f1330d7e0f614ccb3/test_coverage)](https://codeclimate.com/github/Onoiro/TaskMan/test_coverage)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=abo>&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=abo)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=abo&metric=coverage)](https://sonarcloud.io/summary/new_code?id=abo)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 
 # [TaskMan](https://taskman.2-way.ru)
 TaskMan is a web application designed to manage tasks in organizations and teams. It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
