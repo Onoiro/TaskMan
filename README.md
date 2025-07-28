@@ -6,7 +6,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 
 # [TaskMan](https://taskman.2-way.ru)
-TaskMan is a web application designed to manage tasks in organizations and teams. It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
+TaskMan is a web application designed to manage tasks individually or in teams (or families). It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
 
 ## Features
 
