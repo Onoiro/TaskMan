@@ -2,6 +2,7 @@ from django.db import models
 from task_manager.user.models import User
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
+from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
 
@@ -11,6 +12,15 @@ class Task(models.Model):
         max_length=150,
         unique=False,
         blank=False,
+        validators=[
+            RegexValidator(
+                r'^[\w \-:,.!?]+$',
+                message=_(
+                    "Only letters, numbers, spaces, "
+                    "and -_.,!? symbols are allowed"
+                )
+            ),
+        ],
         verbose_name=_('Name')
     )
     description = models.TextField(

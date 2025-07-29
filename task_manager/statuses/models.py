@@ -1,15 +1,24 @@
 from django.db import models
 from task_manager.user.models import User
-from django.core.validators import MinLengthValidator, RegexValidator
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
 
 
 class Status(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(
-        max_length=150,
+        max_length=24,
         unique=False,
         blank=False,
-        validators=[RegexValidator('^[a-zA-Z0-9]'), MinLengthValidator(2)]
+        validators=[
+            RegexValidator(
+                r'^[\w \-:,.!?]+$',
+                message=_(
+                    "Only letters, numbers, spaces, "
+                    "and -_.,!? symbols are allowed"
+                )
+            ),
+        ],
     )
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE,
