@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-27 17:08+0300\n"
+"POT-Creation-Date: 2025-07-29 23:17+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,18 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
-#: statuses/forms.py:14 tasks/models.py:14 teams/models.py:13
+#: statuses/forms.py:14 tasks/models.py:25 teams/models.py:13
 #: templates/labels/labels_list.html:14
 #: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:47
 #: templates/tasks/task_filter.html:63
 msgid "Name"
 msgstr "Имя"
+
+#: labels/models.py:16
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed"
+msgstr ""
 
 #: labels/views.py:30
 msgid "Label created successfully"
@@ -70,6 +76,13 @@ msgstr "Русский"
 msgid "Spanish"
 msgstr "Испанский"
 
+#: statuses/models.py:17 tasks/models.py:19
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
+msgstr "Разрешены только буквы, цифры, пробелы и символы -_.,!?. "
+"Символы <, >, #, & не разрешены"
+
 #: statuses/views.py:30
 msgid "Status created successfully"
 msgstr "Статус успешно создан"
@@ -86,12 +99,12 @@ msgstr "Статус успешно удален"
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
-#: tasks/filters.py:14 tasks/models.py:23 templates/tasks/task_detail.html:27
+#: tasks/filters.py:14 tasks/models.py:34 templates/tasks/task_detail.html:27
 #: templates/tasks/task_filter.html:49 templates/tasks/task_filter.html:67
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:21 tasks/models.py:29 templates/tasks/task_detail.html:23
+#: tasks/filters.py:21 tasks/models.py:40 templates/tasks/task_detail.html:23
 #: templates/tasks/task_filter.html:51 templates/tasks/task_filter.html:69
 msgid "Executor"
 msgstr "Исполнитель"
@@ -104,16 +117,16 @@ msgstr "Метка"
 msgid "Just my tasks"
 msgstr "Только свои задачи"
 
-#: tasks/models.py:18 teams/models.py:23
+#: tasks/models.py:29 teams/models.py:23
 msgid "Description"
 msgstr "Описание"
 
-#: tasks/models.py:39 templates/base.html:95 templates/index.html:33
+#: tasks/models.py:50 templates/base.html:95 templates/index.html:33
 #: templates/labels/labels_list.html:8
 msgid "Labels"
 msgstr "Метки"
 
-#: tasks/models.py:43 teams/models.py:33 templates/labels/labels_list.html:15
+#: tasks/models.py:54 teams/models.py:33 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
 #: templates/tasks/task_filter.html:52 templates/tasks/task_filter.html:70
 #: templates/user/user_list.html:34
