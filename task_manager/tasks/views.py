@@ -53,6 +53,9 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        # if user have no team, he sets as executor
+        if self.request.user.team is None:
+            form.instance.executor = self.request.user
         return super().form_valid(form)
 
     def get_form_kwargs(self):

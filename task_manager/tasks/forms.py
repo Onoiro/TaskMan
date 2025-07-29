@@ -49,3 +49,6 @@ class TaskForm(forms.ModelForm):
             self.fields['labels'].queryset = (
                 Label.objects.filter(creator=user)
             )
+            # set initial value of exucutor is user himself
+            self.fields['executor'].initial = user
+            self.fields['executor'].widget.attrs['readonly'] = True

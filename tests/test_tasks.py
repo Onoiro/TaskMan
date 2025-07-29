@@ -183,6 +183,61 @@ class TaskTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task created successfully'))
 
+    # def test_create_task_user_without_team_auto_executor(self):
+    #     # Создаем пользователя без команды
+    #     user_without_team = User.objects.create_user(
+    #         username='no_team_user',
+    #         password='testpass123'
+    #     )
+    #     # Убеждаемся, что у пользователя нет команды
+    #     user_without_team.team = None
+    #     user_without_team.save()
+
+    #     self.c.force_login(user_without_team)
+
+    #     # Данные для создания задачи (без указания executor)
+    #     task_data = {
+    #         'name': 'task_by_user_without_team',
+    #         'description': 'test description',
+    #         'status': 12,  # предполагаем, что статус с id=12 доступен всем
+    #     }
+
+    #     response = self.c.post(reverse('tasks:task-create'),
+    #  task_data, follow=True)
+
+    #     # Проверяем, что задача создалась
+    #     task = Task.objects.filter(name=task_data['name']).first()
+    #     self.assertIsNotNone(task)
+
+    #     # Проверяем, что автор и исполнитель - один и тот же пользователь
+    #     self.assertEqual(task.author, user_without_team)
+    #     self.assertEqual(task.executor, user_without_team)
+
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+    #     # в форме executor field содержит текущего пользователя
+    #     form = response.context['form']
+    #     executor_queryset = form.fields['executor'].queryset
+    #     self.assertEqual(executor_queryset.count(), 1)
+    #     self.assertEqual(executor_queryset.first(), user_without_team)
+
+    #     # Проверяем, что начальное значение установлено правильно
+    #     self.assertEqual(form.fields['executor'].initial, user_without_team)
+
+    def test_create_task_user_with_team_can_choose_executor(self):
+        response = self.c.post(reverse('tasks:task-create'),
+                               self.tasks_data, follow=True)
+
+        task = Task.objects.filter(name=self.tasks_data['name']).first()
+        self.assertIsNotNone(task)
+        self.assertEqual(task.author, self.user)
+
+        expected_executor = User.objects.get(pk=self.tasks_data['executor'])
+        self.assertEqual(task.executor, expected_executor)
+
+        self.assertEqual(response.status_code, 200)
+
     # def test_check_for_not_create_task_with_same_name(self):
     #     self.c.post(reverse('tasks:task-create'),
     #                 self.tasks_data, follow=True)
