@@ -15,7 +15,8 @@ class Status(models.Model):
                 r'^[\w \-:,.!?]+$',
                 message=_(
                     "Only letters, numbers, spaces, "
-                    "and -_.,!? symbols are allowed"
+                    "and -_.,!? symbols are allowed. "
+                    "Symbols <, >, #, & are not allowed."
                 )
             ),
         ],
