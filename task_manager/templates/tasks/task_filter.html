@@ -54,14 +54,12 @@
             </thead>
             <tbody>
                 {% for obj in filter.qs %}
-                <tr>
+                <tr {% if request.GET.full_view %}data-full-view="true"{% endif %}>
                     {% if request.GET.full_view %}
                     <td data-label="ID">{{ obj.id }}</td>
-                    {% endif %}
                     <td data-label="{% trans 'Name' %}">
                         <a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a>
                     </td>
-                    {% if request.GET.full_view %}
                     <td data-label="{% trans 'Status' %}">{{ obj.status }}</td>
                     <td data-label="{% trans 'Author' %}">{{ obj.author.username }}</td>
                     <td data-label="{% trans 'Executor' %}">{{ obj.executor.username }}</td>
@@ -73,6 +71,10 @@
                             <a class="btn btn-outline-danger" href="{% url 'tasks:task-delete' obj.id %}">{% trans "Delete" %}</a>
                         </div>
                     </td>
+                    {% else %}
+                    <td class="text-start">
+                        <a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a>
+                    </td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -82,7 +84,7 @@
 </div>
 
 <style>
-    /* Styles for adaptive table on mobile */
+    /* styles for adaptive table on mobile */
     @media (max-width: 767.98px) {
         table {
             width: 100%;
@@ -111,6 +113,12 @@
         
         td:last-child {
             border-bottom: none;
+        }
+
+        /* styles for compact view */
+        tr:not([data-full-view]) td {
+            justify-content: flex-start;
+            text-align: left;
         }
     }
 
