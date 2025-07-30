@@ -37,7 +37,6 @@ class TaskTestCase(TestCase):
     def test_tasks_list_static_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         # fields that are always visible
-        self.assertContains(response, _('Name'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Show'))
         self.assertContains(response, _('Label'))
@@ -45,6 +44,7 @@ class TaskTestCase(TestCase):
 
         # check that there are no titles for table if not full_view=1
         self.assertNotContains(response, '<th>ID</th>')
+        self.assertNotContains(response, f'<th>{_("Name")}</th>')
         self.assertNotContains(response, f'<th>{_("Status")}</th>')
         self.assertNotContains(response, f'<th>{_("Author")}</th>')
         self.assertNotContains(response, f'<th>{_("Executor")}</th>')
