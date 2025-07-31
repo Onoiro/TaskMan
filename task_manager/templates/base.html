@@ -118,13 +118,13 @@
                       <form method="post" action="{% url 'set_language' %}">
                         {% csrf_token %}
                         <input type="hidden" name="language" value="en" />
-                        <button type="submit" class="nav-link border-0 bg-transparent px-2">eng</button>
+                        <button type="submit" class="nav-link border-0 bg-transparent px-2">EN</button>
                       </form>
                     {% elif CURRENT_LANGUAGE == "en" %}
                       <form method="post" action="{% url 'set_language' %}">
                         {% csrf_token %}
                         <input type="hidden" name="language" value="ru" />
-                        <button type="submit" class="nav-link border-0 bg-transparent px-2">рус</button>
+                        <button type="submit" class="nav-link border-0 bg-transparent px-2">РУ</button>
                       </form>
                     {% endif %}
                   </li>
