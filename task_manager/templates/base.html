@@ -138,6 +138,12 @@
     <div class="container wrapper flex-grow-1 px-3 px-sm-0">
       <div>{% bootstrap_messages %}</div>
       <div id="content">
+        <!-- button "back" for mobile -->
+          <button onclick="window.history.back();" 
+                  class="btn btn-secondary mb-3 d-lg-none"
+                  style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%;">
+              <i class="bi bi-arrow-left"></i>◀
+          </button>
           {% block content %}
           {% endblock %}
       </div>
