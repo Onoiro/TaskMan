@@ -99,32 +99,85 @@
         }
         
         td {
-            display: flex;
-            justify-content: space-between;
+            display: block;
             padding: 0.5rem;
             border-bottom: 1px solid #dee2e6;
+            position: relative;
+            min-height: 2.5rem; /* Минимальная высота для контента */
         }
         
         td:before {
-            content: attr(data-label);
+            content: attr(data-label) ": ";
             font-weight: bold;
-            margin-right: 1rem;
+            display: inline-block;
+            width: auto;
+            margin-right: 0.5rem;
         }
         
         td:last-child {
             border-bottom: none;
         }
 
+        /* Альтернативный подход с grid для полного контроля */
+        tr[data-full-view] td {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem;
+            align-items: start;
+        }
+        
+        tr[data-full-view] td:before {
+            grid-column: 1;
+            margin-right: 0;
+            justify-self: start;
+        }
+        
+        tr[data-full-view] td {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem;
+            align-items: start;
+            justify-items: end; /* выровняет вторую колонки по правому краю */
+        }
+
         /* styles for compact view */
         tr:not([data-full-view]) td {
-            justify-content: flex-start;
             text-align: left;
+        }
+        
+        tr:not([data-full-view]) td:before {
+            display: none; /* Скрываем лейблы в компактном режиме */
+        }
+        
+        /* Специальные стили для кнопок действий */
+        tr[data-full-view] td:last-child {
+            display: block;
+        }
+        
+        tr[data-full-view] td:last-child:before {
+            display: none;
+        }
+        
+        /* Принудительный перенос для длинного контента */
+        tr[data-full-view] td {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
     }
 
     @media (min-width: 768px) {
     .d-md-table-header-group {
         display: table-header-group !important;
+        }
+    }
+
+    /* Дополнительные стили специально для iOS Safari */
+    @supports (-webkit-touch-callout: none) {
+        @media (max-width: 767.98px) {
+            tr[data-full-view] td {
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
         }
     }
 </style>
