@@ -77,15 +77,16 @@ class UserTestCase(TestCase):
         """Тест редиректа обычного пользователя на список задач"""
         user_data = self.user_data.copy()
         user_data['is_team_admin'] = False
-        
-        response = self.c.post(reverse('user:user-create'), user_data, follow=True)
+
+        response = self.c.post(
+            reverse('user:user-create'), user_data, follow=True)
         self.assertEqual(response.status_code, 200)
-        
+
         # Проверяем, что пользователь создан
         user = User.objects.filter(username=user_data['username']).first()
         self.assertIsNotNone(user)
         self.assertFalse(user.is_team_admin)
-        
+
         # Проверяем редирект на список задач
         self.assertRedirects(response, reverse('index'))
 
