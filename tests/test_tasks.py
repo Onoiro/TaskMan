@@ -238,17 +238,6 @@ class TaskTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    # def test_check_for_not_create_task_with_same_name(self):
-    #     self.c.post(reverse('tasks:task-create'),
-    #                 self.tasks_data, follow=True)
-    #     tasks_count = Task.objects.count()
-    #     response = self.c.post(reverse('tasks:task-create'),
-    #                            self.tasks_data, follow=True)
-    #     new_tasks_count = Task.objects.count()
-    #     self.assertEqual(tasks_count, new_tasks_count)
-    #     message = _('Task with this Name already exists.')
-    #     self.assertContains(response, message)
-
     # update
 
     def test_update_task_response_200(self):
@@ -284,6 +273,74 @@ class TaskTestCase(TestCase):
         )
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
+
+    def test_update_task_by_author_success(self):
+        # create a task where current user is the author
+        author = User.objects.get(username='me')
+        executor = User.objects.get(pk=12)  # different user as executor
+        task = Task.objects.create(
+            name="author task",
+            author=author,
+            executor=executor,
+            status_id=12
+        )
+
+        response = self.c.post(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        task.refresh_from_db()
+        self.assertEqual(task.name, self.tasks_data['name'])
+
+        message = _("Task updated successfully")
+        self.assertContains(response, message)
+
+    def test_update_task_by_executor_success(self):
+        # create a task where current user is the executor
+        author = User.objects.get(pk=12)  # different user as author
+        executor = User.objects.get(username='me')  # current user as executor
+        task = Task.objects.create(
+            name="executor task",
+            author=author,
+            executor=executor,
+            status_id=12
+        )
+
+        response = self.c.post(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data, follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        task.refresh_from_db()
+        self.assertEqual(task.name, self.tasks_data['name'])
+
+        message = _("Task updated successfully")
+        self.assertContains(response, message)
+
+    def test_update_task_by_neither_author_nor_executor_denied(self):
+        author = User.objects.get(pk=12)  # he is not 'me'
+        executor = User.objects.get(pk=13)  # and he is not 'me' too
+
+        task = Task.objects.create(
+            name="restricted task",
+            author=author,
+            executor=executor,
+            status_id=12
+        )
+
+        # current user ('me') try update not yours task
+        response = self.c.post(
+            reverse('tasks:task-update', args=[task.id]),
+            self.tasks_data,
+            follow=True
+        )
+
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+        # check for error message
+        error_message = _("Task can only be updated by its author or executor.")
+        self.assertContains(response, error_message)
 
     # def test_check_message_when_update_task_if_same_task_exist(self):
     #     self.tasks_data = {'name': 'first task'}
