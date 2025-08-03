@@ -42,10 +42,9 @@
               </div>
             </div>
             <div class="row p-1">
-              <div class="col">
-                <a href="{% url 'tasks:task-update' task.id %}">{% trans "Edit" %}</a>
-                <br>
-                <a href="{% url 'tasks:task-delete' task.id %}">{% trans "Delete" %}</a>
+              <div class="d-flex gap-2" role="group">
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'tasks:task-update' task.id %}">{% trans "Edit" %}</a>
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'tasks:task-delete' task.id %}">{% trans "Delete" %}</a>
               </div>
             </div>
           </div>
