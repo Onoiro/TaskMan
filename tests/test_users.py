@@ -62,19 +62,32 @@ class UserTestCase(TestCase):
         old_count = User.objects.count()
         response = self.c.post(reverse('user:user-create'),
                                self.user_data, follow=True)
+
         self.assertEqual(response.status_code, 200)
+
         new_count = User.objects.count()
         self.assertEqual(old_count + 1, new_count)
+
         user = User.objects.filter(username=self.user_data['username']).first()
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
+
         self.assertRedirects(response, reverse('teams:team-create'))
+
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('User created successfully'))
 
+    def test_user_auto_login_after_create(self):
+        self.c.logout()
+        self.c.post(
+            reverse('user:user-create'), self.user_data, follow=True)
+
+        # check if user has been auto login
+        user = User.objects.filter(username=self.user_data['username']).first()
+        self.assertEqual(int(self.c.session['_auth_user_id']), user.pk)
+
     def test_create_user_non_team_admin_redirect(self):
-        """Тест редиректа обычного пользователя на список задач"""
         user_data = self.user_data.copy()
         user_data['is_team_admin'] = False
 
@@ -82,12 +95,10 @@ class UserTestCase(TestCase):
             reverse('user:user-create'), user_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        # Проверяем, что пользователь создан
         user = User.objects.filter(username=user_data['username']).first()
         self.assertIsNotNone(user)
         self.assertFalse(user.is_team_admin)
 
-        # Проверяем редирект на список задач
         self.assertRedirects(response, reverse('index'))
 
     def test_check_for_not_create_user_with_same_username(self):
@@ -109,6 +120,20 @@ class UserTestCase(TestCase):
         self.assertFalse(User.objects.filter(username=" ").exists())
         message = _('This field is required.')
         self.assertContains(response, message)
+
+    def test_create_user_password_do_not_match(self):
+        user_data = self.user_data.copy()
+        user_data['password2'] = 'different_password'
+
+        response = self.c.post(
+            reverse('user:user-create'), user_data, follow=True)
+
+        # user does not created
+        self.assertFalse(User.objects.filter(
+            username=user_data['username']).exists())
+
+        # validation error message
+        self.assertContains(response, _("The entered passwords do not match."))
 
     # update
 
@@ -149,6 +174,14 @@ class UserTestCase(TestCase):
         self.assertTrue(
             check_password(self.user_data['password1'], self.user.password))
 
+    def test_user_auto_login_after_update(self):
+        self.c.post(
+            reverse('user:user-update', args=[self.user.id]),
+            self.user_data, follow=True)
+
+        # check for user stay login
+        self.assertEqual(int(self.c.session['_auth_user_id']), self.user.pk)
+
     def test_check_can_not_update_user_if_same_user_exist(self):
         new_user_data = {
             'first_name': 'New',
@@ -178,6 +211,18 @@ class UserTestCase(TestCase):
         self.assertFalse(User.objects.filter(username=" ").exists())
         message = _('This field is required.')
         self.assertContains(response, message)
+
+    def test_update_user_password_mismatch(self):
+        user_data = self.user_data.copy()
+        user_data['password2'] = 'different_password'
+
+        response = self.c.post(
+            reverse('user:user-update', args=[self.user.id]),
+            user_data, follow=True)
+
+        # check for validation error message
+        self.assertContains(response, _("The entered passwords do not match."))
+        self.assertNotEqual(response.status_code, 302)
 
     # delete
 
