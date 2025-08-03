@@ -73,6 +73,22 @@ class UserTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('User created successfully'))
 
+    def test_create_user_non_team_admin_redirect(self):
+        """Тест редиректа обычного пользователя на список задач"""
+        user_data = self.user_data.copy()
+        user_data['is_team_admin'] = False
+        
+        response = self.c.post(reverse('user:user-create'), user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        
+        # Проверяем, что пользователь создан
+        user = User.objects.filter(username=user_data['username']).first()
+        self.assertIsNotNone(user)
+        self.assertFalse(user.is_team_admin)
+        
+        # Проверяем редирект на список задач
+        self.assertRedirects(response, reverse('index'))
+
     def test_check_for_not_create_user_with_same_username(self):
         self.c.post(
             reverse('user:user-create'), self.user_data, follow=True)
@@ -118,6 +134,13 @@ class UserTestCase(TestCase):
             reverse('user:user-update', args=[self.user.id]),
             self.user_data, follow=True)
         self.assertEqual(response.status_code, 200)
+
+        self.assertRedirects(response, reverse('user:user-list'))
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('User updated successfully'))
+
         self.user.refresh_from_db()
         self.assertEqual(self.user.first_name, self.user_data['first_name'])
         self.assertEqual(self.user.last_name, self.user_data['last_name'])

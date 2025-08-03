@@ -48,7 +48,7 @@ class UserCreateView(SuccessMessageMixin,
         if self.object.is_team_admin:
             return redirect('teams:team-create')
         # Else redirect to Login
-        return redirect('login')
+        return redirect('index')
 
 
 class UserUpdateView(CustomPermissions,
@@ -65,9 +65,10 @@ class UserUpdateView(CustomPermissions,
     def form_valid(self, form):
         super().form_valid(form)
         login(self.request, self.object)
-        if self.object.is_team_admin:
-            return redirect('teams:team-create')
-        return redirect('login')
+        # if self.object.is_team_admin:
+        #     return redirect('teams:team-create')
+        # return redirect('login')
+        return redirect('user:user-list')
 
 
 class UserDeleteView(CustomPermissions,
