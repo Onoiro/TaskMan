@@ -24,6 +24,18 @@ class TaskDeletePermissionMixin():
         return super().dispatch(request, *args, **kwargs)
 
 
+class TaskUpdatePermissionMixin():
+    def dispatch(self, request, *args, **kwargs):
+        task = self.get_object()
+        if task.author != request.user and task.executor != request.user:
+            messages.error(
+                request,
+                _("Task can only be updated by its author or executor.")
+            )
+            return redirect('tasks:tasks-list')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class TaskFilterView(FilterView):
     model = Task
     template_name = 'tasks/task_filter.html'
@@ -64,7 +76,10 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
         return kwargs
 
 
-class TaskUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
+class TaskUpdateView(TaskUpdatePermissionMixin,
+                     CustomPermissions,
+                     SuccessMessageMixin,
+                     UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_update.html'
