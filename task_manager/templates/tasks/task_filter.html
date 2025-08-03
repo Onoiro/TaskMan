@@ -65,10 +65,9 @@
                     <td data-label="{% trans 'Executor' %}">{{ obj.executor.username }}</td>
                     <td data-label="{% trans 'Created at' %}">{{ obj.created_at }}</td>
                     <td>
-                        <div class="btn-group-vertical btn-group-sm" role="group">
-                            <a class="btn btn-outline-primary" href="{% url 'tasks:task-update' obj.id %}">{% trans "Edit" %}</a>
-                            <br>
-                            <a class="btn btn-outline-danger" href="{% url 'tasks:task-delete' obj.id %}">{% trans "Delete" %}</a>
+                        <div class="d-flex gap-2" role="group">
+                            <a class="btn btn-outline-primary btn-sm" href="{% url 'tasks:task-update' obj.id %}">{% trans "Edit" %}</a>
+                            <a class="btn btn-outline-danger btn-sm" href="{% url 'tasks:task-delete' obj.id %}">{% trans "Delete" %}</a>
                         </div>
                     </td>
                     {% else %}
