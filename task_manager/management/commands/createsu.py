@@ -1,4 +1,3 @@
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from django.core.management.base import BaseCommand
 import os
@@ -9,12 +8,19 @@ load_dotenv()
 
 
 class Command(BaseCommand):
-    help = 'Creates a superuser.'
+    help = 'Creates or updates a superuser.'
 
     def handle(self, *args, **options):
-        if not User.objects.filter(username='admin').exists():
+        admin_password = os.getenv('ADMIN_PASSWORD')
+
+        try:
+            user = User.objects.get(username='admin')
+            user.set_password(admin_password)
+            user.save()
+            print('Superuser password has been updated.')
+        except User.DoesNotExist:
             User.objects.create_superuser(
                 username='admin',
-                password=os.getenv('ADMIN_PASSWORD')
+                password=admin_password
             )
-        print('Superuser has been created.')
+            print('Superuser has been created.')
