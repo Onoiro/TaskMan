@@ -14,6 +14,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='label',
             name='name',
-            field=models.CharField(max_length=24, validators=[django.core.validators.RegexValidator('^[\\w \\-:,.!?]+$', message='Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, #, & are not allowed.')]),
+            field=models.CharField(
+                max_length=24,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        '^[\\w \\-:,.!?]+$',
+                        message='Only letters, numbers, spaces, and '
+                        '-_.,!? symbols are allowed. '
+                        'Symbols <, >, #, & are not allowed.'
+                    )
+                ]
+            ),
         ),
     ]
