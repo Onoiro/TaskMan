@@ -28,6 +28,22 @@ class UserFormTestCase(TestCase):
         form = UserForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
+    def test_create_user_without_password_fails(self):
+        form_data = {
+            'first_name': 'Test',
+            'last_name': 'User',
+            'username': 'testuser',
+            'password1': '',
+            'password2': '',
+            'is_team_admin': False,
+            'team_name': ''
+        }
+        form = UserForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        # password fields required when create user
+        self.assertIn('password1', form.errors)
+        self.assertIn('password2', form.errors)
+
     def test_password_too_short(self):
         form_data = {
             'username': 'user',
@@ -98,6 +114,17 @@ class UserFormTestCase(TestCase):
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(_("There is no such team"), form.errors['__all__'])
+
+    def test_update_team_admin_hidden_team_name_field(self):
+        # check team_name field hidden when team_admin updating
+        user = User.objects.get(pk=10)  # me - is_team_admin
+        user.team = None  # shure user have no team
+        user.save()
+
+        form = UserForm(instance=user)
+        self.assertIsInstance(
+            form.fields['team_name'].widget, forms.HiddenInput)
+        self.assertTrue(form.initial['is_team_admin'])
 
     def test_update_user_preserves_team(self):
         # verifies that when a user updates
