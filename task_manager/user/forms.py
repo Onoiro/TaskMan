@@ -37,6 +37,12 @@ class UserForm(forms.ModelForm):
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
+        is_update = self.instance and self.instance.pk
+
+        # validation no need if update and no password entered
+        if is_update and not password1:
+            return password1
+
         if len(password1) < 3:
             raise forms.ValidationError(_(
                 "Your password is too short."
@@ -47,6 +53,12 @@ class UserForm(forms.ModelForm):
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
+        is_update = self.instance and self.instance.pk
+
+        # validation no need if update and no passwords entered
+        if is_update and not password1 and not password2:
+            return password2
+
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError(
                 _("The entered passwords do not match."))
@@ -57,6 +69,14 @@ class UserForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # if this is editing an existing user (the user has a pk)
         if self.instance and self.instance.pk:
+            self.fields['password1'].required = False
+            self.fields['password2'].required = False
+            self.fields['password1'].help_text = _(
+                "Leave blank if you don't want to change password"
+            )
+            self.fields['password2'].help_text = _(
+                "Leave blank if you don't want to change password"
+            )
             if self.instance.team:
                 # set initial value for team_name field
                 self.initial['team_name'] = self.instance.team.name
@@ -77,6 +97,15 @@ class UserForm(forms.ModelForm):
         is_update = self.instance and self.instance.pk
         is_team_admin = cleaned_data.get('is_team_admin')
         team_name = cleaned_data.get('team_name')
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        # additional passwords validation if only one field of password entered
+        if is_update:
+            if (password1 and not password2) or (not password1 and password2):
+                raise forms.ValidationError(
+                    _("Both password fields must be filled or both left blank")
+                )
 
         if is_update and (self.instance.team or self.instance.is_team_admin):
             return self._clean_update(cleaned_data)
@@ -121,7 +150,11 @@ class UserForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password1'])
+        # set password only if it was entered
+        password1 = self.cleaned_data.get('password1')
+        if password1:
+            user.set_password(password1)
+
         user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
         if commit:
             user.save()
