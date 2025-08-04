@@ -19,7 +19,7 @@ class UserForm(forms.ModelForm):
 
     team_name = forms.CharField(
         required=False,
-        label=_('Team Name'),
+        label=_('Join Team'),
         help_text=_("Enter team name if you want to join existing team")
     )
 
