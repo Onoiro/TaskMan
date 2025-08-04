@@ -13,6 +13,25 @@
             <div class="h4 display-md-6 text-center mb-3">{{ manage }}</div>
             <p class="lead text-center mb-4">{{ description|safe }}</p>
           </div>
+          <!-- Button CTA for mobile -->
+          <div class="d-grid gap-2 d-md-none mt-4">
+            {% if user.is_authenticated %}
+              <a href="/tasks/" class="btn btn-primary btn-lg">{% trans "Go to Tasks" %}</a>
+            {% else %}
+              <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg">{% trans "Get Started" %}</a>
+              <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
+            {% endif %}
+          </div>
+
+          <!-- Button CTA for desktop -->
+          <div class="d-none d-md-block text-center mt-4">
+            {% if user.is_authenticated %}
+              <a href="/tasks/" class="btn btn-primary btn-lg px-4">{% trans "Go to Tasks" %}</a>
+            {% else %}
+              <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg px-4">{% trans "Get Started" %}</a>
+              <a href="{% url 'login' %}" class="btn btn-primary btn-lg">{% trans "Login" %}</a>
+            {% endif %}
+          </div>
           <hr class="my-3 my-md-4">
             <h3 id="features" class="h4">{% trans "Features" %}</h3>
               <ul class="list-unstyled">
@@ -49,23 +68,7 @@
                 </li>
               </ul>
 
-              <!-- Button CTA for mobile -->
-              <div class="d-grid gap-2 d-md-none mt-4">
-                {% if user.is_authenticated %}
-                  <a href="/tasks/" class="btn btn-primary btn-lg">{% trans "Go to Tasks" %}</a>
-                {% else %}
-                  <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg">{% trans "Get Started" %}</a>
-                {% endif %}
-              </div>
-
-              <!-- Button CTA for desktop -->
-              <div class="d-none d-md-block text-center mt-4">
-                {% if user.is_authenticated %}
-                  <a href="/tasks/" class="btn btn-primary btn-lg px-4">{% trans "Go to Tasks" %}</a>
-                {% else %}
-                  <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-lg px-4">{% trans "Get Started" %}</a>
-                {% endif %}
-              </div>
+              
         </div>
       </div>
     </div>
