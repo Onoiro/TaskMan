@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-29 23:17+0300\n"
+"POT-Creation-Date: 2025-08-04 13:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,16 +23,18 @@ msgstr ""
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
 #: statuses/forms.py:14 tasks/models.py:25 teams/models.py:13
 #: templates/labels/labels_list.html:14
-#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:47
-#: templates/tasks/task_filter.html:63
+#: templates/statuses/statuses_list.html:14 templates/tasks/task_filter.html:46
+#: templates/tasks/task_filter.html:60
 msgid "Name"
 msgstr "Имя"
 
-#: labels/models.py:16
+#: labels/models.py:16 statuses/models.py:17 tasks/models.py:19
 msgid ""
 "Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed"
+"#, & are not allowed."
 msgstr ""
+"Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
+"не разрешены."
 
 #: labels/views.py:30
 msgid "Label created successfully"
@@ -76,13 +78,6 @@ msgstr "Русский"
 msgid "Spanish"
 msgstr "Испанский"
 
-#: statuses/models.py:17 tasks/models.py:19
-msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed."
-msgstr "Разрешены только буквы, цифры, пробелы и символы -_.,!?. "
-"Символы <, >, #, & не разрешены"
-
 #: statuses/views.py:30
 msgid "Status created successfully"
 msgstr "Статус успешно создан"
@@ -100,12 +95,12 @@ msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
 #: tasks/filters.py:14 tasks/models.py:34 templates/tasks/task_detail.html:27
-#: templates/tasks/task_filter.html:49 templates/tasks/task_filter.html:67
+#: templates/tasks/task_filter.html:47 templates/tasks/task_filter.html:63
 msgid "Status"
 msgstr "Статус"
 
 #: tasks/filters.py:21 tasks/models.py:40 templates/tasks/task_detail.html:23
-#: templates/tasks/task_filter.html:51 templates/tasks/task_filter.html:69
+#: templates/tasks/task_filter.html:49 templates/tasks/task_filter.html:65
 msgid "Executor"
 msgstr "Исполнитель"
 
@@ -128,7 +123,7 @@ msgstr "Метки"
 
 #: tasks/models.py:54 teams/models.py:33 templates/labels/labels_list.html:15
 #: templates/statuses/statuses_list.html:15 templates/tasks/task_detail.html:31
-#: templates/tasks/task_filter.html:52 templates/tasks/task_filter.html:70
+#: templates/tasks/task_filter.html:50 templates/tasks/task_filter.html:66
 #: templates/user/user_list.html:34
 msgid "Created at"
 msgstr "Дата создания"
@@ -137,15 +132,19 @@ msgstr "Дата создания"
 msgid "Task can only be deleted by its author."
 msgstr "Задачу может удалить только ее автор"
 
-#: tasks/views.py:52
+#: tasks/views.py:33
+msgid "Task can only be updated by its author or executor."
+msgstr "Задачу может изменить только ее автор или исполнитель"
+
+#: tasks/views.py:64
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:69
+#: tasks/views.py:87
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:82
+#: tasks/views.py:100
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
@@ -165,12 +164,12 @@ msgstr "Подтверждение пароля"
 msgid "Please enter your password one more time"
 msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
 
-#: teams/forms.py:28 user/forms.py:42
+#: teams/forms.py:28 user/forms.py:48
 msgid "Your password is too short. It must contain at least 3 characters."
 msgstr ""
 "Введённый пароль слишком короткий. Он должен содержать как минимум 3 символа."
 
-#: teams/forms.py:38 user/forms.py:52
+#: teams/forms.py:38 user/forms.py:64
 msgid "The entered passwords do not match."
 msgstr "Введенные пароли не совпадают."
 
@@ -328,7 +327,7 @@ msgstr "Создать метку"
 #: templates/labels/labels_list.html:26 templates/labels/labels_update.html:13
 #: templates/statuses/statuses_list.html:26
 #: templates/statuses/statuses_update.html:13
-#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:73
+#: templates/tasks/task_detail.html:46 templates/tasks/task_filter.html:69
 #: templates/tasks/task_update.html:13 templates/teams/team_detail.html:14
 #: templates/teams/team_update.html:14 templates/user/user_list.html:47
 #: templates/user/user_update.html:13
@@ -336,8 +335,8 @@ msgid "Edit"
 msgstr "Изменить"
 
 #: templates/labels/labels_list.html:28
-#: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:48
-#: templates/tasks/task_filter.html:75 templates/teams/team_update.html:18
+#: templates/statuses/statuses_list.html:28 templates/tasks/task_detail.html:47
+#: templates/tasks/task_filter.html:70 templates/teams/team_update.html:18
 #: templates/user/user_list.html:49
 msgid "Delete"
 msgstr "Удалить"
@@ -379,8 +378,8 @@ msgstr "Удаление задачи"
 msgid "Task view"
 msgstr "Просмотр задачи"
 
-#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:50
-#: templates/tasks/task_filter.html:68
+#: templates/tasks/task_detail.html:19 templates/tasks/task_filter.html:48
+#: templates/tasks/task_filter.html:64
 msgid "Author"
 msgstr "Автор"
 
@@ -481,13 +480,21 @@ msgstr "Название команды"
 msgid "Enter team name if you want to join existing team"
 msgstr "Введите название команды, к которой хотите присоединиться"
 
-#: user/forms.py:109
+#: user/forms.py:75 user/forms.py:78
+msgid "Leave blank if you don't want to change password"
+msgstr "Оставьте поле пустым, если вы не хотите менять пароль"
+
+#: user/forms.py:107
+msgid "Both password fields must be filled or both left blank"
+msgstr "Оба поля пароля должны быть заполнены или оба оставлены пустыми"
+
+#: user/forms.py:138
 msgid "You can't signup as team admin and join existing team at the same time"
 msgstr ""
 "Вы не можете одновременно зарегистрироваться Администратором и стать "
 "участником какой-либо команды"
 
-#: user/forms.py:120
+#: user/forms.py:149
 msgid "There is no such team"
 msgstr "Такой команды не существует"
 
@@ -499,17 +506,17 @@ msgstr "Пользователь успешно зарегистрирован"
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменен"
 
-#: user/views.py:80
+#: user/views.py:81
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
-#: user/views.py:86
+#: user/views.py:87
 msgid "Cannot delete a user because it is team admin. Delete the team first."
 msgstr ""
 "Невозможно удалить пользователя, являющегося Администратором команды. "
 "Сначала удалите команду."
 
-#: user/views.py:93
+#: user/views.py:94
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 

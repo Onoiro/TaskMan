@@ -15,7 +15,7 @@ class Label(models.Model):
                 message=_(
                     "Only letters, numbers, spaces, "
                     "and -_.,!? symbols are allowed. "
-                    "Symbols <, >, #, & are not allowed"
+                    "Symbols <, >, #, & are not allowed."
                 )
             ),
         ],
