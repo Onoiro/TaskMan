@@ -238,7 +238,7 @@ class UserTestCase(TestCase):
         self.assertContains(response, _('Delete user'))
         self.assertContains(response, _('Yes, delete'))
         self.assertContains(response,
-                            _('Are you sure you want to delete New N?'))
+                            _('Are you sure you want to delete new?'))
 
     def test_delete_user_successfully(self):
         self.c.post(reverse('user:user-create'),
@@ -249,7 +249,7 @@ class UserTestCase(TestCase):
                                        args=[user.id]), follow=True)
         self.assertFalse(User.objects.filter(username="new").exists())
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('user:user-list'))
+        self.assertRedirects(response, reverse('index'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),

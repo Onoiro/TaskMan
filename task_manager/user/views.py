@@ -77,7 +77,7 @@ class UserDeleteView(CustomPermissions,
                      DeleteView):
     model = User
     template_name = 'user/user_delete.html'
-    success_url = reverse_lazy('user:user-list')
+    success_url = reverse_lazy('index')
     success_message = _('User deleted successfully')
 
     def get(self, request, *args, **kwargs):
