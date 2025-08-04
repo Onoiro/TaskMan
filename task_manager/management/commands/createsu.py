@@ -13,6 +13,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         admin_password = os.getenv('ADMIN_PASSWORD')
 
+        if not admin_password:
+            print('Error: ADMIN_PASSWORD environment variable is not set!')
+            return
+
         try:
             user = User.objects.get(username='admin')
             user.set_password(admin_password)
