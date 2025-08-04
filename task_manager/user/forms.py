@@ -8,7 +8,12 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username']
+        fields = ['username', 'first_name', 'last_name']
+
+        help_texts = {
+            'first_name': _('Optional'),
+            'last_name': _('Optional'),
+        }
 
     is_team_admin = forms.BooleanField(
         required=False,
