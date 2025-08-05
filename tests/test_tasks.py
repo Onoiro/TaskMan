@@ -127,6 +127,51 @@ class TaskTestCase(TestCase):
         # check that table is rendered
         self.assertContains(response, '<table')
 
+    def test_filter_button_visible_when_filter_hidden(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _('Filter'))
+        self.assertNotContains(response, _('Hide filter'))
+
+    def test_filter_visible_when_show_filter_param_present(self):
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
+        self.assertContains(response, _('Hide filter'))
+        self.assertNotContains(response, _('Filter'))
+        # filter results button
+        self.assertContains(response, _('Show'))
+
+    def test_filter_hidden_when_hide_filter_clicked(self):
+        # click on "Hide filter"
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1&status=1')
+        hide_filter_url = f"{reverse('tasks:tasks-list')}?status=1"     
+        # check params after hide filter
+        response = self.c.get(hide_filter_url)
+        self.assertContains(response, _('Filter'))
+        self.assertNotContains(response, _('Hide filter'))
+
+    def test_view_toggle_buttons_preserve_filter_state(self):
+        # check that when toggle view (full or compact) filter state same 
+        # 1. filter hidden, toggle view
+        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
+        self.assertContains(response, _('Compact view'))
+        # filter button visible
+        self.assertContains(response, _('Filter'))
+        
+        # 2. filter is visible, toggle view
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1&full_view=1')
+        self.assertContains(response, _('Compact view'))
+        # hide filter button is visible
+        self.assertContains(response, _('Hide filter'))
+
+    def test_new_task_button_always_visible(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _('New task'))
+
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
+        self.assertContains(response, _('New task'))
+
+        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
+        self.assertContains(response, _('New task'))
+
     # detail_view
 
     def test_task_detail_view_response_200(self):
