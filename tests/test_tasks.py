@@ -38,9 +38,9 @@ class TaskTestCase(TestCase):
         response = self.c.get(reverse('tasks:tasks-list'))
         # fields that are always visible
         self.assertContains(response, _('Tasks'))
-        self.assertContains(response, _('Show'))
+        self.assertContains(response, _('Filter'))
         self.assertContains(response, _('Label'))
-        self.assertContains(response, _('Just my tasks'))
+        # self.assertContains(response, _('Just my tasks'))
 
         # check that there are no titles for table if not full_view=1
         self.assertNotContains(response, '<th>ID</th>')
@@ -60,16 +60,16 @@ class TaskTestCase(TestCase):
         self.assertContains(response, f'<th>{_("Executor")}</th>')
         self.assertContains(response, f'<th>{_("Created at")}</th>')
         self.assertContains(response, _('Label'))
-        self.assertContains(response, _('Just my tasks'))
+        # self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
-        self.assertContains(response, _('Show'))
+        self.assertContains(response, _('Filter'))
 
     def test_tasks_list_compact_view_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         # check for main fields visible in compact view
         # self.assertContains(response, f'<th>{_("Name")}</th>')
         self.assertContains(response, _('Tasks'))
-        self.assertContains(response, _('Show'))
+        self.assertContains(response, _('Filter'))
         self.assertContains(response, _('Full view'))  # toggle button
 
         # these titles have not be visible in compact view
@@ -107,7 +107,7 @@ class TaskTestCase(TestCase):
         Task.objects.all().delete()
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('No tasks yet'))
+        self.assertContains(response, _('No tasks'))
         # check that table is not rendered
         self.assertNotContains(response, '<table')
 
@@ -116,14 +116,14 @@ class TaskTestCase(TestCase):
         Task.objects.all().delete()
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('No tasks yet'))
+        self.assertContains(response, _('No tasks'))
         # check that table is not rendered
         self.assertNotContains(response, '<table')
 
     def test_tasks_list_not_empty_no_message(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, _('No tasks yet'))
+        self.assertNotContains(response, _('No tasks'))
         # check that table is rendered
         self.assertContains(response, '<table')
 

@@ -9,6 +9,29 @@
         <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
     </div>
 
+<!-- Кнопки управления -->
+    <div class="mb-3">
+        {% if not request.GET.show_filter %}
+            <!-- Кнопка Filter для показа фильтра -->
+            <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" class="btn btn-outline-primary">
+                {% trans "Filter" %}
+            </a>
+        {% endif %}
+        
+        <!-- Кнопка переключения вида -->
+        {% if request.GET.full_view %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'full_view' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
+                {% trans "Compact view" %}
+            </a>
+        {% else %}
+            <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}full_view=1" class="btn btn-outline-secondary">
+                {% trans "Full view" %}
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Форма фильтра (показывается только когда show_filter=1) -->
+    {% if request.GET.show_filter %}
     <div class="card mb-3">
         <div class="card-body bg-light">
             <form class="row g-3">
@@ -22,20 +45,15 @@
                     <button type="submit" class="btn btn-primary">
                         {% trans "Show" %}
                     </button>
-                    <!-- button for select between full_view or compact_view of task list -->
-                    {% if request.GET.full_view %}
-                        <a href="?{% for key, value in request.GET.items %}{% if key != 'full_view' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
-                            {% trans "Compact view" %}
-                        </a>
-                    {% else %}
-                        <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}full_view=1" class="btn btn-outline-secondary">
-                            {% trans "Full view" %}
-                        </a>
-                    {% endif %}
+                    <!-- Кнопка для скрытия фильтра -->
+                    <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
+                        {% trans "Hide filter" %}
+                    </a>
                 </div>
             </form>
         </div>
     </div>
+    {% endif %}
 
     {% if filter.qs %}
     <div class="table-responsive">
