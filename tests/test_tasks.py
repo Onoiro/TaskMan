@@ -141,11 +141,7 @@ class TaskTestCase(TestCase):
 
     def test_filter_hidden_when_hide_filter_clicked(self):
         # click on "Hide filter"
-        response = self.c.get(
-            reverse('tasks:tasks-list') + '?show_filter=1&status=1')
-        hide_filter_url = f"{reverse('tasks:tasks-list')}?status=1"
-        # check params after hide filter
-        response = self.c.get(hide_filter_url)
+        response = self.c.get(reverse('tasks:tasks-list') + '?status=1')
         self.assertContains(response, _('Filter'))
         self.assertNotContains(response, _('Hide filter'))
 

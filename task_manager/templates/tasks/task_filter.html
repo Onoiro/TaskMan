@@ -17,7 +17,7 @@
                 {% trans "Show" %}
             </button>
         {% else %}
-            <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" class="btn btn-outline-primary">
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}show_filter=1" class="btn btn-outline-primary">
                 {% trans "Filter" %}
             </a>
         {% endif %}
@@ -32,7 +32,7 @@
                 {% trans "Compact view" %}
             </a>
         {% else %}
-            <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}full_view=1" class="btn btn-outline-secondary">
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'full_view' %}{{ key }}={{ value }}&{% endif %}{% endfor %}full_view=1" class="btn btn-outline-secondary">
                 {% trans "Full view" %}
             </a>
         {% endif %}
