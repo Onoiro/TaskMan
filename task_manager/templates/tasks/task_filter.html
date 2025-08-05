@@ -37,6 +37,7 @@
         </div>
     </div>
 
+    {% if filter.qs %}
     <div class="table-responsive">
         <table class="table table-striped">
             <thead class="d-none d-md-table-header-group">
@@ -80,6 +81,11 @@
             </tbody>
         </table>
     </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        <h4>{% trans "No tasks yet" %}</h4>
+    </div>
+    {% endif %}
 </div>
 
 <style>
