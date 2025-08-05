@@ -102,6 +102,31 @@ class TaskTestCase(TestCase):
         for task in other_tasks:
             self.assertNotContains(response, task.name)
 
+    def test_tasks_list_empty_with_message(self):
+        # delete all tasks first
+        Task.objects.all().delete()
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('No tasks yet'))
+        # check that table is not rendered
+        self.assertNotContains(response, '<table')
+
+    def test_tasks_list_empty_with_message_full_view(self):
+        # Delete all tasks first
+        Task.objects.all().delete()
+        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('No tasks yet'))
+        # check that table is not rendered
+        self.assertNotContains(response, '<table')
+
+    def test_tasks_list_not_empty_no_message(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, _('No tasks yet'))
+        # check that table is rendered
+        self.assertContains(response, '<table')
+
     # detail_view
 
     def test_task_detail_view_response_200(self):
