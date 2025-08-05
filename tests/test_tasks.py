@@ -86,8 +86,7 @@ class TaskTestCase(TestCase):
         # check for right buttons in compact view
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, _('Full view'))
-
-        # this test fail don't know why 
+        # this test fail don't know why
         # self.assertNotContains(response, _('Compact view'))
 
         # check for right buttons in compact full view
@@ -145,7 +144,7 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Show'))
         # this test fail don't know why
         # self.assertNotContains(response, _('Filter'))
-        
+
     def test_filter_hidden_when_hide_filter_clicked(self):
         # click on "Hide filter"
         response = self.c.get(reverse('tasks:tasks-list') + '?status=1')
