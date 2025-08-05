@@ -9,17 +9,25 @@
         <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
     </div>
 
-<!-- Кнопки управления -->
+    <!-- command buttons (always only two) -->
     <div class="mb-3">
-        {% if not request.GET.show_filter %}
-            <!-- Кнопка Filter для показа фильтра -->
+        <!-- left button (Filter/Show) -->
+        {% if request.GET.show_filter %}
+            <button type="submit" form="filter-form" class="btn btn-primary">
+                {% trans "Show" %}
+            </button>
+        {% else %}
             <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" class="btn btn-outline-primary">
                 {% trans "Filter" %}
             </a>
         {% endif %}
-        
-        <!-- Кнопка переключения вида -->
-        {% if request.GET.full_view %}
+
+        <!-- right button (Full view/Compact view/Hide filter) -->
+        {% if request.GET.show_filter %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
+                {% trans "Hide filter" %}
+            </a>
+        {% elif request.GET.full_view %}
             <a href="?{% for key, value in request.GET.items %}{% if key != 'full_view' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
                 {% trans "Compact view" %}
             </a>
@@ -30,26 +38,21 @@
         {% endif %}
     </div>
 
-    <!-- Форма фильтра (показывается только когда show_filter=1) -->
+    <!-- filter form (visible only if show_filter=1) -->
     {% if request.GET.show_filter %}
     <div class="card mb-3">
         <div class="card-body bg-light">
-            <form class="row g-3">
+            <form id="filter-form" class="row g-3" method="get">
                 {% for field in filter.form %}
                 <div class="col-12 col-md-6 col-lg-3">
                     {{ field.label_tag }}
                     {{ field }}
                 </div>
-                {% endfor%}
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">
-                        {% trans "Show" %}
-                    </button>
-                    <!-- Кнопка для скрытия фильтра -->
-                    <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-outline-secondary">
-                        {% trans "Hide filter" %}
-                    </a>
-                </div>
+                {% endfor %}
+                <input type="hidden" name="show_filter" value="1">
+                {% if request.GET.full_view %}
+                    <input type="hidden" name="full_view" value="1">
+                {% endif %}
             </form>
         </div>
     </div>
@@ -126,7 +129,7 @@
             padding: 0.5rem;
             border-bottom: 1px solid #dee2e6;
             position: relative;
-            min-height: 2.5rem; /* Минимальная высота для контента */
+            min-height: 2.5rem; /* min high for content */
         }
         
         td:before {
@@ -141,7 +144,7 @@
             border-bottom: none;
         }
 
-        /* Альтернативный подход с grid для полного контроля */
+        /* alternative grid approach for complete control */
         tr[data-full-view] td {
             display: grid;
             grid-template-columns: auto 1fr;
@@ -160,7 +163,7 @@
             grid-template-columns: auto 1fr;
             gap: 0.5rem;
             align-items: start;
-            justify-items: end; /* выровняет вторую колонки по правому краю */
+            justify-items: end; /* align the second column to the right edge */
         }
 
         /* styles for compact view */
@@ -169,10 +172,10 @@
         }
         
         tr:not([data-full-view]) td:before {
-            display: none; /* Скрываем лейблы в компактном режиме */
+            display: none; /* hiding labels in compact view */
         }
         
-        /* Специальные стили для кнопок действий */
+        /* special styles for action buttons */
         tr[data-full-view] td:last-child {
             display: block;
         }
@@ -181,7 +184,7 @@
             display: none;
         }
         
-        /* Принудительный перенос для длинного контента */
+        /* forced hyphenation (перенос) for long content */
         tr[data-full-view] td {
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -194,7 +197,7 @@
         }
     }
 
-    /* Дополнительные стили специально для iOS Safari */
+    /* Additional styles specifically for iOS Safari */
     @supports (-webkit-touch-callout: none) {
         @media (max-width: 767.98px) {
             tr[data-full-view] td {
