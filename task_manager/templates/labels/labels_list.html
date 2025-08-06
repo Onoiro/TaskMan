@@ -5,7 +5,13 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">{% trans "Labels" %}</h1>
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <h1 class="my-4">{% trans "Labels" %}</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary" href="{% url 'tasks:tasks-list' %}">{% trans "Tasks" %}</a>
+            <a class="btn btn-outline-secondary" href="{% url 'statuses:statuses-list' %}">{% trans "Statuses" %}</a>
+        </div>
+    </div>
     <a class="btn btn-primary mb-3" href="{% url 'labels:labels-create' %}">{% trans "New label" %}</a>
     <table class="table table-striped">
         <thead>
