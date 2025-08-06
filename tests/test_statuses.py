@@ -1,5 +1,4 @@
 from task_manager.statuses.models import Status
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -35,6 +34,16 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
+
+    def test_statuses_list_has_tasks_button(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        self.assertContains(response, _("Tasks"))
+        self.assertContains(response, reverse('tasks:tasks-list'))
+
+    def test_statuses_list_has_labels_button(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        self.assertContains(response, _("Labels"))
+        self.assertContains(response, reverse('labels:labels-list'))
 
     def test_statuses_list_content(self):
         response = self.c.get(reverse('statuses:statuses-list'))

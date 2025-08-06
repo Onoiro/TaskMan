@@ -1,5 +1,4 @@
 from task_manager.labels.models import Label
-# from django.contrib.auth.models import User
 from task_manager.user.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -37,6 +36,16 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, _('New label'))
         self.assertContains(response, _('Edit'))
         self.assertContains(response, _('Delete'))
+
+    def test_labels_list_has_tasks_button(self):
+        response = self.c.get(reverse('labels:labels-list'))
+        self.assertContains(response, _("Tasks"))
+        self.assertContains(response, reverse('tasks:tasks-list'))
+
+    def test_labels_list_has_statuses_button(self):
+        response = self.c.get(reverse('labels:labels-list'))
+        self.assertContains(response, _("Statuses"))
+        self.assertContains(response, reverse('statuses:statuses-list'))
 
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))

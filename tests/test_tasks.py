@@ -167,6 +167,16 @@ class TaskTestCase(TestCase):
         # hide filter button is visible
         self.assertContains(response, _('Hide filter'))
 
+    def test_tasks_list_has_statuses_button(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _("Statuses"))
+        self.assertContains(response, reverse('statuses:statuses-list'))
+
+    def test_tasks_list_has_labels_button(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _("Labels"))
+        self.assertContains(response, reverse('labels:labels-list'))
+
     def test_new_task_button_always_visible(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, _('New task'))
