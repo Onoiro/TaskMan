@@ -4,9 +4,15 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    <h1 class="my-4">{% trans "Tasks" %}</h1>
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <h1 class="my-4">{% trans "Tasks" %}</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary" href="{% url 'statuses:statuses-list' %}">{% trans "Statuses" %}</a>
+            <a class="btn btn-outline-secondary" href="{% url 'labels:labels-list' %}">{% trans "Labels" %}</a>
+        </div>
+    </div>
     <div class="d-grid gap-2 d-md-block mb-3">
-        <a class="btn btn-primary mb-3" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
+        <a class="btn btn-primary" href="{% url 'tasks:task-create' %}">{% trans "New task" %}</a>
     </div>
 
     <!-- command buttons (always only two) -->
