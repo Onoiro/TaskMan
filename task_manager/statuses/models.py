@@ -10,6 +10,7 @@ class Status(models.Model):
         max_length=24,
         unique=False,
         blank=False,
+        verbose_name=_('Name'),
         validators=[
             RegexValidator(
                 r'^[\w \-:,.!?]+$',
@@ -25,8 +26,15 @@ class Status(models.Model):
         User, on_delete=models.CASCADE,
         related_name='created_statuses'
     )
-    description = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Description'),)
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at')
+    )
 
     # Метод для создания дефолтных статусов для пользователя
     @classmethod
