@@ -131,6 +131,19 @@ class UserTestCase(TestCase):
 
         self.assertRedirects(response, reverse('index'))
 
+    def test_create_user_team_admin_redirect(self):
+        user_data = self.user_data.copy()
+        user_data['is_team_admin'] = True
+
+        response = self.c.post(
+            reverse('user:user-create'), user_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        user = User.objects.filter(username=user_data['username']).first()
+        self.assertIsNotNone(user)
+        self.assertTrue(user.is_team_admin)
+        self.assertRedirects(response, reverse('teams:team-create'))
+
     def test_check_for_not_create_user_with_same_username(self):
         self.c.post(
             reverse('user:user-create'), self.user_data, follow=True)

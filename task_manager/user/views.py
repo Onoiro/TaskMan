@@ -64,8 +64,8 @@ class UserUpdateView(CustomPermissions,
     def form_valid(self, form):
         super().form_valid(form)
         login(self.request, self.object)
-        # if self.object.is_team_admin:
-        #     return redirect('teams:team-create')
+        if self.object.is_team_admin:
+            return redirect('teams:team-create')
         # return redirect('login')
         return redirect('user:user-list')
 

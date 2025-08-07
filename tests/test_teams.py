@@ -52,7 +52,7 @@ class TeamTestCase(TestCase):
         self.assertEqual(self.admin_user.team, team)
 
         # check redirect and message
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse('index'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Team created successfully'))

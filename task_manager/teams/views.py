@@ -21,7 +21,7 @@ class TeamCreateView(SuccessMessageMixin,
                      CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('index')
     success_message = _('Team created successfully')
 
     def form_valid(self, form):
