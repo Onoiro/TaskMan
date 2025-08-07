@@ -14,16 +14,33 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='status',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='Created at'),
+            field=models.DateTimeField(
+                auto_now_add=True,
+                verbose_name='Created at'
+            ),
         ),
         migrations.AlterField(
             model_name='status',
             name='description',
-            field=models.TextField(blank=True, null=True, verbose_name='Description'),
+            field=models.TextField(
+                blank=True,
+                null=True,
+                verbose_name='Description'
+            ),
         ),
         migrations.AlterField(
             model_name='status',
             name='name',
-            field=models.CharField(max_length=24, validators=[django.core.validators.RegexValidator('^[\\w \\-:,.!?]+$', message='Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, #, & are not allowed.')], verbose_name='Name'),
+            field=models.CharField(
+                max_length=24,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        '^[\\w \\-:,.!?]+$',
+                        message='Only letters, numbers, spaces, and '
+                        '-_.,!? symbols are allowed. Symbols <, >, #, '
+                        '& are not allowed.'
+                    )
+                ], verbose_name='Name'
+            ),
         ),
     ]

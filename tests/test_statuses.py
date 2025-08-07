@@ -19,6 +19,7 @@ class StatusesTestCase(TestCase):
         self.c.force_login(self.user)
         self.statuses_data = {
             'name': 'new_test_status',
+            'description': 'Test description'
         }
 
     # list
@@ -31,6 +32,7 @@ class StatusesTestCase(TestCase):
         response = self.c.get(reverse('statuses:statuses-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Description'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
@@ -55,6 +57,44 @@ class StatusesTestCase(TestCase):
         other_statuses = Status.objects.exclude(creator__in=team_user_ids)
         for status in other_statuses:
             self.assertNotContains(response, status.name)
+
+    def test_statuses_list_empty_description(self):
+        response = self.c.get(reverse('statuses:statuses-list'))
+        Status.objects.get(name="testing")  # status with empty description
+        Status.objects.get(name="finished")  # status with null description
+        self.assertNotContains(response, "None")
+        self.assertContains(response, "Newly created task")
+
+    def test_create_status_with_description(self):
+        self.c.post(
+            reverse('statuses:statuses-create'),
+            self.statuses_data,
+            follow=True
+        )
+        status = Status.objects.filter(
+            name=self.statuses_data['name']).first()
+        self.assertEqual(
+            status.description, self.statuses_data['description'])
+
+    def test_update_status_description(self):
+        status = Status.objects.get(name="new")
+        new_data = {
+            'name': 'updated',
+            'description': 'Updated description'
+        }
+        self.c.post(reverse('statuses:statuses-update', args=[status.id]),
+                    new_data, follow=True)
+        status.refresh_from_db()
+        self.assertEqual(
+            status.description, new_data['description'])
+
+    def test_create_status_without_description(self):
+        data_without_desc = {'name': 'no_desc_status'}
+        self.c.post(reverse('statuses:statuses-create'),
+                    data_without_desc, follow=True)
+        status = Status.objects.filter(
+            name=data_without_desc['name']).first()
+        self.assertEqual(status.description, '')
 
     # create
 
@@ -90,17 +130,6 @@ class StatusesTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Status created successfully'))
 
-    # def test_check_for_do_not_create_status_with_same_name(self):
-    #     self.c.post(reverse('statuses:statuses-create'),
-    #                 self.statuses_data, follow=True)
-    #     statuses_count = Status.objects.count()
-    #     response = self.c.post(reverse('statuses:statuses-create'),
-    #                            self.statuses_data, follow=True)
-    #     new_statuses_count = Status.objects.count()
-    #     self.assertEqual(statuses_count, new_statuses_count)
-    #     message = _('Status with this Name already exists.')
-    #     self.assertContains(response, message)
-
     def test_can_not_create_status_with_empty_name(self):
         self.statuses_data = {'name': ' '}
         response = self.c.post(reverse('statuses:statuses-create'),
@@ -135,17 +164,6 @@ class StatusesTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Status updated successfully'))
-
-    # def test_check_can_not_update_status_if_same_status_exist(self):
-    #     status = Status.objects.get(name="new")
-    #     self.statuses_data = {'name': 'at work'}
-    #     response = self.c.post(
-    #         reverse('statuses:statuses-update', args=[status.id]),
-    #         self.statuses_data, follow=True
-    #     )
-    #     message = _('Status with this Name already exists.')
-    #     self.assertContains(response, message)
-    #     self.assertNotEqual(response.status_code, 302)
 
     def test_can_not_set_empty_name_when_update_status(self):
         status = Status.objects.get(name="new")
