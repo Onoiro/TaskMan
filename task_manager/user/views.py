@@ -47,7 +47,6 @@ class UserCreateView(SuccessMessageMixin,
         # If user is team_admin redirect to create team
         if self.object.is_team_admin:
             return redirect('teams:team-create')
-        # Else redirect to Login
         return redirect('index')
 
 

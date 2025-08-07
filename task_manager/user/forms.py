@@ -1,6 +1,7 @@
 from django import forms
 from task_manager.user.models import User
 from task_manager.teams.models import Team
+from task_manager.statuses.models import Status
 from django.utils.translation import gettext_lazy as _
 
 
@@ -161,10 +162,18 @@ class UserForm(forms.ModelForm):
             user.set_password(password1)
 
         user.is_team_admin = self.cleaned_data.get('is_team_admin', False)
+
+        is_new_user = user.pk is None
+
         if commit:
             user.save()
             team_name = self.cleaned_data.get('team_name')
             if not user.is_team_admin and team_name:
                 user.team = self.cleaned_data['team']
                 user.save()
+        
+        # set default statuses for new user
+        if is_new_user:
+            Status.create_default_statuses_for_user(user)
+        
         return user
