@@ -1,5 +1,6 @@
 from task_manager.user.models import User
 from task_manager.teams.models import Team
+from task_manager.statuses.models import Status
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -77,6 +78,35 @@ class UserTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('User created successfully'))
+
+    def test_default_statuses_created_for_new_user(self):
+        # count statuses before creating new user
+        initial_status_count = Status.objects.count()
+        initial_user_status_count = Status.objects.filter(
+            creator=self.user).count()
+        # create new user (using existing user_data from setUp)
+        self.c.post(
+            reverse('user:user-create'),
+            self.user_data,
+            follow=True
+        )
+        # get the newly created user
+        new_user = User.objects.get(username=self.user_data['username'])
+        # check status counts
+        self.assertEqual(
+            Status.objects.count(),
+            # 6 default statuses should be added from statuses/models.py
+            initial_status_count + 6
+        )
+        self.assertEqual(
+            Status.objects.filter(creator=new_user).count(),
+            6
+        )
+        # verify no statuses were created for the test user (self.user)
+        self.assertEqual(
+            Status.objects.filter(creator=self.user).count(),
+            initial_user_status_count
+        )
 
     def test_user_auto_login_after_create(self):
         self.c.logout()

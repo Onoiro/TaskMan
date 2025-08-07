@@ -194,3 +194,44 @@ class StatusesTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete status because it is in use'))
+
+
+class StatusDefaultCreationTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='test_user',
+            password='testpass123'
+        )
+
+    def test_create_default_statuses_for_user(self):
+        default_status_names = [
+            "To Do",
+            "In Progress",
+            "On Hold",
+            "Completed",
+            "Cancelled",
+            "Blocked"
+        ]
+
+        # initially no statuses for user
+        self.assertEqual(Status.objects.filter(creator=self.user).count(), 0)
+
+        # create default statuses
+        created_statuses = Status.create_default_statuses_for_user(self.user)
+
+        # check correct number of statuses created
+        self.assertEqual(len(created_statuses), 6)
+        self.assertEqual(Status.objects.filter(creator=self.user).count(), 6)
+
+        # check all default statuses exist with correct names
+        for status_name in default_status_names:
+            self.assertTrue(
+                Status.objects.filter(
+                    name=status_name,
+                    creator=self.user
+                ).exists()
+            )
+
+        # check descriptions are not empty
+        for status in created_statuses:
+            self.assertTrue(status.description)
