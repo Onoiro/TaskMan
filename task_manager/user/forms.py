@@ -171,9 +171,9 @@ class UserForm(forms.ModelForm):
             if not user.is_team_admin and team_name:
                 user.team = self.cleaned_data['team']
                 user.save()
-        
+
         # set default statuses for new user
         if is_new_user:
             Status.create_default_statuses_for_user(user)
-        
+
         return user

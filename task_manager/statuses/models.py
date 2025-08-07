@@ -55,10 +55,12 @@ class Status(models.Model):
             },
             {
                 'name': _("Blocked"),
-                'description': _("Task cannot proceed due to external dependencies")
+                'description': _(
+                    "Task cannot proceed due to external dependencies"
+                )
             },
         ]
-        
+
         created_statuses = []
         for status_data in default_statuses:
             status = cls.objects.create(
@@ -67,7 +69,7 @@ class Status(models.Model):
                 creator=user
             )
             created_statuses.append(status)
-        
+
         return created_statuses
 
     def __str__(self):
