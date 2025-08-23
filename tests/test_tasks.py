@@ -213,12 +213,10 @@ class TaskTestCase(TestCase):
         self.assertContains(response, self.task.description)
         self.assertContains(
             response,
-            f"{self.task.author.first_name}"
-            f" {self.task.author.last_name}")
+            f"{self.task.author.username}")
         self.assertContains(
             response,
-            f"{self.task.executor.first_name}"
-            f" {self.task.executor.last_name}")
+            f"{self.task.executor.username}")
         self.assertContains(response, self.task.status.name)
         formatted_date = DateFormat(
             self.task.created_at).format(get_format('DATETIME_FORMAT'))
