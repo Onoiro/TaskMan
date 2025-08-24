@@ -67,39 +67,36 @@
     {% if filter.qs %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="d-none d-md-table-header-group">
+            <thead {% if request.GET.full_view %}class="table-header-group"{% else %}class="d-none d-md-table-header-group"{% endif %}>
             <tr>
                 {% if request.GET.full_view %}
-                <th>ID</th>
-                <th>{% trans "Name" %}</th>
-                <th>{% trans "Status" %}</th>
-                <th>{% trans "Author" %}</th>
-                <th>{% trans "Executor" %}</th>
-                <th>{% trans "Created at" %}</th>
-                <th></th>
+                <th scope="col">{% trans "ID" %}</th>
+                <th scope="col">{% trans "Name" %}</th>
+                <th scope="col">{% trans "Status" %}</th>
+                <th scope="col">{% trans "Author" %}</th>
+                <th scope="col">{% trans "Executor" %}</th>
+                <th scope="col">{% trans "Created at" %}</th>
                 {% endif %}
             </tr>
             </thead>
             <tbody>
                 {% for obj in filter.qs %}
-                <tr {% if request.GET.full_view %}data-full-view="true"{% endif %}>
+                <tr>
                     {% if request.GET.full_view %}
-                    <td data-label="ID">{{ obj.id }}</td>
-                    <td data-label="{% trans 'Name' %}">
+                    <th scope="row">{{ obj.id }}</th>
+                    <td>
                         <a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a>
                     </td>
-                    <td data-label="{% trans 'Status' %}">{{ obj.status }}</td>
-                    <td data-label="{% trans 'Author' %}">{{ obj.author.username }}</td>
-                    <td data-label="{% trans 'Executor' %}">{{ obj.executor.username }}</td>
-                    <td data-label="{% trans 'Created at' %}">{{ obj.created_at }}</td>
+                    <td>{{ obj.status }}</td>
+                    <td>{{ obj.author.username }}</td>
+                    <td>{{ obj.executor.username }}</td>
+                    <td>{{ obj.created_at|date:"d.m.y" }}</td>
                     <td>
-                        <div class="d-flex gap-2" role="group">
-                            <a class="btn btn-outline-primary btn-sm" href="{% url 'tasks:task-update' obj.id %}">{% trans "Edit" %}</a>
-                            <a class="btn btn-outline-danger btn-sm" href="{% url 'tasks:task-delete' obj.id %}">{% trans "Delete" %}</a>
-                        </div>
+                        <a href="{% url 'tasks:task-update' obj.id %}" class="text-decoration-none text-primary d-none d-md-inline-block">{% trans "Edit" %}</a>
+                        <a href="{% url 'tasks:task-delete' obj.id %}" class="text-decoration-none text-danger d-none d-md-inline-block">{% trans "Delete" %}</a>
                     </td>
                     {% else %}
-                    <td class="text-start">
+                    <td>
                         <a href="{% url 'tasks:task-detail' obj.id %}">{{ obj.name }}</a>
                     </td>
                     {% endif %}
@@ -114,103 +111,4 @@
     </div>
     {% endif %}
 </div>
-
-<style>
-    /* styles for adaptive table on mobile */
-    @media (max-width: 767.98px) {
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        tr {
-            display: block;
-            margin-bottom: 1rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.25rem;
-        }
-        
-        td {
-            display: block;
-            padding: 0.5rem;
-            border-bottom: 1px solid #dee2e6;
-            position: relative;
-            min-height: 2.5rem; /* min high for content */
-        }
-        
-        td:before {
-            content: attr(data-label) ": ";
-            font-weight: bold;
-            display: inline-block;
-            width: auto;
-            margin-right: 0.5rem;
-        }
-        
-        td:last-child {
-            border-bottom: none;
-        }
-
-        /* alternative grid approach for complete control */
-        tr[data-full-view] td {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0.5rem;
-            align-items: start;
-        }
-        
-        tr[data-full-view] td:before {
-            grid-column: 1;
-            margin-right: 0;
-            justify-self: start;
-        }
-        
-        tr[data-full-view] td {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0.5rem;
-            align-items: start;
-            justify-items: end; /* align the second column to the right edge */
-        }
-
-        /* styles for compact view */
-        tr:not([data-full-view]) td {
-            text-align: left;
-        }
-        
-        tr:not([data-full-view]) td:before {
-            display: none; /* hiding labels in compact view */
-        }
-        
-        /* special styles for action buttons */
-        tr[data-full-view] td:last-child {
-            display: block;
-        }
-        
-        tr[data-full-view] td:last-child:before {
-            display: none;
-        }
-        
-        /* forced hyphenation (перенос) for long content */
-        tr[data-full-view] td {
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-    }
-
-    @media (min-width: 768px) {
-    .d-md-table-header-group {
-        display: table-header-group !important;
-        }
-    }
-
-    /* Additional styles specifically for iOS Safari */
-    @supports (-webkit-touch-callout: none) {
-        @media (max-width: 767.98px) {
-            tr[data-full-view] td {
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-            }
-        }
-    }
-</style>
 {% endblock %}
