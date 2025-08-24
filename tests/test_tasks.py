@@ -43,22 +43,24 @@ class TaskTestCase(TestCase):
         # self.assertContains(response, _('Just my tasks'))
 
         # check that there are no titles for table if not full_view=1
-        self.assertNotContains(response, '<th>ID</th>')
-        self.assertNotContains(response, f'<th>{_("Name")}</th>')
-        self.assertNotContains(response, f'<th>{_("Status")}</th>')
-        self.assertNotContains(response, f'<th>{_("Author")}</th>')
-        self.assertNotContains(response, f'<th>{_("Executor")}</th>')
-        self.assertNotContains(response, f'<th>{_("Created at")}</th>')
+        self.assertNotContains(response, f'<th scope="col">{_("ID")}</th>')
+        self.assertNotContains(response, f'<th scope="col">{_("Name")}</th>')
+        self.assertNotContains(response, f'<th scope="col">{_("Status")}</th>')
+        self.assertNotContains(response, f'<th scope="col">{_("Author")}</th>')
+        self.assertNotContains(
+            response, f'<th scope="col">{_("Executor")}</th>')
+        self.assertNotContains(
+            response, f'<th scope="col">{_("Created at")}</th>')
 
     def test_tasks_list_full_view_content(self):
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
         # all fields have to be visible if full_view=1
-        self.assertContains(response, '<th>ID</th>')
-        self.assertContains(response, f'<th>{_("Name")}</th>')
-        self.assertContains(response, f'<th>{_("Status")}</th>')
-        self.assertContains(response, f'<th>{_("Author")}</th>')
-        self.assertContains(response, f'<th>{_("Executor")}</th>')
-        self.assertContains(response, f'<th>{_("Created at")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("ID")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("Name")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("Status")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("Author")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("Executor")}</th>')
+        self.assertContains(response, f'<th scope="col">{_("Created at")}</th>')
         self.assertContains(response, _('Label'))
         # self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
@@ -67,7 +69,6 @@ class TaskTestCase(TestCase):
     def test_tasks_list_compact_view_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         # check for main fields visible in compact view
-        # self.assertContains(response, f'<th>{_("Name")}</th>')
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Filter'))
         self.assertContains(response, _('Full view'))  # toggle button
