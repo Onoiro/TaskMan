@@ -16,7 +16,6 @@
               <p class="mb-3">{{ object.description|linebreaksbr }}</p>
               <hr>
               <div class="container-fluid">
-                <!-- Информация о задаче - адаптивная сетка -->
                 <div class="row mb-2">
                   <div class="col-4 col-md-3 text-muted small text-truncate">
                     <strong>{% trans "Author" %}:</strong>
@@ -49,8 +48,7 @@
                     {{ object.created_at }}
                   </div>
                 </div>
-                
-                <!-- Лейблы - теперь в той же структуре, что и другие поля -->
+
                 <div class="row mb-3">
                   <div class="col-4 col-md-3 text-muted small text-truncate">
                     <strong>{% trans "Labels" %}:</strong>
@@ -70,7 +68,6 @@
                   </div>
                 </div>
 
-                <!-- Кнопки действий - выровнены по левому краю -->
                 <div class="row mt-4">
                   <div class="col-12">
                     <div class="d-flex flex-row gap-2 justify-content-start">
