@@ -34,9 +34,9 @@
                 <td>{{ status.description|default:"" }}</td>
                 <td>{{ status.created_at }}</td>
                 <td>
-                    <a href="{% url 'statuses:statuses-update' status.id %}">{% trans "Edit" %}</a>
+                    <a href="{% url 'statuses:statuses-update' status.id %}" class="text-decoration-none text-primary d-none d-md-inline-block">{% trans "Edit" %}</a>
                     <br>
-                    <a href="{% url 'statuses:statuses-delete' status.id %}">{% trans "Delete" %}</a>
+                    <a href="{% url 'statuses:statuses-delete' status.id %}" class="text-decoration-none text-danger d-none d-md-inline-block">{% trans "Delete" %}</a>
                 </td>
             </tr>
             {% endfor %}
