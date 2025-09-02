@@ -28,7 +28,9 @@
             {% for status in status_list %}
             <tr>
                 <td>{{ status.id }}</td>
-                <td>{{ status.name }}</td>
+                <td>
+                    <a href="{% url 'statuses:statuses-detail' status.id %}">{{ status.name }}</a>
+                </td>
                 <td>{{ status.description|default:"" }}</td>
                 <td>{{ status.created_at }}</td>
                 <td>
