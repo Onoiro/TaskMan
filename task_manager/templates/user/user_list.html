@@ -5,24 +5,24 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    {% if request.user.team %}
+    {% if request.active_team %}
         <h2 class="my-4">{% trans "Team" %}
-            {% if request.user.is_team_admin %}
+            {% if user_membership.role == 'admin' %}
                 "
                 <a
-                    href="{% url 'teams:team-update' request.user.team.id %}"
+                    href="{% url 'teams:team-update' request.active_team.id %}"
                     style="text-decoration: none;"
-                    > {{ request.user.team.name }}
+                > {{ request.active_team.name }}
                 </a>
                 "
             {% else %}
-                "{{ request.user.team.name }}"
+                "{{ request.active_team.name }}"
             {% endif %}
         </h2>
-        <p>{% trans "description" %}: {{ request.user.team.description }}</p>
-        <p>{% trans "admin name" %}: {{ request.user.team.team_admin.username }}</p>
-        <p>{% trans "created at" %}: {{ request.user.team.created_at }}</p>
+        <p>{% trans "description" %}: {{ request.active_team.description }}</p>
+        <p>{% trans "created at" %}: {{ request.active_team.created_at }}</p>
     {% endif %}
+    
     <h1 class="my-4">{% trans "Users" %}</h1>
     <table class="table table-striped">
         <thead>
@@ -41,7 +41,19 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
-                <td>{{ user.is_team_admin }}</td>
+                <td>
+                    {% if request.active_team %}
+                        {% for membership in user_memberships %}
+                            {% if membership.user_id == user.id and membership.role == 'admin' %}
+                                ✓
+                            {% elif membership.user_id == user.id %}
+                                ✗
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% trans "Not in team" %}
+                    {% endif %}
+                </td>
                 <td>{{ user.date_joined }}</td>
                 <td>
                     <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>

@@ -27,19 +27,38 @@ class UserListView(ListView):
         if not current_user.is_authenticated:
             return User.objects.none()
         
-        # Получаем активную команду из request (установлена middleware)
         team = getattr(self.request, 'active_team', None)
         
         if team:
-            # Возвращаем всех пользователей команды
             from task_manager.teams.models import TeamMembership
             team_users = User.objects.filter(
                 team_memberships__team=team
             ).distinct()
             return team_users
         else:
-            # Индивидуальный режим - только сам пользователь
             return User.objects.filter(id=current_user.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        team = getattr(self.request, 'active_team', None)
+        
+        if team:
+            from task_manager.teams.models import TeamMembership
+            # Получаем все членства в активной команде
+            context['user_memberships'] = TeamMembership.objects.filter(team=team)
+            # Получаем членство текущего пользователя
+            try:
+                context['user_membership'] = TeamMembership.objects.get(
+                    user=self.request.user,
+                    team=team
+                )
+            except TeamMembership.DoesNotExist:
+                context['user_membership'] = None
+        else:
+            context['user_memberships'] = []
+            context['user_membership'] = None
+            
+        return context
 
     # def get_queryset(self):
     #     current_user = self.request.user

@@ -103,64 +103,65 @@
               </ul>
               <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
-                <!-- НОВЫЙ DROPDOWN ДЛЯ ПЕРЕКЛЮЧЕНИЯ КОМАНД -->
-                        {% if user_teams %}
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link dropdown-toggle" href="#" id="teamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {% if active_team %}
-                                    📁 {{ active_team.name }}
-                                {% else %}
-                                    👤 {% trans "Individual" %}
-                                {% endif %}
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="teamDropdown">
-                                <!-- Индивидуальный режим -->
-                                <li>
-                                    <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="team_id" value="individual">
-                                        <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
-                                            👤 {% trans "Individual Mode" %}
-                                        </button>
-                                    </form>
-                                </li>
-                                
-                                <!-- Список команд -->
-                                {% if user_teams %}
-                                <li><hr class="dropdown-divider"></li>
-                                <li class="dropdown-header">{% trans "My Teams" %}</li>
-                                {% for membership in user_teams %}
-                                <li>
-                                    <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="team_id" value="{{ membership.team.id }}">
-                                        <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
-                                            📁 {{ membership.team.name }}
-                                            {% if membership.role == 'admin' %}
-                                                <span class="badge bg-primary ms-1">Admin</span>
-                                            {% endif %}
-                                        </button>
-                                    </form>
-                                </li>
-                                {% endfor %}
-                                {% endif %}
-                                
-                                <!-- Действия с командами -->
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'teams:team-create' %}">
-                                        ➕ {% trans "Create Team" %}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'teams:team-join' %}">
-                                        🔗 {% trans "Join Team" %}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                <!-- DROPDOWN ДЛЯ ПЕРЕКЛЮЧЕНИЯ КОМАНД -->
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="teamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if active_team %}
+                            📁 {{ active_team.name }}
+                        {% else %}
+                            👤 {% trans "Individual" %}
                         {% endif %}
-                        <!-- КОНЕЦ DROPDOWN -->
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="teamDropdown">
+                        <!-- Индивидуальный режим -->
+                        <li>
+                            <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="team_id" value="individual">
+                                <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
+                                    👤 {% trans "Individual Mode" %}
+                                </button>
+                            </form>
+                        </li>
+                        
+                        <!-- Список команд -->
+                        {% if user_teams %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-header">{% trans "My Teams" %}</li>
+                        {% for membership in user_teams %}
+                        <li>
+                            <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="team_id" value="{{ membership.team.id }}">
+                                <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
+                                    📁 {{ membership.team.name }}
+                                    {% if membership.role == 'admin' %}
+                                        <span class="badge bg-primary ms-1">Admin</span>
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-header">{% trans "No teams yet" %}</li>
+                        {% endif %}
+                        
+                        <!-- Действия с командами -->
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'teams:team-create' %}">
+                                ➕ {% trans "Create Team" %}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'teams:team-join' %}">
+                                🔗 {% trans "Join Team" %}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- КОНЕЦ DROPDOWN -->
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">{% trans "Exit" %}</a>
                   </li>
