@@ -164,6 +164,11 @@ class TeamUpdateView(SuccessMessageMixin,
     success_message = _('Team updated successfully')
     success_url = reverse_lazy('user:user-list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_team_admin'] = self.object.is_admin(self.request.user)
+        return context
+
 
 class TeamDeleteView(SuccessMessageMixin,
                      CustomPermissions,

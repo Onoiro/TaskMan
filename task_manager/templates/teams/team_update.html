@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-
 {% load django_bootstrap5 %}
 {% load i18n %}
 
 {% block content %}
 <div class="container wrapper flex-grow-1"> 
-    <h1 class="my-4">{% trans "Edit Team " %}</h1>
+    <h1 class="my-4">{% trans "Edit Team" %}</h1>
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
@@ -13,8 +12,8 @@
             <button type="submit" class="btn btn-primary">
                 {% trans "Edit" %}
             </button>
-            {% if request.user.team %}
-            <a href="{% url 'teams:team-delete' request.user.team.id %}" class="btn btn-danger">
+            {% if is_team_admin %}
+            <a href="{% url 'teams:team-delete' object.id %}" class="btn btn-danger">
                 {% trans "Delete" %}
             </a>
             {% endif %}
