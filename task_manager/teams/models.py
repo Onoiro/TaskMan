@@ -33,6 +33,28 @@ class Team(models.Model):
         verbose_name=_('Created at')
     )
 
+    def get_admins(self):
+        """Возвращает всех администраторов команды"""
+        return User.objects.filter(
+            team_memberships__team=self,
+            team_memberships__role='admin'
+        )
+    
+    def is_admin(self, user):
+        """Проверяет, является ли пользователь админом команды"""
+        return TeamMembership.objects.filter(
+            team=self,
+            user=user,
+            role='admin'
+        ).exists()
+    
+    def is_member(self, user):
+        """Проверяет, является ли пользователь членом команды"""
+        return TeamMembership.objects.filter(
+            team=self,
+            user=user
+        ).exists()
+
     def __str__(self):
         return self.name
 

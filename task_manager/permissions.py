@@ -27,11 +27,12 @@ class UserPermissions(LoginRequiredMixin):
 class TeamAdminPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         team = self.get_object()
-        if request.user != team.team_admin:
+        if not team.is_admin(request.user):
             messages.error(
                 request,
                 _("You don't have permissions to modify this."
                   " Only team admin can do this.")
             )
             return redirect('user:user-list')
+            
         return super().dispatch(request, *args, **kwargs)
