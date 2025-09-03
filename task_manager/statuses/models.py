@@ -22,6 +22,13 @@ class Status(models.Model):
             ),
         ],
     )
+    team = models.ForeignKey(
+        'teams.Team',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='statuses'
+    )
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='created_statuses'

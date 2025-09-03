@@ -17,10 +17,24 @@ class StatusesListView(CustomPermissions, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.team is None:
-            return Status.objects.filter(creator=user)
-        team_users = User.objects.filter(team=user.team)
-        return Status.objects.filter(creator__in=team_users)
+        # Используем active_team из request
+        team = getattr(self.request, 'active_team', None)
+        
+        if team:
+            # Показываем статусы команды
+            return Status.objects.filter(team=team)
+        else:
+            # Показываем индивидуальные статусы
+            return Status.objects.filter(
+                creator=user,
+                team__isnull=True
+            )
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     if user.team is None:
+    #         return Status.objects.filter(creator=user)
+    #     team_users = User.objects.filter(team=user.team)
+    #     return Status.objects.filter(creator__in=team_users)
 
 
 class StatusesDetailView(CustomPermissions, DetailView):
@@ -37,6 +51,12 @@ class StatusesCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         status = form.save(commit=False)
         status.creator = self.request.user
+
+        # Устанавливаем команду, если работаем в командном режиме
+        team = getattr(self.request, 'active_team', None)
+        if team:
+            status.team = team
+
         status.save()
         return super().form_valid(form)
 

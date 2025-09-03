@@ -27,28 +27,57 @@ class TaskForm(forms.ModelForm):
             return
 
         user = self.request.user
-        team = user.team
+        team = getattr(self.request, 'active_team', None)
 
-        if team is not None:
-            self.fields['executor'].queryset = (
-                User.objects.filter(team=team)
+        if team:
+            # Режим команды
+            self.fields['executor'].queryset = User.objects.filter(
+                team_memberships__team=team
             )
-            self.fields['status'].queryset = (
-                Status.objects.filter(creator__team=team)
+            self.fields['status'].queryset = Status.objects.filter(
+                team=team
             )
-            self.fields['labels'].queryset = (
-                Label.objects.filter(creator__team=team)
+            self.fields['labels'].queryset = Label.objects.filter(
+                team=team
             )
         else:
-            self.fields['executor'].queryset = (
-                User.objects.filter(pk=user.pk)
+            # Индивидуальный режим
+            self.fields['executor'].queryset = User.objects.filter(
+                pk=user.pk
             )
-            self.fields['status'].queryset = (
-                Status.objects.filter(creator=user)
+            self.fields['status'].queryset = Status.objects.filter(
+                creator=user,
+                team__isnull=True
             )
-            self.fields['labels'].queryset = (
-                Label.objects.filter(creator=user)
+            self.fields['labels'].queryset = Label.objects.filter(
+                creator=user,
+                team__isnull=True
             )
-            # set initial value of exucutor is user himself
+            # В индивидуальном режиме исполнитель - сам пользователь
             self.fields['executor'].initial = user
             self.fields['executor'].widget.attrs['readonly'] = True
+        # team = user.team
+
+        # if team is not None:
+        #     self.fields['executor'].queryset = (
+        #         User.objects.filter(team=team)
+        #     )
+        #     self.fields['status'].queryset = (
+        #         Status.objects.filter(creator__team=team)
+        #     )
+        #     self.fields['labels'].queryset = (
+        #         Label.objects.filter(creator__team=team)
+        #     )
+        # else:
+        #     self.fields['executor'].queryset = (
+        #         User.objects.filter(pk=user.pk)
+        #     )
+        #     self.fields['status'].queryset = (
+        #         Status.objects.filter(creator=user)
+        #     )
+        #     self.fields['labels'].queryset = (
+        #         Label.objects.filter(creator=user)
+        #     )
+        #     # set initial value of exucutor is user himself
+        #     self.fields['executor'].initial = user
+        #     self.fields['executor'].widget.attrs['readonly'] = True

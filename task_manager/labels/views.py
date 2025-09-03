@@ -17,10 +17,25 @@ class LabelsListView(CustomPermissions, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.team is None:
-            return Label.objects.filter(creator=user)
-        team_users = User.objects.filter(team=user.team)
-        return Label.objects.filter(creator__in=team_users)
+        # Используем active_team из request
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            # Показываем метки команды
+            return Label.objects.filter(team=team)
+        else:
+            # Показываем индивидуальные метки
+            return Label.objects.filter(
+                creator=user,
+                team__isnull=True
+            )
+
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     if user.team is None:
+    #         return Label.objects.filter(creator=user)
+    #     team_users = User.objects.filter(team=user.team)
+    #     return Label.objects.filter(creator__in=team_users)
 
 
 class LabelsCreateView(SuccessMessageMixin, CreateView):
@@ -32,8 +47,20 @@ class LabelsCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         label = form.save(commit=False)
         label.creator = self.request.user
+        
+        # Устанавливаем команду, если работаем в командном режиме
+        team = getattr(self.request, 'active_team', None)
+        if team:
+            label.team = team
+            
         label.save()
         return super().form_valid(form)
+
+    # def form_valid(self, form):
+    #     label = form.save(commit=False)
+    #     label.creator = self.request.user
+    #     label.save()
+    #     return super().form_valid(form)
 
 
 class LabelsUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):

@@ -1,24 +1,51 @@
 from django.contrib import admin
-from .models import Team
+from .models import Team, TeamMembership
 
 
+class TeamMembershipInline(admin.TabularInline):
+    model = TeamMembership
+    extra = 1
+    fields = ('user', 'role', 'joined_at')
+    readonly_fields = ('joined_at',)
+
+
+@admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('name', 'team_admin', 'created_at')
+    list_display = ('name', 'get_members_count', 'created_at')
     list_filter = ('created_at',)
-    search_fields = ('name', 'description', 'team_admin__username')
-    readonly_fields = ('created_at',)
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'team_admin')
-        }),
-        ('Дополнительная информация', {
-            'fields': ('description', 'created_at'),
-            'classes': ('collapse',)
-        }),
-    )
-
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related('team_admin')
+    search_fields = ('name', 'description')
+    inlines = [TeamMembershipInline]
+    
+    def get_members_count(self, obj):
+        return obj.memberships.count()
+    
+    get_members_count.short_description = 'Members'
 
 
-admin.site.register(Team, TeamAdmin)
+@admin.register(TeamMembership)
+class TeamMembershipAdmin(admin.ModelAdmin):
+    list_display = ('user', 'team', 'role', 'joined_at')
+    list_filter = ('role', 'joined_at')
+    search_fields = ('user__username', 'team__name')
+
+
+# class TeamAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'team_admin', 'created_at')
+#     list_filter = ('created_at',)
+#     search_fields = ('name', 'description', 'team_admin__username')
+#     readonly_fields = ('created_at',)
+#     fieldsets = (
+#         (None, {
+#             'fields': ('name', 'team_admin')
+#         }),
+#         ('Дополнительная информация', {
+#             'fields': ('description', 'created_at'),
+#             'classes': ('collapse',)
+#         }),
+#     )
+
+#     def get_queryset(self, request):
+#         return super().get_queryset(request).select_related('team_admin')
+
+
+# admin.site.register(Team, TeamAdmin)

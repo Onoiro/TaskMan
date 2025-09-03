@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">{% trans "Join Team" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">
+            {% trans "Join" %}
+        </button>
+        <a href="{% url 'index' %}" class="btn btn-secondary">
+            {% trans "Cancel" %}
+        </a>
+    </form>
+</div>
+{% endblock %}
