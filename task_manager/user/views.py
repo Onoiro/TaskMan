@@ -60,16 +60,6 @@ class UserListView(ListView):
             
         return context
 
-    # def get_queryset(self):
-    #     current_user = self.request.user
-    #     if not current_user.is_authenticated:
-    #         return User.objects.none()
-    #     # return user himself if he does not have a command
-    #     if not current_user.team:
-    #         return User.objects.filter(id=current_user.id)
-    #     # return all users of the same team
-    #     return User.objects.filter(team=current_user.team)
-
 
 class UserCreateView(SuccessMessageMixin, CreateView):
     form_class = UserForm
@@ -98,15 +88,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
             
         return redirect('index')
 
-    # def form_valid(self, form):
-    #     super().form_valid(form)
-    #     # Auto Login after create user
-    #     login(self.request, self.object)
-    #     # If user is team_admin redirect to create team
-    #     if self.object.is_team_admin:
-    #         return redirect('teams:team-create')
-    #     return redirect('index')
-
 
 class UserUpdateView(CustomPermissions,
                      UserPermissions,
@@ -134,15 +115,6 @@ class UserUpdateView(CustomPermissions,
             )
             
         return redirect('user:user-list')
-
-
-    # def form_valid(self, form):
-    #     super().form_valid(form)
-    #     login(self.request, self.object)
-    #     if self.object.is_team_admin:
-    #         return redirect('teams:team-create')
-    #     # return redirect('login')
-    #     return redirect('user:user-list')
 
 
 class UserDeleteView(CustomPermissions,
@@ -185,18 +157,3 @@ class UserDeleteView(CustomPermissions,
             return redirect('user:user-list')
             
         return super().get(request, *args, **kwargs)
-
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     if self.object.team_admin_set.exists():
-    #         messages.error(self.request,
-    #                        _("Cannot delete a user because it is team admin. "
-    #                          "Delete the team first."))
-    #         return redirect('user:user-list')
-    #     user_tasks_as_author = Task.objects.filter(author=self.object)
-    #     user_tasks_as_executor = Task.objects.filter(executor=self.object)
-    #     if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
-    #         messages.error(self.request,
-    #                        _("Cannot delete a user because it is in use"))
-    #         return redirect('user:user-list')
-    #     return super().get(request, *args, **kwargs)

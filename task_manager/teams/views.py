@@ -119,6 +119,7 @@ class TeamJoinView(LoginRequiredMixin, FormView):
 
 
 class TeamCreateView(SuccessMessageMixin,
+                     LoginRequiredMixin,
                      CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
@@ -126,16 +127,25 @@ class TeamCreateView(SuccessMessageMixin,
     success_message = _('Team created successfully')
 
     def form_valid(self, form):
-        # do not save to DB at once
-        team = form.save(commit=False)
-        # set current user as admin
-        team.team_admin = self.request.user
-        team.save()
-        # add current user as team_admin
-        self.request.user.team = team
-        self.request.user.save()
-
-        return super().form_valid(form)
+        # Сохраняем команду
+        response = super().form_valid(form)
+        
+        # Создаем членство с ролью админа для текущего пользователя
+        TeamMembership.objects.create(
+            user=self.request.user,
+            team=self.object,
+            role='admin'
+        )
+        
+        # Устанавливаем созданную команду как активную
+        self.request.session['active_team_id'] = self.object.id
+        
+        messages.success(
+            self.request,
+            _(f'Team "{self.object.name}" created successfully! You are now the admin.')
+        )
+        
+        return response
 
 
 class TeamDetailView(DetailView):
@@ -166,21 +176,19 @@ class TeamDeleteView(SuccessMessageMixin,
 
     def post(self, request, *args, **kwargs):
         team = self.get_object()
-        # Check if there are any other members in the team except the admin
-        team_members_count = team.team_members.exclude(
-            id=team.team_admin.id).count()
-        if team_members_count > 0:
+        
+        # Проверяем количество участников команды
+        team_members_count = TeamMembership.objects.filter(team=team).count()
+        
+        if team_members_count > 1:  # Больше одного участника (включая админа)
             messages.error(
                 request,
-                _("Cannot delete a team because it has members."))
+                _("Cannot delete a team because it has other members.")
+            )
             return redirect('user:user-list')
 
-        admin_user = team.team_admin
+        # Удаляем команду из сессии, если она была активной
+        if request.session.get('active_team_id') == team.id:
+            del request.session['active_team_id']
 
-        with transaction.atomic():
-            admin_user.is_team_admin = False
-            admin_user.team = None
-            response = super().post(request, *args, **kwargs)
-            admin_user.save()
-
-        return response
+        return super().post(request, *args, **kwargs)

@@ -28,20 +28,13 @@ class Team(models.Model):
         through_fields=('team', 'user'),  # явно указываем поля
         related_name='member_teams'
     )
-    # team_admin = models.ForeignKey(
-    #     User,
-    #     related_name='team_admin_set',
-    #     on_delete=models.PROTECT,
-    #     verbose_name=_('Team admin'),
-    # )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Created at')
     )
 
-
-def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.name
 
 
 class TeamMembership(models.Model):
