@@ -1,9 +1,11 @@
+# context_processors.py
+from task_manager.teams.models import TeamMembership
+from task_manager.tasks.models import Task
+
 def team_context(request):
     context = {}
     if request.user.is_authenticated:
         # Используем правильный способ получения команд пользователя
-        from task_manager.teams.models import TeamMembership
-
         user_teams = TeamMembership.objects.filter(
             user=request.user
         ).select_related('team')

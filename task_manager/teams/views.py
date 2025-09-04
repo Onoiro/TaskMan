@@ -15,6 +15,7 @@ from django.shortcuts import redirect, render
 
 from task_manager.teams.forms import TeamForm
 from task_manager.teams.models import Team, TeamMembership
+from task_manager.tasks.models import Task
 
 
 def index(request):
@@ -47,6 +48,71 @@ class SwitchTeamView(View):
                     messages.error(request, _('Team not found'))
 
         return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+class TeamExitView(LoginRequiredMixin, View):
+    """Выход пользователя из команды"""
+    
+    def post(self, request, team_id):
+        try:
+            # Получаем команду
+            team = Team.objects.get(id=team_id)
+            
+            # Проверяем, что пользователь действительно состоит в этой команде
+            membership = TeamMembership.objects.filter(
+                user=request.user,
+                team=team
+            ).first()
+            
+            if not membership:
+                messages.error(request, _('You are not a member of this team'))
+                return redirect(request.META.get('HTTP_REFERER', '/'))
+            
+            # Проверяем, не являются ли автором или исполнителем задач в этой команде
+            user_tasks_as_author = Task.objects.filter(
+                team=team,
+                author=request.user
+            ).exists()
+            
+            user_tasks_as_executor = Task.objects.filter(
+                team=team,
+                executor=request.user
+            ).exists()
+            
+            if user_tasks_as_author or user_tasks_as_executor:
+                error_message = ""
+                if user_tasks_as_author and user_tasks_as_executor:
+                    error_message = _('You cannot exit the team because you are both author and executor of tasks in this team.')
+                elif user_tasks_as_author:
+                    error_message = _('You cannot exit the team because you are author of tasks in this team.')
+                else:
+                    error_message = _('You cannot exit the team because you are executor of tasks in this team.')
+                
+                messages.error(request, error_message)
+                return redirect(request.META.get('HTTP_REFERER', '/'))
+            
+            # Удаляем членство из команды
+            membership.delete()
+            
+            # Если это была активная команда, очищаем её из сессии
+            if request.session.get('active_team_id') == team.id:
+                del request.session['active_team_id']
+            
+            messages.success(
+                request,
+                _(f'You have successfully left the team "{team.name}"')
+            )
+            
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+            
+        except Team.DoesNotExist:
+            messages.error(request, _('Team not found'))
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        
+        except Exception as e:
+            messages.error(request, _('An error occurred while leaving the team'))
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+
 
 class TeamJoinView(LoginRequiredMixin, FormView):
     """Присоединение к существующей команде"""

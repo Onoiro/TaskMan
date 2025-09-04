@@ -159,6 +159,16 @@
                                 🔗 {% trans "Join Team" %}
                             </a>
                         </li>
+                        {% if active_team %}
+                        <li>
+                            <form method="post" action="{% url 'teams:team-exit' active_team.id %}" class="m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item text-danger">
+                                    🚪 {% trans "Exit Team" %}
+                                </button>
+                            </form>
+                        </li>
+                        {% endif %}
                     </ul>
                 </li>
                 <!-- КОНЕЦ DROPDOWN -->
