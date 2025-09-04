@@ -51,17 +51,16 @@ class TaskFilter(django_filters.FilterSet):
         team = getattr(request, 'active_team', None)
 
         if team:
-            # Фильтруем по команде
-            from task_manager.teams.models import TeamMembership
+            # filter by team
             team_users = User.objects.filter(
                 team_memberships__team=team
             ).distinct()
-            
+
             self.filters['executor'].queryset = team_users
             self.filters['status'].queryset = Status.objects.filter(team=team)
             self.filters['labels'].queryset = Label.objects.filter(team=team)
         else:
-            # Индивидуальный режим
+            # individual mode
             self.filters['executor'].queryset = User.objects.filter(pk=user.pk)
             self.filters['status'].queryset = Status.objects.filter(
                 creator=user,
@@ -71,27 +70,6 @@ class TaskFilter(django_filters.FilterSet):
                 creator=user,
                 team__isnull=True
             )
-
-        # if team:
-        #     self.filters['executor'].queryset = (
-        #         User.objects.filter(team=team)
-        #     )
-        #     self.filters['status'].queryset = (
-        #         Status.objects.filter(creator__team=team)
-        #     )
-        #     self.filters['labels'].queryset = (
-        #         Label.objects.filter(creator__team=team)
-        #     )
-        # else:
-        #     self.filters['executor'].queryset = (
-        #         User.objects.filter(pk=user.pk)
-        #     )
-        #     self.filters['status'].queryset = (
-        #         Status.objects.filter(creator=user)
-        #     )
-        #     self.filters['labels'].queryset = (
-        #         Label.objects.filter(creator=user)
-        #     )
 
     def filter_own_tasks(self, queryset, name, value):
         user = self.request.user
