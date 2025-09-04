@@ -2,7 +2,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.permissions import CustomPermissions, UserPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
@@ -58,6 +58,23 @@ class UserListView(ListView):
             context['user_memberships'] = []
             context['user_membership'] = None
             
+        return context
+
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'user/user_detail.html'
+    context_object_name = 'object'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.object
+        
+        # Получаем команды пользователя
+        from task_manager.teams.models import TeamMembership
+        user_teams = TeamMembership.objects.filter(user=user)
+        context['user_teams'] = user_teams
+        
         return context
 
 
@@ -144,7 +161,7 @@ class UserDeleteView(CustomPermissions,
                   "Transfer admin rights or delete the team(s) first.")
             )
             return redirect('user:user-list')
-        
+            
         # Проверяем задачи пользователя
         user_tasks_as_author = Task.objects.filter(author=self.object)
         user_tasks_as_executor = Task.objects.filter(executor=self.object)

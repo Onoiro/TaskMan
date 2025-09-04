@@ -39,7 +39,13 @@
             {% for user in user_list %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
+                <td>
+                    {% if user.id == request.user.id %}
+                        <a href="{% url 'user:user-detail' user.id %}">{{ user.username }}</a>
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                </td>
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
                 <td>
                     {% if request.active_team %}
