@@ -15,10 +15,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=150, validators=[django.core.validators.RegexValidator('^[\\w \\-:,.!?]+$', message='Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, #, & are not allowed.')], verbose_name='Name')),
-                ('description', models.TextField(blank=True, verbose_name='Description')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
+                ('id',
+                 models.AutoField(
+                     primary_key=True, serialize=False)),
+                ('name',
+                 models.CharField(
+                     max_length=150,
+                     validators=[
+                         django.core.validators.RegexValidator(
+                             '^[\\w \\-:,.!?]+$',
+                             message='Only letters, numbers, spaces, '
+                             'and -_.,!? symbols are allowed. '
+                             'Symbols <, >, #, & are not allowed.'
+                         )
+                     ],
+                     verbose_name='Name')),
+                ('description',
+                 models.TextField(
+                     blank=True, verbose_name='Description')),
+                ('created_at',
+                 models.DateTimeField(
+                     auto_now_add=True, verbose_name='Created at')),
             ],
         ),
     ]
