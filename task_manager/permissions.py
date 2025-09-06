@@ -34,5 +34,5 @@ class TeamAdminPermissions(LoginRequiredMixin):
                   " Only team admin can do this.")
             )
             return redirect('user:user-list')
-            
+
         return super().dispatch(request, *args, **kwargs)
