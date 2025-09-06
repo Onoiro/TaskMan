@@ -16,7 +16,17 @@ class Migration(migrations.Migration):
             name='Label',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=24, validators=[django.core.validators.RegexValidator('^[\\w \\-:,.!?]+$', message='Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, #, & are not allowed.')])),
+                ('name', models.CharField(
+                    max_length=24,
+                    validators=[django.core.validators.RegexValidator(
+                        '^[\\w \\-:,.!?]+$',
+                        message=(
+                            'Only letters, numbers, spaces, and -_.,!? '
+                            'symbols are allowed. Symbols <, >, #, & are '
+                            'not allowed.'
+                        )
+                    )]
+                )),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
         ),
