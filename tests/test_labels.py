@@ -9,8 +9,9 @@ from django.utils.formats import get_format
 
 
 class LabelsTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_teams.json",
-                "tests/fixtures/test_users.json",
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
                 "tests/fixtures/test_statuses.json",
                 "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]

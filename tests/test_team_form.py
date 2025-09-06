@@ -8,8 +8,10 @@ User = get_user_model()
 
 
 class TeamFormTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_teams.json",
-                "tests/fixtures/test_users.json"]
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
+             ]
 
     def setUp(self):
         self.form_data = {
