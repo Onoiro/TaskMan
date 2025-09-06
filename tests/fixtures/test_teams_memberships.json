@@ -1,0 +1,32 @@
+[
+    {
+        "model": "teams.TeamMembership",
+        "pk": 1,
+        "fields": {
+            "user": 10,
+            "team": 1,
+            "role": "admin",
+            "joined_at": "2024-03-17T19:45:51.127Z"
+        }
+    },
+    {
+        "model": "teams.TeamMembership",
+        "pk": 2,
+        "fields": {
+            "user": 12,
+            "team": 1,
+            "role": "member",
+            "joined_at": "2024-03-17T19:45:51.127Z"
+        }
+    },
+    {
+        "model": "teams.TeamMembership",
+        "pk": 3,
+        "fields": {
+            "user": 10,
+            "team": 2,
+            "role": "admin",
+            "joined_at": "2024-03-17T20:45:51.127Z"
+        }
+    }
+]

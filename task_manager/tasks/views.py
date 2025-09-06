@@ -10,8 +10,6 @@ from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect
 from django_filters.views import FilterView
 from task_manager.tasks.filters import TaskFilter
-# from task_manager.user.models import User
-# from django.db.models import Q
 
 
 class TaskDeletePermissionMixin():
@@ -46,22 +44,14 @@ class TaskFilterView(FilterView):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            # Показываем задачи команды
+            # show team's tasks
             return Task.objects.filter(team=team).order_by('-created_at')
         else:
-            # Показываем индивидуальные задачи
+            # show individual tasks
             return Task.objects.filter(
                 author=user,
                 team__isnull=True
             ).order_by('-created_at')
-        # if user.team is None:
-        #     return Task.objects.filter(author=user).order_by('-created_at')
-
-        # filter users from the same team with current user
-        # team_users = User.objects.filter(team=user.team)
-        # return Task.objects.filter(
-        #     Q(author__in=team_users) | Q(executor__in=team_users)
-        # ).order_by('-created_at')
 
 
 class TaskDetailView(CustomPermissions, DetailView):
@@ -82,12 +72,9 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
         if team:
             form.instance.team = team
         else:
-            # Индивидуальная задача
+            # individual task
             form.instance.executor = self.request.user
 
-        # # if user have no team, he sets as executor
-        # if self.request.user.team is None:
-        #     form.instance.executor = self.request.user
         return super().form_valid(form)
 
     def get_form_kwargs(self):
