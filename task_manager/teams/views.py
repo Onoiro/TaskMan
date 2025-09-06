@@ -10,8 +10,7 @@ from django.views.generic import FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib import messages
-from django.db import transaction
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 
 from task_manager.teams.forms import TeamForm
 from task_manager.teams.models import Team, TeamMembership
@@ -28,12 +27,12 @@ class SwitchTeamView(View):
 
         if team_id:
             if team_id == 'individual':
-                # Переключение в индивидуальный режим
+                # switch to individual mode
                 if 'active_team_id' in request.session:
                     del request.session['active_team_id']
                 messages.success(request, _('Switched to individual mode'))
             else:
-                # Переключение на команду
+                # switch to team
                 try:
                     team = Team.objects.get(
                         id=team_id,
@@ -51,74 +50,76 @@ class SwitchTeamView(View):
 
 
 class TeamExitView(LoginRequiredMixin, View):
-    """Выход пользователя из команды"""
-    
     def post(self, request, team_id):
         try:
-            # Получаем команду
             team = Team.objects.get(id=team_id)
-            
-            # Проверяем, что пользователь действительно состоит в этой команде
-            membership = TeamMembership.objects.filter(
-                user=request.user,
-                team=team
-            ).first()
-            
-            if not membership:
+
+            if not self._is_user_team_member(request.user, team):
                 messages.error(request, _('You are not a member of this team'))
-                return redirect(request.META.get('HTTP_REFERER', '/'))
-            
-            # Проверяем, не являются ли автором или исполнителем задач в этой команде
-            user_tasks_as_author = Task.objects.filter(
-                team=team,
-                author=request.user
-            ).exists()
-            
-            user_tasks_as_executor = Task.objects.filter(
-                team=team,
-                executor=request.user
-            ).exists()
-            
-            if user_tasks_as_author or user_tasks_as_executor:
-                error_message = ""
-                if user_tasks_as_author and user_tasks_as_executor:
-                    error_message = _('You cannot exit the team because you are both author and executor of tasks in this team.')
-                elif user_tasks_as_author:
-                    error_message = _('You cannot exit the team because you are author of tasks in this team.')
-                else:
-                    error_message = _('You cannot exit the team because you are executor of tasks in this team.')
-                
-                messages.error(request, error_message)
-                return redirect(request.META.get('HTTP_REFERER', '/'))
-            
-            # Удаляем членство из команды
-            membership.delete()
-            
-            # Если это была активная команда, очищаем её из сессии
-            if request.session.get('active_team_id') == team.id:
-                del request.session['active_team_id']
-            
+                return self._redirect_back(request)
+
+            if self._has_user_tasks_in_team(request.user, team):
+                messages.error(
+                    request, self._get_task_error_message(request.user, team))
+                return self._redirect_back(request)
+
+            self._remove_user_membership(request.user, team)
+            self._clear_active_team_session(request, team)
+
             messages.success(
                 request,
                 _(f'You have successfully left the team "{team.name}"')
             )
-            
-            return redirect(request.META.get('HTTP_REFERER', '/'))
-            
+
+            return self._redirect_back(request)
+
         except Team.DoesNotExist:
             messages.error(request, _('Team not found'))
-            return redirect(request.META.get('HTTP_REFERER', '/'))
-        
-        except Exception as e:
-            messages.error(request, _('An error occurred while leaving the team'))
-            return redirect(request.META.get('HTTP_REFERER', '/'))
+            return self._redirect_back(request)
+
+    def _is_user_team_member(self, user, team):
+        """Check if user is a member of the team"""
+        return TeamMembership.objects.filter(
+            user=user,
+            team=team
+        ).exists()
+
+    def _has_user_tasks_in_team(self, user, team):
+        """Check if user has tasks as author or executor in the team"""
+        return (
+            Task.objects.filter(team=team, author=user).exists()
+            or Task.objects.filter(team=team, executor=user).exists()
+        )
+
+    def _get_task_error_message(self, user, team):
+        """Get appropriate error message for task constraints"""
+        has_author_tasks = Task.objects.filter(
+            team=team, author=user).exists()
+        has_executor_tasks = Task.objects.filter(
+            team=team, executor=user).exists()
+
+        if has_author_tasks or has_executor_tasks:
+            return _('You cannot exit the team because you are'
+                     ' author or executor of tasks in this team.')
+
+    def _remove_user_membership(self, user, team):
+        """Remove user's membership from the team"""
+        TeamMembership.objects.filter(user=user, team=team).delete()
+
+    def _clear_active_team_session(self, request, team):
+        """Clear active team from session if it matches"""
+        if request.session.get('active_team_id') == team.id:
+            del request.session['active_team_id']
+
+    def _redirect_back(self, request):
+        """Redirect back to previous page or home"""
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class TeamJoinView(LoginRequiredMixin, FormView):
-    """Присоединение к существующей команде"""
     template_name = 'teams/team_join.html'
     success_url = reverse_lazy('index')
-    
+
     def get_form_class(self):
         class TeamJoinForm(forms.Form):
             team_name = forms.CharField(
@@ -136,22 +137,22 @@ class TeamJoinView(LoginRequiredMixin, FormView):
                     'placeholder': _('Enter team password')
                 })
             )
-            
+
         return TeamJoinForm
-    
+
     def form_valid(self, form):
         team_name = form.cleaned_data['team_name']
         team_password = form.cleaned_data['team_password']
-        
+
         try:
             team = Team.objects.get(name=team_name)
-            
-            # Проверяем пароль
+
+            # password validation
             if team.password != team_password:
                 messages.error(self.request, _('Invalid team password'))
                 return self.form_invalid(form)
-            
-            # Проверяем, не состоит ли уже в команде
+
+            # check if user already in team
             if TeamMembership.objects.filter(
                 user=self.request.user,
                 team=team
@@ -161,26 +162,26 @@ class TeamJoinView(LoginRequiredMixin, FormView):
                     _('You are already a member of this team')
                 )
                 return redirect('index')
-            
-            # Создаем членство
+
+            # create membership
             TeamMembership.objects.create(
                 user=self.request.user,
                 team=team,
                 role='member'
             )
-            
-            # Устанавливаем команду как активную
+
+            # set this team as active_team
             self.request.session['active_team_id'] = team.id
-            
+
             messages.success(
                 self.request,
                 _(f'Successfully joined team "{team.name}"!')
             )
-            
+
         except Team.DoesNotExist:
             messages.error(self.request, _('Team not found'))
             return self.form_invalid(form)
-            
+
         return super().form_valid(form)
 
 
@@ -193,24 +194,24 @@ class TeamCreateView(SuccessMessageMixin,
     success_message = _('Team created successfully')
 
     def form_valid(self, form):
-        # Сохраняем команду
         response = super().form_valid(form)
-        
-        # Создаем членство с ролью админа для текущего пользователя
+
+        # create membership of user as admin
         TeamMembership.objects.create(
             user=self.request.user,
             team=self.object,
             role='admin'
         )
-        
-        # Устанавливаем созданную команду как активную
+
+        # set created team as active_team
         self.request.session['active_team_id'] = self.object.id
-        
+
         messages.success(
             self.request,
-            _(f'Team "{self.object.name}" created successfully! You are now the admin.')
+            _(f'Team "{self.object.name}" created successfully! '
+              f'You are now the admin.')
         )
-        
+
         return response
 
 
@@ -247,18 +248,18 @@ class TeamDeleteView(SuccessMessageMixin,
 
     def post(self, request, *args, **kwargs):
         team = self.get_object()
-        
-        # Проверяем количество участников команды
+
+        # check for team members count
         team_members_count = TeamMembership.objects.filter(team=team).count()
-        
-        if team_members_count > 1:  # Больше одного участника (включая админа)
+
+        if team_members_count > 1:  # team has more than 1 member
             messages.error(
                 request,
                 _("Cannot delete a team because it has other members.")
             )
             return redirect('user:user-list')
 
-        # Удаляем команду из сессии, если она была активной
+        # remove team from session if it's active
         if request.session.get('active_team_id') == team.id:
             del request.session['active_team_id']
 

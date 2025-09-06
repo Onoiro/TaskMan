@@ -25,7 +25,7 @@ class Team(models.Model):
     members = models.ManyToManyField(
         'user.User',
         through='TeamMembership',
-        through_fields=('team', 'user'),  # явно указываем поля
+        through_fields=('team', 'user'),
         related_name='member_teams'
     )
     created_at = models.DateTimeField(
@@ -34,22 +34,19 @@ class Team(models.Model):
     )
 
     def get_admins(self):
-        """Возвращает всех администраторов команды"""
         return User.objects.filter(
             team_memberships__team=self,
             team_memberships__role='admin'
         )
-    
+
     def is_admin(self, user):
-        """Проверяет, является ли пользователь админом команды"""
         return TeamMembership.objects.filter(
             team=self,
             user=user,
             role='admin'
         ).exists()
-    
+
     def is_member(self, user):
-        """Проверяет, является ли пользователь членом команды"""
         return TeamMembership.objects.filter(
             team=self,
             user=user

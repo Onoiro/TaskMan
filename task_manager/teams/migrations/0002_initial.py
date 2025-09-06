@@ -18,12 +18,20 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='teammembership',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='team_memberships', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='team_memberships',
+                to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
             model_name='team',
             name='members',
-            field=models.ManyToManyField(related_name='member_teams', through='teams.TeamMembership', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(
+                related_name='member_teams',
+                through='teams.TeamMembership',
+                to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AlterUniqueTogether(
             name='teammembership',

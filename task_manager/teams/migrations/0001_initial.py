@@ -17,19 +17,50 @@ class Migration(migrations.Migration):
             name='Team',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=150, unique=True, verbose_name='Name')),
-                ('password', models.CharField(help_text='Minimum length is 3 characters', max_length=128, validators=[django.core.validators.MinLengthValidator(3)], verbose_name='Team password')),
-                ('description', models.TextField(blank=True, verbose_name='Description')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
+                ('name', models.CharField(
+                    max_length=150,
+                    unique=True,
+                    verbose_name='Name'
+                )),
+                ('password', models.CharField(
+                    help_text='Minimum length is 3 characters',
+                    max_length=128,
+                    validators=[django.core.validators.MinLengthValidator(3)],
+                    verbose_name='Team password'
+                )),
+                ('description', models.TextField(
+                    blank=True,
+                    verbose_name='Description'
+                )),
+                ('created_at', models.DateTimeField(
+                    auto_now_add=True,
+                    verbose_name='Created at'
+                )),
             ],
         ),
         migrations.CreateModel(
             name='TeamMembership',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('role', models.CharField(choices=[('admin', 'Admin'), ('member', 'Member')], default='member', max_length=10)),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID'
+                )),
+                ('role', models.CharField(
+                    choices=[
+                        ('admin', 'Admin'),
+                        ('member', 'Member')
+                    ],
+                    default='member',
+                    max_length=10
+                )),
                 ('joined_at', models.DateTimeField(auto_now_add=True)),
-                ('team', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='memberships', to='teams.team')),
+                ('team', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='memberships',
+                    to='teams.team'
+                )),
             ],
         ),
     ]
