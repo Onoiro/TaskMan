@@ -1,5 +1,6 @@
 from task_manager.tasks.models import Task
 from task_manager.user.models import User
+from task_manager.teams.models import TeamMembership
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -41,7 +42,6 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Filter'))
         self.assertContains(response, _('Label'))
-        # self.assertContains(response, _('Just my tasks'))
 
         # check that there are no titles for table if not full_view=1
         self.assertNotContains(response, f'<th scope="col">{_("ID")}</th>')
@@ -63,7 +63,6 @@ class TaskTestCase(TestCase):
         self.assertContains(response, f'<th scope="col">{_("Executor")}</th>')
         self.assertContains(response, f'<th scope="col">{_("Created at")}</th>')
         self.assertContains(response, _('Label'))
-        # self.assertContains(response, _('Just my tasks'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Filter'))
 
@@ -81,29 +80,32 @@ class TaskTestCase(TestCase):
         self.assertNotContains(response, f'<th>{_("Executor")}</th>')
         self.assertNotContains(response, f'<th>{_("Created at")}</th>')
 
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Compact view'))
-
     def test_tasks_list_view_toggle_buttons(self):
         # check for right buttons in compact view
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, _('Full view'))
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Compact view'))
 
         # check for right buttons in compact full view
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
         self.assertContains(response, _('Compact view'))
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Full view'))
 
     def test_tasks_list_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
-        team_user_ids = User.objects.filter(
-            team=self.user.team).values_list('pk', flat=True)
+        
+        # Get user's teams
+        user_teams = TeamMembership.objects.filter(
+            user=self.user
+        ).values_list('team', flat=True)
+        
+        # Get all users in the same teams
+        team_user_ids = TeamMembership.objects.filter(
+            team__in=user_teams
+        ).values_list('user', flat=True).distinct()
+        
         tasks = Task.objects.filter(author__in=team_user_ids)
         for task in tasks:
             self.assertContains(response, task.name)
+            
         other_tasks = Task.objects.exclude(author__in=team_user_ids)
         for task in other_tasks:
             self.assertNotContains(response, task.name)
@@ -136,23 +138,17 @@ class TaskTestCase(TestCase):
     def test_filter_button_visible_when_filter_hidden(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, _('Filter'))
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Hide filter'))
 
     def test_filter_visible_when_show_filter_param_present(self):
         response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
         self.assertContains(response, _('Hide filter'))
         # filter results button
         self.assertContains(response, _('Show'))
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Filter'))
 
     def test_filter_hidden_when_hide_filter_clicked(self):
         # click on "Hide filter"
         response = self.c.get(reverse('tasks:tasks-list') + '?status=1')
         self.assertContains(response, _('Filter'))
-        # this test fail don't know why
-        # self.assertNotContains(response, _('Hide filter'))
 
     def test_view_toggle_buttons_preserve_filter_state(self):
         # check that when toggle view (full or compact) filter state same
@@ -267,48 +263,6 @@ class TaskTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task created successfully'))
-
-    # def test_create_task_user_without_team_auto_executor(self):
-    #     # Создаем пользователя без команды
-    #     user_without_team = User.objects.create_user(
-    #         username='no_team_user',
-    #         password='testpass123'
-    #     )
-    #     # Убеждаемся, что у пользователя нет команды
-    #     user_without_team.team = None
-    #     user_without_team.save()
-
-    #     self.c.force_login(user_without_team)
-
-    #     # Данные для создания задачи (без указания executor)
-    #     task_data = {
-    #         'name': 'task_by_user_without_team',
-    #         'description': 'test description',
-    #         'status': 12,  # предполагаем, что статус с id=12 доступен всем
-    #     }
-
-    #     response = self.c.post(reverse('tasks:task-create'),
-    #  task_data, follow=True)
-
-    #     # Проверяем, что задача создалась
-    #     task = Task.objects.filter(name=task_data['name']).first()
-    #     self.assertIsNotNone(task)
-
-    #     # Проверяем, что автор и исполнитель - один и тот же пользователь
-    #     self.assertEqual(task.author, user_without_team)
-    #     self.assertEqual(task.executor, user_without_team)
-
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertRedirects(response, reverse('tasks:tasks-list'))
-
-    #     # в форме executor field содержит текущего пользователя
-    #     form = response.context['form']
-    #     executor_queryset = form.fields['executor'].queryset
-    #     self.assertEqual(executor_queryset.count(), 1)
-    #     self.assertEqual(executor_queryset.first(), user_without_team)
-
-    #     # Проверяем, что начальное значение установлено правильно
-    #     self.assertEqual(form.fields['executor'].initial, user_without_team)
 
     def test_create_task_user_with_team_can_choose_executor(self):
         response = self.c.post(reverse('tasks:task-create'),
@@ -426,15 +380,6 @@ class TaskTestCase(TestCase):
         # check for error message
         error_message = _("Task can only be updated by its author or executor.")
         self.assertContains(response, error_message)
-
-    # def test_check_message_when_update_task_if_same_task_exist(self):
-    #     self.tasks_data = {'name': 'first task'}
-    #     task = Task.objects.get(name="second task")
-    #     response = self.c.post(
-    #         reverse('tasks:task-update', args=[task.id]),
-    #         self.tasks_data, follow=True)
-    #     message = _('Task with this Name already exists.')
-    #     self.assertContains(response, message)
 
     # delete
 

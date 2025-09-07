@@ -1,7 +1,7 @@
 from django import forms
 from django.test import TestCase
 from task_manager.user.models import User
-from task_manager.teams.models import Team
+from task_manager.teams.models import Team, TeamMembership
 from task_manager.user.forms import UserForm
 from django.utils.translation import gettext as _
 
@@ -21,8 +21,8 @@ class UserFormTestCase(TestCase):
             'username': 'him',
             'password1': '111',
             'password2': '111',
-            'is_team_admin': True,
-            'team_name': ''
+            'join_team_name': '',
+            'join_team_password': ''
         }
 
     def test_UserForm_valid(self):
@@ -36,8 +36,8 @@ class UserFormTestCase(TestCase):
             'username': 'testuser',
             'password1': '',
             'password2': '',
-            'is_team_admin': False,
-            'team_name': ''
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -75,165 +75,131 @@ class UserFormTestCase(TestCase):
         self.assertIsInstance(user, User)
         self.assertTrue(user.check_password('111'))
         self.assertEqual(user.username, 'him')
-        self.assertTrue(user.is_team_admin)
+        # Check user has no team memberships
+        self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
     def test_join_existing_team(self):
         team = Team.objects.get(pk=1)
         form_data = {
             'first_name': 'Team',
             'last_name': 'Member',
-            'username': 'team_member',
+            'username': 'new_team_member',
             'password1': '123',
             'password2': '123',
-            'is_team_admin': False,
-            'team_name': team.name
+            'join_team_name': team.name,
+            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
         }
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())
         user = form.save()
-        self.assertEqual(user.team, team)
-        self.assertFalse(user.is_team_admin)
+        
+        # Check membership was created
+        membership = TeamMembership.objects.get(user=user, team=team)
+        self.assertEqual(membership.role, 'member')
 
-    def test_both_team_admin_and_team_name(self):
-        # verifies that the form is invalid if the user
-        # has selected the team-admin role and specified a team name
+    def test_join_team_without_password_fails(self):
+        team = Team.objects.get(pk=1)
         form_data = self.form_data.copy()
-        form_data['is_team_admin'] = True
-        form_data['team_name'] = 'Test Team'
+        form_data['join_team_name'] = team.name
+        form_data['join_team_password'] = ''  # No password
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(_("You can't signup as team admin and"
-                      " join existing team at the same time"),
+        self.assertIn(_("Team password is required when joining a team"), 
                       form.errors['__all__'])
 
     def test_nonexistent_team_name(self):
-        # The test verifies that the form is invalid
-        # if a non-existent team name is specified
         form_data = self.form_data.copy()
-        form_data['is_team_admin'] = False
-        form_data['team_name'] = 'Nonexistent Team'
+        form_data['join_team_name'] = 'Nonexistent Team'
+        form_data['join_team_password'] = 'somepassword'
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(_("There is no such team"), form.errors['__all__'])
+        self.assertIn(_("Team with this name does not exist"), 
+                      form.errors['__all__'])
 
-    def test_update_team_admin_hidden_team_name_field(self):
-        # check team_name field hidden when team_admin updating
-        user = User.objects.get(pk=10)  # me - is_team_admin
-        user.team = None  # shure user have no team
-        user.save()
+    def test_wrong_team_password(self):
+        team = Team.objects.get(pk=1)
+        form_data = self.form_data.copy()
+        form_data['join_team_name'] = team.name
+        form_data['join_team_password'] = 'wrongpassword'
+        form = UserForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn(_("Invalid team password"), form.errors['__all__'])
 
+    def test_update_user_shows_current_teams(self):
+        # Get user with team membership
+        user = User.objects.get(pk=10)  # me - has team membership
         form = UserForm(instance=user)
-        self.assertIsInstance(
-            form.fields['team_name'].widget, forms.HiddenInput)
-        self.assertTrue(form.initial['is_team_admin'])
+        
+        # Check that current_teams field exists and is readonly
+        self.assertIn('current_teams', form.fields)
+        self.assertTrue('readonly' in form.fields['current_teams'].widget.attrs)
+        
+        # Check it shows correct team info
+        expected_value = "Test Team (Admin), Another Test Team (Admin)"
+        self.assertEqual(form.fields['current_teams'].initial, expected_value)
 
-    def test_update_user_preserves_team(self):
-        # verifies that when a user updates
-        # a user with a command, the command is preserved
-        user = User.objects.get(pk=10)  # me - is_team_admin
-        team = Team.objects.get(pk=1)  # Test Team
-        user.team = team
-        user.save()
-
+    def test_update_user_can_join_another_team(self):
+        user = User.objects.get(pk=13)  # alone - no team
+        new_team = Team.objects.get(pk=2)
+        
         form_data = {
-            'first_name': 'Updated Me',
-            'last_name': 'Updated M',
-            'username': 'me',
-            'password1': '111',
-            'password2': '111',
-        }
-        form = UserForm(data=form_data, instance=user)
-        self.assertTrue(form.is_valid())
-        updated_user = form.save()
-        self.assertEqual(updated_user.team, team)
-        self.assertEqual(updated_user.is_team_admin, True)
-
-    def test_edit_user_fields_readonly(self):
-        # checks that the team_name field becomes readonly when editing a user
-        user = User.objects.get(pk=10)  # me - is_team_admin
-        team = Team.objects.get(pk=1)  # Test Team
-        user.team = team
-        user.save()
-
-        form = UserForm(instance=user)
-        self.assertEqual(form.initial['team_name'], team.name)
-        self.assertTrue('readonly' in form.fields['team_name'].widget.attrs)
-        self.assertIsInstance(
-            form.fields['is_team_admin'].widget,
-            forms.HiddenInput)
-
-    def test_update_user_with_no_team(self):
-        # verifies that when a user updates without the team,
-        # the form works correctly
-        user = User.objects.get(pk=13)  # he - user without the team
-        form_data = {
-            'first_name': 'Updated He',
-            'last_name': 'Updated H',
+            'first_name': 'Updated',
+            'last_name': 'User',
             'username': 'alone',
             'password1': '111',
             'password2': '111',
+            'join_team_name': new_team.name,
+            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
         }
         form = UserForm(data=form_data, instance=user)
         self.assertTrue(form.is_valid())
         updated_user = form.save()
-        self.assertIsNone(updated_user.team)
-        self.assertFalse(updated_user.is_team_admin)
+        
+        # Check membership was created
+        self.assertTrue(TeamMembership.objects.filter(
+            user=updated_user, team=new_team).exists())
 
-    def test_update_user_with_team_and_changing_other_fields(self):
-        # verifies that when you update a user with a command,
-        # you can change other fields but not the command or role
-        user = User.objects.get(pk=12)  # he
-        team = Team.objects.get(pk=1)  # Test Team
-        user.team = team
-        user.save()
-
-        # try to update user data
+    def test_update_user_cannot_join_same_team_twice(self):
+        user = User.objects.get(pk=10)  # me - already in Test Team
+        team = Team.objects.get(pk=1)
+        
         form_data = {
-            'first_name': 'New Name',
-            'last_name': 'New Last',
-            'username': 'he',
-            'password1': '123',
-            'password2': '123',
-            'team_name': 'Another Test Team',  # try change team
-            'is_team_admin': True,  # try set user as team admin
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'me',
+            'password1': '',
+            'password2': '',
+            'join_team_name': team.name,
+            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
         }
         form = UserForm(data=form_data, instance=user)
-        self.assertTrue(form.is_valid())
-        updated_user = form.save()
-
-        # check for updated first and last names
-        self.assertEqual(updated_user.first_name, 'New Name')
-        self.assertEqual(updated_user.last_name, 'New Last')
-
-        # check for team name and user status still the same
-        self.assertEqual(updated_user.team, team)
-        self.assertFalse(updated_user.is_team_admin)
+        self.assertFalse(form.is_valid())
+        self.assertIn(_("You are already a member of this team"), 
+                      form.errors['__all__'])
 
     def test_update_user_without_password(self):
-        # check if user can update without enter password
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
         old_password_hash = user.password
 
         form_data = {
             'first_name': 'Updated Me',
             'last_name': 'Updated M',
             'username': 'me',
-            'password1': '',  # empty password field
-            'password2': '',  # empty password2 field
+            'password1': '',
+            'password2': '',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data, instance=user)
-        # short password validation skipped when empty and form is valid
-        # mismatch validation skipped when empty
         self.assertTrue(form.is_valid())
         updated_user = form.save()
 
-        # check that first_name was changed but not passwrd
+        # Check that first_name was changed but not password
         self.assertEqual(updated_user.first_name, 'Updated Me')
         self.assertEqual(updated_user.password, old_password_hash)
 
     def test_update_user_with_new_password(self):
-        # check that user can change password when update
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
         old_password_hash = user.password
 
         form_data = {
@@ -242,26 +208,29 @@ class UserFormTestCase(TestCase):
             'username': 'me',
             'password1': 'newpassword123',
             'password2': 'newpassword123',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data, instance=user)
         self.assertTrue(form.is_valid())
         updated_user = form.save()
 
-        # check that password was changed
+        # Check that password was changed
         self.assertNotEqual(updated_user.password, old_password_hash)
         self.assertTrue(updated_user.check_password('newpassword123'))
 
     def test_update_user_only_one_password_field_filled(self):
-        # check for validation error when only one password field is entered
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
 
-        # entered only password1
+        # Entered only password1
         form_data = {
             'first_name': 'Updated Me',
             'last_name': 'Updated M',
             'username': 'me',
             'password1': 'newpassword123',
-            'password2': '',  # empty field
+            'password2': '',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
@@ -270,8 +239,8 @@ class UserFormTestCase(TestCase):
             form.errors['__all__']
         )
 
-        # entered only password1
-        form_data['password1'] = ''  # empty field
+        # Entered only password2
+        form_data['password1'] = ''
         form_data['password2'] = 'newpassword123'
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
@@ -281,7 +250,7 @@ class UserFormTestCase(TestCase):
         )
 
     def test_update_user_password_fields_not_required(self):
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
         form = UserForm(instance=user)
 
         self.assertFalse(form.fields['password1'].required)
@@ -296,7 +265,7 @@ class UserFormTestCase(TestCase):
         )
 
     def test_create_user_password_fields_required(self):
-        form = UserForm()  # no instance - this is creating user
+        form = UserForm()
 
         self.assertTrue(form.fields['password1'].required)
         self.assertTrue(form.fields['password2'].required)
@@ -310,8 +279,7 @@ class UserFormTestCase(TestCase):
         )
 
     def test_update_user_short_password_validation_applied(self):
-        # if passwords entered short password validation works
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
 
         form_data = {
             'first_name': 'Updated Me',
@@ -319,6 +287,8 @@ class UserFormTestCase(TestCase):
             'username': 'me',
             'password1': '11',  # too short
             'password2': '11',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
@@ -328,8 +298,7 @@ class UserFormTestCase(TestCase):
             form.errors['password1'])
 
     def test_update_user_passwords_mismatch_validation_works(self):
-        # if passwords entered mismatch validation works
-        user = User.objects.get(pk=10)  # me - is_team_admin
+        user = User.objects.get(pk=10)
 
         form_data = {
             'first_name': 'Updated Me',
@@ -337,6 +306,8 @@ class UserFormTestCase(TestCase):
             'username': 'me',
             'password1': '123',
             'password2': '456',  # doesn't match
+            'join_team_name': '',
+            'join_team_password': ''
         }
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
