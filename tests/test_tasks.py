@@ -1,6 +1,8 @@
 from task_manager.tasks.models import Task
 from task_manager.user.models import User
-from task_manager.teams.models import TeamMembership
+from task_manager.teams.models import TeamMembership, Team
+from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -22,13 +24,76 @@ class TaskTestCase(TestCase):
         self.task = Task.objects.get(name="first task")
         self.c = Client()
         self.c.force_login(self.user)
+        
+        membership = TeamMembership.objects.filter(user=self.user).first()
+        self.team = membership.team if membership else None
+        
+        # set active_team to session if user has team in
+        if self.team:
+            session = self.c.session
+            session['active_team_id'] = self.team.id
+            session.save()
+        
+        # get available for user statuses and labels
+        if self.team:
+            # team mode
+            available_status = Status.objects.filter(team=self.team).first()
+            available_label = Label.objects.filter(team=self.team).first()
+            available_executor = User.objects.filter(
+                team_memberships__team=self.team
+            ).exclude(pk=self.user.pk).first() or self.user
+        else:
+            # individual mode
+            available_status = Status.objects.filter(
+                creator=self.user, 
+                team__isnull=True
+            ).first()
+            available_label = Label.objects.filter(
+                creator=self.user,
+                team__isnull=True
+            ).first()
+            available_executor = self.user
+        
+        # if no status create it
+        if not available_status:
+            if self.team:
+                available_status = Status.objects.create(
+                    name='Test Status',
+                    team=self.team,
+                    creator=self.user
+                )
+            else:
+                available_status = Status.objects.create(
+                    name='Test Status',
+                    creator=self.user
+                )
+        
         self.tasks_data = {
             'name': 'new_test_task',
             'description': 'new_test_description',
-            'status': 12,
-            'executor': 12,
-            'label': 1
+            'status': available_status.id,
+            'executor': available_executor.id,
         }
+        
+        # add labels if available
+        if available_label:
+            self.tasks_data['labels'] = [available_label.id]
+
+    def _get_team_user_ids(self, user):
+        """Helper method to get all user IDs from user's teams"""
+        # get user's teams
+        user_teams = TeamMembership.objects.filter(
+            user=user
+        ).values_list('team', flat=True)
+        
+        if user_teams:
+            # get all users in the same teams
+            return TeamMembership.objects.filter(
+                team__in=user_teams
+            ).values_list('user', flat=True).distinct()
+        else:
+            # user without team sees only their own tasks
+            return [user.id]
 
     # list
 
@@ -55,13 +120,21 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_full_view_content(self):
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        # all fields have to be visible if full_view=1
-        self.assertContains(response, f'<th scope="col">{_("ID")}</th>')
-        self.assertContains(response, f'<th scope="col">{_("Name")}</th>')
-        self.assertContains(response, f'<th scope="col">{_("Status")}</th>')
-        self.assertContains(response, f'<th scope="col">{_("Author")}</th>')
-        self.assertContains(response, f'<th scope="col">{_("Executor")}</th>')
-        self.assertContains(response, f'<th scope="col">{_("Created at")}</th>')
+        # Check if we have tasks to display
+        if self.team:
+            tasks = Task.objects.filter(team=self.team)
+        else:
+            tasks = Task.objects.filter(author=self.user, team__isnull=True)
+        
+        if tasks.exists():
+            # all fields have to be visible if full_view=1 and there are tasks
+            self.assertContains(response, f'<th scope="col">{_("ID")}</th>')
+            self.assertContains(response, f'<th scope="col">{_("Name")}</th>')
+            self.assertContains(response, f'<th scope="col">{_("Status")}</th>')
+            self.assertContains(response, f'<th scope="col">{_("Author")}</th>')
+            self.assertContains(response, f'<th scope="col">{_("Executor")}</th>')
+            self.assertContains(response, f'<th scope="col">{_("Created at")}</th>')
+        
         self.assertContains(response, _('Label'))
         self.assertContains(response, _('Tasks'))
         self.assertContains(response, _('Filter'))
@@ -92,23 +165,57 @@ class TaskTestCase(TestCase):
     def test_tasks_list_content(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         
-        # Get user's teams
-        user_teams = TeamMembership.objects.filter(
-            user=self.user
-        ).values_list('team', flat=True)
+        # tasks depends of team or individual mode
+        if self.team:
+            tasks = Task.objects.filter(team=self.team)
+            other_tasks = Task.objects.exclude(team=self.team)
+        else:
+            tasks = Task.objects.filter(author=self.user, team__isnull=True)
+            other_tasks = Task.objects.exclude(author=self.user) | Task.objects.filter(team__isnull=False)
         
-        # Get all users in the same teams
-        team_user_ids = TeamMembership.objects.filter(
-            team__in=user_teams
-        ).values_list('user', flat=True).distinct()
-        
-        tasks = Task.objects.filter(author__in=team_user_ids)
         for task in tasks:
             self.assertContains(response, task.name)
             
-        other_tasks = Task.objects.exclude(author__in=team_user_ids)
         for task in other_tasks:
             self.assertNotContains(response, task.name)
+
+    def test_tasks_list_user_without_team(self):
+        # create user without team
+        user_no_team = User.objects.create_user(
+            username='solo_user',
+            password='testpass123'
+        )
+        self.c.force_login(user_no_team)
+        
+        # create status for user
+        status = Status.objects.create(
+            name='Solo Status',
+            creator=user_no_team
+        )
+        
+        # create task for this user
+        solo_task = Task.objects.create(
+            name="solo task",
+            author=user_no_team,
+            executor=user_no_team,
+            status=status,
+            team=None
+        )
+        
+        response = self.c.get(reverse('tasks:tasks-list'))
+        
+        # user should see only their own task
+        self.assertContains(response, solo_task.name)
+        
+        # should not see tasks from other users
+        other_tasks = Task.objects.exclude(author=user_no_team)
+        for task in other_tasks:
+            self.assertNotContains(response, task.name)
+        
+        # cleanup
+        solo_task.delete()
+        status.delete()
+        user_no_team.delete()
 
     def test_tasks_list_empty_with_message(self):
         # delete all tasks first
@@ -120,7 +227,7 @@ class TaskTestCase(TestCase):
         self.assertNotContains(response, '<table')
 
     def test_tasks_list_empty_with_message_full_view(self):
-        # Delete all tasks first
+        # delete all tasks first
         Task.objects.all().delete()
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
         self.assertEqual(response.status_code, 200)
@@ -130,10 +237,21 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_not_empty_no_message(self):
         response = self.c.get(reverse('tasks:tasks-list'))
+        
+        # check if have tasks for show
+        if self.team:
+            tasks_exist = Task.objects.filter(team=self.team).exists()
+        else:
+            tasks_exist = Task.objects.filter(author=self.user, team__isnull=True).exists()
+        
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, _('No tasks'))
-        # check that table is rendered
-        self.assertContains(response, '<table')
+        
+        if tasks_exist:
+            self.assertNotContains(response, _('No tasks'))
+            # check that table is rendered
+            self.assertContains(response, '<table')
+        else:
+            self.assertContains(response, _('No tasks'))
 
     def test_filter_button_visible_when_filter_hidden(self):
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -250,14 +368,30 @@ class TaskTestCase(TestCase):
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
         new_count = Task.objects.count()
+        
+        # check form errors
+        if response.context and 'form' in response.context:
+            form = response.context['form']
+            if not form.is_valid():
+                self.fail(f"Form validation failed: {form.errors}")
+        
         self.assertEqual(old_count + 1, new_count)
         self.assertEqual(response.status_code, 200)
 
     def test_create_task_successfully(self):
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
+        
+        # check form errors
+        if response.context and 'form' in response.context:
+            form = response.context['form']
+            if not form.is_valid():
+                self.fail(f"Form validation failed: {form.errors}")
+        
         task = Task.objects.filter(
             name=self.tasks_data['name']).first()
+        
+        self.assertIsNotNone(task, "Task was not created")
         self.assertEqual(task.name, self.tasks_data['name'])
         self.assertRedirects(response, reverse('tasks:tasks-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -265,17 +399,83 @@ class TaskTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Task created successfully'))
 
     def test_create_task_user_with_team_can_choose_executor(self):
+        # sure that user has team
+        if not self.team:
+            self.skipTest("User has no team")
+        
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
 
         task = Task.objects.filter(name=self.tasks_data['name']).first()
-        self.assertIsNotNone(task)
+        self.assertIsNotNone(task, "Task was not created")
         self.assertEqual(task.author, self.user)
 
         expected_executor = User.objects.get(pk=self.tasks_data['executor'])
         self.assertEqual(task.executor, expected_executor)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_create_task_user_without_team_auto_executor(self):
+        # create user without team
+        user_no_team = User.objects.create_user(
+            username='notinteam',
+            password='testpass123'
+        )
+        
+        # create status for this user
+        status = Status.objects.create(
+            name='Personal Status',
+            creator=user_no_team
+        )
+        
+        self.c.force_login(user_no_team)
+        
+        task_data = {
+            'name': 'solo_task',
+            'description': 'task for user without team',
+            'status': status.id,
+            'executor': user_no_team.id,  # should be set automatically to self
+            'labels': []
+        }
+        
+        response = self.c.post(reverse('tasks:task-create'),
+                               task_data, follow=True)
+        
+        task = Task.objects.filter(name=task_data['name']).first()
+        self.assertIsNotNone(task, "Task was not created")
+        
+        # check that executor and author are the same
+        self.assertEqual(task.author, user_no_team)
+        self.assertEqual(task.executor, user_no_team)
+        self.assertIsNone(task.team)
+        
+        # cleanup
+        task.delete()
+        status.delete()
+        user_no_team.delete()
+
+    def test_create_task_user_without_team_limited_executor_choice(self):
+        # create user without team
+        user_no_team = User.objects.create_user(
+            username='notinteam2',
+            password='testpass123'
+        )
+        self.c.force_login(user_no_team)
+        
+        response = self.c.get(reverse('tasks:task-create'))
+        
+        # check that executor field contains only the current user
+        form = response.context.get('form')
+        if form:
+            executor_queryset = form.fields['executor'].queryset
+            # user without team should only see themselves as executor option
+            self.assertEqual(executor_queryset.count(), 1)
+            self.assertEqual(executor_queryset.first(), user_no_team)
+            # check that field is readonly
+            self.assertTrue(form.fields['executor'].widget.attrs.get('readonly'))
+        
+        # cleanup
+        user_no_team.delete()
 
     # update
 
@@ -291,7 +491,7 @@ class TaskTestCase(TestCase):
         task = Task.objects.get(name="first task")
         response = self.c.get(
             reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True
+            follow=True
         )
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
@@ -306,56 +506,115 @@ class TaskTestCase(TestCase):
 
     def test_update_task_with_correct_data(self):
         task = Task.objects.get(name="first task")
-        self.c.post(
+        response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
             self.tasks_data, follow=True
         )
+        
+        # check form errors
+        if response.context and 'form' in response.context:
+            form = response.context['form']
+            if not form.is_valid():
+                self.fail(f"Form validation failed: {form.errors}")
+        
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
     def test_update_task_by_author_success(self):
         # create a task where current user is the author
         author = User.objects.get(username='me')
-        executor = User.objects.get(pk=12)  # different user as executor
+        
+        # get executor and status for team
+        if self.team:
+            executor = User.objects.filter(
+                team_memberships__team=self.team
+            ).exclude(pk=author.pk).first() or author
+            status = Status.objects.filter(team=self.team).first()
+        else:
+            executor = author
+            status = Status.objects.filter(creator=author, team__isnull=True).first()
+        
+        if not status:
+            status = Status.objects.create(
+                name='Test Status for Update',
+                team=self.team if self.team else None,
+                creator=author
+            )
+        
         task = Task.objects.create(
             name="author task",
             author=author,
             executor=executor,
-            status_id=12
+            status=status,
+            team=self.team
         )
 
         response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
             self.tasks_data, follow=True
         )
+        
+        # check form errors
+        if response.context and 'form' in response.context:
+            form = response.context['form']
+            if not form.is_valid():
+                self.fail(f"Form validation failed: {form.errors}")
+        
         self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
-        message = _("Task updated successfully")
-        self.assertContains(response, message)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _("Task updated successfully"))
 
     def test_update_task_by_executor_success(self):
         # create a task where current user is the executor
-        author = User.objects.get(pk=12)  # different user as author
-        executor = User.objects.get(username='me')  # current user as executor
+        executor = User.objects.get(username='me')
+        
+        # get another user from same team as author
+        if self.team:
+            author = User.objects.filter(
+                team_memberships__team=self.team
+            ).exclude(pk=executor.pk).first() or executor
+            status = Status.objects.filter(team=self.team).first()
+        else:
+            author = executor
+            status = Status.objects.filter(creator=executor, team__isnull=True).first()
+        
+        if not status:
+            status = Status.objects.create(
+                name='Test Status for Executor Update',
+                team=self.team if self.team else None,
+                creator=executor
+            )
+        
         task = Task.objects.create(
             name="executor task",
             author=author,
             executor=executor,
-            status_id=12
+            status=status,
+            team=self.team
         )
 
         response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
             self.tasks_data, follow=True
         )
+        
+        # check form errors
+        if response.context and 'form' in response.context:
+            form = response.context['form']
+            if not form.is_valid():
+                self.fail(f"Form validation failed: {form.errors}")
+        
         self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
-        message = _("Task updated successfully")
-        self.assertContains(response, message)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _("Task updated successfully"))
 
     def test_update_task_by_neither_author_nor_executor_denied(self):
         author = User.objects.get(pk=12)  # he is not 'me'

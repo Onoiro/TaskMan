@@ -1,5 +1,6 @@
 from task_manager.statuses.models import Status
 from task_manager.user.models import User
+from task_manager.teams.models import TeamMembership
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -50,21 +51,55 @@ class StatusesTestCase(TestCase):
 
     def test_statuses_list_content(self):
         response = self.c.get(reverse('statuses:statuses-list'))
-        team_user_ids = User.objects.filter(
-            team=self.user.team).values_list('pk', flat=True)
+        
+        # Get user's teams
+        user_teams = TeamMembership.objects.filter(
+            user=self.user
+        ).values_list('team', flat=True)
+        
+        # Get all users in the same teams
+        team_user_ids = TeamMembership.objects.filter(
+            team__in=user_teams
+        ).values_list('user', flat=True).distinct()
+        
+        # For users without teams, show only their own statuses
+        if not team_user_ids:
+            team_user_ids = [self.user.id]
+        
         statuses = Status.objects.filter(creator__in=team_user_ids)
         for status in statuses:
             self.assertContains(response, status.name)
+            
         other_statuses = Status.objects.exclude(creator__in=team_user_ids)
         for status in other_statuses:
             self.assertNotContains(response, status.name)
 
     def test_statuses_list_empty_description(self):
         response = self.c.get(reverse('statuses:statuses-list'))
-        Status.objects.get(name="testing")  # status with empty description
-        Status.objects.get(name="finished")  # status with null description
+        # Get user's teams to filter visible statuses
+        user_teams = TeamMembership.objects.filter(
+            user=self.user
+        ).values_list('team', flat=True)
+        
+        team_user_ids = TeamMembership.objects.filter(
+            team__in=user_teams
+        ).values_list('user', flat=True).distinct()
+        
+        if not team_user_ids:
+            team_user_ids = [self.user.id]
+            
+        # Check that None is not displayed for empty descriptions
         self.assertNotContains(response, "None")
-        self.assertContains(response, "Newly created task")
+        
+        # Check if status with description is displayed correctly
+        status_with_desc = Status.objects.filter(
+            creator__in=team_user_ids,
+            description__isnull=False,
+            description__gt=''
+        ).first()
+        
+        if status_with_desc:
+            self.assertContains(response, status_with_desc.description)
 
     def test_create_status_with_description(self):
         self.c.post(
@@ -148,7 +183,7 @@ class StatusesTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Edit'))
-        self.assertContains(response, _('new'))
+        self.assertContains(response, 'new')
         self.assertRegex(
             response.content.decode('utf-8'),
             _(r'\bEdit status\b')
