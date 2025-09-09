@@ -36,12 +36,17 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Labels'))
         self.assertContains(response, _('New label'))
-        # Check for Edit and Delete links in the table rows, not as standalone text
+        # check for Edit and Delete links in the table rows,
+        # not as standalone text
         labels = self._get_user_team_labels()
         if labels.exists():
             # Edit and Delete buttons appear only if there are labels
-            self.assertContains(response, reverse('labels:labels-update', args=[labels.first().id]))
-            self.assertContains(response, reverse('labels:labels-delete', args=[labels.first().id]))
+            self.assertContains(response,
+                                reverse('labels:labels-update',
+                                        args=[labels.first().id]))
+            self.assertContains(response,
+                                reverse('labels:labels-delete',
+                                        args=[labels.first().id]))
 
     def test_labels_list_has_tasks_button(self):
         response = self.c.get(reverse('labels:labels-list'))
@@ -55,48 +60,48 @@ class LabelsTestCase(TestCase):
 
     def test_labels_list_content(self):
         response = self.c.get(reverse('labels:labels-list'))
-        
-        # Get user's teams
+
+        # get user's teams
         user_teams = TeamMembership.objects.filter(
             user=self.user
         ).values_list('team', flat=True)
-        
-        # Get all users in the same teams
+
+        # get all users in the same teams
         team_user_ids = TeamMembership.objects.filter(
             team__in=user_teams
         ).values_list('user', flat=True).distinct()
-        
-        # For users without teams, show only their own labels
+
+        # for users without teams, show only their own labels
         if not team_user_ids:
             team_user_ids = [self.user.id]
-        
+
         labels = Label.objects.filter(creator__in=team_user_ids)
         for label in labels:
             self.assertContains(response, label.name)
             formatted_date = DateFormat(
                 label.created_at).format(get_format('DATETIME_FORMAT'))
             self.assertContains(response, formatted_date)
-            
+
         other_labels = Label.objects.exclude(creator__in=team_user_ids)
         for label in other_labels:
             self.assertNotContains(response, label.name)
 
     def _get_user_team_labels(self):
         """Helper method to get labels visible to user"""
-        # Get user's teams
+        # get user's teams
         user_teams = TeamMembership.objects.filter(
             user=self.user
         ).values_list('team', flat=True)
-        
-        # Get all users in the same teams
+
+        # get all users in the same teams
         team_user_ids = TeamMembership.objects.filter(
             team__in=user_teams
         ).values_list('user', flat=True).distinct()
-        
-        # For users without teams, show only their own labels
+
+        # for users without teams, show only their own labels
         if not team_user_ids:
             team_user_ids = [self.user.id]
-            
+
         return Label.objects.filter(creator__in=team_user_ids)
 
     # create

@@ -120,7 +120,7 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_full_view_content(self):
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        # Check if we have tasks to display
+        # check if we have tasks to display
         if self.team:
             tasks = Task.objects.filter(team=self.team)
         else:

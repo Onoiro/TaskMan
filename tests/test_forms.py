@@ -1,4 +1,3 @@
-from django import forms
 from django.test import TestCase
 from task_manager.user.models import User
 from task_manager.teams.models import Team, TeamMembership
@@ -92,7 +91,7 @@ class UserFormTestCase(TestCase):
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())
         user = form.save()
-        
+
         # Check membership was created
         membership = TeamMembership.objects.get(user=user, team=team)
         self.assertEqual(membership.role, 'member')
@@ -104,7 +103,7 @@ class UserFormTestCase(TestCase):
         form_data['join_team_password'] = ''  # No password
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(_("Team password is required when joining a team"), 
+        self.assertIn(_("Team password is required when joining a team"),
                       form.errors['__all__'])
 
     def test_nonexistent_team_name(self):
@@ -113,7 +112,7 @@ class UserFormTestCase(TestCase):
         form_data['join_team_password'] = 'somepassword'
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        self.assertIn(_("Team with this name does not exist"), 
+        self.assertIn(_("Team with this name does not exist"),
                       form.errors['__all__'])
 
     def test_wrong_team_password(self):
@@ -129,11 +128,11 @@ class UserFormTestCase(TestCase):
         # Get user with team membership
         user = User.objects.get(pk=10)  # me - has team membership
         form = UserForm(instance=user)
-        
+
         # Check that current_teams field exists and is readonly
         self.assertIn('current_teams', form.fields)
         self.assertTrue('readonly' in form.fields['current_teams'].widget.attrs)
-        
+
         # Check it shows correct team info
         expected_value = "Test Team (Admin), Another Test Team (Admin)"
         self.assertEqual(form.fields['current_teams'].initial, expected_value)
@@ -141,7 +140,7 @@ class UserFormTestCase(TestCase):
     def test_update_user_can_join_another_team(self):
         user = User.objects.get(pk=13)  # alone - no team
         new_team = Team.objects.get(pk=2)
-        
+
         form_data = {
             'first_name': 'Updated',
             'last_name': 'User',
@@ -154,7 +153,7 @@ class UserFormTestCase(TestCase):
         form = UserForm(data=form_data, instance=user)
         self.assertTrue(form.is_valid())
         updated_user = form.save()
-        
+
         # Check membership was created
         self.assertTrue(TeamMembership.objects.filter(
             user=updated_user, team=new_team).exists())
@@ -162,7 +161,7 @@ class UserFormTestCase(TestCase):
     def test_update_user_cannot_join_same_team_twice(self):
         user = User.objects.get(pk=10)  # me - already in Test Team
         team = Team.objects.get(pk=1)
-        
+
         form_data = {
             'first_name': 'Updated',
             'last_name': 'User',
@@ -174,7 +173,7 @@ class UserFormTestCase(TestCase):
         }
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
-        self.assertIn(_("You are already a member of this team"), 
+        self.assertIn(_("You are already a member of this team"),
                       form.errors['__all__'])
 
     def test_update_user_without_password(self):
