@@ -1,5 +1,5 @@
 from django.test import TestCase
-from task_manager.teams.models import Team
+from task_manager.teams.models import Team, TeamMembership
 from task_manager.teams.forms import TeamForm
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
@@ -63,15 +63,24 @@ class TeamFormTestCase(TestCase):
     def test_save_team(self):
         form = TeamForm(data=self.form_data)
         self.assertTrue(form.is_valid())
-        team = form.save(commit=False)
-        team.team_admin = self.user
-        team.save()
+        team = form.save(commit=True)
+        
+        # Create admin membership for the team
+        TeamMembership.objects.create(
+            user=self.user,
+            team=team,
+            role='admin'
+        )
 
         # check team saved correct
         self.assertIsInstance(team, Team)
         self.assertEqual(team.name, 'New Team')
         self.assertEqual(team.description, 'This is a new test team')
-        self.assertEqual(team.team_admin, self.user)
+        
+        # Check that user is admin of the team through membership
+        membership = TeamMembership.objects.get(user=self.user, team=team)
+        self.assertEqual(membership.role, 'admin')
+        
         # check password saved
         self.assertTrue(team.password)
 
@@ -90,6 +99,12 @@ class TeamFormTestCase(TestCase):
     def test_update_team(self):
         # check for update existing team
         team = Team.objects.get(pk=1)
+        
+        # Get original admin of the team
+        original_admin_membership = TeamMembership.objects.filter(
+            team=team, role='admin'
+        ).first()
+        
         form_data = {
             'name': 'Updated Team Name',
             'description': 'Updated team description',
@@ -105,8 +120,18 @@ class TeamFormTestCase(TestCase):
         self.assertEqual(updated_team.description, 'Updated team description')
         self.assertEqual(updated_team.password, '456')
 
-        # check that team admin and created_at still the same
-        self.assertEqual(updated_team.team_admin, team.team_admin)
+        # check that team admin membership still exists
+        if original_admin_membership:
+            updated_admin_membership = TeamMembership.objects.filter(
+                team=updated_team, role='admin'
+            ).first()
+            self.assertIsNotNone(updated_admin_membership)
+            self.assertEqual(
+                updated_admin_membership.user, 
+                original_admin_membership.user
+            )
+        
+        # check that created_at still the same
         self.assertEqual(updated_team.created_at, team.created_at)
 
     def test_form_help_texts(self):

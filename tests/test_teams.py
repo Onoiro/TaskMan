@@ -1,5 +1,5 @@
 from task_manager.user.models import User
-from task_manager.teams.models import Team
+from task_manager.teams.models import Team, TeamMembership
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -15,7 +15,7 @@ class TeamTestCase(TestCase):
                 "tests/fixtures/test_labels.json"]
 
     def setUp(self):
-        self.admin_user = User.objects.get(pk=10)  # is_team_admin
+        self.admin_user = User.objects.get(pk=10)  # User who will be team admin
         self.c = Client()
         self.c.force_login(self.admin_user)
         self.team_data = {
@@ -25,6 +25,11 @@ class TeamTestCase(TestCase):
             'password2': '111'
         }
         self.team = Team.objects.get(pk=1)  # Test Team
+
+    def _get_user_teams(self, user):
+        """Helper to get user's teams"""
+        # Используем related_name 'member_teams' из ManyToMany поля
+        return user.member_teams.all()
 
     # create
 
@@ -46,11 +51,16 @@ class TeamTestCase(TestCase):
 
         team = Team.objects.filter(name=self.team_data['name']).first()
         self.assertEqual(team.description, self.team_data['description'])
-        self.assertEqual(team.team_admin, self.admin_user)
+        
+        # Check that the user is admin of the team using built-in method
+        self.assertTrue(team.is_admin(self.admin_user))
 
         # check that the user is a member of the team
-        self.admin_user.refresh_from_db()
-        self.assertEqual(self.admin_user.team, team)
+        self.assertTrue(team.is_member(self.admin_user))
+        
+        # Alternative: check through user's teams
+        user_teams = self._get_user_teams(self.admin_user)
+        self.assertIn(team, user_teams)
 
         # check redirect and message
         self.assertRedirects(response, reverse('index'))
@@ -85,6 +95,14 @@ class TeamTestCase(TestCase):
     # update
 
     def test_update_team_status_200_and_check_content(self):
+        # Make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+        
         response = self.c.get(
             reverse('teams:team-update', args=[self.team.id]), follow=True)
         self.assertEqual(response.status_code, 200)
@@ -96,6 +114,14 @@ class TeamTestCase(TestCase):
         self.assertContains(response, self.team.description)
 
     def test_update_team_successfully(self):
+        # Make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+        
         updated_team_data = {
             'name': 'Updated Team Name',
             'description': 'Updated description',
@@ -119,6 +145,14 @@ class TeamTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Team updated successfully'))
 
     def test_update_team_with_existing_name(self):
+        # Make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+        
         second_team = Team.objects.get(pk=2)  # Another Test Team из фикстур
 
         # try to update first team with name of second team
@@ -144,9 +178,12 @@ class TeamTestCase(TestCase):
             username='regular_user',
             password='password123'
         )
-        # add regular user to team
-        regular_user.team = self.team
-        regular_user.save()
+        # add regular user to team as member (not admin)
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
 
         # login as regular user
         self.c.logout()
@@ -186,6 +223,14 @@ class TeamTestCase(TestCase):
     # delete
 
     def test_get_delete_team_response_200_and_check_content(self):
+        # Make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+        
         response = self.c.get(
             reverse('teams:team-delete', args=[self.team.id]), follow=True)
         self.assertEqual(response.status_code, 200)
@@ -196,9 +241,14 @@ class TeamTestCase(TestCase):
 
     def test_delete_team_successfully(self):
         # create new team for deleting
-        self.c.post(reverse('teams:team-create'),
+        response = self.c.post(reverse('teams:team-create'),
                     self.team_data, follow=True)
         team = Team.objects.get(name=self.team_data['name'])
+        team_id = team.id  # Сохраняем ID для проверки после удаления
+        
+        # Ensure user is admin of this new team
+        # (should be created automatically by the view)
+        self.assertTrue(team.is_admin(self.admin_user))
 
         # check teams count before deleting
         teams_count = Team.objects.count()
@@ -218,19 +268,33 @@ class TeamTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Team deleted successfully'))
 
-        # check that admin user is not team admin now
-        self.admin_user.refresh_from_db()
-        self.assertFalse(self.admin_user.is_team_admin)
-        self.assertIsNone(self.admin_user.team)
+        # Check that user has no membership in deleted team
+        self.assertFalse(
+            TeamMembership.objects.filter(
+                user=self.admin_user, 
+                team_id=team_id  # Используем сохраненный ID
+            ).exists()
+        )
 
     def test_cannot_delete_team_with_members(self):
+        # Make sure admin user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+        
         # add regular user to team
         regular_user = User.objects.create_user(
             username='team_member',
             password='password123'
         )
-        regular_user.team = self.team
-        regular_user.save()
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
 
         # try to delete team
         response = self.c.post(reverse('teams:team-delete',
@@ -249,7 +313,7 @@ class TeamTestCase(TestCase):
     def test_non_admin_cannot_delete_team(self):
         # create regular user not team admin
         regular_user = User.objects.create_user(
-            username='regular_user',
+            username='regular_user_delete',
             password='password123'
         )
 
@@ -259,9 +323,17 @@ class TeamTestCase(TestCase):
 
         # try to delete team
         teams_count = Team.objects.count()
-        self.c.post(reverse('teams:team-delete',
+        response = self.c.post(reverse('teams:team-delete',
                             args=[self.team.id]), follow=True)
 
         # check that team exists
         self.assertEqual(Team.objects.count(), teams_count)
         self.assertTrue(Team.objects.filter(pk=self.team.id).exists())
+        
+        # Check for error message (if redirected)
+        messages = list(get_messages(response.wsgi_request))
+        if messages:
+            self.assertIn(
+                _("You don't have permissions"),
+                str(messages[0])
+            )
