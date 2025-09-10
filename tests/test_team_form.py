@@ -8,10 +8,11 @@ User = get_user_model()
 
 
 class TeamFormTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_users.json",
-                "tests/fixtures/test_teams.json",
-                "tests/fixtures/test_teams_memberships.json",
-             ]
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
 
     def setUp(self):
         self.form_data = {
@@ -64,8 +65,8 @@ class TeamFormTestCase(TestCase):
         form = TeamForm(data=self.form_data)
         self.assertTrue(form.is_valid())
         team = form.save(commit=True)
-        
-        # Create admin membership for the team
+
+        # create admin membership for the team
         TeamMembership.objects.create(
             user=self.user,
             team=team,
@@ -76,11 +77,11 @@ class TeamFormTestCase(TestCase):
         self.assertIsInstance(team, Team)
         self.assertEqual(team.name, 'New Team')
         self.assertEqual(team.description, 'This is a new test team')
-        
-        # Check that user is admin of the team through membership
+
+        # check that user is admin of the team through membership
         membership = TeamMembership.objects.get(user=self.user, team=team)
         self.assertEqual(membership.role, 'admin')
-        
+
         # check password saved
         self.assertTrue(team.password)
 
@@ -91,20 +92,20 @@ class TeamFormTestCase(TestCase):
         form_data['name'] = existing_team_name
         form = TeamForm(data=form_data)
 
-        # Django автоматически проверяет уникальность полей модели
-        # с unique=True, поэтому форма должна быть невалидной
+        # django automatically checks the uniqueness of model fields
+        # with unique=True, so the form should be invalid
         self.assertFalse(form.is_valid())
         self.assertIn('name', form.errors)
 
     def test_update_team(self):
         # check for update existing team
         team = Team.objects.get(pk=1)
-        
-        # Get original admin of the team
+
+        # get original admin of the team
         original_admin_membership = TeamMembership.objects.filter(
             team=team, role='admin'
         ).first()
-        
+
         form_data = {
             'name': 'Updated Team Name',
             'description': 'Updated team description',
@@ -127,10 +128,10 @@ class TeamFormTestCase(TestCase):
             ).first()
             self.assertIsNotNone(updated_admin_membership)
             self.assertEqual(
-                updated_admin_membership.user, 
+                updated_admin_membership.user,
                 original_admin_membership.user
             )
-        
+
         # check that created_at still the same
         self.assertEqual(updated_team.created_at, team.created_at)
 

@@ -9,6 +9,7 @@ from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
 from django.utils.dateformat import DateFormat
 from django.utils.formats import get_format
+from django.db.models import Q
 
 
 class TaskTestCase(TestCase):
@@ -177,9 +178,8 @@ class TaskTestCase(TestCase):
             other_tasks = Task.objects.exclude(team=self.team)
         else:
             tasks = Task.objects.filter(author=self.user, team__isnull=True)
-            other_tasks = (
-                Task.objects.exclude(author=self.user) |
-                Task.objects.filter(team__isnull=False)
+            other_tasks = Task.objects.filter(
+                Q(author=self.user) | Q(team__isnull=False)
             )
 
         for task in tasks:
@@ -448,8 +448,7 @@ class TaskTestCase(TestCase):
             'labels': []
         }
 
-        self.c.post(reverse('tasks:task-create'),
-                               task_data, follow=True)
+        self.c.post(reverse('tasks:task-create'), task_data, follow=True)
 
         task = Task.objects.filter(name=task_data['name']).first()
         self.assertIsNotNone(task, "Task was not created")

@@ -51,7 +51,7 @@ class StatusesTestCase(TestCase):
 
     def test_statuses_list_content(self):
         response = self.c.get(reverse('statuses:statuses-list'))
-    
+
         # get user's teams
         user_teams = TeamMembership.objects.filter(
             user=self.user

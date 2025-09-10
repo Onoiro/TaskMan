@@ -41,7 +41,7 @@ class UserTestCase(TestCase):
         self.assertContains(response, 'ID')
         self.assertContains(response, _('User name'))
         self.assertContains(response, _('Fullname'))
-        self.assertContains(response, _('Teams'))  # Changed from 'Team admin'
+        self.assertContains(response, _('Team admin'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Users'))
 
@@ -76,7 +76,7 @@ class UserTestCase(TestCase):
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
 
-        # User without team should redirect to index
+        # user without team should redirect to index
         self.assertRedirects(response, reverse('index'))
 
         messages = list(get_messages(response.wsgi_request))
@@ -128,8 +128,8 @@ class UserTestCase(TestCase):
 
         user = User.objects.filter(username=self.user_data['username']).first()
         self.assertIsNotNone(user)
-        
-        # Check user has no team membership
+
+        # check user has no team membership
         self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
         self.assertRedirects(response, reverse('index'))
@@ -302,12 +302,12 @@ class UserTestCase(TestCase):
                          _('Cannot delete a user because it is in use'))
 
     def test_can_not_delete_user_being_team_admin(self):
-        # Create new user
+        # create new user
         self.c.post(reverse('user:user-create'),
                     self.user_data, follow=True)
         new_user = User.objects.get(username="new")
 
-        # Create new team and make user admin
+        # create new team and make user admin
         team = Team.objects.create(
             name="New Test Team",
             description="Test team description",
@@ -318,27 +318,27 @@ class UserTestCase(TestCase):
             team=team,
             role='admin'
         )
-        
+
         self.c.force_login(new_user)
 
-        # Try to delete new user
+        # try to delete new user
         response = self.c.get(reverse('user:user-delete',
                                       args=[new_user.id]), follow=True)
 
-        # Check that new user still exist
+        # check that new user still exist
         self.assertTrue(User.objects.filter(username="new").exists())
 
-        # Check for redirect
+        # check for redirect
         self.assertRedirects(response, reverse('user:user-list'))
 
-        # Check for error message
+        # check for error message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete a user because it is team admin. '
                          'Delete the team first.'))
 
-        # Delete team after test
+        # delete team after test
         team.delete()
 
     def test_can_join_existing_team(self):
@@ -350,16 +350,18 @@ class UserTestCase(TestCase):
             'password1': '123',
             'password2': '123',
             'join_team_name': team.name,
-            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            'join_team_password': (
+                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            )
         }
         response = self.c.post(reverse('user:user-create'),
                                new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username='team_member')
-        
-        # Check membership was created
+
+        # check membership was created
         membership = TeamMembership.objects.get(user=user, team=team)
         self.assertEqual(membership.role, 'member')
-        
-        # Users who join a team should not get default statuses
+
+        # users who join a team should not get default statuses
         self.assertEqual(Status.objects.filter(creator=user).count(), 0)

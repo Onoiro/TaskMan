@@ -86,7 +86,9 @@ class UserFormTestCase(TestCase):
             'password1': '123',
             'password2': '123',
             'join_team_name': team.name,
-            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            'join_team_password': (
+                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            )
         }
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -148,7 +150,9 @@ class UserFormTestCase(TestCase):
             'password1': '111',
             'password2': '111',
             'join_team_name': new_team.name,
-            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            'join_team_password': (
+                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            )
         }
         form = UserForm(data=form_data, instance=user)
         self.assertTrue(form.is_valid())
@@ -169,7 +173,9 @@ class UserFormTestCase(TestCase):
             'password1': '',
             'password2': '',
             'join_team_name': team.name,
-            'join_team_password': 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            'join_team_password': (
+                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            )
         }
         form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
