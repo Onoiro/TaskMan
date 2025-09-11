@@ -1,6 +1,6 @@
 from task_manager.statuses.models import Status
 from task_manager.user.models import User
-from task_manager.teams.models import TeamMembership
+from task_manager.teams.models import Team
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -23,6 +23,16 @@ class StatusesTestCase(TestCase):
             'name': 'new_test_status',
             'description': 'Test description'
         }
+        self.team = Team.objects.get(pk=1)  # user 'me' is member of this team
+
+    def _set_active_team(self, team_id=None):
+        """Helper for setting active team in session"""
+        session = self.c.session
+        if team_id:
+            session['active_team_id'] = team_id
+        else:
+            session.pop('active_team_id', None)
+        session.save()
 
     # list
 
@@ -31,6 +41,8 @@ class StatusesTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_statuses_list_static_content(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.get(reverse('statuses:statuses-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
@@ -50,50 +62,52 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, reverse('labels:labels-list'))
 
     def test_statuses_list_content(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.get(reverse('statuses:statuses-list'))
 
-        # get user's teams
-        user_teams = TeamMembership.objects.filter(
-            user=self.user
-        ).values_list('team', flat=True)
+        team_statuses = Status.objects.filter(team=self.team)
 
-        # get all users in the same teams
-        team_user_ids = TeamMembership.objects.filter(
-            team__in=user_teams
-        ).values_list('user', flat=True).distinct()
-
-        # for users without teams, show only their own statuses
-        if not team_user_ids:
-            team_user_ids = [self.user.id]
-
-        statuses = Status.objects.filter(creator__in=team_user_ids)
-        for status in statuses:
+        for status in team_statuses:
             self.assertContains(response, status.name)
 
-        other_statuses = Status.objects.exclude(creator__in=team_user_ids)
+        # other teams statuses and individual statuses should not be displayed
+        other_statuses = Status.objects.exclude(team=self.team)
         for status in other_statuses:
-            self.assertNotContains(response, status.name)
+            # check by ID because names can be the same
+            self.assertNotContains(response, f'<td>{status.id}</td>')
+
+    def test_statuses_list_content_individual_mode(self):
+        # remove active team
+        self._set_active_team(None)
+
+        response = self.c.get(reverse('statuses:statuses-list'))
+
+        # show only personal statuses
+        personal_statuses = Status.objects.filter(
+            creator=self.user,
+            team__isnull=True
+        )
+
+        for status in personal_statuses:
+            self.assertContains(response, status.name)
+
+        # team statuses and other statuses should not be displayed
+        team_statuses = Status.objects.filter(team__isnull=False)
+        for status in team_statuses:
+            self.assertNotContains(response, f'<td>{status.id}</td>')
 
     def test_statuses_list_empty_description(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.get(reverse('statuses:statuses-list'))
-        # get user's teams to filter visible statuses
-        user_teams = TeamMembership.objects.filter(
-            user=self.user
-        ).values_list('team', flat=True)
 
-        team_user_ids = TeamMembership.objects.filter(
-            team__in=user_teams
-        ).values_list('user', flat=True).distinct()
-
-        if not team_user_ids:
-            team_user_ids = [self.user.id]
-
-        # check that None is not displayed for empty descriptions
+        # check that there is not None displayed if description is empty
         self.assertNotContains(response, "None")
 
-        # check if status with description is displayed correctly
+        # check that status with description displayed correctly
         status_with_desc = Status.objects.filter(
-            creator__in=team_user_ids,
+            team=self.team,
             description__isnull=False,
             description__gt=''
         ).first()
@@ -102,6 +116,8 @@ class StatusesTestCase(TestCase):
             self.assertContains(response, status_with_desc.description)
 
     def test_create_status_with_description(self):
+        self._set_active_team(self.team.id)
+
         self.c.post(
             reverse('statuses:statuses-create'),
             self.statuses_data,
@@ -111,8 +127,11 @@ class StatusesTestCase(TestCase):
             name=self.statuses_data['name']).first()
         self.assertEqual(
             status.description, self.statuses_data['description'])
+        self.assertEqual(status.team, self.team)
 
     def test_update_status_description(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         new_data = {
             'name': 'updated',
@@ -125,6 +144,8 @@ class StatusesTestCase(TestCase):
             status.description, new_data['description'])
 
     def test_create_status_without_description(self):
+        self._set_active_team(self.team.id)
+
         data_without_desc = {'name': 'no_desc_status'}
         self.c.post(reverse('statuses:statuses-create'),
                     data_without_desc, follow=True)
@@ -144,11 +165,15 @@ class StatusesTestCase(TestCase):
             _(r'\bCreate status\b'))
 
     def test_create_status_response_200(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.post(reverse('statuses:statuses-create'),
                                self.statuses_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_created_status_add_to_db(self):
+        self._set_active_team(self.team.id)
+
         old_count = Status.objects.count()
         self.c.post(reverse('statuses:statuses-create'),
                     self.statuses_data, follow=True)
@@ -156,6 +181,8 @@ class StatusesTestCase(TestCase):
         self.assertEqual(old_count + 1, new_count)
 
     def test_create_status_with_correct_data(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.post(reverse('statuses:statuses-create'),
                                self.statuses_data, follow=True)
         status = Status.objects.filter(
@@ -167,6 +194,8 @@ class StatusesTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Status created successfully'))
 
     def test_can_not_create_status_with_empty_name(self):
+        self._set_active_team(self.team.id)
+
         self.statuses_data = {'name': ' '}
         response = self.c.post(reverse('statuses:statuses-create'),
                                self.statuses_data, follow=True)
@@ -177,6 +206,8 @@ class StatusesTestCase(TestCase):
     # update
 
     def test_get_update_status_response_200_and_check_content(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         response = self.c.get(reverse('statuses:statuses-update',
                               args=[status.id]), follow=True)
@@ -190,6 +221,8 @@ class StatusesTestCase(TestCase):
         )
 
     def test_update_status_successfully(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
@@ -202,6 +235,8 @@ class StatusesTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Status updated successfully'))
 
     def test_can_not_set_empty_name_when_update_status(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         self.statuses_data = {'name': ' '}
         response = self.c.post(
@@ -214,6 +249,8 @@ class StatusesTestCase(TestCase):
     # delete
 
     def test_get_delete_status_response_200_and_check_content(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         response = self.c.get(
             reverse('statuses:statuses-delete',
@@ -225,12 +262,22 @@ class StatusesTestCase(TestCase):
                             _('Are you sure you want to delete new?'))
 
     def test_delete_status_successfully(self):
-        status = Status.objects.get(name="testing")
+        # to delete status "testing" remove active team
+        # because it created by user without team
+        self._set_active_team(None)
+
+        test_status = Status.objects.create(
+            name="test_to_delete",
+            creator=self.user,
+            team=None,
+            description="Test status for deletion"
+        )
+
         response = self.c.post(
             reverse('statuses:statuses-delete',
-                    args=[status.id]), follow=True)
+                    args=[test_status.id]), follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Status.objects.filter(name="testing").exists())
+        self.assertFalse(Status.objects.filter(name="test_to_delete").exists())
         self.assertRedirects(response, reverse('statuses:statuses-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
@@ -238,6 +285,8 @@ class StatusesTestCase(TestCase):
                          _('Status deleted successfully'))
 
     def test_can_not_delete_status_bound_with_task(self):
+        self._set_active_team(self.team.id)
+
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-delete',
