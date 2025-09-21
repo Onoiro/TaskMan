@@ -56,12 +56,40 @@ class LabelsUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label updated successfully')
 
+    def get_queryset(self):
+        """Override to show only labels that user can update"""
+        user = self.request.user
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            # in team mode - can only update labels from this team
+            return Label.objects.filter(team=team)
+        else:
+            # in individual mode - can only update personal labels
+            return Label.objects.filter(
+                creator=user,
+                team__isnull=True
+            )
+
 
 class LabelsDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
     model = Label
     template_name = 'labels/labels_delete.html'
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label deleted successfully')
+
+    def get_queryset(self):
+        """Override to show only labels that user can delete"""
+        user = self.request.user
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            return Label.objects.filter(team=team)
+        else:
+            return Label.objects.filter(
+                creator=user,
+                team__isnull=True
+            )
 
     def form_valid(self, form):
         label = self.get_object()
