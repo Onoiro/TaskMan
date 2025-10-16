@@ -308,7 +308,7 @@ class TeamTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                         _("Cannot delete a team because it has members."))
+                         _("Cannot delete a team because it has other members."))
 
     def test_non_admin_cannot_delete_team(self):
         # create regular user not team admin
