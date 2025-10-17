@@ -58,10 +58,9 @@ class TeamExitView(LoginRequiredMixin, View):
                 messages.error(request, _('You are not a member of this team'))
                 return self._redirect_back(request)
 
-            # Добавляем проверку на администратора команды
             if self._is_user_team_admin(request.user, team):
                 messages.error(
-                    request, 
+                    request,
                     _('Team administrators cannot leave the team. '
                       'Please transfer admin rights to another member first.')
                 )

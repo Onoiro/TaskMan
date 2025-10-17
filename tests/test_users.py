@@ -334,10 +334,14 @@ class UserTestCase(TestCase):
         # check for error message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]),
-                         _('Cannot delete user because they are admin' \
-                         ' of team(s): New Test Team. Transfer admin rights'
-                         ' or delete the team(s) first.'))
+        self.assertEqual(
+            str(messages[0]),
+            _(
+                'Cannot delete user because they are admin '
+                'of team(s): New Test Team. Transfer admin rights '
+                'or delete the team(s) first.'
+            )
+        )
 
         # delete team after test
         team.delete()

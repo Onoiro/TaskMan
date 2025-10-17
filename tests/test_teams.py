@@ -308,7 +308,8 @@ class TeamTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                         _("Cannot delete a team because it has other members."))
+                         _("Cannot delete a team because"
+                         " it has other members."))
 
     def test_non_admin_cannot_delete_team(self):
         # create regular user not team admin
@@ -337,3 +338,208 @@ class TeamTestCase(TestCase):
                 _("You don't have permissions"),
                 str(messages[0])
             )
+
+    # exit team
+
+    def test_exit_team_successfully(self):
+        # create a regular user who is a member of the team
+        regular_user = User.objects.create_user(
+            username='regular_member',
+            password='password123'
+        )
+
+        # add regular user to team as member (not admin)
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        # login as regular user
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # set active team in session
+        self.c.session['active_team_id'] = self.team.id
+        self.c.session.save()
+
+        # check membership exists before exit
+        self.assertTrue(self.team.is_member(regular_user))
+        self.assertEqual(regular_user.member_teams.count(), 1)
+
+        # exit the team
+        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+                               follow=True)
+
+        # check that membership was removed
+        self.assertFalse(self.team.is_member(regular_user))
+        self.assertEqual(regular_user.member_teams.count(), 0)
+
+        # check that active team was cleared from session
+        self.assertNotIn('active_team_id', self.c.session)
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('You have successfully left the team'),
+            str(messages[0]))
+
+    def test_cannot_exit_team_as_admin(self):
+        # create a new team where admin_user is the admin
+        new_team = Team.objects.create(
+            name='Admin Team',
+            description='Team for admin exit test',
+            password='123'
+        )
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=new_team,
+            role='admin'
+        )
+
+        # try to exit as admin
+        response = self.c.post(reverse('teams:team-exit', args=[new_team.id]),
+                               follow=True)
+
+        # check that membership still exists
+        self.assertTrue(new_team.is_member(self.admin_user))
+        self.assertTrue(new_team.is_admin(self.admin_user))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(_('Team administrators cannot leave the team'),
+                      str(messages[0]))
+
+    def test_cannot_exit_team_with_tasks(self):
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a regular user who is a member of the team
+        regular_user = User.objects.create_user(
+            username='task_user',
+            password='password123'
+        )
+
+        # add regular user to team as member
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        # get a status for the task
+        status = Status.objects.first()
+
+        # create a task where user is the author
+        Task.objects.create(
+            name='Test Task',
+            description='Task description',
+            status=status,
+            author=regular_user,
+            executor=self.admin_user,  # different user as executor
+            team=self.team
+        )
+
+        # login as regular user
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # try to exit the team
+        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+                               follow=True)
+
+        # check that membership still exists
+        self.assertTrue(self.team.is_member(regular_user))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(_('You cannot exit the team because you'
+                      ' are author or executor of tasks'),
+                      str(messages[0]))
+
+    def test_cannot_exit_team_as_executor(self):
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a regular user who is a member of the team
+        regular_user = User.objects.create_user(
+            username='executor_user',
+            password='password123'
+        )
+
+        # add regular user to team as member
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        # get a status for the task
+        status = Status.objects.first()
+
+        # create a task where user is the executor
+        Task.objects.create(
+            name='Executor Task',
+            description='Task for executor test',
+            status=status,
+            author=self.admin_user,  # different user as author
+            executor=regular_user,
+            team=self.team
+        )
+
+        # login as regular user
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # try to exit the team
+        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+                               follow=True)
+
+        # check that membership still exists
+        self.assertTrue(self.team.is_member(regular_user))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(_('You cannot exit the team because you'
+                      ' are author or executor of tasks'),
+                      str(messages[0]))
+
+    def test_cannot_exit_nonexistent_team(self):
+        """test that user cannot exit a team that doesn't exist"""
+        nonexistent_team_id = 9999
+
+        # try to exit nonexistent team
+        response = self.c.post(reverse('teams:team-exit',
+                               args=[nonexistent_team_id]),
+                               follow=True)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Team not found'))
+
+    def test_cannot_exit_team_not_member(self):
+        # create a user who is not a member of any team
+        non_member_user = User.objects.create_user(
+            username='non_member',
+            password='password123'
+        )
+
+        # login as non-member user
+        self.c.logout()
+        self.c.force_login(non_member_user)
+
+        # try to exit the team
+        response = self.c.post(reverse('teams:team-exit',
+                               args=[self.team.id]),
+                               follow=True)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]),
+                         _('You are not a member of this team'))
