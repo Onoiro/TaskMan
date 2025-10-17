@@ -58,6 +58,15 @@ class TeamExitView(LoginRequiredMixin, View):
                 messages.error(request, _('You are not a member of this team'))
                 return self._redirect_back(request)
 
+            # Добавляем проверку на администратора команды
+            if self._is_user_team_admin(request.user, team):
+                messages.error(
+                    request, 
+                    _('Team administrators cannot leave the team. '
+                      'Please transfer admin rights to another member first.')
+                )
+                return self._redirect_back(request)
+
             if self._has_user_tasks_in_team(request.user, team):
                 messages.error(
                     request, self._get_task_error_message(request.user, team))
@@ -82,6 +91,14 @@ class TeamExitView(LoginRequiredMixin, View):
         return TeamMembership.objects.filter(
             user=user,
             team=team
+        ).exists()
+
+    def _is_user_team_admin(self, user, team):
+        """Check if user is an admin of the team"""
+        return TeamMembership.objects.filter(
+            user=user,
+            team=team,
+            role='admin'
         ).exists()
 
     def _has_user_tasks_in_team(self, user, team):
