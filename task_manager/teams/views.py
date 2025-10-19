@@ -1,18 +1,23 @@
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages.views import SuccessMessageMixin
-from task_manager.permissions import CustomPermissions, TeamAdminPermissions
+from task_manager.permissions import (
+    TeamAdminPermissions,
+    TeamMembershipAdminPermissions
+)
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django import forms
 from django.views import View
-from django.views.generic import FormView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import DetailView
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+    ListView
+)
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from task_manager.teams.forms import TeamForm
+from task_manager.teams.forms import TeamForm, TeamMemberRoleForm
 from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
 
@@ -132,151 +137,140 @@ class TeamExitView(LoginRequiredMixin, View):
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-class TeamJoinView(LoginRequiredMixin, FormView):
+class TeamJoinView(LoginRequiredMixin, CreateView):
+    model = TeamMembership
+    fields = []
     template_name = 'teams/team_join.html'
-    success_url = reverse_lazy('index')
 
-    def get_form_class(self):
-        class TeamJoinForm(forms.Form):
-            team_name = forms.CharField(
-                label=_('Team name'),
-                max_length=150,
-                widget=forms.TextInput(attrs={
-                    'class': 'form-control',
-                    'placeholder': _('Enter team name')
-                })
-            )
-            team_password = forms.CharField(
-                label=_('Team password'),
-                widget=forms.PasswordInput(attrs={
-                    'class': 'form-control',
-                    'placeholder': _('Enter team password')
-                })
-            )
-
-        return TeamJoinForm
+    def get_success_url(self):
+        return reverse_lazy(
+            'teams:team-detail',
+            kwargs={'pk': self.kwargs['pk']}
+        )
 
     def form_valid(self, form):
-        team_name = form.cleaned_data['team_name']
-        team_password = form.cleaned_data['team_password']
+        team = Team.objects.get(pk=self.kwargs['pk'])
 
-        try:
-            team = Team.objects.get(name=team_name)
+        # check if user is already a member of the team
+        if TeamMembership.objects.filter(
+            user=self.request.user, team=team
+        ).exists():
+            messages.error(self.request, _(
+                'You are already a member of this team!'
+            ))
+            return redirect('teams:team-detail', pk=team.pk)
 
-            # password validation
-            if team.password != team_password:
-                messages.error(self.request, _('Invalid team password'))
-                return self.form_invalid(form)
+        form.instance.user = self.request.user
+        form.instance.team = team
+        form.instance.role = 'member'
 
-            # check if user already in team
-            if TeamMembership.objects.filter(
-                user=self.request.user,
-                team=team
-            ).exists():
-                messages.warning(
-                    self.request,
-                    _('You are already a member of this team')
-                )
-                return redirect('index')
+        response = super().form_valid(form)
+        messages.success(self.request, _(
+            'You have successfully joined the team!'
+        ))
+        return response
 
-            # create membership
-            TeamMembership.objects.create(
-                user=self.request.user,
-                team=team,
-                role='member'
-            )
-
-            # set this team as active_team
-            self.request.session['active_team_id'] = team.id
-
-            messages.success(
-                self.request,
-                _(f'Successfully joined team "{team.name}"!')
-            )
-
-        except Team.DoesNotExist:
-            messages.error(self.request, _('Team not found'))
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['team'] = Team.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
-class TeamCreateView(SuccessMessageMixin,
-                     LoginRequiredMixin,
-                     CreateView):
+class TeamCreateView(LoginRequiredMixin, CreateView):
+    model = Team
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
-    success_url = reverse_lazy('index')
-    success_message = _('Team created successfully')
+    success_url = reverse_lazy('teams:team-list')
 
     def form_valid(self, form):
         response = super().form_valid(form)
 
-        # create membership of user as admin
+        # create TeamMembership for team creator with role 'admin'
         TeamMembership.objects.create(
             user=self.request.user,
             team=self.object,
             role='admin'
         )
 
-        # set created team as active_team
-        self.request.session['active_team_id'] = self.object.id
+        messages.success(self.request, _('Team created successfully!'))
+        return response
 
-        messages.success(
-            self.request,
-            _(f'Team "{self.object.name}" created successfully! '
-              f'You are now the admin.')
-        )
+
+class TeamDetailView(LoginRequiredMixin, DetailView):
+    model = Team
+    template_name = 'teams/team_detail.html'
+    context_object_name = 'team'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        team = self.get_object()
+
+        # get all team members with their roles
+        memberships = TeamMembership.objects.filter(
+            team=team).select_related('user')
+        context['memberships'] = memberships
+        context['is_admin'] = team.is_admin(self.request.user)
+
+        return context
+
+
+class TeamUpdateView(TeamAdminPermissions, UpdateView):
+    model = Team
+    form_class = TeamForm
+    template_name = 'teams/team_update.html'
+    success_url = reverse_lazy('teams:team-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Team updated successfully!'))
+        return super().form_valid(form)
+
+
+class TeamDeleteView(TeamAdminPermissions, DeleteView):
+    model = Team
+    template_name = 'teams/team_delete.html'
+    success_url = reverse_lazy('teams:team-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Team deleted successfully!'))
+        return super().form_valid(form)
+
+
+class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
+    model = TeamMembership
+    form_class = TeamMemberRoleForm
+    template_name = 'teams/team_member_role_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user:user-list')
+
+    def form_valid(self, form):
+        membership = self.get_object()
+        old_role = membership.role
+        new_role = form.cleaned_data['role']
+
+        response = super().form_valid(form)
+
+        if old_role != new_role:
+            if new_role == 'admin':
+                messages.success(
+                    self.request,
+                    _(f'User {membership.user.username} '
+                      'has been promoted to team admin.')
+                )
+            else:
+                messages.success(
+                    self.request,
+                    _(f'User {membership.user.username} '
+                      'has been demoted to team member.')
+                )
 
         return response
 
 
-class TeamDetailView(DetailView):
+class TeamListView(LoginRequiredMixin, ListView):
     model = Team
-    template_name = 'user/user_list.html'
+    template_name = 'teams/team_list.html'
+    context_object_name = 'teams'
 
-
-class TeamUpdateView(SuccessMessageMixin,
-                     CustomPermissions,
-                     TeamAdminPermissions,
-                     UpdateView):
-    model = Team
-    form_class = TeamForm
-    template_name = 'teams/team_update.html'
-    redirect_field_name = "redirect_to"
-    success_message = _('Team updated successfully')
-    success_url = reverse_lazy('user:user-list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_team_admin'] = self.object.is_admin(self.request.user)
-        return context
-
-
-class TeamDeleteView(SuccessMessageMixin,
-                     CustomPermissions,
-                     TeamAdminPermissions,
-                     DeleteView):
-    model = Team
-    template_name = 'teams/team_delete.html'
-    success_url = reverse_lazy('user:user-list')
-    success_message = _('Team deleted successfully')
-
-    def post(self, request, *args, **kwargs):
-        team = self.get_object()
-
-        # check for team members count
-        team_members_count = TeamMembership.objects.filter(team=team).count()
-
-        if team_members_count > 1:  # team has more than 1 member
-            messages.error(
-                request,
-                _("Cannot delete a team because it has other members.")
-            )
-            return redirect('user:user-list')
-
-        # remove team from session if it's active
-        if request.session.get('active_team_id') == team.id:
-            del request.session['active_team_id']
-
-        return super().post(request, *args, **kwargs)
+    def get_queryset(self):
+        return Team.objects.all()

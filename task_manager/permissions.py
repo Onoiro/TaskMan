@@ -36,3 +36,36 @@ class TeamAdminPermissions(LoginRequiredMixin):
             return redirect('user:user-list')
 
         return super().dispatch(request, *args, **kwargs)
+
+
+class TeamMembershipAdminPermissions(LoginRequiredMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        from task_manager.teams.models import TeamMembership
+
+        try:
+            membership = TeamMembership.objects.get(pk=kwargs['pk'])
+            team = membership.team
+
+            # check if user is team admin or not
+            if not team.is_admin(request.user):
+                messages.error(
+                    request,
+                    _("You don't have permissions to manage team members."
+                      " Only team admin can do this.")
+                )
+                return redirect('teams:team-detail', pk=team.pk)
+
+            # check if user is trying to change their own role
+            if membership.user == request.user:
+                messages.error(
+                    request,
+                    _("You cannot change your own role in the team.")
+                )
+                return redirect('teams:team-detail', pk=team.pk)
+
+        except TeamMembership.DoesNotExist:
+            messages.error(request, _("Team membership not found."))
+            return redirect('teams:team-list')
+
+        return super().dispatch(request, *args, **kwargs)
