@@ -30,7 +30,7 @@
             <th>ID</th>
             <th>{% trans "User name" %}</th>
             <th>{% trans "Fullname" %}</th>
-            <th>{% trans "Team admin" %}</th>
+            <th>{% trans "Role" %}</th>
             <th>{% trans "Created at" %}</th>
             <th></th>
         </tr>
@@ -50,10 +50,14 @@
                 <td>
                     {% if request.active_team %}
                         {% for membership in user_memberships %}
-                            {% if membership.user_id == user.id and membership.role == 'admin' %}
-                                ✓
-                            {% elif membership.user_id == user.id %}
-                                ✗
+                            {% if membership.user_id == user.id %}
+                                {% if user_membership.role == 'admin' and user.id != request.user.id %}
+                                    <a href="{% url 'teams:team-member-role-update' membership.id %}">
+                                        {{ membership.get_role_display }}
+                                    </a>
+                                {% else %}
+                                    {{ membership.get_role_display }}
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% else %}
@@ -67,17 +71,6 @@
                         <br>
                         <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
                     {% else %}
-                        {% if request.active_team and user_membership.role == 'admin' %}
-                            {% for membership in user_memberships %}
-                                {% if membership.user_id == user.id %}
-                                    <a href="{% url 'teams:team-member-role-update' membership.id %}" 
-                                       class="btn btn-outline-primary btn-sm">
-                                        {% trans "Change Role" %}
-                                    </a>
-                                    <br>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
                         <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
                         <br>
                         <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
