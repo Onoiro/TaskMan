@@ -180,7 +180,7 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
-    success_url = reverse_lazy('user:user-list')
+    success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -192,7 +192,7 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
             role='admin'
         )
 
-        messages.success(self.request, _('Team created successfully!'))
+        messages.success(self.request, _('Team created successfully'))
         return response
 
 
@@ -231,6 +231,24 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
     success_url = reverse_lazy('user:user-list')
 
     def form_valid(self, form):
+        team = self.get_object()
+
+        # # check for tasks in team
+        # if Task.objects.filter(team=team).exists():
+        #     messages.error(
+        #         self.request, 
+        #         _("Cannot delete a team because it has tasks.")
+        #     )
+        #     return redirect('user:user-list')
+
+        # check for team members
+        if team.members.count() > 1:
+            messages.error(
+                self.request,
+                _("Cannot delete a team because it has other members.")
+            )
+            return redirect('user:user-list')
+
         messages.success(self.request, _('Team deleted successfully'))
         return super().form_valid(form)
 
