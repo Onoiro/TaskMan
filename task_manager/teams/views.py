@@ -220,12 +220,6 @@ class TeamUpdateView(TeamAdminPermissions, UpdateView):
     template_name = 'teams/team_update.html'
     success_url = reverse_lazy('user:user-list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        team = self.get_object()
-        context['is_team_admin'] = team.is_admin(self.request.user)
-        return context
-
     def form_valid(self, form):
         messages.success(self.request, _('Team updated successfully'))
         return super().form_valid(form)
@@ -239,13 +233,13 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
     def form_valid(self, form):
         team = self.get_object()
 
-        # # check for tasks in team
-        # if Task.objects.filter(team=team).exists():
-        #     messages.error(
-        #         self.request, 
-        #         _("Cannot delete a team because it has tasks.")
-        #     )
-        #     return redirect('user:user-list')
+        # check for tasks in team
+        if Task.objects.filter(team=team).exists():
+            messages.error(
+                self.request,
+                _("Cannot delete a team because it has tasks.")
+            )
+            return redirect('user:user-list')
 
         # check for team members
         if team.members.count() > 1:

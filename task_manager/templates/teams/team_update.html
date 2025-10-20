@@ -12,11 +12,9 @@
             <button type="submit" class="btn btn-primary">
                 {% trans "Edit" %}
             </button>
-            {% if is_team_admin %}
             <a href="{% url 'teams:team-delete' object.id %}" class="btn btn-danger">
                 {% trans "Delete" %}
             </a>
-            {% endif %}
         </div>
     </form>
 </div>
