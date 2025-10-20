@@ -180,7 +180,7 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
-    success_url = reverse_lazy('teams:team-list')
+    success_url = reverse_lazy('user:user-list')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -218,20 +218,20 @@ class TeamUpdateView(TeamAdminPermissions, UpdateView):
     model = Team
     form_class = TeamForm
     template_name = 'teams/team_update.html'
-    success_url = reverse_lazy('teams:team-list')
+    success_url = reverse_lazy('user:user-list')
 
     def form_valid(self, form):
-        messages.success(self.request, _('Team updated successfully!'))
+        messages.success(self.request, _('Team updated successfully'))
         return super().form_valid(form)
 
 
 class TeamDeleteView(TeamAdminPermissions, DeleteView):
     model = Team
     template_name = 'teams/team_delete.html'
-    success_url = reverse_lazy('teams:team-list')
+    success_url = reverse_lazy('user:user-list')
 
     def form_valid(self, form):
-        messages.success(self.request, _('Team deleted successfully!'))
+        messages.success(self.request, _('Team deleted successfully'))
         return super().form_valid(form)
 
 
