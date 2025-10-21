@@ -285,6 +285,10 @@ class TeamTestCase(TestCase):
                 defaults={'role': 'admin'}
             )
 
+        # Remove all tasks related to the team to avoid triggering the task check
+        from task_manager.tasks.models import Task
+        Task.objects.filter(team=self.team).delete()
+
         # add regular user to team
         regular_user = User.objects.create_user(
             username='team_member',
