@@ -285,7 +285,8 @@ class TeamTestCase(TestCase):
                 defaults={'role': 'admin'}
             )
 
-        # Remove all tasks related to the team to avoid triggering the task check
+        # remove all tasks related to the team
+        # to avoid triggering the task check
         from task_manager.tasks.models import Task
         Task.objects.filter(team=self.team).delete()
 
@@ -314,6 +315,43 @@ class TeamTestCase(TestCase):
         self.assertEqual(str(messages[0]),
                          _("Cannot delete a team because"
                          " it has other members."))
+
+    def test_cannot_delete_team_with_tasks(self):
+        # create a new team without any members (only admin)
+        new_team = Team.objects.create(
+            name='Task Team',
+            description='Team with tasks',
+            password='123'
+        )
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=new_team,
+            role='admin'
+        )
+
+        # add a task to the team
+        from task_manager.tasks.models import Task, Status
+        status = Status.objects.first()
+        Task.objects.create(
+            name='Test Task',
+            description='Task description',
+            status=status,
+            author=self.admin_user,
+            executor=self.admin_user,
+            team=new_team
+        )
+
+        # attempt to delete the team
+        response = self.c.post(
+            reverse('teams:team-delete', args=[new_team.id]), follow=True)
+
+        # ensure the team still exists
+        self.assertTrue(Team.objects.filter(pk=new_team.id).exists())
+
+        # check the error message about tasks
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]),
+                         _("Cannot delete a team because it has tasks."))
 
     def test_non_admin_cannot_delete_team(self):
         # create regular user not team admin
