@@ -1,180 +1,126 @@
 {% load django_bootstrap5 %}
 {% load static %}
-<!-- {% bootstrap_css %} -->
-<!-- {% bootstrap_javascript %} -->
 {% load i18n %}
 
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
 
   <head>
-    <!-- Основные мета-теги -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
-    <meta name="theme-color" content="#007bff">
-    
-    <!-- PWA манифест -->
-    <link rel="manifest" href="{% static 'manifest.json' %}">
-    
-    <!-- Иконки -->
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <link rel="icon" href="{% static 'icons/icon-192x192.png' %}">
-    <link rel="apple-touch-icon" href="{% static 'icons/icon-180x180.png' %}">
-    
-    <!-- iOS PWA настройки -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="TaskMan">
-
-    <!-- Android PWA настройки -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="TaskMan">
-    
-    <!-- Цвета Chrome для Android -->
-    <meta name="theme-color" content="#007bff">
-    <meta name="msapplication-navbutton-color" content="#007bff">
-    <meta name="msapplication-TileColor" content="#007bff">
-    <meta name="msapplication-TileImage" content="{% static 'icons/icon-192x192.png' %}">
-
-    <!-- Настройки для Huawei EMUI/HarmonyOS -->
-    <!-- 1. Для браузера Huawei (и других китайских браузеров) -->
-    <meta name="browsermode" content="application">
-    <meta name="full-screen" content="yes">
-    <meta name="x5-fullscreen" content="true">
-    <meta name="x5-page-mode" content="app">
-    <meta name="x5-orientation" content="portrait">
-    
-    <!-- Заголовок -->
-    <title>{% block title %}{% trans "TaskMan" %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "Task Manager" %}</title>
     {% bootstrap_css %}
-
-    
-    <!-- CSS -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
-    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-    
-    <!-- JavaScript -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-     -->
-    <!-- Service Worker регистрация -->
-    <script>
-        window.addEventListener('load', function() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('{% static "js/sw.js" %}')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful');
-                    })
-                    .catch(function(err) {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            }
-        });
-    </script>
   </head>
-
   <body class="d-flex flex-column min-vh-100">
 
     {% block navbar %}
-      <div class="container">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="/">{% trans "TaskMan" %}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="wrapper">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+          <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+              {% trans "TaskMan" %}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
-              <span class="d-inline-block d-lg-none">{% trans "Menu" %}</span>
             </button>
-    
-            <div class="collapse navbar-collapse" id="navbarsExample09">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'index' %}">{% trans "Home" %}</a>
+                </li>
                 {% if user.is_authenticated %}
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'user:user-list' %}">{% trans "Users" %}</a>
+                    <a class="nav-link" href="{% url 'user:user-list' %}">{% trans "Users" %}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/statuses/">{% trans "Statuses" %}</a>
+                    <a class="nav-link" href="{% url 'statuses:statuses-list' %}">{% trans "Statuses" %}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/labels/">{% trans "Labels" %}</a>
+                    <a class="nav-link" href="{% url 'labels:labels-list' %}">{% trans "Labels" %}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/tasks/">{% trans "Tasks" %}</a>
+                    <a class="nav-link" href="{% url 'tasks:tasks-list' %}">{% trans "Tasks" %}</a>
                   </li>
                 {% endif %}
               </ul>
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                <!-- DROPDOWN ДЛЯ ПЕРЕКЛЮЧЕНИЯ КОМАНД -->
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle" href="#" id="teamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if active_team %}
-                            📁 {{ active_team.name }}
-                        {% else %}
-                            👤 {% trans "Individual" %}
-                        {% endif %}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="teamDropdown">
-                        <!-- Индивидуальный режим -->
-                        <li>
-                            <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
-                                {% csrf_token %}
-                                <input type="hidden" name="team_id" value="individual">
-                                <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
-                                    👤 {% trans "Individual Mode" %}
-                                </button>
-                            </form>
-                        </li>
-                        
-                        <!-- Список команд -->
-                        {% if user_teams %}
-                        <li><hr class="dropdown-divider"></li>
-                        <li class="dropdown-header">{% trans "My Teams" %}</li>
-                        {% for membership in user_teams %}
-                        <li>
-                            <form method="post" action="{% url 'teams:switch-team' %}" class="m-0">
-                                {% csrf_token %}
-                                <input type="hidden" name="team_id" value="{{ membership.team.id }}">
-                                <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
-                                    📁 {{ membership.team.name }}
-                                    {% if membership.role == 'admin' %}
-                                        <span class="badge bg-primary ms-1">Admin</span>
-                                    {% endif %}
-                                </button>
-                            </form>
-                        </li>
-                        {% endfor %}
-                        {% else %}
-                        <li><hr class="dropdown-divider"></li>
-                        <li class="dropdown-header">{% trans "No teams yet" %}</li>
-                        {% endif %}
-                        
-                        <!-- Действия с командами -->
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'teams:team-create' %}">
-                                ➕ {% trans "Create Team" %}
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'teams:team-join' %}">
-                                🔗 {% trans "Join Team" %}
-                            </a>
-                        </li>
-                        {% if active_team %}
-                        <li>
-                            <form method="post" action="{% url 'teams:team-exit' active_team.id %}" class="m-0">
-                                {% csrf_token %}
-                                <button type="submit" class="dropdown-item text-danger">
-                                    🚪 {% trans "Exit Team" %}
-                                </button>
-                            </form>
-                        </li>
-                        {% endif %}
-                    </ul>
+                <!-- DROPDOWN -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if active_team %}
+                      🏢 {{ active_team.name }}
+                    {% else %}
+                      👤 {{ user.username }}
+                    {% endif %}
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <!-- Переключение между командами -->
+                    {% if user_teams %}
+                    <li class="dropdown-header">{% trans "Switch team" %}</li>
+                    
+                    <!-- Индивидуальный режим -->
+                    <li>
+                      <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
+                        {% csrf_token %}
+                        <input type="hidden" name="team_id" value="individual">
+                        <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
+                          👤 {% trans "Individual mode" %}
+                        </button>
+                      </form>
+                    </li>
+                    
+                    <!-- Список команд -->
+                    {% for membership in user_teams %}
+                    <li>
+                      <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
+                        {% csrf_token %}
+                        <input type="hidden" name="team_id" value="{{ membership.team.id }}">
+                        <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
+                          🏢 {{ membership.team.name }} 
+                          <small class="text-muted">({{ membership.get_role_display }})</small>
+                        </button>
+                      </form>
+                    </li>
+                    {% endfor %}
+                    
+                    <li><hr class="dropdown-divider"></li>
+                    {% endif %}
+                    
+                    <!-- Действия с пользователем -->
+                    <li>
+                      <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
+                        ✏️ {% trans "Update profile" %}
+                      </a>
+                    </li>
+                    
+                    <!-- Действия с командами -->
+                    <li>
+                        <a class="dropdown-item" href="{% url 'teams:team-create' %}">
+                            ➕ {% trans "Create Team" %}
+                        </a>
+                    </li>
+                    {% if active_team %}
+                    <li>
+                        <form method="post" action="{% url 'teams:team-exit' active_team.id %}" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item text-danger">
+                                🚪 {% trans "Exit Team" %}
+                            </button>
+                        </form>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Выход -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'logout' %}">
+                        🚪 {% trans "Logout" %}
+                      </a>
+                    </li>
+                  </ul>
                 </li>
                 <!-- КОНЕЦ DROPDOWN -->
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">{% trans "Exit" %}</a>
-                  </li>
                 {% else %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
