@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Exit team" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container wrapper flex-grow-1">
+  <h1 class="my-4"> {% trans "Exit team" %}</h1>
+    <form method="post" class="form">
+        {% csrf_token %}
+        <p>{% trans "Are you sure you want to exit the team" %} "{{ team.name }}"?</p>
+        <button type="submit" class="btn btn-danger">
+          {% trans "Yes, exit" %}
+        </button>
+        <a href="{% url 'user:user-list' %}" class="btn btn-secondary">
+          {% trans "Cancel" %}
+        </a>
+    </form>
+</div>
+{% endblock %}
