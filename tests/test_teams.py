@@ -441,7 +441,7 @@ class TeamTestCase(TestCase):
         )
 
         # try to exit as admin
-        response = self.c.post(reverse('teams:team-exit', args=[new_team.id]),
+        response = self.c.get(reverse('teams:team-exit', args=[new_team.id]),
                                follow=True)
 
         # check that membership still exists
@@ -489,7 +489,7 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_user)
 
         # try to exit the team
-        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+        response = self.c.get(reverse('teams:team-exit', args=[self.team.id]),
                                follow=True)
 
         # check that membership still exists
@@ -537,7 +537,7 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_user)
 
         # try to exit the team
-        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+        response = self.c.get(reverse('teams:team-exit', args=[self.team.id]),
                                follow=True)
 
         # check that membership still exists
@@ -576,7 +576,7 @@ class TeamTestCase(TestCase):
         self.c.force_login(non_member_user)
 
         # try to exit the team
-        response = self.c.post(reverse('teams:team-exit',
+        response = self.c.get(reverse('teams:team-exit',
                                args=[self.team.id]),
                                follow=True)
 
