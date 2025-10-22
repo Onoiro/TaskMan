@@ -15,7 +15,7 @@ from django.views.generic import (
     ListView
 )
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from task_manager.teams.forms import TeamForm, TeamMemberRoleForm
 from task_manager.teams.models import Team, TeamMembership
@@ -55,10 +55,12 @@ class SwitchTeamView(View):
 
 
 class TeamExitView(LoginRequiredMixin, View):
-    def post(self, request, team_id):
+    def get(self, request, team_id):
+        """display confirmation page for exiting team"""
         try:
             team = Team.objects.get(id=team_id)
 
+            # проверки выполняются только в get-методе
             if not self._is_user_team_member(request.user, team):
                 messages.error(request, _('You are not a member of this team'))
                 return self._redirect_back(request)
@@ -76,6 +78,21 @@ class TeamExitView(LoginRequiredMixin, View):
                     request, self._get_task_error_message(request.user, team))
                 return self._redirect_back(request)
 
+            # если дошли сюда - все проверки пройдены, показываем подтверждение
+            return render(request, 'teams/team_exit.html', {'team': team})
+
+        except Team.DoesNotExist:
+            messages.error(request, _('Team not found'))
+            return self._redirect_back(request)
+
+    def post(self, request, team_id):
+        """process exit from team after confirmation"""
+        # если пользователь дошел до post-запроса, значит он уже прошел все проверки в get
+        # и видел страницу подтверждения
+        try:
+            team = Team.objects.get(id=team_id)
+            
+            # выполняем выход из команды без дополнительных проверок
             self._remove_user_membership(request.user, team)
             self._clear_active_team_session(request, team)
 
@@ -84,21 +101,21 @@ class TeamExitView(LoginRequiredMixin, View):
                 _(f'You have successfully left the team "{team.name}"')
             )
 
-            return self._redirect_back(request)
+            return redirect('user:user-list')
 
         except Team.DoesNotExist:
             messages.error(request, _('Team not found'))
             return self._redirect_back(request)
 
     def _is_user_team_member(self, user, team):
-        """Check if user is a member of the team"""
+        """check if user is a member of the team"""
         return TeamMembership.objects.filter(
             user=user,
             team=team
         ).exists()
 
     def _is_user_team_admin(self, user, team):
-        """Check if user is an admin of the team"""
+        """check if user is an admin of the team"""
         return TeamMembership.objects.filter(
             user=user,
             team=team,
@@ -106,14 +123,14 @@ class TeamExitView(LoginRequiredMixin, View):
         ).exists()
 
     def _has_user_tasks_in_team(self, user, team):
-        """Check if user has tasks as author or executor in the team"""
+        """check if user has tasks as author or executor in the team"""
         return (
             Task.objects.filter(team=team, author=user).exists()
             or Task.objects.filter(team=team, executor=user).exists()
         )
 
     def _get_task_error_message(self, user, team):
-        """Get appropriate error message for task constraints"""
+        """get appropriate error message for task constraints"""
         has_author_tasks = Task.objects.filter(
             team=team, author=user).exists()
         has_executor_tasks = Task.objects.filter(
@@ -124,16 +141,16 @@ class TeamExitView(LoginRequiredMixin, View):
                      ' author or executor of tasks in this team.')
 
     def _remove_user_membership(self, user, team):
-        """Remove user's membership from the team"""
+        """remove user's membership from the team"""
         TeamMembership.objects.filter(user=user, team=team).delete()
 
     def _clear_active_team_session(self, request, team):
-        """Clear active team from session if it matches"""
+        """clear active team from session if it matches"""
         if request.session.get('active_team_id') == team.id:
             del request.session['active_team_id']
 
     def _redirect_back(self, request):
-        """Redirect back to previous page or home"""
+        """redirect back to previous page or home"""
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
