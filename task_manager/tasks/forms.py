@@ -30,7 +30,7 @@ class TaskForm(forms.ModelForm):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            # Режим команды
+            # team mode
             self.fields['executor'].queryset = User.objects.filter(
                 team_memberships__team=team
             )
@@ -40,8 +40,12 @@ class TaskForm(forms.ModelForm):
             self.fields['labels'].queryset = Label.objects.filter(
                 team=team
             )
+            # if team has only one member - set executor to author
+            if team.memberships.count() == 1:
+                self.fields['executor'].initial = user
+                self.fields['executor'].widget.attrs['readonly'] = True
         else:
-            # Индивидуальный режим
+            # individual mode
             self.fields['executor'].queryset = User.objects.filter(
                 pk=user.pk
             )
@@ -53,31 +57,6 @@ class TaskForm(forms.ModelForm):
                 creator=user,
                 team__isnull=True
             )
-            # В индивидуальном режиме исполнитель - сам пользователь
+            # user is exucutor in individual mode
             self.fields['executor'].initial = user
             self.fields['executor'].widget.attrs['readonly'] = True
-        # team = user.team
-
-        # if team is not None:
-        #     self.fields['executor'].queryset = (
-        #         User.objects.filter(team=team)
-        #     )
-        #     self.fields['status'].queryset = (
-        #         Status.objects.filter(creator__team=team)
-        #     )
-        #     self.fields['labels'].queryset = (
-        #         Label.objects.filter(creator__team=team)
-        #     )
-        # else:
-        #     self.fields['executor'].queryset = (
-        #         User.objects.filter(pk=user.pk)
-        #     )
-        #     self.fields['status'].queryset = (
-        #         Status.objects.filter(creator=user)
-        #     )
-        #     self.fields['labels'].queryset = (
-        #         Label.objects.filter(creator=user)
-        #     )
-        #     # set initial value of exucutor is user himself
-        #     self.fields['executor'].initial = user
-        #     self.fields['executor'].widget.attrs['readonly'] = True

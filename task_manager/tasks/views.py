@@ -71,6 +71,9 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
 
         if team:
             form.instance.team = team
+            # if team has only one member - set executor to author
+            if team.memberships.count() == 1:
+                form.instance.executor = self.request.user
         else:
             # individual task
             form.instance.executor = self.request.user
