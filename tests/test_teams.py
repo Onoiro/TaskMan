@@ -441,8 +441,9 @@ class TeamTestCase(TestCase):
         )
 
         # try to exit as admin
-        response = self.c.get(reverse('teams:team-exit', args=[new_team.id]),
-                               follow=True)
+        response = self.c.get(
+            reverse('teams:team-exit',
+                    args=[new_team.id]), follow=True)
 
         # check that membership still exists
         self.assertTrue(new_team.is_member(self.admin_user))
@@ -489,8 +490,9 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_user)
 
         # try to exit the team
-        response = self.c.get(reverse('teams:team-exit', args=[self.team.id]),
-                               follow=True)
+        response = self.c.get(
+            reverse('teams:team-exit',
+                    args=[self.team.id]), follow=True)
 
         # check that membership still exists
         self.assertTrue(self.team.is_member(regular_user))
@@ -537,8 +539,9 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_user)
 
         # try to exit the team
-        response = self.c.get(reverse('teams:team-exit', args=[self.team.id]),
-                               follow=True)
+        response = self.c.get(
+            reverse('teams:team-exit',
+                    args=[self.team.id]), follow=True)
 
         # check that membership still exists
         self.assertTrue(self.team.is_member(regular_user))
@@ -555,9 +558,9 @@ class TeamTestCase(TestCase):
         nonexistent_team_id = 9999
 
         # try to exit nonexistent team
-        response = self.c.post(reverse('teams:team-exit',
-                               args=[nonexistent_team_id]),
-                               follow=True)
+        response = self.c.post(
+            reverse('teams:team-exit',
+                    args=[nonexistent_team_id]), follow=True)
 
         # check error message
         messages = list(get_messages(response.wsgi_request))
@@ -577,8 +580,8 @@ class TeamTestCase(TestCase):
 
         # try to exit the team
         response = self.c.get(reverse('teams:team-exit',
-                               args=[self.team.id]),
-                               follow=True)
+                              args=[self.team.id]),
+                              follow=True)
 
         # check error message
         messages = list(get_messages(response.wsgi_request))

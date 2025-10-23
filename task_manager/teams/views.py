@@ -60,7 +60,6 @@ class TeamExitView(LoginRequiredMixin, View):
         try:
             team = Team.objects.get(id=team_id)
 
-            # проверки выполняются только в get-методе
             if not self._is_user_team_member(request.user, team):
                 messages.error(request, _('You are not a member of this team'))
                 return self._redirect_back(request)
@@ -78,7 +77,6 @@ class TeamExitView(LoginRequiredMixin, View):
                     request, self._get_task_error_message(request.user, team))
                 return self._redirect_back(request)
 
-            # если дошли сюда - все проверки пройдены, показываем подтверждение
             return render(request, 'teams/team_exit.html', {'team': team})
 
         except Team.DoesNotExist:
@@ -87,12 +85,9 @@ class TeamExitView(LoginRequiredMixin, View):
 
     def post(self, request, team_id):
         """process exit from team after confirmation"""
-        # если пользователь дошел до post-запроса, значит он уже прошел все проверки в get
-        # и видел страницу подтверждения
         try:
             team = Team.objects.get(id=team_id)
-            
-            # выполняем выход из команды без дополнительных проверок
+
             self._remove_user_membership(request.user, team)
             self._clear_active_team_session(request, team)
 
