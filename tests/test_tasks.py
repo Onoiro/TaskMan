@@ -1,6 +1,6 @@
 from task_manager.tasks.models import Task
 from task_manager.user.models import User
-from task_manager.teams.models import TeamMembership
+from task_manager.teams.models import TeamMembership, Team
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django.test import TestCase, Client
@@ -462,6 +462,72 @@ class TaskTestCase(TestCase):
         task.delete()
         status.delete()
         user_no_team.delete()
+
+    def test_create_task_user_solo_in_team_auto_executor(self):
+        # create user without team first
+        solo_user = User.objects.create_user(
+            username='solo_team_user',
+            password='testpass123'
+        )
+
+        team = Team.objects.create(
+            name='Solo Team',
+            description='Team with single member'
+        )
+
+        # add user to team as admin
+        TeamMembership.objects.create(
+            user=solo_user,
+            team=team,
+            role='admin'
+        )
+
+        self.c.force_login(solo_user)
+
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = team.id
+        session.save()
+
+        # set status
+        available_status = Status.objects.filter(team=team).first()
+        if not available_status:
+            available_status = Status.objects.create(
+                name='Test Status',
+                team=team,
+                creator=solo_user
+            )
+
+        # use same logic as in setUp for executor
+        available_executor = User.objects.filter(
+            team_memberships__team=team
+        ).exclude(pk=solo_user.pk).first() or solo_user
+
+        # create task data
+        task_data = {
+            'name': 'solo_team_task',
+            'description': 'task for solo team user',
+            'status': available_status.id,
+            'executor': available_executor.id,
+        }
+
+        self.c.post(reverse('tasks:task-create'), task_data, follow=True)
+
+        # check if task was created
+        task = Task.objects.filter(name=task_data['name']).first()
+        self.assertIsNotNone(task, "Task was not created")
+
+        self.assertEqual(task.author, solo_user)
+        self.assertEqual(task.executor, solo_user)
+        self.assertEqual(task.team, team)
+
+        # cleanup
+        task.delete()
+        if available_status:
+            available_status.delete()
+        TeamMembership.objects.filter(user=solo_user, team=team).delete()
+        team.delete()
+        solo_user.delete()
 
     def test_create_task_user_without_team_limited_executor_choice(self):
         # create user without team
