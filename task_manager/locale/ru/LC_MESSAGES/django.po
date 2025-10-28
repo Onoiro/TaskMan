@@ -61,28 +61,24 @@ msgstr "У вас нет прав для изменения другого по�
 
 #: permissions.py:33
 msgid "You don't have permissions to modify this. Only team admin can do this."
-msgstr ""
-"У вас нет прав, чтобы сделать это изменение. Это может сделать только "
-"администратор команды"
+msgstr "У вас нет прав, чтобы сделать это изменение. Это может сделать только "
+    "админ команды"
 
 #: permissions.py:54
-#, fuzzy
-#| msgid ""
-#| "You don't have permissions to modify this. Only team admin can do this."
 msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
 msgstr ""
-"У вас нет прав, чтобы сделать это изменение. Это может сделать только "
+"У вас нет прав, чтобы управлять участниками команды. Это может сделать только "
 "администратор команды"
 
 #: permissions.py:63
 msgid "You cannot change your own role in the team."
-msgstr ""
+msgstr "Вы не можете изменить свою собственную роль в команде."
 
 #: permissions.py:68
 msgid "Team membership not found."
-msgstr ""
+msgstr "Участие в команде не найдено."
 
 #: settings.py:166 templates/index.html:63
 msgid "English"
@@ -254,7 +250,7 @@ msgstr "Введенные пароли не совпадают."
 
 #: teams/forms.py:72
 msgid "Invalid role selected."
-msgstr ""
+msgstr "Выбрана недопустимая роль."
 
 #: teams/models.py:18 user/forms.py:43
 msgid "Team password"
@@ -266,57 +262,55 @@ msgstr "Минимальная длина 3 символа"
 
 #: teams/models.py:61 user/forms.py:99
 msgid "Admin"
-msgstr ""
+msgstr "Админ"
 
 #: teams/models.py:62 user/forms.py:100
 msgid "Member"
-msgstr ""
+msgstr "Участник"
 
 #: teams/views.py:38
 msgid "Switched to individual mode"
-msgstr ""
+msgstr "Переключено в индивидуальный режим"
 
 #: teams/views.py:49
 #, python-brace-format
 msgid "Switched to team: {team.name}"
-msgstr ""
+msgstr "Переключено на команду: {team.name}"
 
 #: teams/views.py:52 teams/views.py:83 teams/views.py:102
-#, fuzzy
-#| msgid "Team info "
 msgid "Team not found"
-msgstr "Информация о команде"
+msgstr "Команда не найдена"
 
 #: teams/views.py:64
 msgid "You are not a member of this team"
-msgstr ""
+msgstr "Вы не являетесь участником этой команды"
 
 #: teams/views.py:70
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
-msgstr ""
+msgstr "Админы команды не могут покинуть команду. Сначала передайте права "
+"админа другому участнику."
 
 #: teams/views.py:96
 #, python-brace-format
 msgid "You have successfully left the team \"{team.name}\""
-msgstr ""
+msgstr "Вы успешно покинули команду «{team.name}»"
 
 #: teams/views.py:135
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
-msgstr ""
+msgstr "Вы не можете покинуть команду, так как являетесь автором или исполнителем "
+"задач в этой команде."
 
 #: teams/views.py:171
 msgid "You are already a member of this team!"
-msgstr ""
+msgstr "Вы уже являетесь участником этой команды!"
 
 #: teams/views.py:181
-#, fuzzy
-#| msgid "You successfully logged in"
 msgid "You have successfully joined the team!"
-msgstr "Вы залогинены"
+msgstr "Вы успешно присоединились к команде!"
 
 #: teams/views.py:207
 msgid "Team created successfully"
@@ -327,14 +321,10 @@ msgid "Team updated successfully"
 msgstr "Команда успешно изменена"
 
 #: teams/views.py:252
-#, fuzzy
-#| msgid "Cannot delete a team because it has members."
 msgid "Cannot delete a team because it has tasks."
-msgstr "Невозможно удалить команду, потому что в ней есть участники"
+msgstr "Невозможно удалить команду, так как у нее есть задачи."
 
 #: teams/views.py:260
-#, fuzzy
-#| msgid "Cannot delete a team because it has members."
 msgid "Cannot delete a team because it has other members."
 msgstr "Невозможно удалить команду, потому что в ней есть участники"
 
@@ -345,16 +335,14 @@ msgstr "Команда успешно удалена"
 #: teams/views.py:287
 #, python-brace-format
 msgid "User {membership.user.username} has been promoted to team admin."
-msgstr ""
+msgstr "Пользователь {membership.user.username} назначен админом команды."
 
 #: teams/views.py:293
 #, python-brace-format
 msgid "User {membership.user.username} has been demoted to team member."
-msgstr ""
+msgstr "Пользователь {membership.user.username} стал участником команды."
 
 #: templates/base.html:11
-#, fuzzy
-#| msgid "Task manager"
 msgid "Task Manager"
 msgstr "Менеджер задач"
 
@@ -364,7 +352,7 @@ msgstr "ТаскМан"
 
 #: templates/base.html:29
 msgid "Home"
-msgstr ""
+msgstr "Главная"
 
 #: templates/base.html:33 templates/user/user_list.html:26
 msgid "Users"
@@ -382,33 +370,27 @@ msgstr "Задачи"
 
 #: templates/base.html:60
 msgid "Switch team"
-msgstr ""
+msgstr "Переключение между командами"
 
 #: templates/base.html:68
-#, fuzzy
-#| msgid "Individual & Team Use"
 msgid "Individual mode"
-msgstr "Для индивидуального использования и команд"
+msgstr "Индивидуальный режим"
 
 #: templates/base.html:93
 msgid "Update profile"
-msgstr ""
+msgstr "Обновить профиль"
 
 #: templates/base.html:100
-#, fuzzy
-#| msgid "Create Team "
 msgid "Create Team"
 msgstr "Создание команды"
 
 #: templates/base.html:106
-#, fuzzy
-#| msgid "Edit Team "
 msgid "Exit Team"
-msgstr "Изменение команды"
+msgstr "Выйти из команды"
 
 #: templates/base.html:115
 msgid "Logout"
-msgstr ""
+msgstr "Выход"
 
 #: templates/base.html:123 templates/index.html:22 templates/index.html:32
 #: templates/login.html:8
@@ -539,15 +521,13 @@ msgid "Log in"
 msgstr "Войти"
 
 #: templates/statuses/status_detailed.html:9
-#, fuzzy
-#| msgid "Statuses"
 msgid "Status view"
-msgstr "Статусы"
+msgstr "Просмотр статуса"
 
 #: templates/statuses/status_detailed.html:21
 #: templates/tasks/task_filter.html:73
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: templates/statuses/statuses_create_form.html:8
 msgid "Create status"
@@ -583,10 +563,8 @@ msgid "Author"
 msgstr "Автор"
 
 #: templates/tasks/task_detail.html:66
-#, fuzzy
-#| msgid "New label"
 msgid "No labels"
-msgstr "Создать метку"
+msgstr "Нет меток"
 
 #: templates/tasks/task_filter.html:15
 msgid "New task"
@@ -634,103 +612,83 @@ msgid "Delete team"
 msgstr "Удаление команды"
 
 #: templates/teams/team_detail.html:8
-#, fuzzy
-#| msgid "Team info "
 msgid "Team info"
 msgstr "Информация о команде"
 
 #: templates/teams/team_detail.html:13
-#, fuzzy
-#| msgid "description"
 msgid "No description"
-msgstr "описание"
+msgstr "Нет описания"
 
 #: templates/teams/team_detail.html:19 templates/teams/team_update.html:7
-#, fuzzy
-#| msgid "Edit Team "
 msgid "Edit Team"
 msgstr "Изменение команды"
 
 #: templates/teams/team_detail.html:28
-#, fuzzy
-#| msgid "Team Name"
 msgid "Team Members"
-msgstr "Название команды"
+msgstr "Участники команды"
 
 #: templates/teams/team_detail.html:36
-#, fuzzy
-#| msgid "Users"
 msgid "User"
-msgstr "Пользователи"
+msgstr "Пользователь"
 
 #: templates/teams/team_detail.html:37
 #: templates/teams/team_member_role_update.html:22
 #: templates/user/user_list.html:33
 msgid "Role"
-msgstr ""
+msgstr "Роль"
 
 #: templates/teams/team_detail.html:38
-#, fuzzy
-#| msgid "Join Team"
 msgid "Joined at"
-msgstr "Присоединяйтесь к команде"
+msgstr "Дата присоединения"
 
 #: templates/teams/team_detail.html:40
 msgid "Actions"
-msgstr ""
+msgstr "Действия"
 
 #: templates/teams/team_detail.html:64
 msgid "Change Role"
-msgstr ""
+msgstr "Сменить роль"
 
 #: templates/teams/team_detail.html:67
 msgid "Your role"
-msgstr ""
+msgstr "Ваша роль"
 
 #: templates/teams/team_detail.html:77
 msgid "No members in this team yet."
-msgstr ""
+msgstr "В этой команде пока нет участников."
 
 #: templates/teams/team_exit.html:8 templates/teams/team_exit.html:14
-#, fuzzy
-#| msgid "Edit task"
 msgid "Exit team"
-msgstr "Изменение задачи"
+msgstr "Выход из команды"
 
 #: templates/teams/team_exit.html:17
-#, fuzzy
-#| msgid "Are you sure you want to delete"
 msgid "Are you sure you want to exit the team"
-msgstr "Вы уверены, что хотите удалить"
+msgstr "Вы уверены, что хотите выйти из команды?"
 
 #: templates/teams/team_exit.html:19
-#, fuzzy
-#| msgid "Yes, delete"
 msgid "Yes, exit"
-msgstr "Да, удалить"
+msgstr "Да, выйти"
 
 #: templates/teams/team_exit.html:22
 #: templates/teams/team_member_role_update.html:39
-#, fuzzy
-#| msgid "Cancelled"
 msgid "Cancel"
-msgstr "Отменена"
+msgstr "Отмена"
 
 #: templates/teams/team_member_role_update.html:10
 msgid "Change Team Member Role"
-msgstr ""
+msgstr "Изменить роль участника команды"
 
 #: templates/teams/team_member_role_update.html:14
 msgid "You are changing the role for"
-msgstr ""
+msgstr "Вы изменяете роль для"
 
 #: templates/teams/team_member_role_update.html:15
 msgid "in team"
-msgstr ""
+msgstr "в команде"
 
 #: templates/teams/team_member_role_update.html:42
 msgid "Save Changes"
-msgstr ""
+msgstr "Сохранить изменения"
 
 #: templates/user/user_create_form.html:13
 msgid "Sign up"
@@ -738,35 +696,27 @@ msgstr "Зарегистрировать"
 
 #: templates/user/user_detail.html:9
 msgid "User details"
-msgstr ""
+msgstr "Данные пользователя"
 
 #: templates/user/user_detail.html:17
-#, fuzzy
-#| msgid "Fullname"
 msgid "Full name"
 msgstr "Полное имя"
 
 #: templates/user/user_detail.html:24
 msgid "Date joined"
-msgstr ""
+msgstr "Дата создания"
 
 #: templates/user/user_detail.html:32
-#, fuzzy
-#| msgid "Login"
 msgid "Last login"
-msgstr "Вход"
+msgstr "Последний вход"
 
 #: templates/user/user_detail.html:41
-#, fuzzy
-#| msgid "Team"
 msgid "Teams"
-msgstr "Команда"
+msgstr "команды"
 
 #: templates/user/user_detail.html:58
-#, fuzzy
-#| msgid "No tasks"
 msgid "No teams"
-msgstr "Задач нет"
+msgstr "Команд нет"
 
 #: templates/user/user_list.html:22
 msgid "description"
@@ -786,7 +736,7 @@ msgstr "Полное имя"
 
 #: templates/user/user_list.html:64
 msgid "Not in team"
-msgstr ""
+msgstr "Не в команде"
 
 #: templates/user/user_update.html:8
 msgid "Edit user"
@@ -794,16 +744,17 @@ msgstr "Изменение пользователя"
 
 #: user/forms.py:35
 msgid "Join team (optional)"
-msgstr ""
+msgstr "Присоединиться к команде (необязательно)"
 
 #: user/forms.py:37
 msgid ""
 "Enter team name to join an existing team, or leave empty to work individually"
-msgstr ""
+msgstr "Введите название команды, чтобы присоединиться к существующей команде, "
+    "или оставьте поле пустым, чтобы работать индивидуально."
 
 #: user/forms.py:45
 msgid "Required if joining a team"
-msgstr ""
+msgstr "Требуется, если присоединяетесь к команде"
 
 #: user/forms.py:85 user/forms.py:88
 msgid "Leave blank if you don't want to change password"
@@ -811,17 +762,16 @@ msgstr "Оставьте поле пустым, если вы не хотите 
 
 #: user/forms.py:105
 msgid "Current teams"
-msgstr ""
+msgstr "Текущие команды"
 
 #: user/forms.py:121
 msgid "Join another team (optional)"
-msgstr ""
+msgstr "Присоединиться к другой команде (необязательно)"
 
 #: user/forms.py:123
-#, fuzzy
-#| msgid "Enter team name if you want to join existing team"
 msgid "Enter team name to join another team, or leave empty"
-msgstr "Введите название команды, к которой хотите присоединиться"
+msgstr "Введите название команды, к которой хотите присоединиться, "
+    "или оставьте поле пустым"
 
 #: user/forms.py:134
 msgid "Both password fields must be filled or both left blank"
@@ -829,21 +779,19 @@ msgstr "Оба поля пароля должны быть заполнены и
 
 #: user/forms.py:158
 msgid "Team password is required when joining a team"
-msgstr ""
+msgstr "Пароль команды обязателен при присоединении к команде"
 
 #: user/forms.py:167
 msgid "Team with this name does not exist"
-msgstr ""
+msgstr "Команды с таким названием не существует"
 
 #: user/forms.py:174
-#, fuzzy
-#| msgid "Team password"
 msgid "Invalid team password"
-msgstr "Пароль команды"
+msgstr "Неверный пароль команды"
 
 #: user/forms.py:185
 msgid "You are already a member of this team"
-msgstr ""
+msgstr "Вы уже участник этой команды"
 
 #: user/views.py:86
 msgid "User created successfully"
@@ -852,11 +800,11 @@ msgstr "Пользователь успешно зарегистрирован"
 #: user/views.py:99
 #, python-brace-format
 msgid "Welcome! You have joined team: {team.name}"
-msgstr ""
+msgstr "Добро пожаловать! Вы присоединились к команде: {team.name}"
 
 #: user/views.py:104
 msgid "Welcome! You can create a team or work individually"
-msgstr ""
+msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
 #: user/views.py:119
 msgid "User updated successfully"
@@ -865,17 +813,15 @@ msgstr "Пользователь успешно изменен"
 #: user/views.py:132
 #, python-brace-format
 msgid "You have joined team: {team.name}"
-msgstr ""
+msgstr "Вы присоединились к команде: {team.name}"
 
 #: user/views.py:145
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
 #: user/views.py:162
-#, fuzzy
-#| msgid "Cannot delete a user because it is in use"
 msgid "Cannot delete user because they are admin of team(s): "
-msgstr "Невозможно удалить пользователя, потому что он используется"
+msgstr "Невозможно удалить пользователя, потому что он админ команд: "
 
 #: user/views.py:175
 msgid "Cannot delete a user because it is in use"
@@ -891,7 +837,7 @@ msgid ""
 "simplifies task management.<br>Create, assign, and track tasks effortlessly "
 "across projects."
 msgstr ""
-"TaskMan упрощает управление задачами — будь вы одним пользователем  или "
+"TaskMan упрощает управление задачами - будь вы одним пользователем  или "
 "частью независимой команды. Создавайте, назначайте и отслеживайте задачи с "
 "легкостью в рамках разных проектов."
 
