@@ -284,14 +284,16 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
             if new_role == 'admin':
                 messages.success(
                     self.request,
-                    _(f'User {membership.user.username} '
-                      'has been promoted to team admin.')
+                    _(
+                        "User {username} has been promoted to team admin."
+                    ).format(username=membership.user.username)
                 )
             else:
                 messages.success(
                     self.request,
-                    _(f'User {membership.user.username} '
-                      'has been demoted to team member.')
+                    _(
+                        "User {username} has been demoted to team admin."
+                    ).format(username=membership.user.username)
                 )
 
         return response
