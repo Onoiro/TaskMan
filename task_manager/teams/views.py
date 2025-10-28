@@ -46,7 +46,7 @@ class SwitchTeamView(View):
                     request.session['active_team_id'] = team.id
                     messages.success(
                         request,
-                        _(f'Switched to team: {team.name}')
+                        _("Switched to team: {team}").format(team=team.name)
                     )
                 except Team.DoesNotExist:
                     messages.error(request, _('Team not found'))
