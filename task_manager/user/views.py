@@ -96,7 +96,9 @@ class UserCreateView(SuccessMessageMixin, CreateView):
             self.request.session['active_team_id'] = team.id
             messages.success(
                 self.request,
-                _(f"Welcome! You have joined team: {team.name}")
+                _(
+                    "Welcome! You have joined team: {team}"
+                ).format(team=team.name)
             )
         else:
             messages.info(
@@ -129,7 +131,7 @@ class UserUpdateView(CustomPermissions,
             self.request.session['active_team_id'] = team.id
             messages.success(
                 self.request,
-                _(f"You have joined team: {team.name}")
+                _("You have joined team: {team}").format(team=team.name)
             )
 
         return redirect('user:user-list')

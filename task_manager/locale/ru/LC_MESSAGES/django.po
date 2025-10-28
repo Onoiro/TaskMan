@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-29 00:06+0300\n"
+"POT-Creation-Date: 2025-10-29 00:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -276,9 +276,9 @@ msgstr "Переключено в индивидуальный режим"
 #: teams/views.py:49
 #, python-brace-format
 msgid "Switched to team: {team}"
-msgstr "Переключено на команду: {team.name}"
+msgstr "Переключено на команду: {team}"
 
-#: teams/views.py:52 teams/views.py:83 teams/views.py:102
+#: teams/views.py:52 teams/views.py:83 teams/views.py:104
 msgid "Team not found"
 msgstr "Команда не найдена"
 
@@ -294,12 +294,12 @@ msgstr ""
 "Админы команды не могут покинуть команду. Сначала передайте права админа "
 "другому участнику."
 
-#: teams/views.py:96
+#: teams/views.py:97
 #, python-brace-format
-msgid "You have successfully left the team \"{team.name}\""
-msgstr "Вы успешно покинули команду «{team.name}»"
+msgid "You have successfully left the team {team}"
+msgstr "Вы успешно покинули команду {team}"
 
-#: teams/views.py:135
+#: teams/views.py:137
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
@@ -307,43 +307,43 @@ msgstr ""
 "Вы не можете покинуть команду, так как являетесь автором или исполнителем "
 "задач в этой команде."
 
-#: teams/views.py:171
+#: teams/views.py:173
 msgid "You are already a member of this team!"
 msgstr "Вы уже являетесь участником этой команды!"
 
-#: teams/views.py:181
+#: teams/views.py:183
 msgid "You have successfully joined the team!"
 msgstr "Вы успешно присоединились к команде!"
 
-#: teams/views.py:207
+#: teams/views.py:209
 msgid "Team created successfully"
 msgstr "Команда успешно создана"
 
-#: teams/views.py:236
+#: teams/views.py:238
 msgid "Team updated successfully"
 msgstr "Команда успешно изменена"
 
-#: teams/views.py:252
+#: teams/views.py:254
 msgid "Cannot delete a team because it has tasks."
 msgstr "Невозможно удалить команду, так как у нее есть задачи."
 
-#: teams/views.py:260
+#: teams/views.py:262
 msgid "Cannot delete a team because it has other members."
 msgstr "Невозможно удалить команду, потому что в ней есть участники"
 
-#: teams/views.py:264
+#: teams/views.py:266
 msgid "Team deleted successfully"
 msgstr "Команда успешно удалена"
 
-#: teams/views.py:288
+#: teams/views.py:290
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
-msgstr "Пользователь {membership.user.username} назначен админом команды."
+msgstr "Пользователь {username} назначен админом команды."
 
-#: teams/views.py:295
+#: teams/views.py:297
 #, python-brace-format
-msgid "User {username} has been demoted to team admin."
-msgstr "Пользователь {membership.user.username} стал обычным членом команды."
+msgid "User {username} has been demoted to team member."
+msgstr "Пользователь {username} стал участником команды."
 
 #: templates/base.html:11
 msgid "Task Manager"
@@ -802,33 +802,33 @@ msgstr "Вы уже участник этой команды"
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: user/views.py:99
+#: user/views.py:100
 #, python-brace-format
-msgid "Welcome! You have joined team: {team.name}"
-msgstr "Добро пожаловать! Вы присоединились к команде: {team.name}"
+msgid "Welcome! You have joined team: {team}"
+msgstr "Добро пожаловать! Вы присоединились к команде: {team}"
 
-#: user/views.py:104
+#: user/views.py:106
 msgid "Welcome! You can create a team or work individually"
 msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
-#: user/views.py:119
+#: user/views.py:121
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменен"
 
-#: user/views.py:132
+#: user/views.py:134
 #, python-brace-format
-msgid "You have joined team: {team.name}"
-msgstr "Вы присоединились к команде: {team.name}"
+msgid "You have joined team: {team}"
+msgstr "Вы присоединились к команде: {team}"
 
-#: user/views.py:145
+#: user/views.py:147
 msgid "User deleted successfully"
 msgstr "Пользователь успешно удален"
 
-#: user/views.py:162
+#: user/views.py:164
 msgid "Cannot delete user because they are admin of team(s): "
 msgstr "Невозможно удалить пользователя, потому что он админ команд: "
 
-#: user/views.py:175
+#: user/views.py:177
 msgid "Cannot delete a user because it is in use"
 msgstr "Невозможно удалить пользователя, потому что он используется"
 
@@ -857,9 +857,6 @@ msgstr "Вы залогинены"
 #: views.py:43
 msgid "You are logged out"
 msgstr "Вы разлогинены"
-
-#~ msgid "User {membership.user.username} has been demoted to team member."
-#~ msgstr "Пользователь {membership.user.username} стал участником команды."
 
 #~ msgid "Team admin"
 #~ msgstr "Администратор команды"

@@ -93,7 +93,9 @@ class TeamExitView(LoginRequiredMixin, View):
 
             messages.success(
                 request,
-                _(f'You have successfully left the team "{team.name}"')
+                _(
+                    "You have successfully left the team {team}"
+                ).format(team=team.name)
             )
 
             return redirect('user:user-list')
@@ -292,7 +294,7 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
                 messages.success(
                     self.request,
                     _(
-                        "User {username} has been demoted to team admin."
+                        "User {username} has been demoted to team member."
                     ).format(username=membership.user.username)
                 )
 
