@@ -6,6 +6,7 @@
         "name": "new",
         "description": "Newly created task",
         "creator": 10,
+        "team": 1,
         "created_at": "2024-03-28T22:23:56.232Z"
     }
 },
@@ -16,6 +17,7 @@
         "name": "at work",
         "description": "Task in progress",
         "creator": 10,
+        "team": 1,
         "created_at": "2024-03-29T18:04:32.557Z"
     }
 },
@@ -26,6 +28,7 @@
         "name": "testing",
         "description": "",
         "creator": 13,
+        "team": null,
         "created_at": "2024-03-29T18:05:10.829Z"
     }
 },
@@ -36,6 +39,7 @@
         "name": "finished",
         "description": null,
         "creator": 10,
+        "team": 1,
         "created_at": "2024-03-29T18:05:23.664Z"
     }
 }

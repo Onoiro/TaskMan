@@ -10,8 +10,6 @@ from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect
 from django_filters.views import FilterView
 from task_manager.tasks.filters import TaskFilter
-from task_manager.user.models import User
-from django.db.models import Q
 
 
 class TaskDeletePermissionMixin():
@@ -43,13 +41,17 @@ class TaskFilterView(FilterView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.team is None:
-            return Task.objects.filter(author=user).order_by('-created_at')
-        # filter users from the same team with current user
-        team_users = User.objects.filter(team=user.team)
-        return Task.objects.filter(
-            Q(author__in=team_users) | Q(executor__in=team_users)
-        ).order_by('-created_at')
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            # show team's tasks
+            return Task.objects.filter(team=team).order_by('-created_at')
+        else:
+            # show individual tasks
+            return Task.objects.filter(
+                author=user,
+                team__isnull=True
+            ).order_by('-created_at')
 
 
 class TaskDetailView(CustomPermissions, DetailView):
@@ -65,9 +67,17 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        # if user have no team, he sets as executor
-        if self.request.user.team is None:
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            form.instance.team = team
+            # if team has only one member - set executor to author
+            if team.memberships.count() == 1:
+                form.instance.executor = self.request.user
+        else:
+            # individual task
             form.instance.executor = self.request.user
+
         return super().form_valid(form)
 
     def get_form_kwargs(self):

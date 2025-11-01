@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+{% load i18n %}
+
+{% block content %}
+<div class="container px-3 px-sm-0">
+    <div class="wrapper flex-grow-1">
+        <h1 class="my-4 text-start">{% trans "User details" %}</h1>
+
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+              <h2 class="h4 h3-md">{{ object.username }}</h2>
+            </div>
+            <div class="card-body bg-light">
+              <div class="mb-3">
+                <strong>{% trans "Full name" %}:</strong>
+                {{ object.first_name }} {{ object.last_name }}
+              </div>
+              <hr>
+              <div class="container-fluid">
+                <div class="row mb-2">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "Date joined" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {{ object.date_joined }}
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "Last login" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {{ object.last_login }}
+                  </div>
+                </div>
+                
+                <div class="row mb-3">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "Teams" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {% if user_teams %}
+                      <div class="d-flex flex-wrap gap-1">
+                        {% for membership in user_teams %}
+                          {% if membership.user_id == object.id %}
+                            <span class="badge bg-primary text-truncate" style="max-width: 120px;" title="{{ membership.team.name }}">
+                              {{ membership.team.name }}
+                              {% if membership.role == 'admin' %}
+                                <span class="badge bg-secondary">Admin</span>
+                              {% endif %}
+                            </span>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      <p class="text-muted small mb-0">{% trans "No teams" %}</p>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col-12">
+                    <div class="d-flex flex-row gap-2 justify-content-start">
+                      <a class="btn btn-outline-primary" href="{% url 'user:user-update' object.id %}">{% trans "Edit" %}</a>
+                      <a class="btn btn-outline-danger" href="{% url 'user:user-delete' object.id %}">{% trans "Delete" %}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+{% endblock %}

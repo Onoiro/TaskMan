@@ -1,6 +1,7 @@
 from django import forms
 from task_manager.teams.models import Team
 from django.utils.translation import gettext_lazy as _
+from .models import TeamMembership
 
 
 class TeamForm(forms.ModelForm):
@@ -8,6 +9,14 @@ class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'rows': 3}
+            ),
+        }
 
     password1 = forms.CharField(
         required=True,
@@ -44,3 +53,22 @@ class TeamForm(forms.ModelForm):
         if commit:
             team.save()
         return team
+
+
+class TeamMemberRoleForm(forms.ModelForm):
+
+    class Meta:
+        model = TeamMembership
+        fields = ['role']
+        widgets = {
+            'role': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+    def clean_role(self):
+        role = self.cleaned_data['role']
+
+        # check if role is valid
+        if role not in dict(TeamMembership.ROLE_CHOICES):
+            raise forms.ValidationError(_("Invalid role selected."))
+
+        return role

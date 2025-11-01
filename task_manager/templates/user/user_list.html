@@ -5,24 +5,24 @@
 
 {% block content %}
 <div class="container wrapper flex-grow-1">
-    {% if request.user.team %}
+    {% if request.active_team %}
         <h2 class="my-4">{% trans "Team" %}
-            {% if request.user.is_team_admin %}
+            {% if user_membership.role == 'admin' %}
                 "
                 <a
-                    href="{% url 'teams:team-update' request.user.team.id %}"
+                    href="{% url 'teams:team-update' request.active_team.id %}"
                     style="text-decoration: none;"
-                    > {{ request.user.team.name }}
+                > {{ request.active_team.name }}
                 </a>
                 "
             {% else %}
-                "{{ request.user.team.name }}"
+                "{{ request.active_team.name }}"
             {% endif %}
         </h2>
-        <p>{% trans "description" %}: {{ request.user.team.description }}</p>
-        <p>{% trans "admin name" %}: {{ request.user.team.team_admin.username }}</p>
-        <p>{% trans "created at" %}: {{ request.user.team.created_at }}</p>
+        <p>{% trans "description" %}: {{ request.active_team.description }}</p>
+        <p>{% trans "created at" %}: {{ request.active_team.created_at }}</p>
     {% endif %}
+    
     <h1 class="my-4">{% trans "Users" %}</h1>
     <table class="table table-striped">
         <thead>
@@ -30,7 +30,7 @@
             <th>ID</th>
             <th>{% trans "User name" %}</th>
             <th>{% trans "Fullname" %}</th>
-            <th>{% trans "Team admin" %}</th>
+            <th>{% trans "Role" %}</th>
             <th>{% trans "Created at" %}</th>
             <th></th>
         </tr>
@@ -39,14 +39,42 @@
             {% for user in user_list %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
+                <td>
+                    {% if user.id == request.user.id %}
+                        <a href="{% url 'user:user-detail' user.id %}">{{ user.username }}</a>
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                </td>
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
-                <td>{{ user.is_team_admin }}</td>
+                <td>
+                    {% if request.active_team %}
+                        {% for membership in user_memberships %}
+                            {% if membership.user_id == user.id %}
+                                {% if user_membership.role == 'admin' and user.id != request.user.id %}
+                                    <a href="{% url 'teams:team-member-role-update' membership.id %}">
+                                        {{ membership.get_role_display }}
+                                    </a>
+                                {% else %}
+                                    {{ membership.get_role_display }}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% trans "Not in team" %}
+                    {% endif %}
+                </td>
                 <td>{{ user.date_joined }}</td>
                 <td>
-                    <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
-                    <br>
-                    <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
+                    {% if user.id == request.user.id %}
+                        <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
+                        <br>
+                        <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
+                    {% else %}
+                        <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
+                        <br>
+                        <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

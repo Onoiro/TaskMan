@@ -1,5 +1,5 @@
 from task_manager.user.models import User
-from task_manager.teams.models import Team
+from task_manager.teams.models import Team, TeamMembership
 from task_manager.statuses.models import Status
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import check_password
 class UserTestCase(TestCase):
     fixtures = ["tests/fixtures/test_teams.json",
                 "tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams_memberships.json",
                 "tests/fixtures/test_statuses.json",
                 "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]
@@ -23,10 +24,10 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': 'new',
-            'password1': 222,
-            'password2': 222,
-            'is_team_admin': True,
-            'team_name': ''
+            'password1': '222',
+            'password2': '222',
+            'join_team_name': '',
+            'join_team_password': ''
         }
 
     # list
@@ -40,7 +41,7 @@ class UserTestCase(TestCase):
         self.assertContains(response, 'ID')
         self.assertContains(response, _('User name'))
         self.assertContains(response, _('Fullname'))
-        self.assertContains(response, _('Team admin'))
+        self.assertContains(response, _('Role'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Users'))
 
@@ -54,6 +55,8 @@ class UserTestCase(TestCase):
         self.assertContains(response, _('Username'))
         self.assertContains(response, _('Password'))
         self.assertContains(response, _('Confirm password'))
+        self.assertContains(response, _('Join team (optional)'))
+        self.assertContains(response, _('Team password'))
         self.assertContains(response, _('Signup'))
         self.assertRegex(
             response.content.decode('utf-8'),
@@ -73,18 +76,19 @@ class UserTestCase(TestCase):
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
 
-        self.assertRedirects(response, reverse('teams:team-create'))
+        # user without team should redirect to index
+        self.assertRedirects(response, reverse('index'))
 
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('User created successfully'))
 
-    def test_default_statuses_created_for_new_user(self):
+    def test_default_statuses_created_for_new_user_without_team(self):
         # count statuses before creating new user
         initial_status_count = Status.objects.count()
         initial_user_status_count = Status.objects.filter(
             creator=self.user).count()
-        # create new user (using existing user_data from setUp)
+        # create new user without team
         self.c.post(
             reverse('user:user-create'),
             self.user_data,
@@ -117,32 +121,18 @@ class UserTestCase(TestCase):
         user = User.objects.filter(username=self.user_data['username']).first()
         self.assertEqual(int(self.c.session['_auth_user_id']), user.pk)
 
-    def test_create_user_non_team_admin_redirect(self):
-        user_data = self.user_data.copy()
-        user_data['is_team_admin'] = False
-
+    def test_create_user_without_team_redirect(self):
         response = self.c.post(
-            reverse('user:user-create'), user_data, follow=True)
+            reverse('user:user-create'), self.user_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        user = User.objects.filter(username=user_data['username']).first()
+        user = User.objects.filter(username=self.user_data['username']).first()
         self.assertIsNotNone(user)
-        self.assertFalse(user.is_team_admin)
+
+        # check user has no team membership
+        self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
         self.assertRedirects(response, reverse('index'))
-
-    def test_create_user_team_admin_redirect(self):
-        user_data = self.user_data.copy()
-        user_data['is_team_admin'] = True
-
-        response = self.c.post(
-            reverse('user:user-create'), user_data, follow=True)
-        self.assertEqual(response.status_code, 200)
-
-        user = User.objects.filter(username=user_data['username']).first()
-        self.assertIsNotNone(user)
-        self.assertTrue(user.is_team_admin)
-        self.assertRedirects(response, reverse('teams:team-create'))
 
     def test_check_for_not_create_user_with_same_username(self):
         self.c.post(
@@ -196,7 +186,6 @@ class UserTestCase(TestCase):
         self.assertContains(response, self.user.first_name)
         self.assertContains(response, self.user.last_name)
         self.assertContains(response, self.user.username)
-        self.assertContains(response, self.user.first_name)
 
     def test_update_user_successfully(self):
         response = self.c.post(
@@ -230,8 +219,10 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': 'me',  # username 'me' exists in test_users.json
-            'password1': 222,
-            'password2': 222,
+            'password1': '222',
+            'password2': '222',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         response = self.c.post(
             reverse('user:user-update', args=[self.user.id]),
@@ -245,8 +236,10 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': ' ',
-            'password1': 222,
-            'password2': 222,
+            'password1': '222',
+            'password2': '222',
+            'join_team_name': '',
+            'join_team_password': ''
         }
         response = self.c.post(
             reverse('user:user-update', args=[self.user.id]),
@@ -309,37 +302,48 @@ class UserTestCase(TestCase):
                          _('Cannot delete a user because it is in use'))
 
     def test_can_not_delete_user_being_team_admin(self):
-        # Create new user
+        # create new user
         self.c.post(reverse('user:user-create'),
                     self.user_data, follow=True)
         new_user = User.objects.get(username="new")
 
-        # Create new team with new user as team admin
+        # create new team and make user admin
         team = Team.objects.create(
             name="New Test Team",
             description="Test team description",
-            team_admin=new_user
+            password="testpass123"
         )
+        TeamMembership.objects.create(
+            user=new_user,
+            team=team,
+            role='admin'
+        )
+
         self.c.force_login(new_user)
 
-        # Try to delete new user
+        # try to delete new user
         response = self.c.get(reverse('user:user-delete',
                                       args=[new_user.id]), follow=True)
 
-        # Check that new user still exist
+        # check that new user still exist
         self.assertTrue(User.objects.filter(username="new").exists())
 
-        # Check for redirect
+        # check for redirect
         self.assertRedirects(response, reverse('user:user-list'))
 
-        # Check for error message
+        # check for error message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]),
-                         _('Cannot delete a user because it is team admin. '
-                         'Delete the team first.'))
+        self.assertEqual(
+            str(messages[0]),
+            _(
+                'Cannot delete user because they are admin '
+                'of team(s): New Test Team. Transfer admin rights '
+                'or delete the team(s) first.'
+            )
+        )
 
-        # Delete team after test
+        # delete team after test
         team.delete()
 
     def test_can_join_existing_team(self):
@@ -350,12 +354,19 @@ class UserTestCase(TestCase):
             'username': 'team_member',
             'password1': '123',
             'password2': '123',
-            'is_team_admin': False,
-            'team_name': team.name
+            'join_team_name': team.name,
+            'join_team_password': (
+                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
+            )
         }
         response = self.c.post(reverse('user:user-create'),
                                new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username='team_member')
-        self.assertEqual(user.team, team)
-        self.assertFalse(user.is_team_admin)
+
+        # check membership was created
+        membership = TeamMembership.objects.get(user=user, team=team)
+        self.assertEqual(membership.role, 'member')
+
+        # users who join a team should not get default statuses
+        self.assertEqual(Status.objects.filter(creator=user).count(), 0)

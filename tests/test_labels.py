@@ -1,5 +1,6 @@
 from task_manager.labels.models import Label
 from task_manager.user.models import User
+from task_manager.teams.models import Team
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -9,8 +10,9 @@ from django.utils.formats import get_format
 
 
 class LabelsTestCase(TestCase):
-    fixtures = ["tests/fixtures/test_teams.json",
-                "tests/fixtures/test_users.json",
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
                 "tests/fixtures/test_statuses.json",
                 "tests/fixtures/test_tasks.json",
                 "tests/fixtures/test_labels.json"]
@@ -20,6 +22,16 @@ class LabelsTestCase(TestCase):
         self.c = Client()
         self.c.force_login(self.user)
         self.labels_data = {'name': 'new_test_label'}
+        self.team = Team.objects.get(pk=1)  # user 'me' is member of this team
+
+    def _set_active_team(self, team_id=None):
+        """Helper for setting active team in session"""
+        session = self.c.session
+        if team_id:
+            session['active_team_id'] = team_id
+        else:
+            session.pop('active_team_id', None)
+        session.save()
 
     # list
 
@@ -28,14 +40,24 @@ class LabelsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_labels_list_static_content(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.get(reverse('labels:labels-list'))
         self.assertContains(response, 'ID')
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Labels'))
         self.assertContains(response, _('New label'))
-        self.assertContains(response, _('Edit'))
-        self.assertContains(response, _('Delete'))
+
+        labels = Label.objects.filter(team=self.team)
+        if labels.exists():
+            # Edit and Delete buttons show only if there are labels
+            self.assertContains(response,
+                                reverse('labels:labels-update',
+                                        args=[labels.first().id]))
+            self.assertContains(response,
+                                reverse('labels:labels-delete',
+                                        args=[labels.first().id]))
 
     def test_labels_list_has_tasks_button(self):
         response = self.c.get(reverse('labels:labels-list'))
@@ -47,19 +69,80 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, _("Statuses"))
         self.assertContains(response, reverse('statuses:statuses-list'))
 
-    def test_labels_list_content(self):
+    def test_labels_list_content_in_team_mode(self):
+        self._set_active_team(self.team.id)
+
         response = self.c.get(reverse('labels:labels-list'))
-        team_user_ids = User.objects.filter(
-            team=self.user.team).values_list('pk', flat=True)
-        labels = Label.objects.filter(creator__in=team_user_ids)
-        for label in labels:
+
+        team_labels = Label.objects.filter(team=self.team)
+
+        for label in team_labels:
             self.assertContains(response, label.name)
             formatted_date = DateFormat(
                 label.created_at).format(get_format('DATETIME_FORMAT'))
             self.assertContains(response, formatted_date)
-        other_labels = Label.objects.exclude(creator__in=team_user_ids)
+
+        # labels of other teams and individual labels have not to be shown
+        other_labels = Label.objects.exclude(team=self.team)
         for label in other_labels:
-            self.assertNotContains(response, label.name)
+            # check labels by id Проверяем по ID because names can be the same
+            self.assertNotContains(response, f'<td>{label.id}</td>')
+
+    def test_labels_list_content_individual_mode(self):
+        self._set_active_team(None)
+
+        response = self.c.get(reverse('labels:labels-list'))
+
+        personal_labels = Label.objects.filter(
+            creator=self.user,
+            team__isnull=True
+        )
+
+        for label in personal_labels:
+            self.assertContains(response, label.name)
+            if label.created_at:
+                formatted_date = DateFormat(
+                    label.created_at).format(get_format('DATETIME_FORMAT'))
+                self.assertContains(response, formatted_date)
+
+        # team labels have not to be shown
+        team_labels = Label.objects.filter(team__isnull=False)
+        for label in team_labels:
+            self.assertNotContains(response, f'<td>{label.id}</td>')
+
+    def test_labels_list_team_switching(self):
+        """test team switching"""
+        # check team 1
+        self._set_active_team(1)
+        response = self.c.get(reverse('labels:labels-list'))
+        team1_labels = Label.objects.filter(team_id=1)
+        for label in team1_labels:
+            self.assertContains(response, label.name)
+
+        # switch to team 2
+        self._set_active_team(2)
+        response = self.c.get(reverse('labels:labels-list'))
+        team2_labels = Label.objects.filter(team_id=2)
+        for label in team2_labels:
+            self.assertContains(response, label.name)
+        # team 1 labels not shown if team 2 have no labels
+        for label in team1_labels:
+            self.assertNotContains(response, f'<td>{label.id}</td>')
+
+    def _get_user_team_labels(self):
+        """Helper method to get labels visible to user based on active team"""
+        # check active team is set in session
+        session = self.c.session
+        active_team_id = session.get('active_team_id')
+
+        if active_team_id:
+            return Label.objects.filter(team_id=active_team_id)
+        else:
+            # return labels of user with no team
+            return Label.objects.filter(
+                creator=self.user,
+                team__isnull=True
+            )
 
     # create
 
@@ -74,11 +157,17 @@ class LabelsTestCase(TestCase):
             _(r'\bCreate label\b'))
 
     def test_post_create_label_response_200(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         response = self.c.post(reverse('labels:labels-create'),
                                self.labels_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_create_label_successfully(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         old_count = Label.objects.count()
         response = self.c.post(
             reverse('labels:labels-create'),
@@ -88,23 +177,31 @@ class LabelsTestCase(TestCase):
         label = Label.objects.filter(
             name=self.labels_data['name']).first()
         self.assertEqual(label.name, self.labels_data['name'])
+        # Проверяем, что метка создана для команды
+        self.assertEqual(label.team, self.team)
+        self.assertEqual(label.creator, self.user)
         self.assertRedirects(response, reverse('labels:labels-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label created successfully'))
 
-    # def test_check_for_not_create_label_with_same_name(self):
-    #     self.c.post(reverse('labels:labels-create'),
-    #                 self.labels_data, follow=True)
-    #     labels_count = Label.objects.count()
-    #     response = self.c.post(reverse('labels:labels-create'),
-    #                            self.labels_data, follow=True)
-    #     new_labels_count = Label.objects.count()
-    #     self.assertEqual(labels_count, new_labels_count)
-    #     message = _('Label with this Name already exists.')
-    #     self.assertContains(response, message)
+    def test_create_label_in_individual_mode(self):
+        """Тест создания метки в индивидуальном режиме"""
+        # Убираем активную команду
+        self._set_active_team(None)
+
+        self.c.post(reverse('labels:labels-create'),
+                    {'name': 'personal_label'}, follow=True)
+
+        label = Label.objects.filter(name='personal_label').first()
+        self.assertIsNotNone(label)
+        self.assertIsNone(label.team)
+        self.assertEqual(label.creator, self.user)
 
     def test_can_not_create_label_with_empty_name(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         self.labels_data = {'name': ' '}
         response = self.c.post(reverse('labels:labels-create'),
                                self.labels_data, follow=True)
@@ -115,6 +212,9 @@ class LabelsTestCase(TestCase):
     # update
 
     def test_update_label_response_200(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         response = self.c.post(
             reverse('labels:labels-update', args=[label.id]),
@@ -122,18 +222,24 @@ class LabelsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_label_content(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         response = self.c.get(
             reverse('labels:labels-update', args=[label.id]),
             self.labels_data, follow=True)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Edit'))
-        self.assertContains(response, _('bug'))
+        self.assertContains(response, 'bug')
         self.assertRegex(
             response.content.decode('utf-8'),
             _(r'\bEdit label\b'))
 
     def test_update_label_successfully(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         response = self.c.post(
             reverse('labels:labels-update', args=[label.id]),
@@ -145,18 +251,10 @@ class LabelsTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label updated successfully'))
 
-    # def test_check_can_not_update_label_if_same_label_exist(self):
-    #     label = Label.objects.get(name="feature")
-    #     self.labels_data = {'name': 'bug'}
-    #     response = self.c.post(
-    #         reverse('labels:labels-update', args=[label.id]),
-    #         self.labels_data, follow=True)
-    #     self.assertFalse(Label.objects.filter(name=" ").exists())
-    #     message = _('Label with this Name already exists.')
-    #     self.assertContains(response, message)
-    #     self.assertNotEqual(response.status_code, 302)
-
     def test_can_not_set_empty_name_when_update_label(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         self.labels_data = {'name': ' '}
         response = self.c.post(
@@ -166,15 +264,42 @@ class LabelsTestCase(TestCase):
         message = _('This field is required.')
         self.assertContains(response, message)
 
+    def test_update_label_in_different_team_mode(self):
+        """Тест что нельзя редактировать метку из другой команды"""
+        # Создаем метку в команде 2
+        self._set_active_team(2)
+
+        # Пытаемся обновить метку из команды 1
+        label = Label.objects.get(name="bug")  # Эта метка из команды 1
+        self.c.post(reverse('labels:labels-update',
+                            args=[label.id]), {'name': 'hacked'}, follow=True)
+
+        # Метка не должна измениться
+        label.refresh_from_db()
+        self.assertEqual(label.name, "bug")
+
     # delete
 
     def test_delete_label_response_200(self):
-        label = Label.objects.get(name="bug")
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
+        # Создаем метку для удаления без связи с задачами
+        label_to_delete = Label.objects.create(
+            name="to_delete",
+            creator=self.user,
+            team=self.team
+        )
+
         response = self.c.post(reverse('labels:labels-delete',
-                               args=[label.id]), follow=True)
+                               args=[label_to_delete.id]), follow=True)
         self.assertEqual(response.status_code, 200)
+        self.assertFalse(Label.objects.filter(name="to_delete").exists())
 
     def test_delete_label_content(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         response = self.c.get(reverse('labels:labels-delete',
                               args=[label.id]), follow=True)
@@ -184,6 +309,9 @@ class LabelsTestCase(TestCase):
                             _('Are you sure you want to delete bug?'))
 
     def test_delete_label_successfully(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="feature")
         response = self.c.post(reverse('labels:labels-delete',
                                args=[label.id]), follow=True)
@@ -195,6 +323,9 @@ class LabelsTestCase(TestCase):
                          _('Label deleted successfully'))
 
     def test_can_not_delete_label_bound_with_task(self):
+        # Устанавливаем активную команду
+        self._set_active_team(self.team.id)
+
         label = Label.objects.get(name="bug")
         response = self.c.post(reverse('labels:labels-delete',
                                args=[label.id]), follow=True)
@@ -204,3 +335,27 @@ class LabelsTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('Cannot delete label because it is in use'))
+
+    def test_delete_label_in_individual_mode(self):
+        """Тест удаления личной метки в индивидуальном режиме"""
+        # Убираем активную команду
+        self._set_active_team(None)
+
+        # Создаем личную метку
+        personal_label = Label.objects.create(
+            name="personal_to_delete",
+            creator=self.user,
+            team=None
+        )
+
+        response = self.c.post(
+            reverse('labels:labels-delete', args=[personal_label.id]),
+            follow=True)
+
+        self.assertFalse(
+            Label.objects.filter(name="personal_to_delete").exists()
+        )
+        self.assertRedirects(response, reverse('labels:labels-list'))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Label deleted successfully'))

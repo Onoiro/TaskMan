@@ -7,7 +7,6 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Status
 from task_manager.statuses.forms import StatusForm
-from task_manager.user.models import User
 from django.shortcuts import redirect
 
 
@@ -17,10 +16,18 @@ class StatusesListView(CustomPermissions, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.team is None:
-            return Status.objects.filter(creator=user)
-        team_users = User.objects.filter(team=user.team)
-        return Status.objects.filter(creator__in=team_users)
+        # using active_team from request
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            # show active_team statuses
+            return Status.objects.filter(team=team)
+        else:
+            # show user individual statuses
+            return Status.objects.filter(
+                creator=user,
+                team__isnull=True
+            )
 
 
 class StatusesDetailView(CustomPermissions, DetailView):
@@ -37,6 +44,12 @@ class StatusesCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         status = form.save(commit=False)
         status.creator = self.request.user
+
+        # set team if working with team
+        team = getattr(self.request, 'active_team', None)
+        if team:
+            status.team = team
+
         status.save()
         return super().form_valid(form)
 

@@ -22,9 +22,18 @@ class Status(models.Model):
             ),
         ],
     )
+    team = models.ForeignKey(
+        'teams.Team',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='statuses'
+    )
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name='created_statuses'
+        User, on_delete=models.SET_NULL,
+        related_name='created_statuses',
+        null=True,
+        blank=True
     )
     description = models.TextField(
         blank=True,
@@ -36,7 +45,7 @@ class Status(models.Model):
         verbose_name=_('Created at')
     )
 
-    # Метод для создания дефолтных статусов для пользователя
+    # creating default statuses for user
     @classmethod
     def create_default_statuses_for_user(cls, user):
         """Создает дефолтные статусы для нового пользователя"""

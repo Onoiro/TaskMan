@@ -27,28 +27,36 @@ class TaskForm(forms.ModelForm):
             return
 
         user = self.request.user
-        team = user.team
+        team = getattr(self.request, 'active_team', None)
 
-        if team is not None:
-            self.fields['executor'].queryset = (
-                User.objects.filter(team=team)
+        if team:
+            # team mode
+            self.fields['executor'].queryset = User.objects.filter(
+                team_memberships__team=team
             )
-            self.fields['status'].queryset = (
-                Status.objects.filter(creator__team=team)
+            self.fields['status'].queryset = Status.objects.filter(
+                team=team
             )
-            self.fields['labels'].queryset = (
-                Label.objects.filter(creator__team=team)
+            self.fields['labels'].queryset = Label.objects.filter(
+                team=team
             )
+            # if team has only one member - set executor to author
+            if team.memberships.count() == 1:
+                self.fields['executor'].initial = user
+                self.fields['executor'].widget.attrs['readonly'] = True
         else:
-            self.fields['executor'].queryset = (
-                User.objects.filter(pk=user.pk)
+            # individual mode
+            self.fields['executor'].queryset = User.objects.filter(
+                pk=user.pk
             )
-            self.fields['status'].queryset = (
-                Status.objects.filter(creator=user)
+            self.fields['status'].queryset = Status.objects.filter(
+                creator=user,
+                team__isnull=True
             )
-            self.fields['labels'].queryset = (
-                Label.objects.filter(creator=user)
+            self.fields['labels'].queryset = Label.objects.filter(
+                creator=user,
+                team__isnull=True
             )
-            # set initial value of exucutor is user himself
+            # user is exucutor in individual mode
             self.fields['executor'].initial = user
             self.fields['executor'].widget.attrs['readonly'] = True
