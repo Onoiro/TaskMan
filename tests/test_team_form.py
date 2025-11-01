@@ -1,6 +1,6 @@
 from django.test import TestCase
 from task_manager.teams.models import Team, TeamMembership
-from task_manager.teams.forms import TeamForm
+from task_manager.teams.forms import TeamForm, TeamMemberRoleForm
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 
@@ -152,3 +152,129 @@ class TeamFormTestCase(TestCase):
         form = TeamForm()
         self.assertEqual(form.fields['password1'].label, _('Password'))
         self.assertEqual(form.fields['password2'].label, _('Confirm password'))
+
+
+class TeamMemberRoleFormTestCase(TestCase):
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(pk=10)
+        self.team = Team.objects.get(pk=1)
+        self.membership = TeamMembership.objects.get(pk=1)
+
+    def test_TeamMemberRoleForm_valid(self):
+        form_data = {'role': 'member'}
+        form = TeamMemberRoleForm(data=form_data, instance=self.membership)
+        self.assertTrue(form.is_valid())
+
+    def test_TeamMemberRoleForm_invalid_role(self):
+        form_data = {'role': 'invalid_role'}
+        form = TeamMemberRoleForm(data=form_data, instance=self.membership)
+        self.assertFalse(form.is_valid())
+        self.assertIn('role', form.errors)
+        # Django forms ChoiceField generates default validation message
+        self.assertIn('Select a valid choice', form.errors['role'][0])
+
+    def test_TeamMemberRoleForm_save(self):
+        form_data = {'role': 'member'}
+        form = TeamMemberRoleForm(data=form_data, instance=self.membership)
+        self.assertTrue(form.is_valid())
+        updated_membership = form.save()
+        
+        self.assertEqual(updated_membership.role, 'member')
+        self.assertEqual(updated_membership.user, self.user)
+        self.assertEqual(updated_membership.team, self.team)
+
+
+class TeamFormEdgeCasesTestCase(TestCase):
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        self.form_data = {
+            'name': 'New Team',
+            'description': 'This is a new test team',
+            'password1': '111',
+            'password2': '111'
+        }
+        self.user = User.objects.get(pk=10)
+
+    def test_name_max_length(self):
+        # test name with exactly 150 characters (max length)
+        form_data = self.form_data.copy()
+        form_data['name'] = 'a' * 150
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_name_exceeds_max_length(self):
+        # test name with more than 150 characters
+        form_data = self.form_data.copy()
+        form_data['name'] = 'a' * 151
+        form = TeamForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+
+    def test_name_with_leading_trailing_spaces(self):
+        # test name with leading and trailing spaces
+        form_data = self.form_data.copy()
+        form_data['name'] = '  Team Name  '
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        team = form.save()
+        # Django CharField strips whitespace by default
+        self.assertEqual(team.name, 'Team Name')
+
+    def test_name_with_special_characters(self):
+        # test name with special characters
+        form_data = self.form_data.copy()
+        form_data['name'] = 'Team-Name_123!@#'
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_password_exact_minimum_length(self):
+        # test password with exactly 3 characters (minimum)
+        form_data = self.form_data.copy()
+        form_data['password1'] = 'abc'
+        form_data['password2'] = 'abc'
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_save_without_commit(self):
+        # test save with commit=False
+        form = TeamForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        team = form.save(commit=False)
+        
+        # team should not be saved to database yet
+        self.assertIsNone(team.id)
+        self.assertEqual(team.name, 'New Team')
+        self.assertEqual(team.password, '111')
+        
+        # save manually
+        team.save()
+        self.assertIsNotNone(team.id)
+        self.assertEqual(Team.objects.filter(name='New Team').count(), 1)
+
+    def test_description_max_length(self):
+        # test description with very long content
+        # (TextField has no max limit by default)
+        form_data = self.form_data.copy()
+        form_data['description'] = 'a' * 10000  # Very long description
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_empty_description(self):
+        # test with empty description
+        form_data = self.form_data.copy()
+        form_data['description'] = ''
+        form = TeamForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        team = form.save()
+        self.assertEqual(team.description, '')
