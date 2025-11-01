@@ -47,7 +47,9 @@
                 {% if user.is_authenticated %}
                 <!-- DROPDOWN -->
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle" href="#" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false"
+                     tabindex="0" aria-haspopup="true" aria-controls="navbarNav">
                     {% if active_team %}
                       🏢 {{ active_team.name }}
                     {% else %}
