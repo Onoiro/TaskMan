@@ -95,7 +95,8 @@ class PermissionsTestCase(TestCase):
         membership = TeamMembership.objects.get(pk=2)
         response = self.client.get(reverse(
             'teams:team-member-role-update', args=[membership.id]), follow=True)
-        self.assertRedirects(response, reverse('teams:team-detail', kwargs={'pk': membership.team.pk}))
+        self.assertRedirects(response, reverse(
+            'teams:team-detail', kwargs={'pk': membership.team.pk}))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(
@@ -115,7 +116,8 @@ class PermissionsTestCase(TestCase):
         membership = TeamMembership.objects.get(pk=1)
         response = self.client.get(reverse(
             'teams:team-member-role-update', args=[membership.id]), follow=True)
-        self.assertRedirects(response, reverse('teams:team-detail', kwargs={'pk': membership.team.pk}))
+        self.assertRedirects(response, reverse(
+            'teams:team-detail', kwargs={'pk': membership.team.pk}))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(
@@ -139,7 +141,8 @@ class PermissionsTestCase(TestCase):
         self.user.team_memberships.filter(team=membership.team).delete()
         response = self.client.get(reverse(
             'teams:team-member-role-update', args=[membership.id]), follow=True)
-        self.assertRedirects(response, reverse('teams:team-detail', kwargs={'pk': membership.team.pk}))
+        self.assertRedirects(response, reverse(
+            'teams:team-detail', kwargs={'pk': membership.team.pk}))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(

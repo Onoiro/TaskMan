@@ -30,7 +30,7 @@ class TeamAdminPermissions(LoginRequiredMixin):
             messages.error(request,
                            _('You are not authorized! Please login.'))
             return redirect('login')
-        
+
         team = self.get_object()
         if not team.is_admin(request.user):
             messages.error(

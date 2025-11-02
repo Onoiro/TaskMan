@@ -184,7 +184,7 @@ class TeamMemberRoleFormTestCase(TestCase):
         form = TeamMemberRoleForm(data=form_data, instance=self.membership)
         self.assertTrue(form.is_valid())
         updated_membership = form.save()
-        
+
         self.assertEqual(updated_membership.role, 'member')
         self.assertEqual(updated_membership.user, self.user)
         self.assertEqual(updated_membership.team, self.team)
@@ -251,12 +251,12 @@ class TeamFormEdgeCasesTestCase(TestCase):
         form = TeamForm(data=self.form_data)
         self.assertTrue(form.is_valid())
         team = form.save(commit=False)
-        
+
         # team should not be saved to database yet
         self.assertIsNone(team.id)
         self.assertEqual(team.name, 'New Team')
         self.assertEqual(team.password, '111')
-        
+
         # save manually
         team.save()
         self.assertIsNotNone(team.id)
