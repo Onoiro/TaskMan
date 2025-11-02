@@ -588,3 +588,434 @@ class TeamTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
                          _('You are not a member of this team'))
+
+    # switch team tests
+
+    def test_switch_to_team_successfully(self):
+        """test switching to a team where user is a member"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            follow=True
+        )
+
+        # check that active_team_id is set in session
+        self.assertEqual(self.c.session.get('active_team_id'), self.team.id)
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Switched to team'),
+            str(messages[0])
+        )
+
+    def test_switch_to_individual_mode(self):
+        """test switching to individual mode from team mode"""
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = self.team.id
+        session.save()
+
+        # switch to individual mode
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': 'individual'},
+            follow=True
+        )
+
+        # check that active_team_id is removed from session
+        self.assertNotIn('active_team_id', self.c.session)
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(
+            str(messages[0]),
+            _('Switched to individual mode')
+        )
+
+    def test_cannot_switch_to_nonexistent_team(self):
+        """test that user cannot switch to a team that doesn't exist"""
+        nonexistent_team_id = 9999
+
+        # try to switch to nonexistent team
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': nonexistent_team_id},
+            follow=True
+        )
+
+        # check that active_team_id is not set
+        self.assertNotIn('active_team_id', self.c.session)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Team not found'))
+
+    def test_cannot_switch_to_team_not_member(self):
+        """test that user cannot switch to a team they are not a member of"""
+        # create a user who is not a member of the team
+        non_member_user = User.objects.create_user(
+            username='non_member_switch',
+            password='password123'
+        )
+
+        # login as non-member user
+        self.c.logout()
+        self.c.force_login(non_member_user)
+
+        # try to switch to team
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            follow=True
+        )
+
+        # check that active_team_id is not set
+        self.assertNotIn('active_team_id', self.c.session)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Team not found'))
+
+    def test_switch_team_without_team_id(self):
+        """test switching without providing team_id"""
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = self.team.id
+        session.save()
+
+        # call switch without team_id
+        self.c.post(reverse('teams:switch-team'), {}, follow=True)
+
+        # check that active_team_id is still in session (unchanged)
+        self.assertEqual(self.c.session.get('active_team_id'), self.team.id)
+
+    # team detail tests
+
+    def test_team_detail_page_response_200_and_content(self):
+        """test that team detail page displays correctly"""
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.team.name)
+        self.assertContains(response, self.team.description)
+
+    def test_team_detail_shows_members(self):
+        """test that team detail page shows all team members"""
+        # create additional member
+        new_member = User.objects.create_user(
+            username='detail_member',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=new_member,
+            team=self.team,
+            role='member'
+        )
+
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+
+        # check that memberships are in context
+        self.assertIn('memberships', response.context)
+        memberships = response.context['memberships']
+
+        # check that new member is in the list
+        member_users = [m.user for m in memberships]
+        self.assertIn(new_member, member_users)
+
+    def test_team_detail_shows_admin_status(self):
+        """test that team detail correctly identifies admin status"""
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+
+        # check that is_admin is True in context
+        self.assertIn('is_admin', response.context)
+        self.assertTrue(response.context['is_admin'])
+
+        # now test with regular member
+        regular_member = User.objects.create_user(
+            username='regular_detail',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_member,
+            team=self.team,
+            role='member'
+        )
+
+        self.c.logout()
+        self.c.force_login(regular_member)
+
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+
+        # check that is_admin is False in context
+        self.assertIn('is_admin', response.context)
+        self.assertFalse(response.context['is_admin'])
+
+    def test_team_detail_context_contains_team(self):
+        """test that team detail context contains team object"""
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+
+        # check that team is in context with correct context_object_name
+        self.assertIn('team', response.context)
+        self.assertEqual(response.context['team'], self.team)
+
+    # team member role update tests
+
+    def test_team_member_role_update_page_response_200_and_content(self):
+        """test that role update page displays correctly"""
+        # create a member to update
+        member = User.objects.create_user(
+            username='member_to_update',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        response = self.c.get(
+            reverse('teams:team-member-role-update', args=[membership.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, member.username)
+
+    def test_promote_member_to_admin(self):
+        """test promoting a member to admin role"""
+        # create a member
+        member = User.objects.create_user(
+            username='member_to_promote',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # promote to admin
+        response = self.c.post(
+            reverse('teams:team-member-role-update', args=[membership.id]),
+            {'role': 'admin'},
+            follow=True
+        )
+
+        # check that role was updated
+        membership.refresh_from_db()
+        self.assertEqual(membership.role, 'admin')
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('has been promoted to team admin'),
+            str(messages[0])
+        )
+
+    def test_demote_admin_to_member(self):
+        """test demoting an admin to member role"""
+        # create an admin member
+        admin_member = User.objects.create_user(
+            username='admin_to_demote',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=admin_member,
+            team=self.team,
+            role='admin'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # demote to member
+        response = self.c.post(
+            reverse('teams:team-member-role-update', args=[membership.id]),
+            {'role': 'member'},
+            follow=True
+        )
+
+        # check that role was updated
+        membership.refresh_from_db()
+        self.assertEqual(membership.role, 'member')
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('has been demoted to team member'),
+            str(messages[0])
+        )
+
+    def test_update_member_role_to_same_role(self):
+        """test updating member role to the same role (no change)"""
+        # create a member
+        member = User.objects.create_user(
+            username='member_same_role',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # update to the same role
+        response = self.c.post(
+            reverse('teams:team-member-role-update', args=[membership.id]),
+            {'role': 'member'},
+            follow=True
+        )
+
+        # check that role is still member
+        membership.refresh_from_db()
+        self.assertEqual(membership.role, 'member')
+
+        # check redirect happened
+        self.assertRedirects(response, reverse('user:user-list'))
+
+    def test_non_admin_cannot_update_member_role(self):
+        """test that non-admin cannot update member roles"""
+        # create two members
+        member1 = User.objects.create_user(
+            username='member1_role',
+            password='password123'
+        )
+        member2 = User.objects.create_user(
+            username='member2_role',
+            password='password123'
+        )
+
+        TeamMembership.objects.create(
+            user=member1,
+            team=self.team,
+            role='member'
+        )
+        membership2 = TeamMembership.objects.create(
+            user=member2,
+            team=self.team,
+            role='member'
+        )
+
+        # login as member1 (not admin)
+        self.c.logout()
+        self.c.force_login(member1)
+
+        # try to update member2's role
+        response = self.c.post(
+            reverse('teams:team-member-role-update', args=[membership2.id]),
+            {'role': 'admin'},
+            follow=True
+        )
+
+        # check that role was not updated
+        membership2.refresh_from_db()
+        self.assertEqual(membership2.role, 'member')
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _("You don't have permissions"),
+            str(messages[0])
+        )
+
+    def test_non_admin_cannot_access_role_update_page(self):
+        """test that non-admin cannot even access the role update page"""
+        # create two members
+        member1 = User.objects.create_user(
+            username='member1_get',
+            password='password123'
+        )
+        member2 = User.objects.create_user(
+            username='member2_get',
+            password='password123'
+        )
+
+        TeamMembership.objects.create(
+            user=member1,
+            team=self.team,
+            role='member'
+        )
+        membership2 = TeamMembership.objects.create(
+            user=member2,
+            team=self.team,
+            role='member'
+        )
+
+        # login as member1 (not admin)
+        self.c.logout()
+        self.c.force_login(member1)
+
+        # try to access the update page
+        response = self.c.get(
+            reverse('teams:team-member-role-update', args=[membership2.id]),
+            follow=True
+        )
+
+        # check for error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _("You don't have permissions"),
+            str(messages[0])
+        )

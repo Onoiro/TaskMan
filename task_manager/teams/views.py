@@ -12,7 +12,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     DetailView,
-    ListView
 )
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -151,45 +150,6 @@ class TeamExitView(LoginRequiredMixin, View):
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-class TeamJoinView(LoginRequiredMixin, CreateView):
-    model = TeamMembership
-    fields = []
-    template_name = 'teams/team_join.html'
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'teams:team-detail',
-            kwargs={'pk': self.kwargs['pk']}
-        )
-
-    def form_valid(self, form):
-        team = Team.objects.get(pk=self.kwargs['pk'])
-
-        # check if user is already a member of the team
-        if TeamMembership.objects.filter(
-            user=self.request.user, team=team
-        ).exists():
-            messages.error(self.request, _(
-                'You are already a member of this team!'
-            ))
-            return redirect('teams:team-detail', pk=team.pk)
-
-        form.instance.user = self.request.user
-        form.instance.team = team
-        form.instance.role = 'member'
-
-        response = super().form_valid(form)
-        messages.success(self.request, _(
-            'You have successfully joined the team!'
-        ))
-        return response
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['team'] = Team.objects.get(pk=self.kwargs['pk'])
-        return context
-
-
 class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
@@ -299,12 +259,3 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
                 )
 
         return response
-
-
-class TeamListView(LoginRequiredMixin, ListView):
-    model = Team
-    template_name = 'teams/team_list.html'
-    context_object_name = 'teams'
-
-    def get_queryset(self):
-        return Team.objects.all()
