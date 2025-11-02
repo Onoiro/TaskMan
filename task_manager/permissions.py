@@ -26,6 +26,11 @@ class UserPermissions(LoginRequiredMixin):
 
 class TeamAdminPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request,
+                           _('You are not authorized! Please login.'))
+            return redirect('login')
+        
         team = self.get_object()
         if not team.is_admin(request.user):
             messages.error(
@@ -42,6 +47,11 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         from task_manager.teams.models import TeamMembership
+
+        if not request.user.is_authenticated:
+            messages.error(request,
+                           _('You are not authorized! Please login.'))
+            return redirect('login')
 
         try:
             membership = TeamMembership.objects.get(pk=kwargs['pk'])
@@ -66,6 +76,6 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
 
         except TeamMembership.DoesNotExist:
             messages.error(request, _("Team membership not found."))
-            return redirect('teams:team-list')
+            return redirect('user:user-list')
 
         return super().dispatch(request, *args, **kwargs)
