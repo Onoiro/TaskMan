@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 
 
 UNAUTHORIZED_MESSAGE = _('You are not authorized! Please login.')
+USERS_LIST_URL = 'user:user-list'
 
 
 class CustomPermissions(LoginRequiredMixin):
@@ -22,7 +23,7 @@ class UserPermissions(LoginRequiredMixin):
                 request,
                 _("You don't have permissions to modify another user.")
             )
-            return redirect('user:user-list')
+            return redirect(USERS_LIST_URL)
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -39,7 +40,7 @@ class TeamAdminPermissions(LoginRequiredMixin):
                 _("You don't have permissions to modify this."
                   " Only team admin can do this.")
             )
-            return redirect('user:user-list')
+            return redirect(USERS_LIST_URL)
 
         return super().dispatch(request, *args, **kwargs)
 
@@ -76,6 +77,6 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
 
         except TeamMembership.DoesNotExist:
             messages.error(request, _("Team membership not found."))
-            return redirect('user:user-list')
+            return redirect(USERS_LIST_URL)
 
         return super().dispatch(request, *args, **kwargs)
