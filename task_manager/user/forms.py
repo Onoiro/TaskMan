@@ -50,7 +50,7 @@ class UserForm(forms.ModelForm):
         is_update = self.instance and self.instance.pk
 
         if is_update and not password1:
-            return password1
+            return None
 
         if password1 and len(password1) < 3:
             raise forms.ValidationError(
@@ -66,7 +66,7 @@ class UserForm(forms.ModelForm):
         is_update = self.instance and self.instance.pk
 
         if is_update and not password1 and not password2:
-            return password2
+            return None
 
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError(
