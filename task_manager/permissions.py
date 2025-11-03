@@ -4,11 +4,13 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import redirect
 
 
+UNAUTHORIZED_MESSAGE = _('You are not authorized! Please login.')
+
+
 class CustomPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request,
-                           _('You are not authorized! Please login.'))
+            messages.error(request, UNAUTHORIZED_MESSAGE)
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
 
@@ -27,8 +29,7 @@ class UserPermissions(LoginRequiredMixin):
 class TeamAdminPermissions(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request,
-                           _('You are not authorized! Please login.'))
+            messages.error(request, UNAUTHORIZED_MESSAGE)
             return redirect('login')
 
         team = self.get_object()
@@ -49,8 +50,7 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
         from task_manager.teams.models import TeamMembership
 
         if not request.user.is_authenticated:
-            messages.error(request,
-                           _('You are not authorized! Please login.'))
+            messages.error(request, UNAUTHORIZED_MESSAGE)
             return redirect('login')
 
         try:
