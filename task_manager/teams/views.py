@@ -21,6 +21,11 @@ from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
 
 
+# Constants
+TEAM_NOT_FOUND_MESSAGE = _('Team not found')
+USER_LIST_URL = 'user:user-list'
+
+
 def index(request):
     return HttpResponse('teams')
 
@@ -48,7 +53,7 @@ class SwitchTeamView(View):
                         _("Switched to team: {team}").format(team=team.name)
                     )
                 except Team.DoesNotExist:
-                    messages.error(request, _('Team not found'))
+                    messages.error(request, TEAM_NOT_FOUND_MESSAGE)
 
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -79,7 +84,7 @@ class TeamExitView(LoginRequiredMixin, View):
             return render(request, 'teams/team_exit.html', {'team': team})
 
         except Team.DoesNotExist:
-            messages.error(request, _('Team not found'))
+            messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
 
     def post(self, request, team_id):
@@ -97,10 +102,10 @@ class TeamExitView(LoginRequiredMixin, View):
                 ).format(team=team.name)
             )
 
-            return redirect('user:user-list')
+            return redirect(USER_LIST_URL)
 
         except Team.DoesNotExist:
-            messages.error(request, _('Team not found'))
+            messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
 
     def _is_user_team_member(self, user, team):
@@ -192,7 +197,7 @@ class TeamUpdateView(TeamAdminPermissions, UpdateView):
     model = Team
     form_class = TeamForm
     template_name = 'teams/team_update.html'
-    success_url = reverse_lazy('user:user-list')
+    success_url = reverse_lazy(USER_LIST_URL)
 
     def form_valid(self, form):
         messages.success(self.request, _('Team updated successfully'))
@@ -202,7 +207,7 @@ class TeamUpdateView(TeamAdminPermissions, UpdateView):
 class TeamDeleteView(TeamAdminPermissions, DeleteView):
     model = Team
     template_name = 'teams/team_delete.html'
-    success_url = reverse_lazy('user:user-list')
+    success_url = reverse_lazy(USER_LIST_URL)
 
     def form_valid(self, form):
         team = self.get_object()
@@ -213,7 +218,7 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
                 self.request,
                 _("Cannot delete a team because it has tasks.")
             )
-            return redirect('user:user-list')
+            return redirect(USER_LIST_URL)
 
         # check for team members
         if team.members.count() > 1:
@@ -221,7 +226,7 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
                 self.request,
                 _("Cannot delete a team because it has other members.")
             )
-            return redirect('user:user-list')
+            return redirect(USER_LIST_URL)
 
         messages.success(self.request, _('Team deleted successfully'))
         return super().form_valid(form)
@@ -233,7 +238,7 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
     template_name = 'teams/team_member_role_update.html'
 
     def get_success_url(self):
-        return reverse_lazy('user:user-list')
+        return reverse_lazy(USER_LIST_URL)
 
     def form_valid(self, form):
         membership = self.get_object()
