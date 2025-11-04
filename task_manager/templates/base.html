@@ -47,16 +47,14 @@
                 {% if user.is_authenticated %}
                 <!-- DROPDOWN -->
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button"
-                     data-bs-toggle="dropdown" aria-expanded="false"
-                     tabindex="0" aria-haspopup="true" aria-controls="navbarNav"
-                     onKeyDown="// Bootstrap handles keyboard navigation">
+                  <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     {% if active_team %}
                       🏢 {{ active_team.name }}
                     {% else %}
                       👤 {{ user.username }}
                     {% endif %}
-                  </a>
+                  </button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <!-- Переключение между командами -->
                     {% if user_teams %}
