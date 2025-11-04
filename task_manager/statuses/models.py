@@ -37,7 +37,6 @@ class Status(models.Model):
     )
     description = models.TextField(
         blank=True,
-        null=True,
         verbose_name=_('Description'),)
 
     created_at = models.DateTimeField(
