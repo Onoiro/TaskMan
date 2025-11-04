@@ -20,6 +20,18 @@
             <a class="navbar-brand" href="{% url 'index' %}">
               {% trans "TaskMan" %}
             </a>
+
+            <!-- Mode indicator - always visible, even on mobile devices -->
+            {% if user.is_authenticated %}
+              <span class="navbar-text text-white-50 small me-2 d-md-none">
+                {% if active_team %}
+                  🏢 {{ active_team.name|truncatechars:15 }}
+                {% else %}
+                  👤 {{ user.username|truncatechars:12 }}
+                {% endif %}
+              </span>
+            {% endif %}
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
