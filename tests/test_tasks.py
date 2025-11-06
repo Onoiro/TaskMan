@@ -628,7 +628,8 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]), self.tasks_data, follow=True)
+            reverse('tasks:task-update',
+                    args=[task.id]), self.tasks_data, follow=True)
 
         self.assertRedirects(
             response, reverse('tasks:task-detail', args=[task.id]))
@@ -677,7 +678,8 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]), self.tasks_data, follow=True)
+            reverse('tasks:task-update',
+                    args=[task.id]), self.tasks_data, follow=True)
 
         self.assertRedirects(
             response, reverse('tasks:task-detail', args=[task.id]))
