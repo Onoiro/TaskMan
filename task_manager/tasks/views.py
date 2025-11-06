@@ -93,8 +93,11 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_update.html'
-    success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task updated successfully')
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'tasks:task-detail', kwargs={'pk': self.object.pk})
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

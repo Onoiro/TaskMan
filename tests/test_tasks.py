@@ -558,10 +558,10 @@ class TaskTestCase(TestCase):
     def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True
+            reverse('tasks:task-update', args=[task.id]), self.tasks_data
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response, reverse('tasks:task-detail', args=[task.id]))
 
     def test_update_task_content(self):
         task = Task.objects.get(name="first task")
@@ -583,9 +583,10 @@ class TaskTestCase(TestCase):
     def test_update_task_with_correct_data(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True
-        )
+            reverse('tasks:task-update', args=[task.id]), self.tasks_data)
+
+        self.assertRedirects(
+            response, reverse('tasks:task-detail', args=[task.id]))
 
         # check form errors
         if response.context and 'form' in response.context:
@@ -627,9 +628,10 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True
-        )
+            reverse('tasks:task-update', args=[task.id]), self.tasks_data, follow=True)
+
+        self.assertRedirects(
+            response, reverse('tasks:task-detail', args=[task.id]))
 
         # check form errors
         if response.context and 'form' in response.context:
@@ -637,7 +639,6 @@ class TaskTestCase(TestCase):
             if not form.is_valid():
                 self.fail(f"Form validation failed: {form.errors}")
 
-        self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
@@ -676,9 +677,10 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
-            self.tasks_data, follow=True
-        )
+            reverse('tasks:task-update', args=[task.id]), self.tasks_data, follow=True)
+
+        self.assertRedirects(
+            response, reverse('tasks:task-detail', args=[task.id]))
 
         # check form errors
         if response.context and 'form' in response.context:
@@ -686,7 +688,6 @@ class TaskTestCase(TestCase):
             if not form.is_valid():
                 self.fail(f"Form validation failed: {form.errors}")
 
-        self.assertEqual(response.status_code, 200)
         task.refresh_from_db()
         self.assertEqual(task.name, self.tasks_data['name'])
 
