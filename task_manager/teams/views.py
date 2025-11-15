@@ -19,6 +19,7 @@ from django.shortcuts import redirect, render
 from task_manager.teams.forms import TeamForm, TeamMemberRoleForm
 from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
+from task_manager.statuses.models import Status
 
 
 # Constants
@@ -170,6 +171,9 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
             team=self.object,
             role='admin'
         )
+
+        # create default statuses for new team
+        Status.create_default_statuses_for_team(self.object, self.request.user)
 
         messages.success(self.request, _('Team created successfully'))
         return response

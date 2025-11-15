@@ -46,8 +46,8 @@ class Status(models.Model):
 
     # creating default statuses for user
     @classmethod
-    def create_default_statuses_for_user(cls, user):
-        """Создает дефолтные статусы для нового пользователя"""
+    def create_default_statuses_for_user(cls, user, team=None):
+        """Создает дефолтные статусы для нового пользователя или команды"""
         default_statuses = [
             {
                 'name': _("To Do"),
@@ -82,11 +82,18 @@ class Status(models.Model):
             status = cls.objects.create(
                 name=status_data['name'],
                 description=status_data['description'],
-                creator=user
+                creator=user,
+                team=team
             )
             created_statuses.append(status)
 
         return created_statuses
+
+    # creating default statuses for team
+    @classmethod
+    def create_default_statuses_for_team(cls, team, creator):
+        """Создает дефолтные статусы для новой команды"""
+        return cls.create_default_statuses_for_user(creator, team)
 
     def __str__(self):
         return self.name
