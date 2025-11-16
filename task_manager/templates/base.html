@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% trans "Task Manager" %}</title>
+    <title>{% trans "TaskMan" %}</title>
     {% bootstrap_css %}
   </head>
   <body class="d-flex flex-column min-vh-100">
@@ -21,20 +21,88 @@
               {% trans "TaskMan" %}
             </a>
 
-            <!-- Mode indicator - always visible, even on mobile devices -->
-            {% if user.is_authenticated %}
-              <span class="navbar-text text-white-50 small me-2 d-md-none">
-                {% if active_team %}
-                  🏢 {{ active_team.name|truncatechars:15 }}
-                {% else %}
-                  👤 {{ user.username|truncatechars:12 }}
-                {% endif %}
-              </span>
-            {% endif %}
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
+            
+            <!-- DROPDOWN - всегда видимый на мобильных устройствах -->
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav d-md-none ms-auto me-2">
+              <li class="nav-item dropdown">
+                <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  {% if active_team %}
+                    🏢 {{ active_team.name }}
+                  {% else %}
+                    👤 {{ user.username }}
+                  {% endif %}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <!-- Переключение между командами -->
+                  {% if user_teams %}
+                  <li class="dropdown-header">{% trans "Switch team" %}</li>
+                  
+                  <!-- Индивидуальный режим -->
+                  <li>
+                    <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
+                      {% csrf_token %}
+                      <input type="hidden" name="team_id" value="individual">
+                      <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
+                        👤 {% trans "Individual mode" %}
+                      </button>
+                    </form>
+                  </li>
+                  
+                  <!-- Список команд -->
+                  {% for membership in user_teams %}
+                  <li>
+                    <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
+                      {% csrf_token %}
+                      <input type="hidden" name="team_id" value="{{ membership.team.id }}">
+                      <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
+                        🏢 {{ membership.team.name }} 
+                        <small class="text-muted">({{ membership.get_role_display }})</small>
+                      </button>
+                    </form>
+                  </li>
+                  {% endfor %}
+                  
+                  <li><hr class="dropdown-divider"></li>
+                  {% endif %}
+                  
+                  <!-- Действия с пользователем -->
+                  <li>
+                    <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
+                      ✏️ {% trans "Update profile" %}
+                    </a>
+                  </li>
+                  
+                  <!-- Действия с командами -->
+                  <li>
+                      <a class="dropdown-item" href="{% url 'teams:team-create' %}">
+                          ➕ {% trans "Create Team" %}
+                      </a>
+                  </li>
+                  {% if active_team %}
+                  <li>
+                      <a href="{% url 'teams:team-exit' active_team.id %}" class="dropdown-item text-danger">
+                          🚪 {% trans "Exit Team" %}
+                      </a>
+                  </li>
+                  {% endif %}
+                  
+                  <!-- Выход -->
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'logout' %}">
+                      🚪 {% trans "Logout" %}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            {% endif %}
+
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav me-auto">
                 <li class="nav-item">
@@ -55,9 +123,9 @@
                   </li>
                 {% endif %}
               </ul>
-              <ul class="navbar-nav">
+              <ul class="navbar-nav d-none d-md-flex">
                 {% if user.is_authenticated %}
-                <!-- DROPDOWN -->
+                <!-- DROPDOWN для десктопа -->
                 <li class="nav-item dropdown">
                   <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
