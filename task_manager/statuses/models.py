@@ -37,8 +37,13 @@ class Status(models.Model):
     )
     description = models.TextField(
         blank=True,
-        verbose_name=_('Description'),)
-
+        verbose_name=_('Description')
+    )
+    color = models.CharField(
+        max_length=7,
+        default='#6B7280',
+        blank=True
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Created at')
@@ -51,29 +56,34 @@ class Status(models.Model):
         default_statuses = [
             {
                 'name': _("To Do"),
-                'description': _("Task has been created but not yet started")
+                'description': _("Task has been created but not yet started"),
+                'color': '#A78BFA'  # Лавандовый
             },
             {
                 'name': _("In Progress"),
-                'description': _("Task is currently being worked on")
+                'description': _("Task is currently being worked on"),
+                'color': '#3B82F6'  # Синий
             },
             {
                 'name': _("On Hold"),
-                'description': _("Task is temporarily paused")
+                'description': _("Task is temporarily paused"),
+                'color': '#F59E0B'  # Янтарный/оранжевый
             },
             {
                 'name': _("Completed"),
-                'description': _("Task has been finished successfully")
+                'description': _("Task has been finished successfully"),
+                'color': '#10B981'  # Зелёный
             },
             {
                 'name': _("Cancelled"),
-                'description': _("Task was abandoned or deemed unnecessary")
+                'description': _("Task was abandoned or deemed unnecessary"),
+                'color': '#9CA3AF'  # Тускло-серый
             },
             {
                 'name': _("Blocked"),
                 'description': _(
-                    "Task cannot proceed due to external dependencies"
-                )
+                    "Task cannot proceed due to external dependencies"),
+                'color': '#EF4444'  # Красный
             },
         ]
 
@@ -82,6 +92,7 @@ class Status(models.Model):
             status = cls.objects.create(
                 name=status_data['name'],
                 description=status_data['description'],
+                color=status_data['color'],
                 creator=user,
                 team=team
             )
