@@ -25,9 +25,9 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             
-            <!-- DROPDOWN - всегда видимый на мобильных устройствах -->
+            <!-- DROPDOWN - всегда видимый (мобильные + десктоп) -->
             {% if user.is_authenticated %}
-            <ul class="navbar-nav d-md-none ms-auto me-2">
+            <ul class="navbar-nav ms-auto me-2 d-md-none">
               <li class="nav-item dropdown">
                 <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,9 +105,6 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">{% trans "Home" %}</a>
-                </li>
                 {% if user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'user:user-list' %}">{% trans "Users" %}</a>
@@ -123,10 +120,10 @@
                   </li>
                 {% endif %}
               </ul>
-              <ul class="navbar-nav d-none d-md-flex">
+              <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                 <!-- DROPDOWN для десктопа -->
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown d-none d-md-block">
                   <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     {% if active_team %}
@@ -207,7 +204,8 @@
                     <a class="nav-link" href="{% url 'user:user-create' %}">{% trans "Signup" %}</a>
                   </li>
                 {% endif %}
-                <li>
+                <!-- Переключатель языка -->
+                <li class="nav-item">
                     {% get_current_language as CURRENT_LANGUAGE %}
                     {% if CURRENT_LANGUAGE == "ru" %}
                       <form method="post" action="{% url 'set_language' %}">
@@ -222,7 +220,7 @@
                         <button type="submit" class="nav-link border-0 bg-transparent px-2">РУ</button>
                       </form>
                     {% endif %}
-                  </li>
+                </li>
               </ul>
             </div>
           </div>
