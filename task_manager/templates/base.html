@@ -21,13 +21,9 @@
               {% trans "TaskMan" %}
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- DROPDOWN - всегда видимый (мобильные + десктоп) -->
+            <!-- DROPDOWN -->
             {% if user.is_authenticated %}
-            <ul class="navbar-nav ms-auto me-2 d-md-none">
+            <ul class="navbar-nav order-md-2 ms-auto me-2">
               <li class="nav-item dropdown">
                 <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
@@ -38,11 +34,11 @@
                   {% endif %}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <!-- Переключение между командами -->
+                  <!-- switch between mode and teams -->
                   {% if user_teams %}
                   <li class="dropdown-header">{% trans "Switch team" %}</li>
                   
-                  <!-- Индивидуальный режим -->
+                  <!-- individual mode -->
                   <li>
                     <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
                       {% csrf_token %}
@@ -53,7 +49,7 @@
                     </form>
                   </li>
                   
-                  <!-- Список команд -->
+                  <!-- list of teams -->
                   {% for membership in user_teams %}
                   <li>
                     <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
@@ -70,14 +66,12 @@
                   <li><hr class="dropdown-divider"></li>
                   {% endif %}
                   
-                  <!-- Действия с пользователем -->
+                  <!-- actions with user and teams -->
                   <li>
                     <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
                       ✏️ {% trans "Update profile" %}
                     </a>
                   </li>
-                  
-                  <!-- Действия с командами -->
                   <li>
                       <a class="dropdown-item" href="{% url 'teams:team-create' %}">
                           ➕ {% trans "Create Team" %}
@@ -91,7 +85,7 @@
                   </li>
                   {% endif %}
                   
-                  <!-- Выход -->
+                  <!-- exit (logout) -->
                   <li><hr class="dropdown-divider"></li>
                   <li>
                     <a class="dropdown-item" href="{% url 'logout' %}">
@@ -103,7 +97,11 @@
             </ul>
             {% endif %}
 
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <button class="navbar-toggler order-md-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse order-md-1" id="navbarNav">
               <ul class="navbar-nav me-auto">
                 {% if user.is_authenticated %}
                   <li class="nav-item">
@@ -121,82 +119,7 @@
                 {% endif %}
               </ul>
               <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                <!-- DROPDOWN для десктопа -->
-                <li class="nav-item dropdown d-none d-md-block">
-                  <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if active_team %}
-                      🏢 {{ active_team.name }}
-                    {% else %}
-                      👤 {{ user.username }}
-                    {% endif %}
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <!-- Переключение между командами -->
-                    {% if user_teams %}
-                    <li class="dropdown-header">{% trans "Switch team" %}</li>
-                    
-                    <!-- Индивидуальный режим -->
-                    <li>
-                      <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
-                        {% csrf_token %}
-                        <input type="hidden" name="team_id" value="individual">
-                        <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
-                          👤 {% trans "Individual mode" %}
-                        </button>
-                      </form>
-                    </li>
-                    
-                    <!-- Список команд -->
-                    {% for membership in user_teams %}
-                    <li>
-                      <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
-                        {% csrf_token %}
-                        <input type="hidden" name="team_id" value="{{ membership.team.id }}">
-                        <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
-                          🏢 {{ membership.team.name }} 
-                          <small class="text-muted">({{ membership.get_role_display }})</small>
-                        </button>
-                      </form>
-                    </li>
-                    {% endfor %}
-                    
-                    <li><hr class="dropdown-divider"></li>
-                    {% endif %}
-                    
-                    <!-- Действия с пользователем -->
-                    <li>
-                      <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
-                        ✏️ {% trans "Update profile" %}
-                      </a>
-                    </li>
-                    
-                    <!-- Действия с командами -->
-                    <li>
-                        <a class="dropdown-item" href="{% url 'teams:team-create' %}">
-                            ➕ {% trans "Create Team" %}
-                        </a>
-                    </li>
-                    {% if active_team %}
-                    <li>
-                        <a href="{% url 'teams:team-exit' active_team.id %}" class="dropdown-item text-danger">
-                            🚪 {% trans "Exit Team" %}
-                        </a>
-                    </li>
-                    {% endif %}
-                    
-                    <!-- Выход -->
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'logout' %}">
-                        🚪 {% trans "Logout" %}
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <!-- КОНЕЦ DROPDOWN -->
-                {% else %}
+                {% if not user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
                   </li>
@@ -204,7 +127,8 @@
                     <a class="nav-link" href="{% url 'user:user-create' %}">{% trans "Signup" %}</a>
                   </li>
                 {% endif %}
-                <!-- Переключатель языка -->
+
+                <!-- switch language -->
                 <li class="nav-item">
                     {% get_current_language as CURRENT_LANGUAGE %}
                     {% if CURRENT_LANGUAGE == "ru" %}
