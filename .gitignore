@@ -11,3 +11,6 @@ db.sqlite3
 todo.txt
 poetry.lock.backup
 pyproject.toml.backup
+logs/
+task_manager/logs/
+*.log
