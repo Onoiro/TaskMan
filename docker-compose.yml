@@ -33,8 +33,6 @@ services:
    depends_on:
       db:
         condition: service_healthy
-   volumes:
-      - ./task_manager/logs:/app/logs
    networks:
       - taskman_network
    restart: unless-stopped
