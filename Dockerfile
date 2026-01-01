@@ -30,6 +30,8 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /app && useradd -m -r appuser && chown -R appuser /app
 WORKDIR /app
 
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
+
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
@@ -39,4 +41,4 @@ USER appuser
 
 EXPOSE 8001
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8001", "task_manager.wsgi:application"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8001", "--access-logfile", "-", "--error-logfile", "-", "task_manager.wsgi:application"]
