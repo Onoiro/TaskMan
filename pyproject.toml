@@ -21,19 +21,19 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^4.2.7"
-gunicorn = "^21.2.0"
+gunicorn = "^23.0.0"
 python-dotenv = "^1.0.0"
 django-bootstrap5 = "^23.3"
 django-modeltranslation = "^0.18.11"
 whitenoise = "^6.6.0"
-dj-database-url = "^2.1.0"
+dj-database-url = "^2.3.0"
 psycopg2-binary = "^2.9.9"
 django-filter = "^24.2"
 rollbar = "^0.16.3"
 
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^6.1.0"
+flake8 = "^7.0.0"
 coverage = "^7.5.1"
 
 [build-system]
