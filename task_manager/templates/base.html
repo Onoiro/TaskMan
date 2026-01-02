@@ -88,9 +88,12 @@
                   <!-- exit (logout) -->
                   <li><hr class="dropdown-divider"></li>
                   <li>
-                    <a class="dropdown-item" href="{% url 'logout' %}">
-                      🚪 {% trans "Logout" %}
-                    </a>
+                    <form method="post" action="{% url 'logout' %}" class="px-3">
+                      {% csrf_token %}
+                      <button type="submit" class="dropdown-item">
+                        🚪 {% trans "Logout" %}
+                      </button>
+                    </form>
                   </li>
                 </ul>
               </li>
