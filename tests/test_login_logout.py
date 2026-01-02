@@ -62,7 +62,7 @@ class UserLogoutViewTestCase(TestCase):
         self.client.force_login(self.user)
 
     def test_user_logout(self):
-        response = self.client.get(reverse('logout'))
+        response = self.client.post(reverse('logout'))
         self.assertRedirects(response, reverse('index'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)

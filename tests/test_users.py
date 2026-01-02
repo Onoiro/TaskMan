@@ -51,7 +51,7 @@ class UserTestCase(TestCase):
         response = self.c.get(reverse('user:user-list'))
         self.assertEqual(response.status_code, 200)
         # should return empty queryset for unauthenticated users
-        self.assertQuerysetEqual(response.context['user_list'], [])
+        self.assertQuerySetEqual(response.context['user_list'], [])
 
     # to do later - this test fails
 
