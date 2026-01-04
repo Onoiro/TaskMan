@@ -10,7 +10,7 @@
             {% if user_membership.role == 'admin' %}
                 "
                 <a
-                    href="{% url 'teams:team-update' request.active_team.id %}"
+                    href="{% url 'teams:team-detail' request.active_team.id %}"
                     style="text-decoration: none;"
                 > {{ request.active_team.name }}
                 </a>
