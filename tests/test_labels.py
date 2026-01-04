@@ -85,7 +85,7 @@ class LabelsTestCase(TestCase):
         # labels of other teams and individual labels have not to be shown
         other_labels = Label.objects.exclude(team=self.team)
         for label in other_labels:
-            # check labels by id Проверяем по ID because names can be the same
+            # check labels by id because names can be the same
             self.assertNotContains(response, f'<td>{label.id}</td>')
 
     def test_labels_list_content_individual_mode(self):
@@ -157,7 +157,6 @@ class LabelsTestCase(TestCase):
             _(r'\bCreate label\b'))
 
     def test_post_create_label_response_200(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         response = self.c.post(reverse('labels:labels-create'),
@@ -165,7 +164,6 @@ class LabelsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_label_successfully(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         old_count = Label.objects.count()
@@ -177,7 +175,7 @@ class LabelsTestCase(TestCase):
         label = Label.objects.filter(
             name=self.labels_data['name']).first()
         self.assertEqual(label.name, self.labels_data['name'])
-        # Проверяем, что метка создана для команды
+        # check that label created for team
         self.assertEqual(label.team, self.team)
         self.assertEqual(label.creator, self.user)
         self.assertRedirects(response, reverse('labels:labels-list'))
@@ -186,8 +184,8 @@ class LabelsTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Label created successfully'))
 
     def test_create_label_in_individual_mode(self):
-        """Тест создания метки в индивидуальном режиме"""
-        # Убираем активную команду
+        """Test create label in individuТal mode"""
+        # remove active team
         self._set_active_team(None)
 
         self.c.post(reverse('labels:labels-create'),
@@ -199,7 +197,6 @@ class LabelsTestCase(TestCase):
         self.assertEqual(label.creator, self.user)
 
     def test_can_not_create_label_with_empty_name(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         self.labels_data = {'name': ' '}
@@ -212,7 +209,6 @@ class LabelsTestCase(TestCase):
     # update
 
     def test_update_label_response_200(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -222,7 +218,6 @@ class LabelsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_label_content(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -237,7 +232,6 @@ class LabelsTestCase(TestCase):
             _(r'\bEdit label\b'))
 
     def test_update_label_successfully(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -252,7 +246,6 @@ class LabelsTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Label updated successfully'))
 
     def test_can_not_set_empty_name_when_update_label(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -265,26 +258,25 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, message)
 
     def test_update_label_in_different_team_mode(self):
-        """Тест что нельзя редактировать метку из другой команды"""
-        # Создаем метку в команде 2
+        """Test that can't update label from another team"""
+        # set active team with id 2
         self._set_active_team(2)
 
-        # Пытаемся обновить метку из команды 1
-        label = Label.objects.get(name="bug")  # Эта метка из команды 1
+        # try update label from team with id 2
+        label = Label.objects.get(name="bug")  # this label is from team 2
         self.c.post(reverse('labels:labels-update',
                             args=[label.id]), {'name': 'hacked'}, follow=True)
 
-        # Метка не должна измениться
+        # label doesn't changed
         label.refresh_from_db()
         self.assertEqual(label.name, "bug")
 
     # delete
 
     def test_delete_label_response_200(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
-        # Создаем метку для удаления без связи с задачами
+        # create label without task for delete
         label_to_delete = Label.objects.create(
             name="to_delete",
             creator=self.user,
@@ -297,7 +289,6 @@ class LabelsTestCase(TestCase):
         self.assertFalse(Label.objects.filter(name="to_delete").exists())
 
     def test_delete_label_content(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -309,7 +300,6 @@ class LabelsTestCase(TestCase):
                             _('Are you sure you want to delete bug?'))
 
     def test_delete_label_successfully(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="feature")
@@ -323,7 +313,6 @@ class LabelsTestCase(TestCase):
                          _('Label deleted successfully'))
 
     def test_can_not_delete_label_bound_with_task(self):
-        # Устанавливаем активную команду
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
@@ -337,11 +326,9 @@ class LabelsTestCase(TestCase):
                          _('Cannot delete label because it is in use'))
 
     def test_delete_label_in_individual_mode(self):
-        """Тест удаления личной метки в индивидуальном режиме"""
-        # Убираем активную команду
+        """Test for delete individual label in individual mode"""
         self._set_active_team(None)
 
-        # Создаем личную метку
         personal_label = Label.objects.create(
             name="personal_to_delete",
             creator=self.user,
