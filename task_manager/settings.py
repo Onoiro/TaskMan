@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 from dotenv import load_dotenv
 import dj_database_url
 from django.core.management.utils import get_random_secret_key
@@ -231,3 +232,11 @@ LOGGING = {
         },
     },
 }
+
+# disable logs django.request in tests
+if 'test' in sys.argv:
+    LOGGING['loggers']['django.request'] = {
+        'handlers': ['console'],
+        'level': 'ERROR',  # only 5xx errors, not 4xx
+        'propagate': False,
+    }
