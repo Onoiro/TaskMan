@@ -262,8 +262,8 @@ class LabelsTestCase(TestCase):
         # set active team with id 2
         self._set_active_team(2)
 
-        # try update label from team with id 2
-        label = Label.objects.get(name="bug")  # this label is from team 2
+        # try update label from team with id 1
+        label = Label.objects.get(name="bug")  # this label is from team 1
         self.c.post(reverse('labels:labels-update',
                             args=[label.id]), {'name': 'hacked'}, follow=True)
 
