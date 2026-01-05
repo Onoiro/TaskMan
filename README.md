@@ -26,12 +26,14 @@ The TaskMan application is available in two languages:
 
 ## Requirements
 - **OS**: Linux (recommended)
-- **Python**: ^3.8.1
+- **Python**: ^3.11
 - **Poetry**: ^1.2.2 (for non-Docker setup)
 - **Docker Engine**: ^20.10 (for Docker setup)
 - **Docker Compose**: ^2.0 (for Docker setup)
 
 ## Getting Started
+
+The project includes an `.env.example` file in the repository root. You will use this as a template to create configuration files for different environments.
 
 ### Option 1: Docker Setup (Recommended)
 **Prerequisites**
@@ -43,22 +45,28 @@ The TaskMan application is available in two languages:
 git clone https://github.com/Onoiro/TaskMan.git
 cd TaskMan
 
-# create environment variables file:
-touch .env
+# create the Docker environment file from example:
+cp .env.example .env.docker
 
-# configure environment variables in .env:
+# configure .env.docker:
+# Open .env.docker and update the variables for production/docker environment:
 
-# database settings
-DATABASE_URL=postgresql://your_db_user:your_password@db:5432/your_db_name
-POSTGRES_DB=your_db_name
-POSTGRES_USER=your_db_user
-POSTGRES_PASSWORD=your_password
-POSTGRES_PORT=5432
-# django settings
-SECRET_KEY=your_secret_django_key
+# --- .env.docker example content ---
 DEBUG=False
-# optional: Rollbar integration
-ROLLBAR_ACCESS_TOKEN=your_rollbar_token
+SECRET_KEY=generate_a_strong_secret_key_here
+DJANGO_LANGUAGE_CODE=en-us
+
+# Database settings (PostgreSQL)
+POSTGRES_DB=taskman_db
+POSTGRES_USER=your_db_user
+POSTGRES_PASSWORD=your_secure_password
+POSTGRES_PORT=5432
+
+# Optional: Rollbar integration
+# POST_SERVER_ITEM_ACCESS_TOKEN=your_token
+# -----------------------------------
+
+# Note: The Makefile commands for Docker automatically use .env.docker
 
 # build and start the application for first time:
 
@@ -95,7 +103,7 @@ make help # view all available commands
 
 ### Option 2: Traditional Setup (Without Docker)
 **Prerequisites**
-- Python 3.8.1 or higher
+- Python 3.11 or higher
 - Poetry 1.2.2 or higher
 - PostgreSQL (for production) or SQLite (for development included)
 
@@ -105,21 +113,22 @@ make help # view all available commands
 git clone https://github.com/Onoiro/TaskMan.git
 cd TaskMan
 
-# create environment variables file:
-touch .env
+# create the local environment file from example:
+cp .env.example .env
 
 # configure environment variables in .env:
 
-# for development (SQLite)
-DEBUG=True
-DATABASE_URL=sqlite:///db.sqlite3
-SECRET_KEY=your_secret_key
-DJANGO_LANGUAGE_CODE=en-us
+# Open .env and ensure it is set for local development:
 
-# for production (PostgreSQL)
-DEBUG=False
-DATABASE_URL=postgresql://your_db_user:your_password@localhost:5432/your_db_name
-SECRET_KEY=your_secret_key
+# --- .env example content ---
+DEBUG=True
+SECRET_KEY=dev_secret_key
+DJANGO_LANGUAGE_CODE=en-us
+ADMIN_PASSWORD=admin
+DATABASE_URL=sqlite:///db.sqlite3
+# if you use postgresql instead of sqlite, add the following
+# DATABASE_URL=postgresql://your_db_user:your_password@localhost:5432/your_db_name
+# ----------------------------
 
 # install dependencies and setup database:
 make build
@@ -183,6 +192,7 @@ make compile     # or make d-compilemessages for Docker
 
 For production deployment with Docker:
 - **Configure production environment variables**
+Ensure your .env.docker file contains production values (DEBUG=False, strong SECRET_KEY).
 - **Use the deploy command**:
 ```bash
 make deploy
@@ -227,8 +237,9 @@ make d-clean
 make d-space
 ```
 **Common Solutions**
-- If containers fail to start, check your .env file configuration
-- For database connection issues, ensure PostgreSQL container is healthy
+- If using Docker commands, ensure .env.docker exists and is configured correctly.
+- If using local 'make dev', ensure .env exists and is configured correctly.
+- For database connection issues, ensure PostgreSQL container is healthy ('make status').
 - Use 'make help' to see all available commands
 
 ### Contributing
