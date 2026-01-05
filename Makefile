@@ -183,7 +183,6 @@ deploy:
 	sleep 15
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py collectstatic --no-input
-	$(DC) exec django-web python manage.py compilemessages
 
 # quick start for development
 d-dev:
