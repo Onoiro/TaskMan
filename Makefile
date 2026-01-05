@@ -1,4 +1,5 @@
 MANAGE := poetry run python manage.py
+DC := docker compose --env-file .env.docker
 
 # install dependenciess, collect static, run migrations, create superuser
 build:
@@ -13,7 +14,7 @@ PORT ?= 8001
 start:
 	poetry run gunicorn -w 4 -b localhost:$(PORT) task_manager.wsgi:application
 
-# when you want to check code style with flake8
+# linting
 lint:
 	poetry run flake8
 
@@ -29,7 +30,7 @@ cov:
 test-cov:
 	poetry run coverage run --source='task_manager' manage.py test && poetry run coverage report
 
-# run local migrations
+# local migrations
 migrations:
 	$(MANAGE) makemigrations
 
@@ -50,55 +51,55 @@ compile:
 	cd task_manager && django-admin compilemessages
 
 # ========================================
-# Docker commands
+# Docker commands (use .env.docker)
 # ========================================
 
-POSTGRES_USER := $(shell docker compose exec db printenv POSTGRES_USER)
-POSTGRES_DB := $(shell docker compose exec db printenv POSTGRES_DB)
+POSTGRES_USER := $(shell $(DC) exec db printenv POSTGRES_USER)
+POSTGRES_DB := $(shell $(DC) exec db printenv POSTGRES_DB)
 
 # start all services in background
 up:
-	docker compose up -d
+	$(DC) up -d
 
 # stop all services
 down:
-	docker compose down
+	$(DC) down
 
 # stop and remove containers, networks, volumes
 down-clean:
-	docker compose down -v --remove-orphans
+	$(DC) down -v --remove-orphans
 
 # restart all services
 restart:
-	docker compose restart
+	$(DC) restart
 
 # build images
 d-build:
-	docker compose build
+	$(DC) build
 
 # build images without cache
 build-no-cache:
-	docker compose build --no-cache
+	$(DC) build --no-cache
 
 # rebuild and start
 rebuild:
-	docker compose down && docker compose build && docker compose up -d
+	$(DC) down && $(DC) build && $(DC) up -d
 
 # view logs of all services
 logs:
-	docker compose logs -f
+	$(DC) logs -f
 
 # view Django logs
 logs-web:
-	docker compose logs -f django-web
+	$(DC) logs -f django-web
 
 # view database logs
 logs-db:
-	docker compose logs -f db
+	$(DC) logs -f db
 
 # Service status
 status:
-	docker compose ps
+	$(DC) ps
 
 # ========================================
 # Commands for working inside containers
@@ -106,19 +107,19 @@ status:
 
 # enter Django container
 d-bash:
-	docker compose exec django-web bash
+	$(DC) exec django-web bash
 
 # enter Django shell
 d-shell:
-	docker compose exec django-web python manage.py shell
+	$(DC) exec django-web python manage.py shell
 
 # enter database container
 db-shell:
-	docker compose exec db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	$(DC) exec db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
 # enter database container via bash
 db-bash:
-	docker compose exec db bash
+	$(DC) exec db bash
 
 # ========================================
 # Django commands via Docker
@@ -126,27 +127,27 @@ db-bash:
 
 # create migrations
 d-migrations:
-	docker compose exec django-web python manage.py makemigrations
+	$(DC) exec django-web python manage.py makemigrations
 
 # apply migrations
 d-migrate:
-	docker compose exec django-web python manage.py migrate
+	$(DC) exec django-web python manage.py migrate
 
 # create superuser
 d-createsu:
-	docker compose exec django-web python manage.py createsuperuser
+	$(DC) exec django-web python manage.py createsuperuser
 
 # collect static files
 d-collect:
-	docker compose exec django-web python manage.py collectstatic --no-input
+	$(DC) exec django-web python manage.py collectstatic --no-input
 
 # create translations
 d-messages:
-	docker compose exec django-web python manage.py makemessages -a
+	$(DC) exec django-web python manage.py makemessages -a
 
 # compile translations
 d-compile:
-	docker compose exec django-web python manage.py compilemessages
+	$(DC) exec django-web python manage.py compilemessages
 
 # ========================================
 # Database commands
@@ -154,21 +155,21 @@ d-compile:
 
 # create database backup
 d-backup:
-	docker compose exec db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) > backups/backup_$(shell date +%Y%m%d_%H%M%S).sql
+	$(DC) exec db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) > backups/backup_$(shell date +%Y%m%d_%H%M%S).sql
 
 # restore database from backup (use: make docker-restore BACKUP_FILE=backup_name.sql)
 d-restore:
-	docker compose exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) < backups/$(BACKUP_FILE)
+	$(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) < backups/$(BACKUP_FILE)
 
 # reset database and reapply migrations
 d-reset-db:
-	docker compose down
+	$(DC) down
 	docker volume rm $$(docker volume ls -q | grep postgres_data) || true
-	docker compose up -d db
+	$(DC) up -d db
 	sleep 10
-	docker compose up -d django-web
-	docker compose exec django-web python manage.py migrate
-	docker compose exec django-web python manage.py createsuperuser
+	$(DC) up -d django-web
+	$(DC) exec django-web python manage.py migrate
+	$(DC) exec django-web python manage.py createsuperuser
 
 # ========================================
 # Development commands
@@ -176,19 +177,19 @@ d-reset-db:
 
 # full cycle: stop, build, start, migrate
 deploy:
-	docker compose down
-	docker compose build
-	docker compose up -d
+	$(DC) down
+	$(DC) build
+	$(DC) up -d
 	sleep 15
-	docker compose exec django-web python manage.py migrate
-	docker compose exec django-web python manage.py collectstatic --no-input
-	docker compose exec django-web python manage.py compilemessages
+	$(DC) exec django-web python manage.py migrate
+	$(DC) exec django-web python manage.py collectstatic --no-input
+	$(DC) exec django-web python manage.py compilemessages
 
 # quick start for development
 d-dev:
-	docker compose up -d
+	$(DC) up -d
 	sleep 10
-	docker compose exec django-web python manage.py migrate
+	$(DC) exec django-web python manage.py migrate
 
 # clean unused Docker objects
 d-clean:
