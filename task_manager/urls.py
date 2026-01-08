@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
+from django.views.generic import TemplateView
 from . import views
 
 
@@ -34,4 +35,14 @@ urlpatterns = [
     path('teams/', include('task_manager.teams.urls')),
     path('admin/', admin.site.urls),
     path('i18n/', include("django.conf.urls.i18n")),
+    # (given with Content-Type: application/javascript)
+    path('sw.js', TemplateView.as_view(
+        template_name='sw.js',
+        content_type='application/javascript'
+    ), name='sw.js'),
+    # (given with Content-Type: application/manifest+json)
+    path('manifest.json', TemplateView.as_view(
+        template_name='manifest.json',
+        content_type='application/manifest+json'
+    ), name='manifest.json'),
 ]
