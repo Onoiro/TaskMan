@@ -93,9 +93,10 @@ msgstr "Русский"
 msgid "Spanish"
 msgstr "Испанский"
 
-#: statuses/forms.py:18 statuses/forms.py:21 statuses/models.py:40
-#: tasks/models.py:30 teams/models.py:23
+#: statuses/forms.py:18 statuses/models.py:21 statuses/models.py:40
+#: tasks/models.py:30 teams/models.py:23 user/models.py:9
 #: templates/statuses/statuses_list.html:22 templates/teams/team_detail.html:13
+#: templates/user/user_detail.html:29 templates/user/user_list.html:22
 msgid "Description"
 msgstr "Описание"
 

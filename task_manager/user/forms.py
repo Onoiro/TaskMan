@@ -9,11 +9,12 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name']
+        fields = ['username', 'first_name', 'last_name', 'description']
 
         help_texts = {
             'first_name': _('Optional'),
             'last_name': _('Optional'),
+            'description': _('Optional'),
         }
 
     password1 = forms.CharField(

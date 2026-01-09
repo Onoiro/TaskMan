@@ -30,6 +30,7 @@
             <th>ID</th>
             <th>{% trans "User name" %}</th>
             <th>{% trans "Fullname" %}</th>
+            <th>{% trans "Description" %}</th>
             <th>{% trans "Role" %}</th>
             <th>{% trans "Created at" %}</th>
             <th></th>
@@ -47,6 +48,7 @@
                     {% endif %}
                 </td>
                 <td>{{ user.first_name}} {{ user.last_name }}</td>
+                <td>{{ user.description|truncatewords:3|default:"" }}</td>
                 <td>
                     {% if request.active_team %}
                         {% for membership in user_memberships %}

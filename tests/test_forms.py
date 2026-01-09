@@ -18,6 +18,7 @@ class UserFormTestCase(TestCase):
             'first_name': 'Him',
             'last_name': 'H',
             'username': 'him',
+            'description': 'Test user description',
             'password1': '111',
             'password2': '111',
             'join_team_name': '',
@@ -27,6 +28,61 @@ class UserFormTestCase(TestCase):
     def test_UserForm_valid(self):
         form = UserForm(data=self.form_data)
         self.assertTrue(form.is_valid())
+
+    def test_create_user_with_description(self):
+        """test that user can be created with description"""
+        form = UserForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertEqual(user.description, 'Test user description')
+
+    def test_create_user_without_description(self):
+        """test that user can be created without description"""
+        form_data = self.form_data.copy()
+        del form_data['description']
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertEqual(user.description, '')
+
+    def test_update_user_description(self):
+        """test that user description can be updated"""
+        user = User.objects.get(pk=10)  # me
+        update_data = {
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'me',
+            'description': 'New description for this user',
+            'password1': '',
+            'password2': '',
+            'join_team_name': '',
+            'join_team_password': ''
+        }
+        form = UserForm(data=update_data, instance=user)
+        self.assertTrue(form.is_valid())
+        updated_user = form.save()
+        self.assertEqual(
+            updated_user.description,
+            'New description for this user'
+        )
+
+    def test_update_user_clear_description(self):
+        """test that user description can be cleared"""
+        user = User.objects.get(pk=10)  # me - has description in fixture
+        update_data = {
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'me',
+            'description': '',
+            'password1': '',
+            'password2': '',
+            'join_team_name': '',
+            'join_team_password': ''
+        }
+        form = UserForm(data=update_data, instance=user)
+        self.assertTrue(form.is_valid())
+        updated_user = form.save()
+        self.assertEqual(updated_user.description, '')
 
     def test_create_user_without_password_fails(self):
         form_data = {

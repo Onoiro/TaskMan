@@ -24,6 +24,7 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': 'new',
+            'description': 'Test description',
             'password1': '222',
             'password2': '222',
             'join_team_name': '',
@@ -142,10 +143,31 @@ class UserTestCase(TestCase):
         self.assertEqual(len(user_teams), 1)
         self.assertEqual(user_teams[0].team.id, 1)
 
+    def test_user_detail_view_shows_description(self):
+        """test user detail view shows description field"""
+        # user 'me' has description in fixture
+        user_with_desc = User.objects.get(username='me')
+        response = self.c.get(reverse('user:user-detail',
+                                      args=[user_with_desc.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('Description'))
+        self.assertContains(response, 'Team administrator and task creator')
+
+    def test_user_detail_view_without_description(self):
+        """test user detail view shows empty when no description"""
+        user_without_desc = User.objects.get(username='he')
+        response = self.c.get(reverse('user:user-detail',
+                                      args=[user_without_desc.id]))
+        self.assertEqual(response.status_code, 200)
+        # Description label should still be present
+        self.assertContains(response, _('Description'))
+        # But no description text
+
     def test_user_detail_view_user_without_teams(self):
         """test user detail view for user without teams"""
         alone_user = User.objects.get(username='alone')
-        response = self.c.get(reverse('user:user-detail', args=[alone_user.id]))
+        response = self.c.get(reverse(
+            'user:user-detail', args=[alone_user.id]))
         self.assertEqual(response.status_code, 200)
 
         # should have empty user_teams
@@ -389,6 +411,7 @@ class UserTestCase(TestCase):
         self.assertEqual(self.user.first_name, self.user_data['first_name'])
         self.assertEqual(self.user.last_name, self.user_data['last_name'])
         self.assertEqual(self.user.username, self.user_data['username'])
+        self.assertEqual(self.user.description, self.user_data['description'])
         self.assertTrue(
             check_password(self.user_data['password1'], self.user.password))
 

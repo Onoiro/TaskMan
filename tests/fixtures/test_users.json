@@ -14,7 +14,8 @@
         "is_active": true,
         "date_joined": "2024-03-16T18:28:41.459Z",
         "groups": [],
-        "user_permissions": []
+        "user_permissions": [],
+        "description": "Team administrator and task creator"
     }
 },
 {
@@ -32,7 +33,8 @@
         "is_active": true,
         "date_joined": "2024-03-17T19:39:08.762Z",
         "groups": [],
-        "user_permissions": []
+        "user_permissions": [],
+        "description": ""
     }
 },
 {
@@ -50,7 +52,8 @@
         "is_active": true,
         "date_joined": "2024-03-17T19:45:51.127Z",
         "groups": [],
-        "user_permissions": []
+        "user_permissions": [],
+        "description": ""
     }
 },
 {
@@ -68,7 +71,8 @@
         "is_active": true,
         "date_joined": "2024-03-17T19:45:51.127Z",
         "groups": [],
-        "user_permissions": []
+        "user_permissions": [],
+        "description": "A user who prefers to work alone"
     }
 }
 ]

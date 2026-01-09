@@ -17,6 +17,10 @@
                 <strong>{% trans "Full name" %}:</strong>
                 {{ object.first_name }} {{ object.last_name }}
               </div>
+              <div class="mb-3">
+                <strong>{% trans "Description" %}:</strong>
+                {% if object.description %}{{ object.description }}{% endif %}
+              </div>
               <hr>
               <div class="container-fluid">
                 <div class="row mb-2">

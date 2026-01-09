@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.translation import gettext_lazy as _
 from .models import User
 from task_manager.teams.models import TeamMembership
 
@@ -49,12 +50,9 @@ class UserAdmin(BaseUserAdmin):
 
     get_teams.short_description = 'Teams'
 
-    fieldsets = BaseUserAdmin.fieldsets
-
-    # If need to add team info in team detail
-    # fieldsets = BaseUserAdmin.fieldsets + (
-    #     ('Team Information', {'fields': ()}),
-    # )
+    fieldsets = BaseUserAdmin.fieldsets + (
+        (_('Additional Info'), {'fields': ('description',)}),
+    )
 
 
 admin.site.register(User, UserAdmin)
