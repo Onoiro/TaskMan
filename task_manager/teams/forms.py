@@ -30,9 +30,25 @@ class TeamForm(forms.ModelForm):
         widget=forms.PasswordInput(),
         help_text=_("Please enter your password one more time"))
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # if update input password is not required
+        if self.instance and self.instance.pk:
+            self.fields['password1'].required = False
+            self.fields['password2'].required = False
+            self.fields['password1'].help_text = _(
+                "Leave blank if you don't want to change password"
+            )
+            self.fields['password2'].help_text = _(
+                "Leave blank if you don't want to change password"
+            )
+
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
-        if len(password1) < 3:
+        # when updating - if the password is empty, skip it
+        if self.instance and self.instance.pk and not password1:
+            return None
+        if password1 and len(password1) < 3:
             raise forms.ValidationError(_(
                 "Your password is too short."
                 " It must contain at least 3 characters."),
@@ -42,14 +58,33 @@ class TeamForm(forms.ModelForm):
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
+        # when updating - if both are empty, skip
+        if (self.instance and self.instance.pk
+                and not password1 and not password2):
+            return None
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError(
                 _("The entered passwords do not match."))
         return password2
 
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        # when updating - if one password is filled in and the other is not
+        if self.instance and self.instance.pk:
+            if (password1 and not password2) or (not password1 and password2):
+                raise forms.ValidationError(
+                    _("Both password fields must be filled or both left blank")
+                )
+        return cleaned_data
+
     def save(self, commit=True):
         team = super().save(commit=False)
-        team.password = self.cleaned_data['password1']
+        password1 = self.cleaned_data.get('password1')
+        #wWhen updating, if the password is not entered, leave the old one
+        if password1:
+            team.password = password1
         if commit:
             team.save()
         return team

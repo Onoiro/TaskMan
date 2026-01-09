@@ -278,3 +278,134 @@ class TeamFormEdgeCasesTestCase(TestCase):
         self.assertTrue(form.is_valid())
         team = form.save()
         self.assertEqual(team.description, '')
+
+    def test_update_team_without_password(self):
+        """test updating team without entering password (keeps old password)"""
+        team = Team.objects.get(pk=1)
+        original_password = team.password
+
+        form_data = {
+            'name': 'Updated Team Name',
+            'description': 'Updated team description',
+            'password1': '',
+            'password2': ''
+        }
+        form = TeamForm(data=form_data, instance=team)
+        self.assertTrue(form.is_valid())
+        updated_team = form.save()
+
+        # check data was updated
+        self.assertEqual(updated_team.name, 'Updated Team Name')
+        self.assertEqual(updated_team.description, 'Updated team description')
+        # password should remain unchanged
+        self.assertEqual(updated_team.password, original_password)
+
+    def test_update_team_with_new_password(self):
+        """test updating team with new password"""
+        team = Team.objects.get(pk=1)
+
+        form_data = {
+            'name': 'Updated Team Name',
+            'description': 'Updated team description',
+            'password1': 'newpassword',
+            'password2': 'newpassword'
+        }
+        form = TeamForm(data=form_data, instance=team)
+        self.assertTrue(form.is_valid())
+        updated_team = form.save()
+
+        # check password was updated
+        self.assertEqual(updated_team.password, 'newpassword')
+
+    def test_update_team_one_password_field_fails(self):
+        """test updating team with only one password field filled fails"""
+        team = Team.objects.get(pk=1)
+
+        # Only password1 filled
+        form_data = {
+            'name': 'Updated Team Name',
+            'description': 'Updated team description',
+            'password1': 'newpassword',
+            'password2': ''
+        }
+        form = TeamForm(data=form_data, instance=team)
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("Both password fields must be filled or both left blank"),
+            form.errors['__all__']
+        )
+
+        # Only password2 filled
+        form_data['password1'] = ''
+        form_data['password2'] = 'newpassword'
+        form = TeamForm(data=form_data, instance=team)
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("Both password fields must be filled or both left blank"),
+            form.errors['__all__']
+        )
+
+    def test_update_team_password_mismatch_fails(self):
+        """test updating team with mismatching passwords fails"""
+        team = Team.objects.get(pk=1)
+
+        form_data = {
+            'name': 'Updated Team Name',
+            'description': 'Updated team description',
+            'password1': 'newpassword',
+            'password2': 'differentpassword'
+        }
+        form = TeamForm(data=form_data, instance=team)
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("The entered passwords do not match."),
+            form.errors['password2']
+        )
+
+    def test_update_team_password_too_short_fails(self):
+        """test updating team with too short password fails"""
+        team = Team.objects.get(pk=1)
+
+        form_data = {
+            'name': 'Updated Team Name',
+            'description': 'Updated team description',
+            'password1': 'ab',
+            'password2': 'ab'
+        }
+        form = TeamForm(data=form_data, instance=team)
+        self.assertFalse(form.is_valid())
+        self.assertIn(_(
+            'Your password is too short.'
+            ' It must contain at least 3 characters.'),
+            form.errors['password1'])
+
+    def test_update_team_password_fields_not_required(self):
+        """test that password fields are not required when updating"""
+        team = Team.objects.get(pk=1)
+        form = TeamForm(instance=team)
+
+        self.assertFalse(form.fields['password1'].required)
+        self.assertFalse(form.fields['password2'].required)
+        self.assertEqual(
+            form.fields['password1'].help_text,
+            _("Leave blank if you don't want to change password")
+        )
+        self.assertEqual(
+            form.fields['password2'].help_text,
+            _("Leave blank if you don't want to change password")
+        )
+
+    def test_create_team_password_fields_required(self):
+        """test that password fields are required when creating"""
+        form = TeamForm()
+
+        self.assertTrue(form.fields['password1'].required)
+        self.assertTrue(form.fields['password2'].required)
+        self.assertEqual(
+            form.fields['password1'].help_text,
+            _("Your password must contain at least 3 characters.")
+        )
+        self.assertEqual(
+            form.fields['password2'].help_text,
+            _("Please enter your password one more time")
+        )
