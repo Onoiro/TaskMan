@@ -82,7 +82,7 @@ class TeamForm(forms.ModelForm):
     def save(self, commit=True):
         team = super().save(commit=False)
         password1 = self.cleaned_data.get('password1')
-        #wWhen updating, if the password is not entered, leave the old one
+        # When updating, if the password is not entered, leave the old one
         if password1:
             team.password = password1
         if commit:
