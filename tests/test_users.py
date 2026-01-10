@@ -530,6 +530,50 @@ class UserTestCase(TestCase):
         # password should remain unchanged
         self.assertEqual(self.user.password, original_password)
 
+    def test_cancel_button_on_user_update_page(self):
+        """Test Cancel button exists and redirects to user detail."""
+        response = self.c.get(
+            reverse('user:user-update', args=[self.user.id]),
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        # Check that Cancel button with link to user-detail exists
+        user_detail_url = reverse('user:user-detail', args=[self.user.id])
+        self.assertContains(response, user_detail_url)
+
+        # Check that Cancel button has correct text (translated)
+        self.assertContains(response, _('Cancel'))
+
+        # Test that clicking Cancel redirects to user detail page
+        response = self.c.get(user_detail_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        # Should be on user detail page
+        self.assertContains(response, self.user.username)
+        response = self.c.get(
+            reverse('user:user-update', args=[self.user.id]),
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        # Check that Cancel button with link to user-list exists
+        self.assertContains(response, reverse('user:user-list'))
+
+        # Check that Cancel button has correct text (translated)
+        self.assertContains(response, _('Cancel'))
+
+        # Test that clicking Cancel redirects to user list
+        # Find the Cancel link and follow it
+        cancel_url = reverse('user:user-list')
+        response = self.c.get(cancel_url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        # Should be on user list page
+        self.assertContains(response, _('Users'))
+
     # delete
 
     def test_get_delete_user_response_200_and_check_content(self):
