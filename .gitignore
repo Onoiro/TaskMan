@@ -15,3 +15,4 @@ pyproject.toml.backup
 logs/
 task_manager/logs/
 *.log
+KODA.md

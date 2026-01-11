@@ -19,6 +19,9 @@
           <button type="submit" class="btn btn-danger">
           {% trans "Yes, delete" %}
           </button>
+          <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">
+            {% trans "Cancel" %}
+          </a>
     </form>
 </div>
 {% endblock %}
