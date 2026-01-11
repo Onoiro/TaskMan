@@ -1,9 +1,8 @@
 {% load static %}
 // Change version everytime when update static to update cliet's cache
-const CACHE_NAME = 'taskman-v7';
+const CACHE_NAME = 'taskman-v8';
 
 const ASSETS = [
-  '/',
   "{% static 'css/custom.css' %}",
   "{% static 'icons/icon-192x192.png' %}",
   "{% static 'icons/icon-180x180.png' %}",
@@ -32,9 +31,22 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
-  );
+  if (e.request.method !== 'GET') {
+    return;
+  }
+
+  const url = new URL(e.request.url);
+
+  const isStatic = url.pathname.startsWith('/static/') || 
+                   url.hostname.includes('cdn.jsdelivr.net');
+
+  if (isStatic) {
+    e.respondWith(
+      caches.match(e.request).then((response) => {
+        return response || fetch(e.request);
+      })
+    );
+  } else {
+    return;
+  }
 });
