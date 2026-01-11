@@ -736,6 +736,48 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Delete task'))
         self.assertContains(response, _('Yes, delete'))
 
+    def test_delete_task_has_cancel_button(self):
+        """Test that delete task page has a Cancel button."""
+        task = Task.objects.get(name="first task")
+        response = self.c.get(reverse('tasks:task-delete',
+                              args=[task.id]), follow=True)
+
+        # Check that Cancel button exists
+        self.assertContains(response, _('Cancel'))
+
+    def test_delete_task_cancel_button_redirects_to_referer(self):
+        """Test that Cancel button redirects to HTTP_REFERER."""
+        task = Task.objects.get(name="first task")
+
+        # Set HTTP_REFERER in request
+        response = self.c.get(
+            reverse('tasks:task-delete', args=[task.id]),
+            HTTP_REFERER=reverse('tasks:tasks-list'),
+            follow=True
+        )
+
+        # Check that Cancel button is present
+        self.assertContains(response, _('Cancel'))
+
+        # The Cancel button href should contain the referer URL
+        cancel_url = reverse('tasks:tasks-list')
+        self.assertIn(cancel_url, response.content.decode('utf-8'))
+
+    def test_delete_task_cancel_button_without_referer(self):
+        """Test that Cancel button redirects to home when no referer."""
+        task = Task.objects.get(name="first task")
+
+        # Request without HTTP_REFERER
+        response = self.c.get(
+            reverse('tasks:task-delete', args=[task.id]),
+            follow=True
+        )
+
+        # Check that Cancel button exists and points to home
+        self.assertContains(response, _('Cancel'))
+        # Button href should be '/' when no referer
+        self.assertIn('href="/"', response.content.decode('utf-8'))
+
     def test_delete_task(self):
         task = Task.objects.get(name="first task")
         self.c.post(reverse('tasks:task-delete',

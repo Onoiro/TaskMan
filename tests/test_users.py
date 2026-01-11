@@ -590,6 +590,58 @@ class UserTestCase(TestCase):
         self.assertContains(response,
                             _('Are you sure you want to delete new?'))
 
+    def test_delete_user_has_cancel_button(self):
+        """Test that delete user page has a Cancel button."""
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        new_user = User.objects.get(username="new")
+        self.c.force_login(new_user)
+        response = self.c.get(
+            reverse('user:user-delete',
+                    args=[new_user.id]), follow=True)
+
+        # Check that Cancel button exists
+        self.assertContains(response, _('Cancel'))
+
+    def test_delete_user_cancel_button_redirects_to_referer(self):
+        """Test that Cancel button redirects to HTTP_REFERER."""
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        new_user = User.objects.get(username="new")
+        self.c.force_login(new_user)
+
+        # Set HTTP_REFERER in request
+        response = self.c.get(
+            reverse('user:user-delete', args=[new_user.id]),
+            HTTP_REFERER=reverse('user:user-list'),
+            follow=True
+        )
+
+        # Check that Cancel button is present
+        self.assertContains(response, _('Cancel'))
+
+        # The Cancel button href should contain the referer URL
+        cancel_url = reverse('user:user-list')
+        self.assertIn(cancel_url, response.content.decode('utf-8'))
+
+    def test_delete_user_cancel_button_without_referer(self):
+        """Test that Cancel button redirects to home when no referer."""
+        self.c.post(reverse('user:user-create'),
+                    self.user_data, follow=True)
+        new_user = User.objects.get(username="new")
+        self.c.force_login(new_user)
+
+        # Request without HTTP_REFERER
+        response = self.c.get(
+            reverse('user:user-delete', args=[new_user.id]),
+            follow=True
+        )
+
+        # Check that Cancel button exists and points to home
+        self.assertContains(response, _('Cancel'))
+        # Button href should be '/' when no referer
+        self.assertIn('href="/"', response.content.decode('utf-8'))
+
     def test_delete_user_successfully(self):
         self.c.post(reverse('user:user-create'),
                     self.user_data, follow=True)

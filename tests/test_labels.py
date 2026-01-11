@@ -299,6 +299,54 @@ class LabelsTestCase(TestCase):
         self.assertContains(response,
                             _('Are you sure you want to delete bug?'))
 
+    def test_delete_label_has_cancel_button(self):
+        """Test that delete label page has a Cancel button."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-delete',
+                              args=[label.id]), follow=True)
+
+        # Check that Cancel button exists
+        self.assertContains(response, _('Cancel'))
+
+    def test_delete_label_cancel_button_redirects_to_referer(self):
+        """Test that Cancel button redirects to HTTP_REFERER."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+
+        # Set HTTP_REFERER in request
+        response = self.c.get(
+            reverse('labels:labels-delete', args=[label.id]),
+            HTTP_REFERER=reverse('labels:labels-list'),
+            follow=True
+        )
+
+        # Check that Cancel button is present
+        self.assertContains(response, _('Cancel'))
+
+        # The Cancel button href should contain the referer URL
+        cancel_url = reverse('labels:labels-list')
+        self.assertIn(cancel_url, response.content.decode('utf-8'))
+
+    def test_delete_label_cancel_button_without_referer(self):
+        """Test that Cancel button redirects to home when no referer."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+
+        # Request without HTTP_REFERER
+        response = self.c.get(
+            reverse('labels:labels-delete', args=[label.id]),
+            follow=True
+        )
+
+        # Check that Cancel button exists and points to home
+        self.assertContains(response, _('Cancel'))
+        # Button href should be '/' when no referer
+        self.assertIn('href="/"', response.content.decode('utf-8'))
+
     def test_delete_label_successfully(self):
         self._set_active_team(self.team.id)
 
