@@ -899,6 +899,39 @@ msgstr "Вы разлогинены"
 #~ msgid "info"
 #~ msgstr "инфо"
 
+msgid "Feedback"
+msgstr "Обратная связь"
+
+msgid "Specify the subject:"
+msgstr "Укажите тему:"
+
+msgid "* Your email address (or Telegram):"
+msgstr "* Ваш email (или Telegram):"
+
+msgid "* Message:"
+msgstr "* Сообщение:"
+
+msgid "Bug, suggestion, etc."
+msgstr "Баг, предложение и т.д."
+
+msgid "Describe your issue or suggestion..."
+msgstr "Опишите вашу проблему или предложение..."
+
+msgid "Send"
+msgstr "Отправить"
+
+msgid "Note"
+msgstr "Примечание"
+
+msgid "Your message will be sent to developers via Telegram. We will reply to the contact you provide."
+msgstr "Ваше сообщение будет отправлено разработчикам через Telegram. Мы ответим по указанному контакту."
+
+msgid "Telegram opened! Send your message there."
+msgstr "Telegram открыт! Отправьте сообщение там."
+
+msgid "Found a bug or have a suggestion? Let us know!"
+msgstr "Нашли баг или есть предложение? Сообщите нам!"
+
 # msgid "Welcome to Task Manager!"
 # msgstr "Добро пожаловать в Таск-менеджер!"
 #~ msgid ""

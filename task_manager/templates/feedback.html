@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Feedback" %}
+{% endblock %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+  <h1 class="my-4">{% trans "Feedback" %}</h1>
+  <p class="text-muted mb-4">{% trans "Found a bug or have a suggestion? Let us know!" %}</p>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <form id="feedback-form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">
+          {% trans "Send" %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>{% trans "Note" %}:</strong> {% trans "Your message will be sent to developers via Telegram. We will reply to the contact you provide." %}
+  </div>
+</div>
+
+<script>
+document.getElementById('feedback-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const subject = document.querySelector('[name="subject"]').value;
+  const email = document.querySelector('[name="email"]').value;
+  const message = document.querySelector('[name="message"]').value;
+  
+  const text = `Subject: ${subject}\nFrom: ${email}\n\n${message}`;
+  const encodedText = encodeURIComponent(text);
+  
+  // Telegram direct link with pre-filled message
+  const telegramUrl = `https://t.me/AndreeBo?text=${encodedText}`;
+  
+  window.open(telegramUrl, '_blank');
+  
+  // Show success message
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-success mt-3';
+  alert.innerHTML = '{% trans "Telegram opened! Send your message there." %}';
+  this.parentNode.insertBefore(alert, this.nextSibling);
+  
+  // Clear form
+  this.reset();
+});
+</script>
+{% endblock %}

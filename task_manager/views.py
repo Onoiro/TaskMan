@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.http import HttpResponse
+from . import forms
 
 
 # use this path '/trigger-error' when need to check connect to rollbar
@@ -42,3 +43,15 @@ class UserLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         messages.info(request, _("You are logged out"))
         return super().dispatch(request, *args, **kwargs)
+
+
+class FeedbackView(View):
+    template_name = 'feedback.html'
+
+    def get(self, request, *args, **kwargs):
+        form = forms.FeedbackForm()
+        context = {
+            'form': form,
+            'title': _("Feedback"),
+        }
+        return render(request, self.template_name, context)

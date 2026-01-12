@@ -24,6 +24,7 @@ from . import views
 urlpatterns = [
     path('trigger-error/', views.trigger_error),
     path('', IndexView.as_view(), name='index'),
+    path('feedback/', views.FeedbackView.as_view(template_name='feedback.html'), name='feedback'),
     path('login/',
          UserLoginView.as_view(template_name='login.html'),
          name='login'),
