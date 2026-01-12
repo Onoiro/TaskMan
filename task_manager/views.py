@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.http import HttpResponse
 from . import forms
+from .permissions import CustomPermissions
 
 
 # use this path '/trigger-error' when need to check connect to rollbar
@@ -45,7 +46,7 @@ class UserLogoutView(LogoutView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class FeedbackView(View):
+class FeedbackView(CustomPermissions, View):
     template_name = 'feedback.html'
 
     def get(self, request, *args, **kwargs):
