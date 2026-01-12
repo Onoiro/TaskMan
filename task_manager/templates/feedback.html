@@ -34,10 +34,10 @@ document.getElementById('feedback-form').addEventListener('submit', function(e) 
   e.preventDefault();
   
   const subject = document.querySelector('[name="subject"]').value;
-  const email = document.querySelector('[name="email"]').value;
+  const contact = document.querySelector('[name="contact"]').value;
   const message = document.querySelector('[name="message"]').value;
   
-  const text = `Subject: ${subject}\nFrom: ${email}\n\n${message}`;
+  const text = `Subject: ${subject}\nFrom: ${contact}\n\n${message}`;
   const encodedText = encodeURIComponent(text);
   
   // Telegram direct link with pre-filled message

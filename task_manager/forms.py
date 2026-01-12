@@ -8,9 +8,10 @@ class FeedbackForm(forms.Form):
         max_length=200,
         widget=forms.TextInput(attrs={'placeholder': _('Bug, suggestion, etc.')})
     )
-    email = forms.EmailField(
-        label=_('* Your email address (or Telegram):'),
-        widget=forms.EmailInput(attrs={'placeholder': 'email@example.com or @username'})
+    contact = forms.CharField(
+        label=_('* Your email or Telegram (@username):'),
+        max_length=200,
+        widget=forms.TextInput(attrs={'placeholder': 'email@example.com or @username'})
     )
     message = forms.CharField(
         label=_('* Message:'),

@@ -905,8 +905,8 @@ msgstr "Обратная связь"
 msgid "Specify the subject:"
 msgstr "Укажите тему:"
 
-msgid "* Your email address (or Telegram):"
-msgstr "* Ваш email (или Telegram):"
+msgid "* Your email or Telegram (@username):"
+msgstr "* Ваш email или Telegram (@username):"
 
 msgid "* Message:"
 msgstr "* Сообщение:"
