@@ -26,12 +26,14 @@
             {% for label in label_list %}
             <tr>
                 <td>{{ label.id }}</td>
-                <td>{{ label.name }}</td>
+                <td>
+                    <a href="{% url 'labels:labels-update' label.id %}">{{ label.name }}</a>
+                </td>
                 <td>{{ label.created_at }}</td>
                 <td>
-                    <a href="{% url 'labels:labels-update' label.id %}">{% trans "Edit" %}</a>
+                    <a href="{% url 'labels:labels-update' label.id %}" class="text-decoration-none text-primary d-none d-md-inline-block">{% trans "Edit" %}</a>
                     <br>
-                    <a href="{% url 'labels:labels-delete' label.id %}">{% trans "Delete" %}</a>
+                    <a href="{% url 'labels:labels-delete' label.id %}" class="text-decoration-none text-danger d-none d-md-inline-block">{% trans "Delete" %}</a>
                 </td>
             </tr>
             {% endfor %}

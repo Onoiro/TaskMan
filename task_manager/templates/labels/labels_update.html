@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
 {% load django_bootstrap5 %}
+{% bootstrap_messages %}
 {% load i18n %}
 
 {% block content %}
@@ -9,9 +9,39 @@
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">
-            {% trans "Edit" %}
-        </button>
+        <div class="d-flex flex-row gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">
+                {% trans "Edit" %}
+            </button>
+            <a class="btn btn-outline-danger" href="{% url 'labels:labels-delete' object.id %}">{% trans "Delete" %}</a>
+            <a class="btn btn-outline-secondary" href="{% url 'labels:labels-list' %}">{% trans "Cancel" %}</a>
+        </div>
     </form>
+    <div class="card mt-4">
+        <div class="card-header bg-secondary text-white">
+          <h2 class="h4 h3-md">{{ object.name }}</h2>
+        </div>
+        <div class="card-body bg-light">
+          <hr>
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-4 col-md-3 text-muted small text-truncate">
+                <strong>{% trans "ID" %}:</strong>
+              </div>
+              <div class="col-8 col-md-9">
+                {{ object.id }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-4 col-md-3 text-muted small text-truncate">
+                <strong>{% trans "Created at" %}:</strong>
+              </div>
+              <div class="col-8 col-md-9">
+                {{ object.created_at }}
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
