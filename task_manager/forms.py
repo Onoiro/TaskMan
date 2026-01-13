@@ -6,12 +6,16 @@ class FeedbackForm(forms.Form):
     subject = forms.CharField(
         label=_('Specify the subject:'),
         max_length=200,
-        widget=forms.TextInput(attrs={'placeholder': _('Bug, suggestion, etc.')})
+        widget=forms.TextInput(
+            attrs={'placeholder': _('Bug, suggestion, etc.')}
+        )
     )
     contact = forms.CharField(
         label=_('* Your email or Telegram (@username):'),
         max_length=200,
-        widget=forms.TextInput(attrs={'placeholder': 'email@example.com or @username'})
+        widget=forms.TextInput(
+            attrs={'placeholder': 'email@example.com or @username'}
+        )
     )
     message = forms.CharField(
         label=_('* Message:'),
