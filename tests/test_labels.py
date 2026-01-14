@@ -144,6 +144,27 @@ class LabelsTestCase(TestCase):
                 team__isnull=True
             )
 
+    def test_labels_list_label_name_is_clickable_link(self):
+        """Test that label name in list is a clickable link to edit page."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-list'))
+
+        # Check that label name is wrapped in <a> tag pointing to edit page
+        expected_url = reverse('labels:labels-update', args=[label.id])
+        self.assertContains(
+            response, f'<a href="{expected_url}">{label.name}</a>', html=True)
+
+    def test_labels_list_edit_delete_buttons_hide_on_mobile(self):
+        """Test that Edit and Delete buttons have mobile-hide classes."""
+        self._set_active_team(self.team.id)
+
+        response = self.c.get(reverse('labels:labels-list'))
+
+        # Check that buttons have d-none d-md-inline-block classes
+        self.assertContains(response, 'd-none d-md-inline-block')
+
     # create
 
     def test_get_create_label_response_200_check_content(self):
@@ -270,6 +291,40 @@ class LabelsTestCase(TestCase):
         # label doesn't changed
         label.refresh_from_db()
         self.assertEqual(label.name, "bug")
+
+    def test_update_page_has_delete_button(self):
+        """Test that update page has a Delete button."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+
+        self.assertContains(response, _('Delete'))
+        delete_url = reverse('labels:labels-delete', args=[label.id])
+        self.assertContains(response, f'href="{delete_url}"')
+
+    def test_update_page_has_cancel_button(self):
+        """Test that update page has a Cancel button."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+
+        self.assertContains(response, _('Cancel'))
+
+    def test_update_page_has_label_details_card(self):
+        """Test that update page shows label details with ID and Created at."""
+        self._set_active_team(self.team.id)
+
+        label = Label.objects.get(name="bug")
+        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+
+        # Check that card exists and contains label details
+        self.assertContains(response, 'card')
+        self.assertContains(response, label.name)
+        self.assertContains(response, label.id)
+        # Check that created_at is displayed (formatted date in response)
+        self.assertContains(response, 'Created at')
 
     # delete
 
