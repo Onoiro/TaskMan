@@ -3,7 +3,7 @@ from django.contrib import messages
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Status
 from task_manager.statuses.forms import StatusForm
@@ -28,11 +28,6 @@ class StatusesListView(CustomPermissions, ListView):
                 creator=user,
                 team__isnull=True
             )
-
-
-class StatusesDetailView(CustomPermissions, DetailView):
-    model = Status
-    template_name = 'statuses/status_detailed.html'
 
 
 class StatusesCreateView(SuccessMessageMixin, CreateView):

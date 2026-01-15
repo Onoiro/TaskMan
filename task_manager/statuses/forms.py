@@ -7,7 +7,7 @@ class StatusForm(forms.ModelForm):
 
     class Meta:
         model = Status
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'color']
 
     name = forms.CharField(
         label=_('Name'),
@@ -22,4 +22,13 @@ class StatusForm(forms.ModelForm):
             'rows': 3
         }),
         help_text=_('Optional')
+    )
+
+    color = forms.CharField(
+        label=_('Color'),
+        widget=forms.TextInput(attrs={
+            'type': 'color',
+            'style': 'width: 60px; height: 40px;'
+        }),
+        help_text=_('Choose status color')
     )

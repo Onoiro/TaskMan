@@ -21,7 +21,8 @@ class StatusesTestCase(TestCase):
         self.c.force_login(self.user)
         self.statuses_data = {
             'name': 'new_test_status',
-            'description': 'Test description'
+            'description': 'Test description',
+            'color': '#6B7280'
         }
         self.team = Team.objects.get(pk=1)  # user 'me' is member of this team
 
@@ -135,7 +136,8 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         new_data = {
             'name': 'updated',
-            'description': 'Updated description'
+            'description': 'Updated description',
+            'color': '#3B82F6'
         }
         self.c.post(reverse('statuses:statuses-update', args=[status.id]),
                     new_data, follow=True)
@@ -146,7 +148,7 @@ class StatusesTestCase(TestCase):
     def test_create_status_without_description(self):
         self._set_active_team(self.team.id)
 
-        data_without_desc = {'name': 'no_desc_status'}
+        data_without_desc = {'name': 'no_desc_status', 'color': '#6B7280'}
         self.c.post(reverse('statuses:statuses-create'),
                     data_without_desc, follow=True)
         status = Status.objects.filter(
@@ -196,7 +198,7 @@ class StatusesTestCase(TestCase):
     def test_can_not_create_status_with_empty_name(self):
         self._set_active_team(self.team.id)
 
-        self.statuses_data = {'name': ' '}
+        self.statuses_data = {'name': ' ', 'color': '#6B7280'}
         response = self.c.post(reverse('statuses:statuses-create'),
                                self.statuses_data, follow=True)
         self.assertFalse(Status.objects.filter(name=" ").exists())
@@ -238,7 +240,7 @@ class StatusesTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         status = Status.objects.get(name="new")
-        self.statuses_data = {'name': ' '}
+        self.statuses_data = {'name': ' ', 'color': '#6B7280'}
         response = self.c.post(
             reverse('statuses:statuses-update', args=[status.id]),
             self.statuses_data, follow=True)
@@ -319,7 +321,8 @@ class StatusesTestCase(TestCase):
             name="test_to_delete",
             creator=self.user,
             team=None,
-            description="Test status for deletion"
+            description="Test status for deletion",
+            color="#6B7280"
         )
 
         response = self.c.post(

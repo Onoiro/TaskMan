@@ -4,7 +4,6 @@ from .views import (
     StatusesCreateView,
     StatusesUpdateView,
     StatusesDeleteView,
-    StatusesDetailView,
 )
 
 
@@ -15,9 +14,6 @@ urlpatterns = [
     path('',
          StatusesListView.as_view(),
          name='statuses-list'),
-    path('<int:pk>/',
-         StatusesDetailView.as_view(),
-         name='statuses-detail'),
     path('create/',
          StatusesCreateView.as_view(),
          name='statuses-create'),
