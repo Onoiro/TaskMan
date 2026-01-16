@@ -116,6 +116,16 @@ class StatusesTestCase(TestCase):
         if status_with_desc:
             self.assertContains(response, status_with_desc.description)
 
+    def test_statuses_list_status_names_have_colors(self):
+        """Test that status names in list are displayed with their colors."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(reverse('statuses:statuses-list'))
+
+        # Check that the status name has a style attribute with color
+        self.assertContains(response, f'color: {status.color}')
+
     def test_create_status_with_description(self):
         self._set_active_team(self.team.id)
 
@@ -247,6 +257,69 @@ class StatusesTestCase(TestCase):
         self.assertFalse(Status.objects.filter(name=" ").exists())
         message = _('This field is required.')
         self.assertContains(response, message)
+
+    def test_update_status_shows_id(self):
+        """Test that update status page shows status ID."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            follow=True)
+
+        self.assertContains(response, _('ID'))
+        self.assertContains(response, str(status.id))
+
+    def test_update_status_shows_created_at(self):
+        """Test that update status page shows creation date."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            follow=True)
+
+        self.assertContains(response, _('Created at'))
+
+    def test_update_status_shows_color(self):
+        """Test that update status page shows status color."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            follow=True)
+
+        self.assertContains(response, _('Color'))
+        self.assertContains(response, status.color)
+
+    def test_update_status_has_cancel_button(self):
+        """Test that update status page has a Cancel button."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            follow=True)
+
+        self.assertContains(response, _('Cancel'))
+        # Check that Cancel button links to statuses list
+        list_url = reverse('statuses:statuses-list')
+        self.assertIn(list_url, response.content.decode('utf-8'))
+
+    def test_update_status_has_delete_button(self):
+        """Test that update status page has a Delete button."""
+        self._set_active_team(self.team.id)
+
+        status = Status.objects.get(name="new")
+        response = self.c.get(
+            reverse('statuses:statuses-update', args=[status.id]),
+            follow=True)
+
+        self.assertContains(response, _('Delete'))
+        # Check that Delete button links to delete page
+        delete_url = reverse('statuses:statuses-delete', args=[status.id])
+        self.assertIn(delete_url, response.content.decode('utf-8'))
 
     # delete
 
