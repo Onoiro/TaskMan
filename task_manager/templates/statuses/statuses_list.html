@@ -20,7 +20,7 @@
             <th>ID</th>
             <th>{% trans "Name" %}</th>
             <th>{% trans "Description" %}</th>
-            <th>{% trans "Created at" %}</th>
+            <th class="d-none d-md-table-cell">{% trans "Created at" %}</th>
             <th></th>
         </tr>
         </thead>
@@ -32,7 +32,7 @@
                     <a href="{% url 'statuses:statuses-update' status.id %}" style="color: {{ status.color }}; font-weight: 500;">{{ status.name }}</a>
                 </td>
                 <td>{{ status.description|default:"" }}</td>
-                <td>{{ status.created_at }}</td>
+                <td class="d-none d-md-table-cell">{{ status.created_at }}</td>
                 <td>
                     <a href="{% url 'statuses:statuses-update' status.id %}" class="text-decoration-none text-primary d-none d-md-inline-block">{% trans "Edit" %}</a>
                     <br>
