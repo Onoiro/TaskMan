@@ -29,7 +29,7 @@
             <tr>
                 <td>{{ status.id }}</td>
                 <td>
-                    <a href="{% url 'statuses:statuses-update' status.id %}">{{ status.name }}</a>
+                    <a href="{% url 'statuses:statuses-update' status.id %}" style="color: {{ status.color }}; font-weight: 500;">{{ status.name }}</a>
                 </td>
                 <td>{{ status.description|default:"" }}</td>
                 <td>{{ status.created_at }}</td>
