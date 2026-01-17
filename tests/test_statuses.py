@@ -229,7 +229,7 @@ class StatusesTestCase(TestCase):
         self.assertContains(response, 'new')
         self.assertRegex(
             response.content.decode('utf-8'),
-            _(r'\bEdit status\b')
+            _(r'\bStatus\b')
         )
 
     def test_update_status_successfully(self):

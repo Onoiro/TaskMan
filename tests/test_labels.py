@@ -250,7 +250,7 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, 'bug')
         self.assertRegex(
             response.content.decode('utf-8'),
-            _(r'\bEdit label\b'))
+            _(r'\bLabel\b'))
 
     def test_update_label_successfully(self):
         self._set_active_team(self.team.id)
