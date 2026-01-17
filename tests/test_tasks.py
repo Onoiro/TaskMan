@@ -313,44 +313,65 @@ class TaskTestCase(TestCase):
         response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
         self.assertContains(response, _('New task'))
 
-    # detail_view
+    # update
 
-    def test_task_detail_view_response_200(self):
+    def test_task_update_view_response_200(self):
         response = self.c.get(
-            reverse('tasks:task-detail', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.id]))
         self.assertEqual(response.status_code, 200)
 
-    def test_task_detail_view_static_content(self):
+    def test_task_update_view_static_content(self):
         response = self.c.get(
-            reverse('tasks:task-detail', args=[self.task.id]))
-        self.assertContains(response, _("Task view"))
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _("Task"))
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Description'))
         self.assertContains(response, _('Status'))
         self.assertContains(response, _('Author'))
-        self.assertContains(response, _('Executor'))
         self.assertContains(response, _('Created at'))
-        self.assertContains(response, _("Labels"))
         self.assertContains(response, _("Edit"))
         self.assertContains(response, _("Delete"))
+        self.assertContains(response, _("Cancel"))
 
-    def test_task_detail_view_content(self):
+    def test_task_update_view_content(self):
         response = self.c.get(
-            reverse('tasks:task-detail', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.id]))
         self.assertContains(response, self.task.name)
         self.assertContains(response, self.task.description)
         self.assertContains(
             response,
             f"{self.task.author.username}")
-        self.assertContains(
-            response,
-            f"{self.task.executor.username}")
         self.assertContains(response, self.task.status.name)
         formatted_date = DateFormat(
             self.task.created_at).format(get_format('DATETIME_FORMAT'))
         self.assertContains(response, formatted_date)
-        labels = self.task.labels.all()
-        label_names = [label.name for label in labels]
-        for label_name in label_names:
-            self.assertContains(response, label_name)
+
+    def test_task_update_has_cancel_button(self):
+        """Test that task update page has a Cancel button."""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _('Cancel'))
+        # Check that Cancel button links to tasks list
+        list_url = reverse('tasks:tasks-list')
+        self.assertIn(list_url, response.content.decode('utf-8'))
+
+    def test_task_update_has_delete_button(self):
+        """Test that task update page has a Delete button."""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _('Delete'))
+        # Check that Delete button links to delete page
+        delete_url = reverse('tasks:task-delete', args=[self.task.id])
+        self.assertIn(delete_url, response.content.decode('utf-8'))
+
+    def test_task_update_shows_id(self):
+        """Test that update task page shows task ID."""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]),
+            follow=True)
+
+        self.assertContains(response, _('ID'))
+        self.assertContains(response, str(self.task.id))
 
     # create
 
@@ -577,7 +598,7 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Edit'))
         self.assertRegex(
             response.content.decode('utf-8'),
-            _(r'\bEdit task\b')
+            _(r'\bTask\b')
         )
 
     def test_update_task_with_correct_data(self):

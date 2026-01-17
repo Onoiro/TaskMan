@@ -1,17 +1,74 @@
 {% extends "base.html" %}
-
 {% load django_bootstrap5 %}
+{% bootstrap_messages %}
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
-    <h1 class="my-4">{% trans "Edit task" %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">
-            {% trans "Edit" %}
-        </button>
-    </form>
+<div class="container px-3 px-sm-0">
+    <div class="wrapper flex-grow-1">
+        <h1 class="my-4 text-start">{% trans "Task" %}</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <div class="d-flex flex-row gap-2 mt-3">
+                <button type="submit" class="btn btn-outline-primary">
+                    {% trans "Edit" %}
+                </button>
+                <a class="btn btn-outline-danger" href="{% url 'tasks:task-delete' object.id %}">{% trans "Delete" %}</a>
+                <a class="btn btn-outline-secondary" href="{% url 'tasks:tasks-list' %}">{% trans "Cancel" %}</a>
+            </div>
+        </form>
+
+        <div class="card mt-4">
+            <div class="card-header bg-secondary text-white">
+              <h2 class="h4 h3-md">{{ object.name }}</h2>
+            </div>
+            <div class="card-body bg-light">
+              <p class="mb-3">{{ object.description|linebreaksbr }}</p>
+              <hr>
+              <div class="container-fluid">
+                <div class="row mb-2">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "ID" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {{ object.id }}
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "Author" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {{ object.author.username }}
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-4 col-md-3 text-muted small text-truncate">
+                    <strong>{% trans "Created at" %}:</strong>
+                  </div>
+                  <div class="col-8 col-md-9">
+                    {{ object.created_at }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const descField = document.querySelector('#id_description');
+    if (descField) {
+        function resizeDescription() {
+            descField.style.height = 'auto';
+            descField.style.height = descField.scrollHeight + 'px';
+        }
+        resizeDescription();
+        descField.addEventListener('input', resizeDescription);
+    }
+});
+</script>
 {% endblock %}

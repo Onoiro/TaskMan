@@ -86,7 +86,7 @@
                     {% if request.GET.full_view %}
                     <th scope="row">{{ obj.id }}</th>
                     <td>
-                        <a href="{% url 'tasks:task-detail' obj.id %}" class="status-colored" style="color: {{ obj.status.color|default:'#6B7280' }};">{{ obj.name }}</a>
+                        <a href="{% url 'tasks:task-update' obj.id %}" class="status-colored" style="color: {{ obj.status.color|default:'#6B7280' }};">{{ obj.name }}</a>
                     </td>
                     <td>{{ obj.status }}</td>
                     <td>{{ obj.author.username }}</td>
@@ -98,7 +98,7 @@
                     </td>
                     {% else %}
                     <td>
-                        <a href="{% url 'tasks:task-detail' obj.id %}" class="status-colored" style="color: {{ obj.status.color|default:'#6B7280' }};">{{ obj.name }}</a>
+                        <a href="{% url 'tasks:task-update' obj.id %}" class="status-colored" style="color: {{ obj.status.color|default:'#6B7280' }};">{{ obj.name }}</a>
                     </td>
                     {% endif %}
                 </tr>

@@ -3,7 +3,6 @@ from django.contrib import messages
 from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Task
 from task_manager.tasks.forms import TaskForm
@@ -52,11 +51,6 @@ class TaskFilterView(FilterView):
                 author=user,
                 team__isnull=True
             ).order_by('-created_at')
-
-
-class TaskDetailView(CustomPermissions, DetailView):
-    model = Task
-    template_name = 'tasks/task_detail.html'
 
 
 class TaskCreateView(SuccessMessageMixin, CreateView):
