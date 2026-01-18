@@ -242,8 +242,11 @@ class TaskTestCase(TestCase):
     def test_tasks_list_card_shows_description_preview(self):
         """Check that description preview is visible if task has description"""
         # Create task with description
-        status = Status.objects.filter(team=self.team).first() if self.team else \
-            Status.objects.filter(creator=self.user, team__isnull=True).first()
+        status = Status.objects.filter(team=self.team).first() \
+            if self.team else \
+            Status.objects.filter(
+                creator=self.user,
+                team__isnull=True).first()
 
         if not status:
             status = Status.objects.create(
@@ -339,19 +342,22 @@ class TaskTestCase(TestCase):
         self.assertContains(response, reverse('tasks:task-create'))
 
     def test_tasks_list_filter_active_indicator(self):
-        """Check that 'Filters active' badge is shown when filter is hidden but has params"""
+        """Check that 'Filters active' badge is shown
+          when filter is hidden but has params"""
         # Apply filter, then hide filter panel
         response = self.c.get(
             reverse('tasks:tasks-list') + '?status=1')
         self.assertContains(response, _('Filters active'))
 
     def test_tasks_list_filter_active_indicator_not_shown_when_no_params(self):
-        """Check that 'Filters active' badge is NOT shown when no filter params"""
+        """Check that 'Filters active' badge
+         is NOT shown when no filter params"""
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertNotContains(response, _('Filters active'))
 
-    def test_tasks_list_filter_active_indicator_not_shown_when_filter_visible(self):
-        """Check that 'Filters active' badge is NOT shown when filter panel is visible"""
+    def test_tasks_list_filter_indicator_not_shown_when_filter_visible(self):
+        """Check that 'Filters active' badge
+         is NOT shown when filter panel is visible"""
         response = self.c.get(
             reverse('tasks:tasks-list') + '?show_filter=1&status=1')
         self.assertNotContains(response, _('Filters active'))
