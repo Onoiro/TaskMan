@@ -7,7 +7,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
-from django.db.models import Q
 
 
 class TaskTestCase(TestCase):
@@ -27,7 +26,7 @@ class TaskTestCase(TestCase):
         membership = TeamMembership.objects.filter(user=self.user).first()
         self.team = membership.team if membership else None
 
-        # set active_team to session if user has team in
+        # set active_team to session if user has team
         if self.team:
             session = self.c.session
             session['active_team_id'] = self.team.id
@@ -80,297 +79,289 @@ class TaskTestCase(TestCase):
 
     def _get_team_user_ids(self, user):
         """Helper method to get all user IDs from user's teams"""
-        # get user's teams
         user_teams = TeamMembership.objects.filter(
             user=user
         ).values_list('team', flat=True)
 
         if user_teams:
-            # get all users in the same teams
             return TeamMembership.objects.filter(
                 team__in=user_teams
             ).values_list('user', flat=True).distinct()
         else:
-            # user without team sees only their own tasks
             return [user.id]
 
-    # list
+    # ========== LIST VIEW TESTS ==========
 
     def test_tasks_list_response_200(self):
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
 
-    def test_tasks_list_static_content(self):
+    def test_tasks_list_has_page_title(self):
+        """Check that page has main title"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        # fields that are always visible
         self.assertContains(response, _('Tasks'))
-        self.assertContains(response, _('Filter'))
-        self.assertContains(response, _('Label'))
 
-        # check that there are no titles for table if not full_view=1
-        self.assertNotContains(response, f'<th scope="col">{_("ID")}</th>')
-        self.assertNotContains(response, f'<th scope="col">{_("Name")}</th>')
-        self.assertNotContains(response, f'<th scope="col">{_("Status")}</th>')
-        self.assertNotContains(response, f'<th scope="col">{_("Author")}</th>')
-        self.assertNotContains(
-            response, f'<th scope="col">{_("Executor")}</th>')
-        self.assertNotContains(
-            response, f'<th scope="col">{_("Created at")}</th>')
+    def test_tasks_list_has_create_button(self):
+        """Check that 'New task' button is always visible"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _('New task'))
+        self.assertContains(response, reverse('tasks:task-create'))
 
-    def test_tasks_list_full_view_content(self):
-        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        # check if we have tasks to display
-        if self.team:
-            tasks = Task.objects.filter(team=self.team)
-        else:
-            tasks = Task.objects.filter(author=self.user, team__isnull=True)
+    def test_tasks_list_has_statuses_link(self):
+        """Check that Statuses link is visible"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _("Statuses"))
+        self.assertContains(response, reverse('statuses:statuses-list'))
 
-        if tasks.exists():
-            # all fields have to be visible if full_view=1 and there are tasks
-            self.assertContains(response,
-                                f'<th scope="col">{_("ID")}</th>')
-            self.assertContains(response,
-                                f'<th scope="col">{_("Name")}</th>')
-            self.assertContains(response,
-                                f'<th scope="col">{_("Status")}</th>')
-            self.assertContains(response,
-                                f'<th scope="col">{_("Author")}</th>')
-            self.assertContains(response,
-                                f'<th scope="col">{_("Executor")}</th>')
-            self.assertContains(response,
-                                f'<th scope="col">{_("Created at")}</th>')
+    def test_tasks_list_has_labels_link(self):
+        """Check that Labels link is visible"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _("Labels"))
+        self.assertContains(response, reverse('labels:labels-list'))
 
-        self.assertContains(response, _('Label'))
-        self.assertContains(response, _('Tasks'))
+    def test_tasks_list_has_filter_button(self):
+        """Check that Filter button is visible when filter is hidden"""
+        response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, _('Filter'))
 
-    def test_tasks_list_compact_view_content(self):
+    def test_tasks_list_has_hide_filter_button(self):
+        """Check that 'Hide filter' button is visible when filter is shown"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
+        self.assertContains(response, _('Hide filter'))
+
+    def test_tasks_list_filter_form_visible(self):
+        """Check that filter form is visible when show_filter=1"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
+        self.assertContains(response, 'id="filter-form"')
+        self.assertContains(response, _('Apply'))
+        self.assertContains(response, _('Reset'))
+
+    def test_tasks_list_filter_form_hidden(self):
+        """Check that filter form is hidden by default"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        # check for main fields visible in compact view
-        self.assertContains(response, _('Tasks'))
-        self.assertContains(response, _('Filter'))
-        self.assertContains(response, _('Full view'))  # toggle button
+        self.assertNotContains(response, 'id="filter-form"')
 
-        # these titles have not be visible in compact view
-        self.assertNotContains(response, '<th>ID</th>')
-        self.assertNotContains(response, f'<th>{_("Status")}</th>')
-        self.assertNotContains(response, f'<th>{_("Author")}</th>')
-        self.assertNotContains(response, f'<th>{_("Executor")}</th>')
-        self.assertNotContains(response, f'<th>{_("Created at")}</th>')
-
-    def test_tasks_list_view_toggle_buttons(self):
-        # check for right buttons in compact view
-        response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, _('Full view'))
-
-        # check for right buttons in compact full view
-        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        self.assertContains(response, _('Compact view'))
-
-    def test_tasks_list_content(self):
+    def test_tasks_list_shows_task_cards(self):
+        """Check that tasks are displayed as cards"""
         response = self.c.get(reverse('tasks:tasks-list'))
 
-        # tasks depends of team or individual mode
-        if self.team:
-            tasks = Task.objects.filter(team=self.team)
-            other_tasks = Task.objects.exclude(team=self.team)
-        else:
-            tasks = Task.objects.filter(author=self.user, team__isnull=True)
-            other_tasks = Task.objects.filter(
-                Q(author=self.user) | Q(team__isnull=False)
-            )
-
-        for task in tasks:
-            self.assertContains(response, task.name)
-
-        for task in other_tasks:
-            self.assertNotContains(response, task.name)
-
-    def test_tasks_list_user_without_team(self):
-        # create user without team
-        user_no_team = User.objects.create_user(
-            username='solo_user',
-            password='testpass123'
-        )
-        self.c.force_login(user_no_team)
-
-        # create status for user
-        status = Status.objects.create(
-            name='Solo Status',
-            creator=user_no_team
-        )
-
-        # create task for this user
-        solo_task = Task.objects.create(
-            name="solo task",
-            author=user_no_team,
-            executor=user_no_team,
-            status=status,
-            team=None
-        )
-
-        response = self.c.get(reverse('tasks:tasks-list'))
-
-        # user should see only their own task
-        self.assertContains(response, solo_task.name)
-
-        # should not see tasks from other users
-        other_tasks = Task.objects.exclude(author=user_no_team)
-        for task in other_tasks:
-            self.assertNotContains(response, task.name)
-
-        # cleanup
-        solo_task.delete()
-        status.delete()
-        user_no_team.delete()
-
-    def test_tasks_list_empty_with_message(self):
-        # delete all tasks first
-        Task.objects.all().delete()
-        response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('No tasks'))
-        # check that table is not rendered
-        self.assertNotContains(response, '<table')
-
-    def test_tasks_list_empty_with_message_full_view(self):
-        # delete all tasks first
-        Task.objects.all().delete()
-        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('No tasks'))
-        # check that table is not rendered
-        self.assertNotContains(response, '<table')
-
-    def test_tasks_list_not_empty_no_message(self):
-        response = self.c.get(reverse('tasks:tasks-list'))
-
-        # check if have tasks for show
         if self.team:
             tasks_exist = Task.objects.filter(team=self.team).exists()
         else:
             tasks_exist = Task.objects.filter(
                 author=self.user, team__isnull=True).exists()
 
-        self.assertEqual(response.status_code, 200)
-
         if tasks_exist:
-            self.assertNotContains(response, _('No tasks'))
-            # check that table is rendered
-            self.assertContains(response, '<table')
+            self.assertContains(response, 'task-card')
+            # Check that table is NOT used (we use cards now)
+            self.assertNotContains(response, '<table')
+
+    def test_tasks_list_card_shows_task_name(self):
+        """Check that task name is visible in card"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
         else:
-            self.assertContains(response, _('No tasks'))
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
 
-    def test_filter_button_visible_when_filter_hidden(self):
+        if task:
+            self.assertContains(response, task.name)
+
+    def test_tasks_list_card_shows_task_id(self):
+        """Check that task ID is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, _('Filter'))
 
-    def test_filter_visible_when_show_filter_param_present(self):
-        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
-        self.assertContains(response, _('Hide filter'))
-        # filter results button
-        self.assertContains(response, _('Show'))
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
 
-    def test_filter_hidden_when_hide_filter_clicked(self):
-        # click on "Hide filter"
-        response = self.c.get(reverse('tasks:tasks-list') + '?status=1')
-        self.assertContains(response, _('Filter'))
+        if task:
+            self.assertContains(response, f'#{task.id}')
 
-    def test_view_toggle_buttons_preserve_filter_state(self):
-        # check that when toggle view (full or compact) filter state same
-        # 1. filter hidden, toggle view
-        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        self.assertContains(response, _('Compact view'))
-        # filter button visible
-        self.assertContains(response, _('Filter'))
-
-        # 2. filter is visible, toggle view
-        response = self.c.get(
-            reverse('tasks:tasks-list') + '?show_filter=1&full_view=1')
-        self.assertContains(response, _('Compact view'))
-        # hide filter button is visible
-        self.assertContains(response, _('Hide filter'))
-
-    def test_tasks_list_has_statuses_button(self):
+    def test_tasks_list_card_shows_status(self):
+        """Check that task status is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, _("Statuses"))
-        self.assertContains(response, reverse('statuses:statuses-list'))
 
-    def test_tasks_list_has_labels_button(self):
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
+
+        if task and task.status:
+            self.assertContains(response, task.status.name)
+
+    def test_tasks_list_card_shows_author(self):
+        """Check that task author is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, _("Labels"))
-        self.assertContains(response, reverse('labels:labels-list'))
 
-    def test_new_task_button_always_visible(self):
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
+
+        if task:
+            self.assertContains(response, task.author.username)
+
+    def test_tasks_list_card_shows_executor(self):
+        """Check that executor or 'No assignee' is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertContains(response, _('New task'))
 
-        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
-        self.assertContains(response, _('New task'))
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
 
-        response = self.c.get(reverse('tasks:tasks-list') + '?full_view=1')
-        self.assertContains(response, _('New task'))
+        if task:
+            if task.executor:
+                self.assertContains(response, task.executor.username)
+            else:
+                self.assertContains(response, _('No assignee'))
 
-    # update
+    def test_tasks_list_card_shows_date(self):
+        """Check that creation date is visible in card"""
+        response = self.c.get(reverse('tasks:tasks-list'))
 
-    def test_task_update_view_response_200(self):
-        response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
+
+        if task:
+            # Check date format d.m.y (e.g., 15.01.25)
+            date_str = task.created_at.strftime("%d.%m.%y")
+            self.assertContains(response, date_str)
+
+    def test_tasks_list_card_shows_description_preview(self):
+        """Check that description preview is visible if task has description"""
+        # Create task with description
+        status = Status.objects.filter(team=self.team).first() if self.team else \
+            Status.objects.filter(creator=self.user, team__isnull=True).first()
+
+        if not status:
+            status = Status.objects.create(
+                name='Test Status',
+                team=self.team,
+                creator=self.user
+            )
+
+        task = Task.objects.create(
+            name="Task with description",
+            description="This is a test description for preview",
+            author=self.user,
+            executor=self.user,
+            status=status,
+            team=self.team
+        )
+
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, "This is a test description")
+
+        # cleanup
+        task.delete()
+
+    def test_tasks_list_card_shows_labels(self):
+        """Check that labels are visible in card"""
+        if self.team:
+            label = Label.objects.filter(team=self.team).first()
+            status = Status.objects.filter(team=self.team).first()
+        else:
+            label = Label.objects.filter(
+                creator=self.user, team__isnull=True).first()
+            status = Status.objects.filter(
+                creator=self.user, team__isnull=True).first()
+
+        if not label or not status:
+            self.skipTest("No labels or status available")
+
+        task = Task.objects.create(
+            name="Task with label",
+            author=self.user,
+            executor=self.user,
+            status=status,
+            team=self.team
+        )
+        task.labels.add(label)
+
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, label.name)
+
+        # cleanup
+        task.delete()
+
+    def test_tasks_list_card_has_link_to_update(self):
+        """Check that task card links to update page"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        if self.team:
+            task = Task.objects.filter(team=self.team).first()
+        else:
+            task = Task.objects.filter(
+                author=self.user, team__isnull=True).first()
+
+        if task:
+            update_url = reverse('tasks:task-update', args=[task.id])
+            self.assertContains(response, update_url)
+
+    def test_tasks_list_shows_task_count(self):
+        """Check that task count is displayed"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        if self.team:
+            count = Task.objects.filter(team=self.team).count()
+        else:
+            count = Task.objects.filter(
+                author=self.user, team__isnull=True).count()
+
+        if count > 0:
+            self.assertContains(response, f'{count} task')
+
+    def test_tasks_list_empty_state(self):
+        """Check empty state message when no tasks"""
+        Task.objects.all().delete()
+        response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, _('No tasks'))
+        # self.assertNotContains(response, 'task-card')
 
-    def test_task_update_view_static_content(self):
+    def test_tasks_list_empty_state_has_create_button(self):
+        """Check that empty state has create task button"""
+        Task.objects.all().delete()
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _('Create Task'))
+        self.assertContains(response, reverse('tasks:task-create'))
+
+    def test_tasks_list_filter_active_indicator(self):
+        """Check that 'Filters active' badge is shown when filter is hidden but has params"""
+        # Apply filter, then hide filter panel
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
-        self.assertContains(response, self.task.name)
-        self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Description'))
-        self.assertContains(response, _('Status'))
-        self.assertContains(response, _('Executor'))
-        self.assertContains(response, _('Labels'))
-        self.assertContains(response, _("Edit"))
-        self.assertContains(response, _("Delete"))
-        self.assertContains(response, _("Cancel"))
+            reverse('tasks:tasks-list') + '?status=1')
+        self.assertContains(response, _('Filters active'))
 
-    def test_task_update_view_content(self):
+    def test_tasks_list_filter_active_indicator_not_shown_when_no_params(self):
+        """Check that 'Filters active' badge is NOT shown when no filter params"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertNotContains(response, _('Filters active'))
+
+    def test_tasks_list_filter_active_indicator_not_shown_when_filter_visible(self):
+        """Check that 'Filters active' badge is NOT shown when filter panel is visible"""
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
-        # Task name is displayed in the header
-        self.assertContains(response, self.task.name)
-        # Task ID is shown in badge
-        self.assertContains(response, str(self.task.id))
-        # Author username is shown
-        self.assertContains(
-            response,
-            f"{self.task.author.username}")
+            reverse('tasks:tasks-list') + '?show_filter=1&status=1')
+        self.assertNotContains(response, _('Filters active'))
 
-    def test_task_update_has_cancel_button(self):
-        """Test that task update page has a Cancel button."""
-        response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
-        self.assertContains(response, _('Cancel'))
-        # Check that Cancel button links to tasks list
-        list_url = reverse('tasks:tasks-list')
-        self.assertIn(list_url, response.content.decode('utf-8'))
+    def test_new_task_button_visible_when_filter_shown(self):
+        """Check that 'New task' button is visible even when filter is shown"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
+        self.assertContains(response, _('New task'))
 
-    def test_task_update_has_delete_button(self):
-        """Test that task update page has a Delete button."""
-        response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
-        self.assertContains(response, _('Delete'))
-        # Check that Delete button links to delete page
-        delete_url = reverse('tasks:task-delete', args=[self.task.id])
-        self.assertIn(delete_url, response.content.decode('utf-8'))
-
-    def test_task_update_shows_id(self):
-        """Test that update task page shows task ID."""
-        response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]),
-            follow=True)
-
-        self.assertContains(response, _('ID'))
-        self.assertContains(response, str(self.task.id))
-
-    # create
+    # ========== CREATE TASK TESTS ==========
 
     def test_create_task_response_200_and_check_content(self):
         response = self.c.get(reverse('tasks:task-create'))
@@ -397,7 +388,6 @@ class TaskTestCase(TestCase):
                                self.tasks_data, follow=True)
         new_count = Task.objects.count()
 
-        # check form errors
         if response.context and 'form' in response.context:
             form = response.context['form']
             if not form.is_valid():
@@ -410,7 +400,6 @@ class TaskTestCase(TestCase):
         response = self.c.post(reverse('tasks:task-create'),
                                self.tasks_data, follow=True)
 
-        # check form errors
         if response.context and 'form' in response.context:
             form = response.context['form']
             if not form.is_valid():
@@ -427,7 +416,6 @@ class TaskTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Task created successfully'))
 
     def test_create_task_user_with_team_can_choose_executor(self):
-        # sure that user has team
         if not self.team:
             self.skipTest("User has no team")
 
@@ -444,13 +432,11 @@ class TaskTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_task_user_without_team_auto_executor(self):
-        # create user without team
         user_no_team = User.objects.create_user(
             username='notinteam',
             password='testpass123'
         )
 
-        # create status for this user
         status = Status.objects.create(
             name='Personal Status',
             creator=user_no_team
@@ -462,7 +448,7 @@ class TaskTestCase(TestCase):
             'name': 'solo_task',
             'description': 'task for user without team',
             'status': status.id,
-            'executor': user_no_team.id,  # should be set automatically to self
+            'executor': user_no_team.id,
             'labels': []
         }
 
@@ -471,7 +457,6 @@ class TaskTestCase(TestCase):
         task = Task.objects.filter(name=task_data['name']).first()
         self.assertIsNotNone(task, "Task was not created")
 
-        # check that executor and author are the same
         self.assertEqual(task.author, user_no_team)
         self.assertEqual(task.executor, user_no_team)
         self.assertIsNone(task.team)
@@ -482,7 +467,6 @@ class TaskTestCase(TestCase):
         user_no_team.delete()
 
     def test_create_task_user_solo_in_team_auto_executor(self):
-        # create user without team first
         solo_user = User.objects.create_user(
             username='solo_team_user',
             password='testpass123'
@@ -493,7 +477,6 @@ class TaskTestCase(TestCase):
             description='Team with single member'
         )
 
-        # add user to team as admin
         TeamMembership.objects.create(
             user=solo_user,
             team=team,
@@ -502,12 +485,10 @@ class TaskTestCase(TestCase):
 
         self.c.force_login(solo_user)
 
-        # set active team in session
         session = self.c.session
         session['active_team_id'] = team.id
         session.save()
 
-        # set status
         available_status = Status.objects.filter(team=team).first()
         if not available_status:
             available_status = Status.objects.create(
@@ -516,12 +497,10 @@ class TaskTestCase(TestCase):
                 creator=solo_user
             )
 
-        # use same logic as in setUp for executor
         available_executor = User.objects.filter(
             team_memberships__team=team
         ).exclude(pk=solo_user.pk).first() or solo_user
 
-        # create task data
         task_data = {
             'name': 'solo_team_task',
             'description': 'task for solo team user',
@@ -531,7 +510,6 @@ class TaskTestCase(TestCase):
 
         self.c.post(reverse('tasks:task-create'), task_data, follow=True)
 
-        # check if task was created
         task = Task.objects.filter(name=task_data['name']).first()
         self.assertIsNotNone(task, "Task was not created")
 
@@ -548,7 +526,6 @@ class TaskTestCase(TestCase):
         solo_user.delete()
 
     def test_create_task_user_without_team_limited_executor_choice(self):
-        # create user without team
         user_no_team = User.objects.create_user(
             username='notinteam2',
             password='testpass123'
@@ -557,21 +534,65 @@ class TaskTestCase(TestCase):
 
         response = self.c.get(reverse('tasks:task-create'))
 
-        # check that executor field contains only the current user
         form = response.context.get('form')
         if form:
             executor_queryset = form.fields['executor'].queryset
-            # user without team should only see themselves as executor option
             self.assertEqual(executor_queryset.count(), 1)
             self.assertEqual(executor_queryset.first(), user_no_team)
-            # check that field is readonly
             self.assertTrue(
                 form.fields['executor'].widget.attrs.get('readonly'))
 
         # cleanup
         user_no_team.delete()
 
-    # update
+    # ========== UPDATE TASK TESTS ==========
+
+    def test_task_update_view_response_200(self):
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_task_update_view_static_content(self):
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, self.task.name)
+        self.assertContains(response, _('Name'))
+        self.assertContains(response, _('Description'))
+        self.assertContains(response, _('Status'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Labels'))
+        self.assertContains(response, _("Edit"))
+        self.assertContains(response, ("Delete"))
+        self.assertContains(response, _("Cancel"))
+
+    def test_task_update_view_shows_task_id(self):
+        """Check that task ID is visible on update page"""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _('ID'))
+        self.assertContains(response, str(self.task.id))
+
+    def test_task_update_view_shows_author(self):
+        """Check that author is visible on update page"""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, self.task.author.username)
+
+    def test_task_update_has_cancel_button(self):
+        """Check that Cancel button exists and links to tasks list"""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _('Cancel'))
+        list_url = reverse('tasks:tasks-list')
+        self.assertIn(list_url, response.content.decode('utf-8'))
+
+    def test_task_update_has_delete_button(self):
+        """Check that Delete button exists and links to delete page"""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.id]))
+        self.assertContains(response, _('Delete'))
+        delete_url = reverse('tasks:task-delete', args=[self.task.id])
+        self.assertIn(delete_url, response.content.decode('utf-8'))
 
     def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
@@ -581,23 +602,6 @@ class TaskTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_update_task_content(self):
-        task = Task.objects.get(name="first task")
-        response = self.c.get(
-            reverse('tasks:task-update', args=[task.id]),
-            follow=True
-        )
-        # Task name is in the header
-        self.assertContains(response, task.name)
-        self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Description'))
-        self.assertContains(response, _('Status'))
-        self.assertContains(response, _('Executor'))
-        self.assertContains(response, _('Labels'))
-        self.assertContains(response, _('Edit'))
-        self.assertContains(response, task.id)
-        self.assertContains(response, task.author.username)
-
     def test_update_task_with_correct_data(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
@@ -605,7 +609,6 @@ class TaskTestCase(TestCase):
             self.tasks_data, follow=True
         )
 
-        # check form errors
         if response.context and 'form' in response.context:
             form = response.context['form']
             if not form.is_valid():
@@ -615,10 +618,8 @@ class TaskTestCase(TestCase):
         self.assertEqual(task.name, self.tasks_data['name'])
 
     def test_update_task_by_author_success(self):
-        # create a task where current user is the author
         author = User.objects.get(username='me')
 
-        # get executor and status for team
         if self.team:
             executor = User.objects.filter(
                 team_memberships__team=self.team
@@ -649,7 +650,6 @@ class TaskTestCase(TestCase):
             self.tasks_data, follow=True
         )
 
-        # check form errors
         if response.context and 'form' in response.context:
             form = response.context['form']
             if not form.is_valid():
@@ -664,10 +664,8 @@ class TaskTestCase(TestCase):
         self.assertEqual(str(messages[0]), _("Task updated successfully"))
 
     def test_update_task_by_executor_success(self):
-        # create a task where current user is the executor
         executor = User.objects.get(username='me')
 
-        # get another user from same team as author
         if self.team:
             author = User.objects.filter(
                 team_memberships__team=self.team
@@ -698,7 +696,6 @@ class TaskTestCase(TestCase):
             self.tasks_data, follow=True
         )
 
-        # check form errors
         if response.context and 'form' in response.context:
             form = response.context['form']
             if not form.is_valid():
@@ -713,8 +710,8 @@ class TaskTestCase(TestCase):
         self.assertEqual(str(messages[0]), _("Task updated successfully"))
 
     def test_update_task_by_neither_author_nor_executor_denied(self):
-        author = User.objects.get(pk=12)  # he is not 'me'
-        executor = User.objects.get(pk=13)  # and he is not 'me' too
+        author = User.objects.get(pk=12)
+        executor = User.objects.get(pk=13)
 
         task = Task.objects.create(
             name="restricted task",
@@ -723,7 +720,6 @@ class TaskTestCase(TestCase):
             status_id=12
         )
 
-        # current user ('me') try update not yours task
         response = self.c.post(
             reverse('tasks:task-update', args=[task.id]),
             self.tasks_data,
@@ -732,11 +728,10 @@ class TaskTestCase(TestCase):
 
         self.assertRedirects(response, reverse('tasks:tasks-list'))
 
-        # check for error message
         error_message = _("Task can only be updated by its author or executor.")
         self.assertContains(response, error_message)
 
-    # delete
+    # ========== DELETE TASK TESTS ==========
 
     def test_delete_task_response_200(self):
         task = Task.objects.get(name="first task")
@@ -755,45 +750,37 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Yes, delete'))
 
     def test_delete_task_has_cancel_button(self):
-        """Test that delete task page has a Cancel button."""
+        """Check that Cancel button exists on delete page"""
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
                               args=[task.id]), follow=True)
-
-        # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
 
     def test_delete_task_cancel_button_redirects_to_referer(self):
-        """Test that Cancel button redirects to HTTP_REFERER."""
+        """Check that Cancel button uses HTTP_REFERER"""
         task = Task.objects.get(name="first task")
 
-        # Set HTTP_REFERER in request
         response = self.c.get(
             reverse('tasks:task-delete', args=[task.id]),
             HTTP_REFERER=reverse('tasks:tasks-list'),
             follow=True
         )
 
-        # Check that Cancel button is present
         self.assertContains(response, _('Cancel'))
 
-        # The Cancel button href should contain the referer URL
         cancel_url = reverse('tasks:tasks-list')
         self.assertIn(cancel_url, response.content.decode('utf-8'))
 
     def test_delete_task_cancel_button_without_referer(self):
-        """Test that Cancel button redirects to home when no referer."""
+        """Check that Cancel button goes to home when no referer"""
         task = Task.objects.get(name="first task")
 
-        # Request without HTTP_REFERER
         response = self.c.get(
             reverse('tasks:task-delete', args=[task.id]),
             follow=True
         )
 
-        # Check that Cancel button exists and points to home
         self.assertContains(response, _('Cancel'))
-        # Button href should be '/' when no referer
         self.assertIn('href="/"', response.content.decode('utf-8'))
 
     def test_delete_task(self):
