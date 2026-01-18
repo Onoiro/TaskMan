@@ -7,8 +7,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
-from django.utils.dateformat import DateFormat
-from django.utils.formats import get_format
 from django.db.models import Q
 
 
@@ -323,12 +321,12 @@ class TaskTestCase(TestCase):
     def test_task_update_view_static_content(self):
         response = self.c.get(
             reverse('tasks:task-update', args=[self.task.id]))
-        self.assertContains(response, _("Task"))
+        self.assertContains(response, self.task.name)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
         self.assertContains(response, _('Status'))
-        self.assertContains(response, _('Author'))
-        self.assertContains(response, _('Created at'))
+        self.assertContains(response, _('Executor'))
+        self.assertContains(response, _('Labels'))
         self.assertContains(response, _("Edit"))
         self.assertContains(response, _("Delete"))
         self.assertContains(response, _("Cancel"))
@@ -336,15 +334,14 @@ class TaskTestCase(TestCase):
     def test_task_update_view_content(self):
         response = self.c.get(
             reverse('tasks:task-update', args=[self.task.id]))
+        # Task name is displayed in the header
         self.assertContains(response, self.task.name)
-        self.assertContains(response, self.task.description)
+        # Task ID is shown in badge
+        self.assertContains(response, str(self.task.id))
+        # Author username is shown
         self.assertContains(
             response,
             f"{self.task.author.username}")
-        self.assertContains(response, self.task.status.name)
-        formatted_date = DateFormat(
-            self.task.created_at).format(get_format('DATETIME_FORMAT'))
-        self.assertContains(response, formatted_date)
 
     def test_task_update_has_cancel_button(self):
         """Test that task update page has a Cancel button."""
@@ -590,16 +587,16 @@ class TaskTestCase(TestCase):
             reverse('tasks:task-update', args=[task.id]),
             follow=True
         )
+        # Task name is in the header
+        self.assertContains(response, task.name)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
         self.assertContains(response, _('Status'))
         self.assertContains(response, _('Executor'))
         self.assertContains(response, _('Labels'))
         self.assertContains(response, _('Edit'))
-        self.assertRegex(
-            response.content.decode('utf-8'),
-            _(r'\bTask\b')
-        )
+        self.assertContains(response, task.id)
+        self.assertContains(response, task.author.username)
 
     def test_update_task_with_correct_data(self):
         task = Task.objects.get(name="first task")

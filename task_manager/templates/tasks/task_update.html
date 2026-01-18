@@ -6,7 +6,33 @@
 {% block content %}
 <div class="container px-3 px-sm-0">
     <div class="wrapper flex-grow-1">
-        <h1 class="my-4 text-start">{% trans "Task" %}</h1>
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body bg-primary bg-opacity-10 rounded-top">
+                <h1 class="card-title h3 mb-0">
+                    <span class="text-primary">📝</span>
+                    {{ object.name }}
+                </h1>
+                {% if object.labels.all %}
+                <div class="mt-2">
+                    {% for label in object.labels.all %}
+                    <span class="badge bg-primary text-truncate me-1" style="max-width: 120px;" title="{{ label.name }}">
+                        {{ label.name }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-white border-top-0 pb-3 rounded-bottom">
+                <small class="text-muted d-flex flex-wrap align-items-center gap-2">
+                    <span class="badge bg-secondary">ID: {{ object.id }}</span>
+                    <span>👤 {{ object.author.username }}</span>
+                    <span>📅 {{ object.created_at|date:"d.m.Y H:i" }}</span>
+                    {% if object.executor != object.author %}
+                    <span class="text-primary">👉 {{ object.executor.username }}</span>
+                    {% endif %}
+                </small>
+            </div>
+        </div>
 
         <form method="post">
             {% csrf_token %}
@@ -19,56 +45,16 @@
                 <a class="btn btn-outline-secondary" href="{% url 'tasks:tasks-list' %}">{% trans "Cancel" %}</a>
             </div>
         </form>
-
-        <div class="card mt-4">
-            <div class="card-header bg-secondary text-white">
-              <h2 class="h4 h3-md">{{ object.name }}</h2>
-            </div>
-            <div class="card-body bg-light">
-              <p class="mb-3">{{ object.description|linebreaksbr }}</p>
-              <hr>
-              <div class="container-fluid">
-                <div class="row mb-2">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "ID" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {{ object.id }}
-                  </div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "Author" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {{ object.author.username }}
-                  </div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "Created at" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {{ object.created_at }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const descField = document.querySelector('#id_description');
-    if (descField) {
-        function resizeDescription() {
-            descField.style.height = 'auto';
-            descField.style.height = descField.scrollHeight + 'px';
-        }
-        resizeDescription();
-        descField.addEventListener('input', resizeDescription);
-    }
-});
-</script>
+<style>
+#id_description {
+    height: 192px !important;
+    min-height: 192px !important;
+    max-height: 500px !important;
+    overflow-y: auto !important;
+    resize: vertical !important;
+}
+</style>
 {% endblock %}
