@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+from django.utils import timezone
 from django.utils.dateformat import DateFormat
 from django.utils.formats import get_format
 
@@ -78,8 +79,9 @@ class LabelsTestCase(TestCase):
 
         for label in team_labels:
             self.assertContains(response, label.name)
+            local_created_at = timezone.localtime(label.created_at)
             formatted_date = DateFormat(
-                label.created_at).format(get_format('DATETIME_FORMAT'))
+                local_created_at).format(get_format('DATETIME_FORMAT'))
             self.assertContains(response, formatted_date)
 
         # labels of other teams and individual labels have not to be shown
