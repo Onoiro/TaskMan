@@ -14,28 +14,33 @@
                 <!-- Блок мета-информации (Контекст) -->
                 <div class="card border-0 shadow-sm mb-3 bg-light">
                     <div class="card-body py-2 px-3">
-                        <!-- Первая строка: ID, Статус, Автор, Created at -->
-                        <div class="d-flex flex-wrap align-items-center gap-2 text-muted small mb-2">
+                        <!-- Верхняя строка: ID (слева), дата/время (справа) -->
+                        <div class="d-flex justify-content-between small mb-2">
                             <span class="badge bg-secondary">#{{ object.id }}</span>
+                            <span class="text-muted" title="{% trans 'Created' %}">📅 {{ object.created_at|date:"d.m H:i" }}</span>
+                        </div>
+                        <!-- Средняя строка: статус (слева), метки (справа) -->
+                        <div class="d-flex justify-content-between align-items-start mb-2">
                             <span class="badge border bg-white" style="color: {{ object.status.color|default:'#6c757d' }}; border-color: {{ object.status.color|default:'#dee2e6' }} !important;">
                                 {{ object.status.name }}
                             </span>
-                            <span title="{% trans 'Author' %}">👤 {{ object.author.username }}</span>
-                            <span title="{% trans 'Created' %}">📅 {{ object.created_at|date:"d.m H:i" }}</span>
-                        </div>
-                        <!-- Вторая строка: Метки и Исполнитель -->
-                        <div class="d-flex flex-wrap align-items-center gap-2">
                             {% if object.labels.all %}
-                            <div class="d-flex flex-wrap gap-1">
+                            <div class="d-flex flex-wrap gap-1 justify-content-end">
                                 {% for label in object.labels.all %}
                                 <span class="badge bg-light text-secondary border fw-normal" title="{{ label.name }}">{{ label.name }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
-                            {% if object.executor != object.author %}
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 ms-auto">
-                                👉 {{ object.executor.username }}
-                            </span>
+                        </div>
+                        <!-- Нижняя строка: автор (слева), исполнитель (справа) -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Author' %}">
+                                <span class="me-1">👤</span> {{ object.author.username }}
+                            </div>
+                            {% if object.executor and object.executor != object.author %}
+                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Executor' %}">
+                                <span class="me-1">👉</span> {{ object.executor.username }}
+                            </div>
                             {% endif %}
                         </div>
                     </div>

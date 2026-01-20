@@ -564,7 +564,7 @@ msgstr "Нет меток"
 
 #: templates/tasks/task_filter.html:15
 msgid "New task"
-msgstr "Создать задачу"
+msgstr "Новая задача"
 
 #: templates/tasks/task_filter.html:23
 msgid "Show"
@@ -589,6 +589,14 @@ msgstr "Подробно"
 #: templates/tasks/task_filter.html:110
 msgid "No tasks"
 msgstr "Задач нет"
+
+#: templates/tasks/task_filter.html:113
+msgid "No tasks found"
+msgstr "Задач нет"
+
+#: templates/tasks/task_filter.html:114
+msgid "Try adjusting filters or create a new task"
+msgstr "Попробуйте настроить фильтры или создать новую задачу"
 
 #: templates/tasks/task_update.html:8
 msgid "Edit task"

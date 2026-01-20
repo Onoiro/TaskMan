@@ -7,8 +7,8 @@
     
     <!-- 1. Верхний уровень: Заголовок + Главная кнопка (Create) -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold mb-0">{% trans "Tasks" %}</h1>
-        <a class="btn btn-primary shadow-sm" href="{% url 'tasks:task-create' %}">
+        <span></span>
+        <a class="btn btn-primary shadow-sm w-100-mobile text-center-mobile" href="{% url 'tasks:task-create' %}">
             <span class="fw-bold">＋ {% trans "New task" %}</span>
         </a>
     </div>
@@ -89,8 +89,8 @@
                     <div class="row g-0">
                         
                         <!-- 1. Цветной индикатор статуса (Тонкая полоска слева) -->
-                        <div class="col-auto">
-                            <div class="h-100 rounded-pill me-3" style="width: 4px; background-color: {{ obj.status.color|default:'#dee2e6' }};" title="{{ obj.status.name }}"></div>
+                        <div class="col-auto d-flex">
+                            <div class="align-self-stretch rounded-pill me-3" style="width: 4px; min-height: 40px; background-color: {{ obj.status.color|default:'#dee2e6' }};" title="{{ obj.status.name }}"></div>
                         </div>
 
                         <!-- 2. Основной блок контента -->
@@ -202,6 +202,16 @@
     }
     #filter-form .form-control, #filter-form .form-select {
         font-size: 0.9rem;
+    }
+
+    /* Кнопка New Task на мобильных - на всю ширину */
+    @media (max-width: 767.98px) {
+        .w-100-mobile {
+            width: 100% !important;
+        }
+        .text-center-mobile {
+            text-align: center !important;
+        }
     }
 </style>
 {% endblock %}
