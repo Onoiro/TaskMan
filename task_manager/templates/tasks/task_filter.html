@@ -84,15 +84,10 @@
     <div class="d-flex flex-column gap-3">
         {% if filter.qs %}
             {% for obj in filter.qs %}
-            <div class="card border-0 shadow-sm task-card">
+            <div class="card border-0 shadow-sm task-card{% if obj.status %} status-indicator{% endif %}"{% if obj.status %} style="--status-color: {{ obj.status.color|default:'#dee2e6' }};"{% endif %}>
                 <div class="card-body p-3">
                     <div class="row g-0">
                         
-                        <!-- 1. Цветной индикатор статуса (Тонкая полоска слева) -->
-                        <div class="col-auto d-flex">
-                            <div class="align-self-stretch rounded-pill me-3" style="width: 4px; min-height: 40px; background-color: {{ obj.status.color|default:'#dee2e6' }};" title="{{ obj.status.name }}"></div>
-                        </div>
-
                         <!-- 2. Основной блок контента -->
                         <div class="col">
                             
@@ -212,6 +207,24 @@
         .text-center-mobile {
             text-align: center !important;
         }
+    }
+
+    /* Надёжная вертикальная полоска статуса через ::before */
+    .task-card.status-indicator {
+        position: relative;
+        padding-left: 0;
+        overflow: hidden;
+    }
+    .task-card.status-indicator::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background-color: var(--status-color, #dee2e6);
+        border-radius: 4px 0 0 4px;
+        flex-shrink: 0;
     }
 </style>
 {% endblock %}
