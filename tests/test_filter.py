@@ -1,3 +1,4 @@
+from datetime import date
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
@@ -193,3 +194,220 @@ class TaskTestCase(TestCase):
         task.delete()
         status.delete()
         user_no_team.delete()
+
+    def test_filter_by_created_after(self):
+        """Test filtering by created_after date"""
+        # 2024-04-05T16:09:14.936Z is the earliest task date in fixtures
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'created_after': '2024-04-06'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        for task in filtered_tasks:
+            self.assertGreaterEqual(task.created_at.date(), date(2024, 4, 6))
+
+    def test_filter_by_created_before(self):
+        """Test filtering by created_before date"""
+        # 2024-04-05T16:09:14.936Z is the earliest task date in fixtures
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'created_before': '2024-04-05'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        for task in filtered_tasks:
+            self.assertLessEqual(task.created_at.date(), date(2024, 4, 5))
+
+    def test_filter_by_date_range(self):
+        """Test filtering by created_after and created_before together"""
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'created_after': '2024-04-05',
+            'created_before': '2024-04-06'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        for task in filtered_tasks:
+            self.assertGreaterEqual(task.created_at.date(), date(2024, 4, 5))
+            self.assertLessEqual(task.created_at.date(), date(2024, 4, 6))
+
+    def test_filter_exclude_by_status(self):
+        """Test exclude mode for status filter"""
+        # Get a different status to exclude
+        other_status = Status.objects.exclude(pk=self.status.pk).first()
+        if not other_status:
+            self.skipTest("No other status available for exclude test")
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': other_status.pk,
+            'status_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT have the excluded status
+        for task in filtered_tasks:
+            self.assertNotEqual(task.status, other_status)
+
+    def test_filter_exclude_by_executor(self):
+        """Test exclude mode for executor filter"""
+        # Get another user who is executor of some tasks
+        other_user = User.objects.exclude(pk=self.user.pk).first()
+        if not other_user:
+            self.skipTest("No other user available for exclude test")
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'executor': other_user.pk,
+            'executor_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT have the excluded executor
+        for task in filtered_tasks:
+            self.assertNotEqual(task.executor, other_user)
+
+    def test_filter_exclude_by_label(self):
+        """Test exclude mode for label filter"""
+        # Get another label to exclude
+        other_label = Label.objects.exclude(pk=self.label.pk).first()
+        if not other_label:
+            self.skipTest("No other label available for exclude test")
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'labels': other_label.pk,
+            'labels_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT have the excluded label
+        for task in filtered_tasks:
+            self.assertNotIn(other_label, task.labels.all())
+
+    def test_filter_exclude_own_tasks(self):
+        """Test exclude mode for self_tasks filter"""
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'self_tasks': 'on',
+            'self_tasks_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT be authored by the current user
+        for task in filtered_tasks:
+            self.assertNotEqual(task.author, self.user)
+
+    def test_filter_combined_with_exclude(self):
+        """Test combining regular filter with exclude filter"""
+        other_status = Status.objects.exclude(pk=self.status.pk).first()
+        if not other_status:
+            self.skipTest("No other status available for combined test")
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': other_status.pk,
+            'status_exclude': 'on',
+            'executor': self.user.id
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # Tasks should have the specified executor
+        for task in filtered_tasks:
+            self.assertEqual(task.executor, self.user)
+            # And should NOT have the excluded status
+            self.assertNotEqual(task.status, other_status)
+
+    def test_filter_exclude_invalid_value(self):
+        """Test exclude filter with invalid value (should behave as include)"""
+        # Using invalid exclude value should work as normal include
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': self.status.pk,
+            'status_exclude': 'invalid_value'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # Should include tasks with the status (not exclude)
+        for task in filtered_tasks:
+            self.assertEqual(task.status, self.status)
+
+    def test_filter_date_edge_case_same_day(self):
+        """Test date filter when created_after equals created_before"""
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'created_after': '2024-04-05',
+            'created_before': '2024-04-05'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # Should return tasks created on that specific day
+        for task in filtered_tasks:
+            self.assertEqual(task.created_at.date(), date(2024, 4, 5))
+
+    def test_filter_no_matching_date(self):
+        """Test date filter with range that matches no tasks"""
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'created_after': '2025-01-01',
+            'created_before': '2025-12-31'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # Should return empty queryset
+        self.assertEqual(filtered_tasks.count(), 0)
+
+    def test_filter_exclude_self_tasks_with_other_filters(self):
+        """Test exclude self_tasks combined with other filters"""
+        other_status = Status.objects.exclude(pk=self.status.pk).first()
+        if not other_status:
+            self.skipTest("No other status available for this test")
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'self_tasks': 'on',
+            'self_tasks_exclude': 'on',
+            'status': self.status.pk
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # Tasks should NOT be authored by current user
+        # And should have the specified status
+        for task in filtered_tasks:
+            self.assertNotEqual(task.author, self.user)
+            self.assertEqual(task.status, self.status)

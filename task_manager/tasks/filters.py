@@ -41,7 +41,7 @@ class TaskFilter(django_filters.FilterSet):
 
     created_after = django_filters.DateFilter(
         field_name='created_at',
-        label=_('Created after'),
+        label=_('After'),
         lookup_expr='gte',
         widget=forms.DateInput(
             attrs={'type': 'date', 'class': 'form-control'}
@@ -51,7 +51,7 @@ class TaskFilter(django_filters.FilterSet):
 
     created_before = django_filters.DateFilter(
         field_name='created_at',
-        label=_('Created before'),
+        label=_('Before'),
         lookup_expr='lte',
         widget=forms.DateInput(
             attrs={'type': 'date', 'class': 'form-control'}
@@ -99,97 +99,78 @@ class TaskFilter(django_filters.FilterSet):
             return queryset.filter(author=user)
         return queryset
 
-    def filter_queryset(self, queryset):
-        """Override to handle exclude logic properly."""
-        # Get raw data from query params
+    def _is_excluded(self, param_name):
+        """Check if exclude checkbox is checked."""
         data = self.form.data if self.form.is_bound else self.form.initial
+        valid_values = ('on', 'true', '1', 'checked')
+        return param_name in data and data[param_name] in valid_values
 
-        # Helper to check if checkbox is checked
-        def is_excluded(param_name):
-            valid_values = ('on', 'true', '1', 'checked')
-            return param_name in data and data[param_name] in valid_values
+    def _get_filter_value(self, field_name):
+        """Get filter value from cleaned_data or initial."""
+        if self.form.is_valid():
+            value = self.form.cleaned_data.get(field_name)
+            if value is not None:
+                return value
+        return self.form.initial.get(field_name)
 
+    def _get_base_queryset(self):
+        """Get base queryset based on team context."""
         user = self.request.user
         team = getattr(self.request, 'active_team', None)
 
-        # Start with base queryset
         if team:
-            qs = Task.objects.filter(team=team).order_by('-created_at')
-        else:
-            qs = Task.objects.filter(
-                author=user, team__isnull=True
-            ).order_by('-created_at')
+            return Task.objects.filter(team=team).order_by('-created_at')
+        return Task.objects.filter(
+            author=user, team__isnull=True
+        ).order_by('-created_at')
 
-        # Get values from form (cleaned_data if valid, else initial)
-        status = None
-        if self.form.is_valid():
-            status = self.form.cleaned_data.get('status')
-        if status is None:
-            status = self.form.initial.get('status')
+    def _apply_model_filter(self, qs, field_name, lookup_field=None):
+        """Apply filter with optional exclude mode."""
+        value = self._get_filter_value(field_name)
+        if not value:
+            return qs
 
-        executor = None
-        if self.form.is_valid():
-            executor = self.form.cleaned_data.get('executor')
-        if executor is None:
-            executor = self.form.initial.get('executor')
+        lookup_field = lookup_field or field_name
+        exclude_mode = self._is_excluded(f'{field_name}_exclude')
 
-        labels = None
-        if self.form.is_valid():
-            labels = self.form.cleaned_data.get('labels')
-        if labels is None:
-            labels = self.form.initial.get('labels')
+        condition = Q(**{lookup_field: value})
+        return qs.filter(~condition if exclude_mode else condition)
 
-        self_tasks = None
-        if self.form.is_valid():
-            self_tasks = self.form.cleaned_data.get('self_tasks')
-        if self_tasks is None:
-            self_tasks = self.form.initial.get('self_tasks')
-
-        created_after = None
-        if self.form.is_valid():
-            created_after = self.form.cleaned_data.get('created_after')
-        if created_after is None:
-            created_after = self.form.initial.get('created_after')
-
-        created_before = None
-        if self.form.is_valid():
-            created_before = self.form.cleaned_data.get('created_before')
-        if created_before is None:
-            created_before = self.form.initial.get('created_before')
-
-        # Apply filters with exclude logic
-        exclude_mode = is_excluded('status_exclude')
-        if status:
-            if exclude_mode:
-                qs = qs.filter(~Q(status=status))
-            else:
-                qs = qs.filter(status=status)
-
-        exclude_mode = is_excluded('executor_exclude')
-        if executor:
-            if exclude_mode:
-                qs = qs.filter(~Q(executor=executor))
-            else:
-                qs = qs.filter(executor=executor)
-
-        exclude_mode = is_excluded('labels_exclude')
-        if labels:
-            if exclude_mode:
-                qs = qs.filter(~Q(labels=labels))
-            else:
-                qs = qs.filter(labels=labels)
-
-        exclude_mode = is_excluded('self_tasks_exclude')
-        if self_tasks:
-            if exclude_mode:
-                qs = qs.filter(~Q(author=user))
-            else:
-                qs = qs.filter(author=user)
+    def _apply_date_filters(self, qs):
+        """Apply date range filters."""
+        created_after = self._get_filter_value('created_after')
+        created_before = self._get_filter_value('created_before')
 
         if created_after:
             qs = qs.filter(created_at__gte=created_after)
-
         if created_before:
             qs = qs.filter(created_at__lte=created_before)
+
+        return qs
+
+    def _apply_self_tasks_filter(self, qs):
+        """Apply self_tasks filter with exclude support."""
+        self_tasks = self._get_filter_value('self_tasks')
+        if not self_tasks:
+            return qs
+
+        user = self.request.user
+        exclude_mode = self._is_excluded('self_tasks_exclude')
+
+        condition = Q(author=user)
+        return qs.filter(~condition if exclude_mode else condition)
+
+    def filter_queryset(self, queryset):
+        """Override to handle exclude logic properly."""
+        qs = self._get_base_queryset()
+
+        # Apply model choice filters
+        qs = self._apply_model_filter(qs, 'status')
+        qs = self._apply_model_filter(qs, 'executor')
+        qs = self._apply_model_filter(qs, 'labels')
+
+        # Apply special filters
+        qs = self._apply_self_tasks_filter(qs)
+        qs = self._apply_date_filters(qs)
 
         return qs
