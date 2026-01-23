@@ -38,9 +38,32 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
+    created_after = django_filters.DateFilter(
+        field_name='created_at',
+        label=_('Created after'),
+        lookup_expr='gte',
+        widget=forms.DateInput(
+            attrs={'type': 'date', 'class': 'form-control'}
+        ),
+        label_suffix="",
+    )
+
+    created_before = django_filters.DateFilter(
+        field_name='created_at',
+        label=_('Created before'),
+        lookup_expr='lte',
+        widget=forms.DateInput(
+            attrs={'type': 'date', 'class': 'form-control'}
+        ),
+        label_suffix="",
+    )
+
     class Meta:
         model = Task
-        fields = ['status', 'executor', 'labels', 'self_tasks']
+        fields = [
+            'status', 'executor', 'labels', 'self_tasks',
+            'created_after', 'created_before'
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
