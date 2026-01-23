@@ -61,22 +61,114 @@
     <div class="card border-0 shadow-sm mb-4 bg-light">
         <div class="card-body p-3 p-md-4">
             <form id="filter-form" action="" method="get">
-                <div class="row g-3">
-                    {% for field in filter.form %}
-                    {% if field.name == 'created_after' or field.name == 'created_before' %}
-                    <!-- Date filters in same row on mobile -->
-                    <div class="col-12 col-md-6 col-lg-3 date-filter-group{% if field.name == 'created_before' %} date-filter-group-end{% endif %}">
-                        <label class="form-label small text-uppercase text-muted fw-bold">{{ field.label }}</label>
-                        {{ field }}
-                    </div>
-                    {% else %}
+                <!-- Status filter with exclude -->
+                <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6 col-lg-3">
-                        <label class="form-label small text-uppercase text-muted fw-bold">{{ field.label }}</label>
-                        {{ field }}
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.status.label }}
+                        </label>
+                        <div class="input-group">
+                            {{ filter.form.status }}
+                            <span class="input-group-text filter-exclude-toggle{% if request.GET.status_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
+                                🚫
+                            </span>
+                        </div>
                     </div>
-                    {% endif %}
-                    {% endfor %}
+                    <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
+                        <div class="form-check{% if request.GET.status_exclude %} text-danger{% endif %}">
+                            <input type="checkbox" name="status_exclude" id="id_status_exclude" class="form-check-input"{% if request.GET.status_exclude %} checked{% endif %}>
+                            <label class="form-check-label small fw-bold" for="id_status_exclude">
+                                {% trans 'Exclude' %}
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Executor filter with exclude -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.executor.label }}
+                        </label>
+                        <div class="input-group">
+                            {{ filter.form.executor }}
+                            <span class="input-group-text filter-exclude-toggle{% if request.GET.executor_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
+                                🚫
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
+                        <div class="form-check{% if request.GET.executor_exclude %} text-danger{% endif %}">
+                            <input type="checkbox" name="executor_exclude" id="id_executor_exclude" class="form-check-input"{% if request.GET.executor_exclude %} checked{% endif %}>
+                            <label class="form-check-label small fw-bold" for="id_executor_exclude">
+                                {% trans 'Exclude' %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Labels filter with exclude -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.labels.label }}
+                        </label>
+                        <div class="input-group">
+                            {{ filter.form.labels }}
+                            <span class="input-group-text filter-exclude-toggle{% if request.GET.labels_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
+                                🚫
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
+                        <div class="form-check{% if request.GET.labels_exclude %} text-danger{% endif %}">
+                            <input type="checkbox" name="labels_exclude" id="id_labels_exclude" class="form-check-input"{% if request.GET.labels_exclude %} checked{% endif %}>
+                            <label class="form-check-label small fw-bold" for="id_labels_exclude">
+                                {% trans 'Exclude' %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Self tasks filter with exclude -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.self_tasks.label }}
+                        </label>
+                        <div class="input-group">
+                            {{ filter.form.self_tasks }}
+                            <span class="input-group-text filter-exclude-toggle{% if request.GET.self_tasks_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
+                                🚫
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
+                        <div class="form-check{% if request.GET.self_tasks_exclude %} text-danger{% endif %}">
+                            <input type="checkbox" name="self_tasks_exclude" id="id_self_tasks_exclude" class="form-check-input"{% if request.GET.self_tasks_exclude %} checked{% endif %}>
+                            <label class="form-check-label small fw-bold" for="id_self_tasks_exclude">
+                                {% trans 'Exclude' %}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date filters in same row on mobile -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6 col-lg-3 date-filter-group">
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.created_after.label }}
+                        </label>
+                        {{ filter.form.created_after }}
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 date-filter-group date-filter-group-end">
+                        <label class="form-label small text-uppercase text-muted fw-bold">
+                            {{ filter.form.created_before.label }}
+                        </label>
+                        {{ filter.form.created_before }}
+                    </div>
+                </div>
+
                 <input type="hidden" name="show_filter" value="1">
 
                 <div class="mt-3 text-end border-top pt-3">
@@ -245,6 +337,27 @@
         background-color: var(--status-color, #dee2e6);
         border-radius: 4px 0 0 4px;
         flex-shrink: 0;
+    }
+
+    /* Exclude toggle styles */
+    .filter-exclude-toggle {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    #filter-form .form-check-input:checked + .form-check-label,
+    #filter-form .form-check-input:checked ~ .form-check-label,
+    .form-check-input:checked ~ .form-check-label {
+        color: #dc3545;
+    }
+    #filter-form .form-check-input:checked {
+        border-color: #dc3545;
+        background-color: #dc3545;
+    }
+    .input-group .form-select {
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+    .input-group .filter-exclude-toggle {
+        border-radius: 0 0.375rem 0.375rem 0;
     }
 </style>
 {% endblock %}
