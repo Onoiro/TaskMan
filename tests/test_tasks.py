@@ -840,3 +840,269 @@ class TaskTestCase(TestCase):
         response = self.c.post(reverse('tasks:task-delete',
                                        args=[task.id]), follow=True)
         self.assertNotEqual(response.status_code, 302)
+
+    # ========== SAVED FILTER TESTS ==========
+
+    def test_save_filter_as_default(self):
+        """Check that filter is saved to session when checkbox is checked"""
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Check session contains saved filter
+        session = self.c.session
+        self.assertIn('task_filter_params', session)
+        self.assertIn('task_filter_enabled', session)
+        self.assertTrue(session['task_filter_enabled'])
+        self.assertIn('status', session['task_filter_params'])
+
+    def test_save_filter_shows_success_message(self):
+        """Check that success message is shown when filter is saved"""
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _('Filter saved as default'))
+
+    def test_saved_filter_auto_applied_on_page_load(self):
+        """Check that saved filter is auto applied when visiting page"""
+        # First, save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Then visit the page without parameters
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should redirect to page with saved filter params
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('status=1', response.url)
+
+    def test_saved_filter_not_applied_when_user_has_own_params(self):
+        """Check that saved filter is not applied when hasing own params"""
+        # Save a filter with status=1
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Visit with different parameters
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?executor=1'
+        )
+
+        # Should NOT redirect, user params take priority
+        self.assertEqual(response.status_code, 200)
+
+    def test_saved_filter_not_applied_when_show_filter_open(self):
+        """Check that saved filter is NOT applied when filter panel is open"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Visit with show_filter parameter
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?show_filter=1'
+        )
+
+        # Should NOT redirect
+        self.assertEqual(response.status_code, 200)
+
+    def test_reset_default_clears_saved_filter(self):
+        """Check that reset_default parameter clears saved filter"""
+        # First save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Verify it's saved
+        self.assertIn('task_filter_params', self.c.session)
+
+        # Reset the filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?reset_default=1',
+            follow=True
+        )
+
+        # Check session is cleared
+        session = self.c.session
+        self.assertNotIn('task_filter_params', session)
+        self.assertNotIn('task_filter_enabled', session)
+
+    def test_reset_default_with_show_filter_keeps_panel_open(self):
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Reset with show_filter
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?show_filter=1&reset_default=1'
+        )
+
+        # Should redirect to page with show_filter=1
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('show_filter=1', response.url)
+
+    def test_reset_default_without_show_filter_redirects_clean(self):
+        """Check that reset without show_filter redirects to clean page"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Reset without show_filter
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?reset_default=1'
+        )
+
+        # Should redirect to clean URL
+        self.assertEqual(response.status_code, 302)
+        self.assertNotIn('show_filter', response.url)
+        self.assertNotIn('status', response.url)
+
+    def test_context_has_saved_filter_info(self):
+        """Check that context contains saved filter information"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Get page with filter panel
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?show_filter=1'
+        )
+
+        self.assertIn('saved_filter_params', response.context)
+        self.assertIn('saved_filter_enabled', response.context)
+        self.assertIn('has_saved_filter', response.context)
+        self.assertTrue(response.context['saved_filter_enabled'])
+        self.assertTrue(response.context['has_saved_filter'])
+
+    def test_context_without_saved_filter(self):
+        """Check context when no filter is saved"""
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?show_filter=1'
+        )
+
+        self.assertIn('saved_filter_params', response.context)
+        self.assertIn('saved_filter_enabled', response.context)
+        self.assertIn('has_saved_filter', response.context)
+        self.assertFalse(response.context['saved_filter_enabled'])
+        self.assertFalse(response.context['has_saved_filter'])
+
+    def test_save_filter_excludes_service_params(self):
+        """Check that service parameters are not saved to filter"""
+        # Сохраняем фильтр (без reset_default!)
+        url = reverse('tasks:tasks-list')
+        query_params = '?status=1&show_filter=1&save_as_default=1'
+        self.c.get(url + query_params, follow=True)
+
+        session = self.c.session
+        saved_params = session.get('task_filter_params', {})
+
+        # Service params should NOT be in saved filter
+        self.assertNotIn('show_filter', saved_params)
+        self.assertNotIn('save_as_default', saved_params)
+
+        # But actual filter param should be saved
+        self.assertIn('status', saved_params)
+
+    def test_save_filter_only_saves_non_empty_values(self):
+        """Check that empty filter values are not saved"""
+        url = reverse('tasks:tasks-list')
+        query_params = '?status=1&executor=&save_as_default=1'
+        self.c.get(url + query_params, follow=True)
+
+        session = self.c.session
+        saved_params = session.get('task_filter_params', {})
+
+        # Non-empty param should be saved
+        self.assertIn('status', saved_params)
+
+        # Empty param should NOT be saved
+        self.assertNotIn('executor', saved_params)
+
+    def test_saved_filter_indicator_shown_in_toolbar(self):
+        """Check that 'Default' badge is shown when filter is active"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Visit page with the saved filter applied
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?status=1'
+        )
+
+        self.assertContains(response, _('Default'))
+
+    def test_saved_filter_checkbox_checked_when_active(self):
+        """Check that 'Save as default' checkbox
+          is checked when filter is active"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Open filter panel
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?show_filter=1'
+        )
+
+        # Checkbox should be checked
+        self.assertContains(response, 'id="id_save_as_default"')
+        self.assertContains(response, 'checked')
+
+    def test_save_multiple_filter_params(self):
+        """Check that multiple filter parameters are saved correctly"""
+        url = reverse('tasks:tasks-list')
+        params = '?status=1&executor=1&self_tasks=on&save_as_default=1'
+        self.c.get(url + params, follow=True)
+
+        session = self.c.session
+        saved_params = session.get('task_filter_params', {})
+
+        self.assertIn('status', saved_params)
+        self.assertIn('executor', saved_params)
+        self.assertIn('self_tasks', saved_params)
+
+    def test_saved_filter_persists_across_requests(self):
+        """Check that saved filter persists
+          in session across multiple requests"""
+        # Save filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Make several other requests
+        self.c.get(reverse('tasks:task-create'))
+        self.c.get(reverse('statuses:statuses-list'))
+
+        # Come back to tasks list without params
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should still redirect with saved filter
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('status=1', response.url)
+
+    def test_no_saved_filter_no_redirect(self):
+        """Check that page loads normally when no filter is saved"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should load page directly, no redirect
+        self.assertEqual(response.status_code, 200)
