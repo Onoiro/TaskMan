@@ -36,6 +36,13 @@
                 {% endif %}
             </span>
 
+            <!-- Индикатор сохранённого фильтра -->
+            {% if saved_filter_enabled and has_saved_filter %}
+                <span class="badge bg-success text-white" title="{% trans 'Default filter is active' %}">
+                    💾 {% trans "Default" %}
+                </span>
+            {% endif %}
+
             <!-- 3. Индикатор активных фильтров (если форма скрыта, но параметры есть) -->
             {% if not request.GET.show_filter and request.GET|length > 0 %}
                 <a href="{% url 'tasks:tasks-list' %}" class="badge bg-warning text-dark text-decoration-none border border-warning" title="{% trans 'Reset filters' %}">
@@ -171,9 +178,43 @@
 
                 <input type="hidden" name="show_filter" value="1">
 
-                <div class="mt-3 text-end border-top pt-3">
-                    <a href="{% url 'tasks:tasks-list' %}?show_filter=1" class="btn btn-link text-decoration-none text-muted btn-sm me-2">{% trans "Reset" %}</a>
-                    <button type="submit" class="btn btn-primary btn-sm px-4">{% trans "Apply" %}</button>
+                <!-- ОБНОВЛЁННЫЙ БЛОК: Кнопки + чекбокс сохранения -->
+                <div class="mt-3 border-top pt-3">
+                    <div class="row align-items-center">
+                        <!-- Левая часть: чекбокс "Save as default" -->
+                        <div class="col-12 col-md-auto mb-2 mb-md-0">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       name="save_as_default" 
+                                       id="id_save_as_default" 
+                                       class="form-check-input"
+                                       {% if saved_filter_enabled %}checked{% endif %}>
+                                <label class="form-check-label small" for="id_save_as_default">
+                                    💾 {% trans "Save as default" %}
+                                </label>
+                            </div>
+                            {% if has_saved_filter %}
+                            <small class="text-muted d-block mt-1">
+                                {% if saved_filter_enabled %}
+                                    <span class="text-success">✓ {% trans "Default filter active" %}</span>
+                                {% else %}
+                                    {% trans "Filter saved but not active" %}
+                                {% endif %}
+                            </small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Правая часть: кнопки -->
+                        <div class="col-12 col-md-auto ms-md-auto text-end">
+                            <a href="{% url 'tasks:tasks-list' %}?show_filter=1&reset_default=1" 
+                               class="btn btn-link text-decoration-none text-muted btn-sm me-2">
+                                {% trans "Reset" %}
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-sm px-4">
+                                {% trans "Apply" %}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -252,7 +293,7 @@
             </div>
             {% endfor %}
         {% else %}
-            <!-- Empty State (тот же что и был) -->
+            <!-- Empty State -->
             <div class="card border-0 bg-light py-5 text-center">
                 <div class="card-body">
                     <div class="display-1 text-muted opacity-25 mb-3">📋</div>
@@ -279,7 +320,7 @@
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
     }
 
-    /* Ограничение описания 2 строками (современный CSS) */
+    /* Ограничение описания 2 строками */
     .text-truncate-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -288,7 +329,7 @@
         text-overflow: ellipsis;
     }
 
-    /* Стили форм остаются прежними */
+    /* Стили форм */
     label.form-label {
         color: #6c757d;
         font-size: 0.75rem;
@@ -299,7 +340,7 @@
         font-size: 0.9rem;
     }
 
-    /* Кнопка New Task на мобильных - на всю ширину */
+    /* Кнопка New Task на мобильных */
     @media (max-width: 767.98px) {
         .w-100-mobile {
             width: 100% !important;
@@ -321,7 +362,7 @@
         }
     }
 
-    /* Надёжная вертикальная полоска статуса через ::before */
+    /* Вертикальная полоска статуса */
     .task-card.status-indicator {
         position: relative;
         padding-left: 0;
@@ -352,6 +393,14 @@
     #filter-form .form-check-input:checked {
         border-color: #dc3545;
         background-color: #dc3545;
+    }
+    /* Исключение для чекбокса save_as_default */
+    #id_save_as_default:checked {
+        border-color: #198754;
+        background-color: #198754;
+    }
+    #id_save_as_default:checked + label {
+        color: #198754 !important;
     }
     .input-group .form-select {
         border-radius: 0.375rem 0 0 0.375rem;
