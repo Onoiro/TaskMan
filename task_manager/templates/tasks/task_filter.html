@@ -5,60 +5,73 @@
 {% block content %}
 <div class="container wrapper flex-grow-1 py-3 py-lg-4">
     
-    <!-- 1. Верхний уровень: Заголовок + Главная кнопка (Create) -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- 1. Верхний уровень: Главная кнопка (Create) -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <span></span>
         <a class="btn btn-primary shadow-sm w-100-mobile text-center-mobile" href="{% url 'tasks:task-create' %}">
             <span class="fw-bold">＋ {% trans "New task" %}</span>
         </a>
     </div>
 
-    <!-- 2. Вторичная навигация и Тулбар -->
-    <div class="row g-2 align-items-center mb-3">
-        <!-- Ссылки на справочники (Статусы/Метки) -->
-        <div class="col-12 col-md-auto me-auto">
+    <!-- 2. Тулбар: Справочники + Фильтр -->
+    <div class="toolbar-row mb-3">
+        <!-- Левая часть: Ссылки на справочники -->
+        <div class="toolbar-left">
             <div class="btn-group" role="group">
                 <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'statuses:statuses-list' %}">
-                    🚦 <span class="ms-1">{% trans "Statuses" %}</span>
+                    🚦 <span class="d-none d-sm-inline ms-1">{% trans "Statuses" %}</span>
                 </a>
                 <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'labels:labels-list' %}">
-                    🏷️ <span class="ms-1">{% trans "Labels" %}</span>
+                    🏷️ <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
                 </a>
             </div>
         </div>
 
-        <!-- Управление фильтрами -->
-        <div class="col-12 col-md-auto d-flex align-items-center gap-2 justify-content-between justify-content-md-end">
-            <!-- Счетчик найденного -->
-            <span class="text-muted small me-2">
-                {% if filter.qs %}
-                    {{ filter.qs.count }} task{{ filter.qs.count|pluralize }}
-                {% endif %}
+        <!-- Правая часть: Счётчик + Кнопка фильтра -->
+        <div class="toolbar-right">
+            <!-- Счетчик задач -->
+            {% if filter.qs %}
+            <span class="task-counter text-muted">
+                <span class="fw-bold">{{ filter.qs.count }}</span>
+                <span class="d-none d-sm-inline">task{{ filter.qs.count|pluralize }}</span>
+                <span class="d-sm-none">📋</span>
             </span>
-
-            <!-- Индикатор сохранённого фильтра -->
-            {% if saved_filter_enabled and has_saved_filter %}
-                <span class="badge bg-success text-white" title="{% trans 'Default filter is active' %}">
-                    💾 {% trans "Default" %}
-                </span>
             {% endif %}
 
-            <!-- 3. Индикатор активных фильтров (если форма скрыта, но параметры есть) -->
-            {% if not request.GET.show_filter and request.GET|length > 0 %}
-                <a href="{% url 'tasks:tasks-list' %}" class="badge bg-warning text-dark text-decoration-none border border-warning" title="{% trans 'Reset filters' %}">
-                    {% trans "Filters active" %} ✖
-                </a>
-            {% endif %}
-
-            <!-- Кнопка Показать/Скрыть фильтр -->
+            <!-- Кнопка фильтра (объединяет все индикаторы) -->
             {% if request.GET.show_filter %}
-                <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="btn btn-sm btn-secondary active">
-                    {% trans "Hide filter" %}
+                {# Фильтр открыт - кнопка "Скрыть" #}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
+                   class="btn btn-sm btn-secondary filter-btn">
+                    <span class="d-none d-sm-inline">{% trans "Hide" %}</span>
+                    <span class="d-sm-none">✕</span>
                 </a>
             {% else %}
-                <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}show_filter=1" class="btn btn-sm btn-outline-secondary">
-                    🔍 {% trans "Filter" %}
-                </a>
+                {# Фильтр скрыт - определяем состояние кнопки #}
+                {% with has_active_params=request.GET|length %}
+                {% if saved_filter_enabled and has_saved_filter and has_active_params > 0 %}
+                    {# Сохранённый фильтр активен И есть параметры #}
+                    <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" 
+                       class="btn btn-sm btn-success filter-btn"
+                       title="{% trans 'Default filter is active' %}">
+                        💾 <span class="d-none d-sm-inline">{% trans "Default" %}</span>
+                    </a>
+                {% elif has_active_params > 0 %}
+                    {# Есть активные фильтры (не сохранённые) #}
+                    <a href="{% url 'tasks:tasks-list' %}" 
+                       class="btn btn-sm btn-warning filter-btn"
+                       title="{% trans 'Reset filters' %}">
+                        🔍 <span class="filter-badge">{{ has_active_params }}</span>
+                        <span class="d-none d-sm-inline ms-1">{% trans "Active" %}</span>
+                    </a>
+                {% else %}
+                    {# Нет активных фильтров #}
+                    <a href="?show_filter=1" 
+                       class="btn btn-sm btn-outline-secondary filter-btn">
+                        🔍 <span class="d-none d-sm-inline">{% trans "Filter" %}</span>
+                    </a>
+                {% endif %}
+                {% endwith %}
             {% endif %}
         </div>
     </div>
@@ -160,15 +173,15 @@
                     </div>
                 </div>
 
-                <!-- Date filters in same row on mobile -->
+                <!-- Date filters -->
                 <div class="row g-3 mb-3">
-                    <div class="col-12 col-md-6 col-lg-3 date-filter-group">
+                    <div class="col-6 col-md-6 col-lg-3">
                         <label class="form-label small text-uppercase text-muted fw-bold">
                             {{ filter.form.created_after.label }}
                         </label>
                         {{ filter.form.created_after }}
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3 date-filter-group date-filter-group-end">
+                    <div class="col-6 col-md-6 col-lg-3">
                         <label class="form-label small text-uppercase text-muted fw-bold">
                             {{ filter.form.created_before.label }}
                         </label>
@@ -178,39 +191,33 @@
 
                 <input type="hidden" name="show_filter" value="1">
 
-                <!-- ОБНОВЛЁННЫЙ БЛОК: Кнопки + чекбокс сохранения -->
+                <!-- Кнопки управления -->
                 <div class="mt-3 border-top pt-3">
-                    <div class="row align-items-center">
-                        <!-- Левая часть: чекбокс "Save as default" -->
-                        <div class="col-12 col-md-auto mb-2 mb-md-0">
-                            <div class="form-check">
-                                <input type="checkbox" 
-                                       name="save_as_default" 
-                                       id="id_save_as_default" 
-                                       class="form-check-input"
-                                       {% if saved_filter_enabled %}checked{% endif %}>
-                                <label class="form-check-label small" for="id_save_as_default">
-                                    💾 {% trans "Save as default" %}
-                                </label>
-                            </div>
-                            {% if has_saved_filter %}
-                            <small class="text-muted d-block mt-1">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                        <!-- Чекбокс "Save as default" -->
+                        <div class="form-check mb-0">
+                            <input type="checkbox" 
+                                   name="save_as_default" 
+                                   id="id_save_as_default" 
+                                   class="form-check-input"
+                                   {% if saved_filter_enabled %}checked{% endif %}>
+                            <label class="form-check-label small" for="id_save_as_default">
+                                💾 
+                                <span class="d-none d-sm-inline">{% trans "Save as default" %}</span>
+                                <span class="d-sm-none">{% trans "Save" %}</span>
                                 {% if saved_filter_enabled %}
-                                    <span class="text-success">✓ {% trans "Default filter active" %}</span>
-                                {% else %}
-                                    {% trans "Filter saved but not active" %}
+                                    <span class="text-success ms-1">✓</span>
                                 {% endif %}
-                            </small>
-                            {% endif %}
+                            </label>
                         </div>
                         
-                        <!-- Правая часть: кнопки -->
-                        <div class="col-12 col-md-auto ms-md-auto text-end">
+                        <!-- Кнопки -->
+                        <div class="d-flex gap-2">
                             <a href="{% url 'tasks:tasks-list' %}?show_filter=1&reset_default=1" 
-                               class="btn btn-link text-decoration-none text-muted btn-sm me-2">
+                               class="btn btn-link text-decoration-none text-muted btn-sm px-2">
                                 {% trans "Reset" %}
                             </a>
-                            <button type="submit" class="btn btn-primary btn-sm px-4">
+                            <button type="submit" class="btn btn-primary btn-sm px-3">
                                 {% trans "Apply" %}
                             </button>
                         </div>
@@ -228,26 +235,22 @@
             <div class="card border-0 shadow-sm task-card{% if obj.status %} status-indicator{% endif %}"{% if obj.status %} style="--status-color: {{ obj.status.color|default:'#dee2e6' }};"{% endif %}>
                 <div class="card-body p-3">
                     <div class="row g-0">
-                        
-                        <!-- 2. Основной блок контента -->
                         <div class="col">
-                            
                             <!-- Верхняя строка: Заголовок + ID + Дата -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
-                                <!-- Лево: Название и ID -->
                                 <div class="me-2">
                                     <a href="{% url 'tasks:task-update' obj.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ obj.name }}
                                     </a>
                                     <span class="text-muted small ms-1 align-top">#{{ obj.id }}</span>
                                 </div>
-                                <!-- Право: Дата (прижата к правому краю, не переносится) -->
                                 <div class="text-muted small text-nowrap mt-1">
-                                    {{ obj.created_at|date:"d.m.y H:i" }} 📅
+                                    {{ obj.created_at|date:"d.m.y" }}
+                                    <span class="d-none d-sm-inline">{{ obj.created_at|date:"H:i" }}</span>
                                 </div>
                             </div>
 
-                            <!-- Средняя строка: Описание -->
+                            <!-- Описание -->
                             {% if obj.description %}
                             <p class="text-muted small mb-2 text-truncate-2">
                                 {{ obj.description }}
@@ -256,15 +259,10 @@
 
                             <!-- Нижняя строка: Статус/Метки + Люди -->
                             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
-                                
-                                <!-- Левая часть низа: Статус и Метки -->
-                                <div class="d-flex flex-wrap align-items-center gap-2 position-relative" style="z-index: 2;">
-                                    <!-- Статус бейдж -->
+                                <div class="d-flex flex-wrap align-items-center gap-1 position-relative" style="z-index: 2;">
                                     <span class="badge border bg-white" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
                                         {{ obj.status.name }}
                                     </span>
-                                    
-                                    <!-- Метки -->
                                     {% for label in obj.labels.all %}
                                     <span class="badge bg-light text-secondary border fw-normal">
                                         {{ label.name }}
@@ -272,21 +270,17 @@
                                     {% endfor %}
                                 </div>
 
-                                <!-- Правая часть низа: Исполнитель и Автор -->
-                                <div class="d-flex align-items-center gap-3 small text-muted">
-                                    <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-light" title="{% trans 'Executor' %}">
-                                        <span class="me-1">👤</span> {{ obj.author.username }}
-                                    </div>
+                                <div class="d-flex align-items-center gap-2 small text-muted">
+                                    <span class="user-badge" title="{% trans 'Author' %}">
+                                        👤 {{ obj.author.username }}
+                                    </span>
                                     {% if obj.executor %}
-                                    <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-light" title="{% trans 'Executor' %}">
-                                        <span class="me-1">👉</span> {{ obj.executor.username }}
-                                    </div>
-                                    {% else %}
-                                    <div class="fst-italic opacity-50">{% trans "No assignee" %}</div>
+                                    <span class="user-badge" title="{% trans 'Executor' %}">
+                                        👉 {{ obj.executor.username }}
+                                    </span>
                                     {% endif %}
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -311,7 +305,61 @@
 </div>
 
 <style>
-    /* CSS для карточек */
+    /* ===== TOOLBAR STYLES ===== */
+    .toolbar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .toolbar-left,
+    .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .task-counter {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+        background: #f8f9fa;
+        border-radius: 0.375rem;
+    }
+    
+    .filter-btn {
+        min-width: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+    }
+    
+    .filter-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        font-size: 0.7rem;
+        font-weight: bold;
+        background: rgba(0,0,0,0.15);
+        border-radius: 50%;
+    }
+    
+    /* На мобильных прячем текст в кнопках справочников */
+    @media (max-width: 575.98px) {
+        .toolbar-row {
+            gap: 0.25rem;
+        }
+        .task-counter {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* ===== CARD STYLES ===== */
     .task-card {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -319,8 +367,7 @@
         transform: translateY(-2px);
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
     }
-
-    /* Ограничение описания 2 строками */
+    
     .text-truncate-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -328,44 +375,19 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-    /* Стили форм */
-    label.form-label {
-        color: #6c757d;
+    
+    .user-badge {
+        padding: 0.15rem 0.4rem;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
         font-size: 0.75rem;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.2rem;
+        white-space: nowrap;
     }
-    #filter-form .form-control, #filter-form .form-select {
-        font-size: 0.9rem;
-    }
-
-    /* Кнопка New Task на мобильных */
-    @media (max-width: 767.98px) {
-        .w-100-mobile {
-            width: 100% !important;
-        }
-        .text-center-mobile {
-            text-align: center !important;
-        }
-    }
-
-    /* Date filters inline on mobile */
-    @media (max-width: 767.98px) {
-        .date-filter-group {
-            display: inline-block;
-            width: calc(50% - 0.25rem);
-            vertical-align: top;
-        }
-        .date-filter-group-end {
-            margin-left: 0.5rem;
-        }
-    }
-
-    /* Вертикальная полоска статуса */
+    
+    /* Status indicator */
     .task-card.status-indicator {
         position: relative;
-        padding-left: 0;
         overflow: hidden;
     }
     .task-card.status-indicator::before {
@@ -377,24 +399,34 @@
         width: 4px;
         background-color: var(--status-color, #dee2e6);
         border-radius: 4px 0 0 4px;
-        flex-shrink: 0;
     }
 
-    /* Exclude toggle styles */
+    /* ===== FORM STYLES ===== */
+    label.form-label {
+        color: #6c757d;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.2rem;
+    }
+    #filter-form .form-control, 
+    #filter-form .form-select {
+        font-size: 0.9rem;
+    }
+    
     .filter-exclude-toggle {
         cursor: pointer;
         transition: all 0.2s ease;
     }
-    #filter-form .form-check-input:checked + .form-check-label,
-    #filter-form .form-check-input:checked ~ .form-check-label,
-    .form-check-input:checked ~ .form-check-label {
-        color: #dc3545;
-    }
+    
     #filter-form .form-check-input:checked {
         border-color: #dc3545;
         background-color: #dc3545;
     }
-    /* Исключение для чекбокса save_as_default */
+    #filter-form .form-check-input:checked + .form-check-label {
+        color: #dc3545;
+    }
+    
+    /* Save as default checkbox - green */
     #id_save_as_default:checked {
         border-color: #198754;
         background-color: #198754;
@@ -402,11 +434,22 @@
     #id_save_as_default:checked + label {
         color: #198754 !important;
     }
+    
     .input-group .form-select {
         border-radius: 0.375rem 0 0 0.375rem;
     }
     .input-group .filter-exclude-toggle {
         border-radius: 0 0.375rem 0.375rem 0;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 767.98px) {
+        .w-100-mobile {
+            width: 100% !important;
+        }
+        .text-center-mobile {
+            text-align: center !important;
+        }
     }
 </style>
 {% endblock %}
