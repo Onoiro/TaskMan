@@ -129,6 +129,13 @@ class TaskFilterView(FilterView):
         context['saved_filter_params'] = saved_params
         context['saved_filter_enabled'] = filter_enabled
         context['has_saved_filter'] = bool(saved_params)
+        
+        # Count of active filter params (not empty)
+        active_filter_count = sum(
+            1 for key, value in self.request.GET.items()
+            if value and key not in SERVICE_PARAMS
+        )
+        context['active_filter_count'] = active_filter_count
 
         return context
 

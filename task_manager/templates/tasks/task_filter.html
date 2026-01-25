@@ -42,36 +42,34 @@
             {% if request.GET.show_filter %}
                 {# Фильтр открыт - кнопка "Скрыть" #}
                 <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
-                   class="btn btn-sm btn-secondary filter-btn">
+                class="btn btn-sm btn-secondary filter-btn">
                     <span class="d-none d-sm-inline">{% trans "Hide" %}</span>
                     <span class="d-sm-none">✕</span>
                 </a>
             {% else %}
                 {# Фильтр скрыт - определяем состояние кнопки #}
-                {% with has_active_params=request.GET|length %}
-                {% if saved_filter_enabled and has_saved_filter and has_active_params > 0 %}
+                {% if saved_filter_enabled and has_saved_filter and active_filter_count > 0 %}
                     {# Сохранённый фильтр активен И есть параметры #}
                     <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" 
-                       class="btn btn-sm btn-success filter-btn"
-                       title="{% trans 'Default filter is active' %}">
+                    class="btn btn-sm btn-success filter-btn"
+                    title="{% trans 'Default filter is active' %}">
                         💾 <span class="d-none d-sm-inline">{% trans "Default" %}</span>
                     </a>
-                {% elif has_active_params > 0 %}
+                {% elif active_filter_count > 0 %}
                     {# Есть активные фильтры (не сохранённые) #}
                     <a href="{% url 'tasks:tasks-list' %}" 
-                       class="btn btn-sm btn-warning filter-btn"
-                       title="{% trans 'Reset filters' %}">
-                        🔍 <span class="filter-badge">{{ has_active_params }}</span>
+                    class="btn btn-sm btn-warning filter-btn"
+                    title="{% trans 'Reset filters' %}">
+                        🔍 <span class="filter-badge">{{ active_filter_count }}</span>
                         <span class="d-none d-sm-inline ms-1">{% trans "Active" %}</span>
                     </a>
                 {% else %}
                     {# Нет активных фильтров #}
                     <a href="?show_filter=1" 
-                       class="btn btn-sm btn-outline-secondary filter-btn">
+                    class="btn btn-sm btn-outline-secondary filter-btn">
                         🔍 <span class="d-none d-sm-inline">{% trans "Filter" %}</span>
                     </a>
                 {% endif %}
-                {% endwith %}
             {% endif %}
         </div>
     </div>

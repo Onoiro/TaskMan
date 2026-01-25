@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-24 02:06+0300\n"
+"POT-Creation-Date: 2026-01-25 21:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,11 +127,11 @@ msgstr "Необязательно"
 
 #: statuses/forms.py:28 templates/statuses/statuses_update.html:45
 msgid "Color"
-msgstr ""
+msgstr "Цвет"
 
 #: statuses/forms.py:33
 msgid "Choose status color"
-msgstr ""
+msgstr "Выберите цвет статуса"
 
 #: statuses/models.py:49 tasks/models.py:63 teams/models.py:33
 #: templates/labels/labels_list.html:21 templates/labels/labels_update.html:37
@@ -210,8 +210,8 @@ msgstr "Невозможно удалить статус, потому что о
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:22 tasks/models.py:49 templates/tasks/task_filter.html:236
-#: templates/tasks/task_filter.html:240 templates/tasks/task_update.html:41
+#: tasks/filters.py:22 tasks/models.py:49 templates/tasks/task_filter.html:278
+#: templates/tasks/task_update.html:41
 msgid "Executor"
 msgstr "Исполнитель"
 
@@ -241,23 +241,27 @@ msgstr "Команда"
 msgid "Labels"
 msgstr "Метки"
 
-#: tasks/views.py:19
+#: tasks/views.py:28
 msgid "Task can only be deleted by its author."
 msgstr "Задачу может удалить только ее автор"
 
-#: tasks/views.py:30
+#: tasks/views.py:39
 msgid "Task can only be updated by its author or executor."
 msgstr "Задачу может изменить только ее автор или исполнитель"
 
-#: tasks/views.py:60
+#: tasks/views.py:83
+msgid "Filter saved as default"
+msgstr "Фильтр сохранен по умолчанию"
+
+#: tasks/views.py:140
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:91
+#: tasks/views.py:169
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:104
+#: tasks/views.py:182
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
@@ -616,66 +620,72 @@ msgstr "Удаление задачи"
 msgid "New task"
 msgstr "Новая задача"
 
-#: templates/tasks/task_filter.html:41 templates/tasks/task_filter.html:262
+#: templates/tasks/task_filter.html:46
+msgid "Hide"
+msgstr "Скрыть"
+
+#: templates/tasks/task_filter.html:56
+msgid "Default filter is active"
+msgstr "Фильтр по умолчанию активен"
+
+#: templates/tasks/task_filter.html:57
+msgid "Default"
+msgstr "По умолчанию"
+
+#: templates/tasks/task_filter.html:63 templates/tasks/task_filter.html:297
 msgid "Reset filters"
 msgstr "Сбросить фильтры"
 
-#: templates/tasks/task_filter.html:42
-#, fuzzy
-#| msgid "Filter"
-msgid "Filters active"
-msgstr "Фильтр"
+#: templates/tasks/task_filter.html:65
+msgid "Active"
+msgstr "Активен"
 
-#: templates/tasks/task_filter.html:49
-msgid "Hide filter"
-msgstr "Скрыть фильтр"
-
-#: templates/tasks/task_filter.html:53
+#: templates/tasks/task_filter.html:71
 msgid "Filter"
 msgstr "Фильтр"
 
-#: templates/tasks/task_filter.html:72 templates/tasks/task_filter.html:81
-#: templates/tasks/task_filter.html:95 templates/tasks/task_filter.html:104
-#: templates/tasks/task_filter.html:118 templates/tasks/task_filter.html:127
-#: templates/tasks/task_filter.html:141 templates/tasks/task_filter.html:150
+#: templates/tasks/task_filter.html:92 templates/tasks/task_filter.html:101
+#: templates/tasks/task_filter.html:115 templates/tasks/task_filter.html:124
+#: templates/tasks/task_filter.html:138 templates/tasks/task_filter.html:147
+#: templates/tasks/task_filter.html:161 templates/tasks/task_filter.html:170
 msgid "Exclude"
 msgstr "Исключить"
 
-#: templates/tasks/task_filter.html:175
+#: templates/tasks/task_filter.html:206
+msgid "Save as default"
+msgstr "Сохранить по умолчанию"
+
+#: templates/tasks/task_filter.html:207
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/tasks/task_filter.html:218
 msgid "Reset"
 msgstr "Сбросить"
 
-#: templates/tasks/task_filter.html:176
+#: templates/tasks/task_filter.html:221
 msgid "Apply"
 msgstr "Применить"
 
-#: templates/tasks/task_filter.html:244
-msgid "No assignee"
-msgstr ""
+#: templates/tasks/task_filter.html:274 templates/tasks/task_update.html:37
+msgid "Author"
+msgstr "Автор"
 
-#: templates/tasks/task_filter.html:259
+#: templates/tasks/task_filter.html:294
 msgid "No tasks found"
 msgstr "Задач нет"
 
-#: templates/tasks/task_filter.html:260
+#: templates/tasks/task_filter.html:295
 msgid "Try adjusting filters or create a new task"
 msgstr "Попробуйте настроить фильтры или создать новую задачу"
 
-#: templates/tasks/task_filter.html:264
-#, fuzzy
-#| msgid "Create task"
+#: templates/tasks/task_filter.html:299
 msgid "Create Task"
-msgstr "Создать задачу"
+msgstr "Создать Задачу"
 
 #: templates/tasks/task_update.html:20
-#, fuzzy
-#| msgid "Create"
 msgid "Created"
-msgstr "Создать"
-
-#: templates/tasks/task_update.html:37
-msgid "Author"
-msgstr "Автор"
+msgstr "Создана"
 
 #: templates/teams/team_create_form.html:8
 msgid "Create Team "
@@ -818,7 +828,7 @@ msgstr "Изменение пользователя"
 
 #: user/admin.py:54
 msgid "Additional Info"
-msgstr ""
+msgstr "Дополнительная информация"
 
 #: user/forms.py:36
 msgid "Join team (optional)"
@@ -924,6 +934,9 @@ msgstr "Вы залогинены"
 #: views.py:45
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "Hide filter"
+#~ msgstr "Скрыть фильтр"
 
 #~ msgid "Task Manager"
 #~ msgstr "Менеджер задач"
