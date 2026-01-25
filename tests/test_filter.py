@@ -1,3 +1,4 @@
+import warnings
 from datetime import date
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
@@ -54,6 +55,14 @@ class TaskTestCase(TestCase):
                                     'status': self.status.id,
                                     'labels': self.label.id
                                     })
+
+        # Ignore naive datetime field warnings at filtering
+        warnings.filterwarnings(
+            "ignore",
+            category=RuntimeWarning,
+            module='django.db.models.fields',
+            message=r'DateTimeField .* received a naive datetime'
+        )
 
     def test_task_list_response_200(self):
         self.assertEqual(self.response.status_code, 200)
