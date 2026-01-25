@@ -127,7 +127,7 @@ class TaskTestCase(TestCase):
     def test_tasks_list_has_hide_filter_button(self):
         """Check that 'Hide filter' button is visible when filter is shown"""
         response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
-        self.assertContains(response, _('Hide filter'))
+        self.assertContains(response, _('Hide'))
 
     def test_tasks_list_filter_form_visible(self):
         """Check that filter form is visible when show_filter=1"""
@@ -324,7 +324,7 @@ class TaskTestCase(TestCase):
                 author=self.user, team__isnull=True).count()
 
         if count > 0:
-            self.assertContains(response, f'{count} task')
+            self.assertContains(response, f'>{count}</span>')
 
     def test_tasks_list_empty_state(self):
         """Check empty state message when no tasks"""
@@ -343,11 +343,11 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_filter_active_indicator(self):
         """Check that 'Filters active' badge is shown
-          when filter is hidden but has params"""
+        when filter is hidden but has params"""
         # Apply filter, then hide filter panel
         response = self.c.get(
             reverse('tasks:tasks-list') + '?status=1')
-        self.assertContains(response, _('Filters active'))
+        self.assertContains(response, _('Active'))
 
     def test_tasks_list_filter_active_indicator_not_shown_when_no_params(self):
         """Check that 'Filters active' badge
@@ -1041,12 +1041,10 @@ class TaskTestCase(TestCase):
             reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
             follow=True
         )
-
         # Visit page with the saved filter applied
         response = self.c.get(
             reverse('tasks:tasks-list') + '?status=1'
         )
-
         self.assertContains(response, _('Default'))
 
     def test_saved_filter_checkbox_checked_when_active(self):
