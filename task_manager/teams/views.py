@@ -34,6 +34,7 @@ def index(request):
 class SwitchTeamView(View):
     def post(self, request):
         team_id = request.POST.get('team_id')
+        referer = request.META.get('HTTP_REFERER', '')
 
         if team_id:
             if team_id == 'individual':
@@ -56,7 +57,22 @@ class SwitchTeamView(View):
                 except Team.DoesNotExist:
                     messages.error(request, TEAM_NOT_FOUND_MESSAGE)
 
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        # Determine redirect URL based on referer
+        redirect_url = self._get_redirect_url(referer)
+        return redirect(redirect_url)
+
+    def _get_redirect_url(self, referer):
+        """Determine where to redirect after team switch"""
+        if ('/labels/' in referer
+                and ('/update/' in referer or '/delete/' in referer)):
+            return 'labels:labels-list'
+        if ('/statuses/' in referer
+                and ('/update/' in referer or '/delete/' in referer)):
+            return 'statuses:statuses-list'
+        if ('/tasks/' in referer
+                and ('/update/' in referer or '/delete/' in referer)):
+            return 'tasks:tasks-list'
+        return referer or '/'
 
 
 class TeamExitView(LoginRequiredMixin, View):
