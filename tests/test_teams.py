@@ -764,6 +764,222 @@ class TeamTestCase(TestCase):
         # check that active_team_id is still in session (unchanged)
         self.assertEqual(self.c.session.get('active_team_id'), self.team.id)
 
+    def test_switch_team_redirect_from_labels_update(self):
+        """test redirect to labels list when switching from labels
+        update page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing labels update path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/labels/1/update/',
+            follow=True
+        )
+
+        # check redirect to labels list
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
+    def test_switch_team_redirect_from_labels_delete(self):
+        """test redirect to labels list when switching from labels
+        delete page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing labels delete path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/labels/1/delete/',
+            follow=True
+        )
+
+        # check redirect to labels list
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
+    def test_switch_team_redirect_from_statuses_update(self):
+        """test redirect to statuses list when switching from statuses
+        update page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing statuses update path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/statuses/1/update/',
+            follow=True
+        )
+
+        # check redirect to statuses list
+        self.assertRedirects(response, reverse('statuses:statuses-list'))
+
+    def test_switch_team_redirect_from_statuses_delete(self):
+        """test redirect to statuses list when switching from statuses
+        delete page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing statuses delete path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/statuses/1/delete/',
+            follow=True
+        )
+
+        # check redirect to statuses list
+        self.assertRedirects(response, reverse('statuses:statuses-list'))
+
+    def test_switch_team_redirect_from_tasks_update(self):
+        """test redirect to tasks list when switching from tasks
+        update page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing tasks update path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/tasks/1/update/',
+            follow=True
+        )
+
+        # check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+    def test_switch_team_redirect_from_tasks_delete(self):
+        """test redirect to tasks list when switching from tasks
+        delete page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing tasks delete path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/tasks/1/delete/',
+            follow=True
+        )
+
+        # check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+    def test_switch_team_redirect_from_labels_list(self):
+        """test redirect back to referer when switching from labels
+        list page (not update/delete)"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing labels but no
+        # update/delete
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            HTTP_REFERER='/labels/',
+            follow=True
+        )
+
+        # check redirect back to referer
+        self.assertIn('/labels/', response.request['PATH_INFO']
+                      or response.content.decode('utf-8'))
+
+    def test_switch_team_redirect_home_without_referer(self):
+        """test redirect to home when no referer provided"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team without referer
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': self.team.id},
+            follow=True
+        )
+
+        # check redirect to home
+        self.assertRedirects(response, '/')
+
+    def test_switch_to_individual_redirect_from_labels_update(self):
+        """test redirect to labels list when switching to individual
+        from labels update page"""
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = self.team.id
+        session.save()
+
+        # switch to individual mode with referer containing labels
+        # update path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': 'individual'},
+            HTTP_REFERER='/labels/1/update/',
+            follow=True
+        )
+
+        # check redirect to labels list
+        self.assertRedirects(response, reverse('labels:labels-list'))
+
+    def test_switch_to_individual_redirect_from_tasks_delete(self):
+        """test redirect to tasks list when switching to individual
+        from tasks delete page"""
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = self.team.id
+        session.save()
+
+        # switch to individual mode with referer containing tasks
+        # delete path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_id': 'individual'},
+            HTTP_REFERER='/tasks/1/delete/',
+            follow=True
+        )
+
+        # check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
     # team detail tests
 
     def test_team_detail_page_response_200_and_content(self):
