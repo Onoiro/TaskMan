@@ -5,9 +5,6 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
-from django.utils import timezone
-from django.utils.dateformat import DateFormat
-from django.utils.formats import get_format
 
 
 class LabelsTestCase(TestCase):
@@ -44,21 +41,10 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         response = self.c.get(reverse('labels:labels-list'))
-        self.assertContains(response, 'ID')
-        self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Labels'))
         self.assertContains(response, _('New label'))
-
-        labels = Label.objects.filter(team=self.team)
-        if labels.exists():
-            # Edit and Delete buttons show only if there are labels
-            self.assertContains(response,
-                                reverse('labels:labels-update',
-                                        args=[labels.first().id]))
-            self.assertContains(response,
-                                reverse('labels:labels-delete',
-                                        args=[labels.first().id]))
+        self.assertContains(response, _('Tasks'))
+        self.assertContains(response, _('Statuses'))
 
     def test_labels_list_has_tasks_button(self):
         response = self.c.get(reverse('labels:labels-list'))
@@ -79,16 +65,16 @@ class LabelsTestCase(TestCase):
 
         for label in team_labels:
             self.assertContains(response, label.name)
-            local_created_at = timezone.localtime(label.created_at)
-            formatted_date = DateFormat(
-                local_created_at).format(get_format('DATETIME_FORMAT'))
-            self.assertContains(response, formatted_date)
+            # Check that label is displayed in card format
+            self.assertContains(response, 'label-card')
+            # Check that label ID is displayed
+            self.assertContains(response, '#{}'.format(label.id))
 
         # labels of other teams and individual labels have not to be shown
         other_labels = Label.objects.exclude(team=self.team)
         for label in other_labels:
             # check labels by id because names can be the same
-            self.assertNotContains(response, f'<td>{label.id}</td>')
+            self.assertNotContains(response, '#{}'.format(label.id))
 
     def test_labels_list_content_individual_mode(self):
         self._set_active_team(None)
@@ -102,15 +88,11 @@ class LabelsTestCase(TestCase):
 
         for label in personal_labels:
             self.assertContains(response, label.name)
-            if label.created_at:
-                formatted_date = DateFormat(
-                    label.created_at).format(get_format('DATETIME_FORMAT'))
-                self.assertContains(response, formatted_date)
 
         # team labels have not to be shown
         team_labels = Label.objects.filter(team__isnull=False)
         for label in team_labels:
-            self.assertNotContains(response, f'<td>{label.id}</td>')
+            self.assertNotContains(response, '#{}'.format(label.id))
 
     def test_labels_list_team_switching(self):
         """test team switching"""
@@ -129,7 +111,7 @@ class LabelsTestCase(TestCase):
             self.assertContains(response, label.name)
         # team 1 labels not shown if team 2 have no labels
         for label in team1_labels:
-            self.assertNotContains(response, f'<td>{label.id}</td>')
+            self.assertNotContains(response, '#{}'.format(label.id))
 
     def _get_user_team_labels(self):
         """Helper method to get labels visible to user based on active team"""
@@ -155,8 +137,11 @@ class LabelsTestCase(TestCase):
 
         # Check that label name is wrapped in <a> tag pointing to edit page
         expected_url = reverse('labels:labels-update', args=[label.id])
+        # Check for the new structure with additional classes
+        self.assertContains(response, f'href="{expected_url}"')
         self.assertContains(
-            response, f'<a href="{expected_url}">{label.name}</a>', html=True)
+            response, 'text-decoration-none text-dark fw-bold')
+        self.assertContains(response, label.name)
 
     def test_labels_list_edit_delete_buttons_hide_on_mobile(self):
         """Test that Edit and Delete buttons have mobile-hide classes."""
@@ -164,8 +149,60 @@ class LabelsTestCase(TestCase):
 
         response = self.c.get(reverse('labels:labels-list'))
 
-        # Check that buttons have d-none d-md-inline-block classes
-        self.assertContains(response, 'd-none d-md-inline-block')
+        # Check that buttons have d-none d-md-flex classes
+        self.assertContains(response, 'd-none d-md-flex')
+        self.assertContains(response, '✏️')
+        self.assertContains(response, '🗑️')
+
+    def test_labels_list_cards_structure(self):
+        """Test that labels are displayed in card format."""
+        self._set_active_team(self.team.id)
+
+        response = self.c.get(reverse('labels:labels-list'))
+
+        # Check that card structure is present
+        self.assertContains(response, 'card border-0 shadow-sm label-card')
+        self.assertContains(response, 'card-body p-3')
+
+        # Check that label card has badge
+        self.assertContains(response, 'badge bg-light text-secondary border')
+        self.assertContains(response, '🏷️')
+
+    def test_labels_list_empty_state(self):
+        """Test that empty state is displayed when no labels."""
+        self._set_active_team(self.team.id)
+
+        # Create a test user without any labels
+        test_user = User.objects.create_user(
+            username='test_empty_user',
+            password='testpass123'
+        )
+        self.c.force_login(test_user)
+
+        # Set no active team for this user
+        self._set_active_team(None)
+
+        response = self.c.get(reverse('labels:labels-list'))
+
+        # Check that empty state message is displayed
+        self.assertContains(response, _('No labels found'))
+        self.assertContains(
+            response, _('Create your first label to organize tasks'))
+        self.assertContains(response, _('Create Label'))
+
+    def test_labels_list_task_counter(self):
+        """Test that task counter is displayed correctly."""
+        self._set_active_team(self.team.id)
+
+        response = self.c.get(reverse('labels:labels-list'))
+
+        # Check that task counter is present
+        self.assertContains(response, 'task-counter')
+
+        # Check that counter shows correct number of labels
+        label_count = Label.objects.filter(team=self.team).count()
+        if label_count > 0:
+            self.assertContains(response, str(label_count))
 
     # create
 
