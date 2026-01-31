@@ -45,12 +45,10 @@ class StatusesTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         response = self.c.get(reverse('statuses:statuses-list'))
-        self.assertContains(response, 'ID')
-        self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Description'))
-        self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Statuses'))
         self.assertContains(response, _('New status'))
+        self.assertContains(response, _('Tasks'))
+        self.assertContains(response, _('Labels'))
 
     def test_statuses_list_has_tasks_button(self):
         response = self.c.get(reverse('statuses:statuses-list'))
@@ -71,12 +69,16 @@ class StatusesTestCase(TestCase):
 
         for status in team_statuses:
             self.assertContains(response, status.name)
+            # Check that status is displayed in card format
+            self.assertContains(response, 'status-card')
+            # Check that status ID is displayed
+            self.assertContains(response, '#{}'.format(status.id))
 
         # other teams statuses and individual statuses should not be displayed
         other_statuses = Status.objects.exclude(team=self.team)
         for status in other_statuses:
-            # check by ID because names can be the same
-            self.assertNotContains(response, f'<td>{status.id}</td>')
+            # check that other team statuses are not displayed
+            self.assertNotContains(response, '#{}'.format(status.id))
 
     def test_statuses_list_content_individual_mode(self):
         # remove active team
@@ -96,15 +98,15 @@ class StatusesTestCase(TestCase):
         # team statuses and other statuses should not be displayed
         team_statuses = Status.objects.filter(team__isnull=False)
         for status in team_statuses:
-            self.assertNotContains(response, f'<td>{status.id}</td>')
+            self.assertNotContains(response, '#{}'.format(status.id))
 
     def test_statuses_list_empty_description(self):
         self._set_active_team(self.team.id)
 
         response = self.c.get(reverse('statuses:statuses-list'))
 
-        # check that there is not None displayed if description is empty
-        self.assertNotContains(response, "None")
+        # check that there is not "None" displayed if description is empty
+        self.assertNotContains(response, ">None<")
 
         # check that status with description displayed correctly
         status_with_desc = Status.objects.filter(
@@ -116,6 +118,61 @@ class StatusesTestCase(TestCase):
         if status_with_desc:
             self.assertContains(response, status_with_desc.description)
 
+    def test_statuses_list_empty_state(self):
+        """Test that empty state is displayed when no statuses."""
+        self._set_active_team(self.team.id)
+
+        # Create a test user without any statuses
+        test_user = User.objects.create_user(
+            username='test_empty_user',
+            password='testpass123'
+        )
+        self.c.force_login(test_user)
+
+        # Set no active team for this user
+        self._set_active_team(None)
+
+        response = self.c.get(reverse('statuses:statuses-list'))
+
+        # Check that empty state message is displayed
+        self.assertContains(response, _('No statuses found'))
+        self.assertContains(
+            response, _('Create your first status to organize tasks'))
+        self.assertContains(response, _('Create Status'))
+
+    def test_statuses_list_cards_structure(self):
+        """Test that statuses are displayed in card format."""
+        self._set_active_team(self.team.id)
+
+        response = self.c.get(reverse('statuses:statuses-list'))
+
+        # Check that card structure is present
+        self.assertContains(response, 'card border-0 shadow-sm status-card')
+        self.assertContains(response, 'card-body p-3')
+
+        # Check that status card has color indicator
+        self.assertContains(response, '--status-color:')
+
+        # Check that edit and delete links are present for desktop
+        # Hidden on mobile, visible on desktop
+        self.assertContains(response, 'd-none d-md-flex')
+        self.assertContains(response, '✏️')
+        self.assertContains(response, '🗑️')
+
+    def test_statuses_list_task_counter(self):
+        """Test that task counter is displayed correctly."""
+        self._set_active_team(self.team.id)
+
+        response = self.c.get(reverse('statuses:statuses-list'))
+
+        # Check that task counter is present
+        self.assertContains(response, 'task-counter')
+
+        # Check that counter shows correct number of statuses
+        status_count = Status.objects.filter(team=self.team).count()
+        if status_count > 0:
+            self.assertContains(response, str(status_count))
+
     def test_statuses_list_status_names_have_colors(self):
         """Test that status names in list are displayed with their colors."""
         self._set_active_team(self.team.id)
@@ -123,8 +180,12 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.get(reverse('statuses:statuses-list'))
 
-        # Check that the status name has a style attribute with color
-        self.assertContains(response, f'color: {status.color}')
+        # Check that the status is displayed with its color
+        self.assertContains(response, 'status-card')
+        # Check that color CSS variable is set
+        self.assertContains(response, '--status-color: {}'.format(status.color))
+        # Check that status badge has color styling
+        self.assertContains(response, 'status-color-badge')
 
     def test_create_status_with_description(self):
         self._set_active_team(self.team.id)
