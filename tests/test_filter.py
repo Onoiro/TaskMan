@@ -605,16 +605,16 @@ class TaskTestCase(TestCase):
         """Test filter initialization when request is None"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         # Create filter without request (request=None)
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
-        
+
         # Create filter instance directly (bypassing normal initialization)
         filter_instance = TaskFilter()
         filter_instance.request = None  # Simulate None request
-        
+
         # This should not crash and should return early
         try:
             filter_instance.__init__()  # Call with None request
@@ -625,18 +625,18 @@ class TaskTestCase(TestCase):
         """Test _get_filter_value when form is not valid"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/', {'status': self.status.id})
         request.user = self.user
-        
+
         # Create filter with invalid form data
         filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Mock form as invalid
         filter_instance.form.is_valid = lambda: False
-        
+
         # Test getting filter value when form is invalid
         value = filter_instance._get_filter_value('status')
         # Should return initial value when form is invalid
@@ -646,19 +646,19 @@ class TaskTestCase(TestCase):
         """Test _get_filter_value when form is valid"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/', {'status': self.status.id})
         request.user = self.user
-        
+
         # Create filter with valid form data
         filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Mock form as valid with cleaned_data
         filter_instance.form.is_valid = lambda: True
         filter_instance.form.cleaned_data = {'status': self.status}
-        
+
         # Test getting filter value when form is valid
         value = filter_instance._get_filter_value('status')
         self.assertEqual(value, self.status)
@@ -667,21 +667,21 @@ class TaskTestCase(TestCase):
         """Test _apply_model_filter when filter value is empty"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
-        
+
         filter_instance = TaskFilter(queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Mock _get_filter_value to return empty value
         filter_instance._get_filter_value = lambda x: None
-        
+
         # Test applying filter with empty value
         queryset = Task.objects.all()
         result = filter_instance._apply_model_filter(queryset, 'status')
-        
+
         # Should return original queryset when value is empty
         self.assertEqual(result, queryset)
 
@@ -689,14 +689,14 @@ class TaskTestCase(TestCase):
         """Test _is_excluded with various valid exclude values"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/', {'status_exclude': 'on'})
         request.user = self.user
-        
+
         filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Test various valid exclude values
         valid_values = ['on', 'true', '1', 'checked']
         for value in valid_values:
@@ -709,14 +709,14 @@ class TaskTestCase(TestCase):
         """Test _is_excluded with invalid values"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/', {'status_exclude': 'invalid'})
         request.user = self.user
-        
+
         filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Test invalid exclude values
         invalid_values = ['invalid', '', 'off', 'false', '0']
         for value in invalid_values:
@@ -729,18 +729,18 @@ class TaskTestCase(TestCase):
         """Test _get_filter_value when cleaned_data contains None value"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
-        
+
         filter_instance = TaskFilter(queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Mock form as valid with None value
         filter_instance.form.is_valid = lambda: True
         filter_instance.form.cleaned_data = {'status': None}
-        
+
         # Test getting filter value when value is None
         value = filter_instance._get_filter_value('status')
         # Should return None when cleaned_data contains None
@@ -751,21 +751,21 @@ class TaskTestCase(TestCase):
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
         from task_manager.teams.models import Team
-        
+
         # Use existing team from fixtures
         team = Team.objects.get(pk=1)
-        
+
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
         request.active_team = team
-        
+
         filter_instance = TaskFilter(queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Test getting base queryset with team
         queryset = filter_instance._get_base_queryset()
-        
+
         # Should return tasks filtered by team
         self.assertTrue(queryset.filter(team=team).exists())
 
@@ -773,24 +773,24 @@ class TaskTestCase(TestCase):
         """Test _apply_model_filter in exclude mode"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/', {
             'status': self.status.id,
             'status_exclude': 'on'
         })
         request.user = self.user
-        
+
         filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Mock _get_filter_value to return status
         filter_instance._get_filter_value = lambda x: self.status
-        
+
         # Test applying filter with exclude mode
         queryset = Task.objects.all()
         result = filter_instance._apply_model_filter(queryset, 'status')
-        
+
         # Should exclude tasks with the specified status
         self.assertFalse(result.filter(status=self.status).exists())
 
@@ -798,18 +798,18 @@ class TaskTestCase(TestCase):
         """Test filter_own_tasks when value is False"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
-        
+
         filter_instance = TaskFilter(queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Test with False value
         queryset = Task.objects.all()
         result = filter_instance.filter_own_tasks(queryset, 'author', False)
-        
+
         # Should return original queryset when value is False
         self.assertEqual(result, queryset)
 
@@ -817,18 +817,18 @@ class TaskTestCase(TestCase):
         """Test filter_own_tasks when value is None"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
-        
+
         factory = RequestFactory()
         request = factory.get('/')
         request.user = self.user
-        
+
         filter_instance = TaskFilter(queryset=Task.objects.all())
         filter_instance.request = request
-        
+
         # Test with None value
         queryset = Task.objects.all()
         result = filter_instance.filter_own_tasks(queryset, 'author', None)
-        
+
         # Should return original queryset when value is None
         self.assertEqual(result, queryset)
 
@@ -836,17 +836,18 @@ class TaskTestCase(TestCase):
     #     """Test _get_base_queryset when no team is available"""
     #     from task_manager.tasks.filters import TaskFilter
     #     from django.test import RequestFactory
-        
+
     #     factory = RequestFactory()
     #     request = factory.get('/')
     #     request.user = self.user
     #     # No active_team set
-        
+
     #     filter_instance = TaskFilter(queryset=Task.objects.all())
     #     filter_instance.request = request
-        
+
     #     # Test getting base queryset without team
     #     queryset = filter_instance._get_base_queryset()
-        
+
     #     # Should return tasks filtered by author and no team
-    #     self.assertTrue(queryset.filter(author=self.user, team__isnull=True).exists())
+    #     self.assertTrue(queryset.filter(
+    #         author=self.user, team__isnull=True).exists())
