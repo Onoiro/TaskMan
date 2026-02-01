@@ -179,6 +179,27 @@ class UserTestCase(TestCase):
         user_teams = response.context['user_teams']
         self.assertEqual(len(user_teams), 0)
 
+    def test_user_detail_edit_delete_buttons_for_current_user(self):
+        """test that Edit/Delete buttons are shown only for current user"""
+        # User should see Edit/Delete buttons on their own detail page
+        response = self.c.get(reverse('user:user-detail', args=[self.user.id]))
+        self.assertEqual(response.status_code, 200)
+
+        # Check that Edit and Delete buttons are present for current user
+        self.assertContains(response, 'Edit')
+        self.assertContains(response, 'Delete')
+
+    def test_user_detail_no_edit_delete_buttons_for_other_user(self):
+        """test that Edit/Delete buttons are not shown for other users"""
+        # Test with another user from fixtures
+        other_user = User.objects.get(username='me')
+        response = self.c.get(reverse('user:user-detail', args=[other_user.id]))
+        self.assertEqual(response.status_code, 200)
+
+        # Check that Edit and Delete buttons are NOT present for other users
+        self.assertNotContains(response, 'Edit')
+        self.assertNotContains(response, 'Delete')
+
     # create
 
     def test_create_user_page_content(self):

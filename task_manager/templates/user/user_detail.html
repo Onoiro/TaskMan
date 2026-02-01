@@ -95,17 +95,21 @@
             <!-- action bar -->
             <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
                 <div class="d-grid gap-2 d-md-flex">
+                    {% if request.user.is_authenticated and request.user.id == object.id %}
                     <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'user:user-update' object.id %}">
                         {% trans "Edit" %}
                     </a>
+                    {% endif %}
                     <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'user:user-list' %}">
                         {% trans "Cancel" %}
                     </a>
                 </div>
                 
+                {% if request.user.is_authenticated and request.user.id == object.id %}
                 <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'user:user-delete' object.id %}">
                     <small>🗑️ {% trans "Delete" %}</small>
                 </a>
+                {% endif %}
             </div>
         </div>
     </div>
