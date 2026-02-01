@@ -4,83 +4,270 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
+<div class="container wrapper flex-grow-1 py-3 py-lg-4">
+    
+    <!-- Team info card -->
     {% if request.active_team %}
-        <h2 class="my-4">{% trans "Team" %}
-            {% if user_membership.role == 'admin' %}
-                "
-                <a
-                    href="{% url 'teams:team-detail' request.active_team.id %}"
-                    style="text-decoration: none;"
-                > {{ request.active_team.name }}
-                </a>
-                "
-            {% else %}
-                "{{ request.active_team.name }}"
-            {% endif %}
-        </h2>
-        <p>{% trans "description" %}: {{ request.active_team.description }}</p>
-        <p>{% trans "created at" %}: {{ request.active_team.created_at }}</p>
+    <a href="{% url 'teams:team-detail' request.active_team.id %}" class="text-decoration-none">
+        <div class="card border-0 shadow-sm team-info-card mb-4">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <h2 class="mb-0 text-dark">
+                                {% if user_membership.role == 'admin' %}
+                                    {{ request.active_team.name }}
+                                {% else %}
+                                    {{ request.active_team.name }}
+                                {% endif %}
+                            </h2>
+                            <span class="badge bg-light text-muted border">
+                                👥 {{ user_list|length }}
+                            </span>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <p class="mb-0 text-muted">
+                                    {{ request.active_team.description|default:_("No description") }}
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <p class="mb-0 text-muted small">
+                                    {{ request.active_team.created_at|date:"d.m.Y H:i" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
     {% endif %}
     
-    <h1 class="my-4">{% trans "Users" %}</h1>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>{% trans "User name" %}</th>
-            <th>{% trans "Fullname" %}</th>
-            <th>{% trans "Description" %}</th>
-            <th>{% trans "Role" %}</th>
-            <th>{% trans "Created at" %}</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+    <!-- 1. Upper level: Spacer (no create button) -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- 2. Toolbar: Reference books + Counter -->
+    <div class="toolbar-row mb-3">
+        <!-- Left side: Links to reference books -->
+        <div class="toolbar-left">
+            <div class="btn-group" role="group">
+                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'tasks:tasks-list' %}">
+                    📋 <span class="d-none d-sm-inline ms-1">{% trans "Tasks" %}</span>
+                </a>
+                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'statuses:statuses-list' %}">
+                    🚦 <span class="d-none d-sm-inline ms-1">{% trans "Statuses" %}</span>
+                </a>
+                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'labels:labels-list' %}">
+                    🏷️ <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right side: User counter -->
+        <div class="toolbar-right">
+            {% if user_list %}
+            <span class="task-counter text-muted">
+                <span class="fw-bold">{{ user_list|length }}</span>
+                <span class="d-none d-sm-inline">user{{ user_list|length|pluralize }}</span>
+                <span class="d-sm-none">👤</span>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- User List (Cards) -->
+    <div class="d-flex flex-column gap-3">
+        {% if user_list %}
             {% for user in user_list %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>
-                    {% if user.id == request.user.id %}
-                        <a href="{% url 'user:user-detail' user.id %}">{{ user.username }}</a>
-                    {% else %}
-                        {{ user.username }}
-                    {% endif %}
-                </td>
-                <td>{{ user.first_name}} {{ user.last_name }}</td>
-                <td>{{ user.description|truncatewords:3|default:"" }}</td>
-                <td>
-                    {% if request.active_team %}
-                        {% for membership in user_memberships %}
-                            {% if membership.user_id == user.id %}
-                                {% if user_membership.role == 'admin' and user.id != request.user.id %}
-                                    <a href="{% url 'teams:team-member-role-update' membership.id %}">
-                                        {{ membership.get_role_display }}
-                                    </a>
-                                {% else %}
-                                    {{ membership.get_role_display }}
+            <div class="card border-0 shadow-sm user-card">
+                <div class="card-body p-3">
+                    <div class="row g-0">
+                        <div class="col">
+                            <!-- Top row: Username + ID + Date -->
+                            <div class="d-flex w-100 justify-content-between align-items-start mb-1">
+                                <div class="me-2">
+                                    {% if user.id == request.user.id %}
+                                        <a href="{% url 'user:user-detail' user.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                            {{ user.username }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-decoration-none text-dark fw-bold fs-5">
+                                            {{ user.username }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="text-muted small ms-1 align-top">#{{ user.id }}</span>
+                                </div>
+                                <div class="text-muted small text-nowrap mt-1">
+                                    {{ user.date_joined|date:"d.m.y" }}
+                                    <span class="d-none d-sm-inline">{{ user.date_joined|date:"H:i" }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Full name and description -->
+                            <div class="mb-2">
+                                <span class="text-dark fw-medium">
+                                    {{ user.first_name|default:"" }} {{ user.last_name|default:"" }}
+                                </span>
+                                {% if user.description %}
+                                <p class="text-muted small mb-0 mt-1">
+                                    {{ user.description|truncatewords:5 }}
+                                </p>
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        {% trans "Not in team" %}
-                    {% endif %}
-                </td>
-                <td>{{ user.date_joined }}</td>
-                <td>
-                    {% if user.id == request.user.id %}
-                        <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
-                        <br>
-                        <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
-                    {% else %}
-                        <a href="{% url 'user:user-update' user.id %}">{% trans "Edit" %}</a>
-                        <br>
-                        <a href="{% url 'user:user-delete' user.id %}">{% trans "Delete" %}</a>
-                    {% endif %}
-                </td>
-            </tr>
+                            </div>
+
+                            <!-- Bottom row: Role + Actions -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
+                                <div class="d-flex align-items-center gap-2">
+                                    {% if request.active_team %}
+                                        {% for membership in user_memberships %}
+                                            {% if membership.user_id == user.id %}
+                                                <span class="badge bg-light text-secondary border">
+                                                    {% if user_membership.role == 'admin' and user.id != request.user.id %}
+                                                        <a href="{% url 'teams:team-member-role-update' membership.id %}" class="text-decoration-none">
+                                                            {{ membership.get_role_display }}
+                                                        </a>
+                                                    {% else %}
+                                                        {{ membership.get_role_display }}
+                                                    {% endif %}
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="badge bg-light text-secondary border">
+                                            {% trans "Not in team" %}
+                                        </span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2 small d-none d-md-flex">
+                                    <a href="{% url 'user:user-update' user.id %}" class="text-decoration-none text-primary">
+                                        ✏️ {% trans "Edit" %}
+                                    </a>
+                                    <a href="{% url 'user:user-delete' user.id %}" class="text-decoration-none text-danger">
+                                        🗑️ {% trans "Delete" %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </tbody>
-    </table>
+        {% else %}
+            <!-- Empty State -->
+            <div class="card border-0 bg-light py-5 text-center">
+                <div class="card-body">
+                    <div class="display-1 text-muted opacity-25 mb-3">👤</div>
+                    <h4 class="text-muted">{% trans "No users found" %}</h4>
+                    <p class="text-muted small">{% trans "No users available" %}</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
+
+<style>
+    /* ===== TEAM INFO CARD STYLES ===== */
+    .team-info-card {
+        background: #f8f9fa;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .team-info-card:hover {
+        background: #e9ecef;
+        transform: translateY(-1px);
+        box-shadow: 0 .25rem .5rem rgba(0,0,0,.075)!important;
+    }
+    
+    .team-info-card h2 {
+        color: #495057 !important;
+        font-weight: 600;
+    }
+    
+    .team-info-card .text-muted {
+        color: #6c757d !important;
+    }
+    
+    .team-info-card .badge {
+        font-size: 0.75rem;
+        background: #e9ecef !important;
+        color: #6c757d !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    /* ===== TOOLBAR STYLES ===== */
+    .toolbar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .toolbar-left,
+    .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .task-counter {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+        background: #f8f9fa;
+        border-radius: 0.375rem;
+    }
+    
+    /* On mobile hide text in reference book buttons */
+    @media (max-width: 575.98px) {
+        .toolbar-row {
+            gap: 0.25rem;
+        }
+        .task-counter {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* ===== CARD STYLES ===== */
+    .user-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .user-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 767.98px) {
+        .w-100-mobile {
+            width: 100% !important;
+        }
+        .text-center-mobile {
+            text-align: center !important;
+        }
+        
+        .user-card .card-body {
+            padding: 0.75rem !important;
+        }
+        
+        .user-card .d-flex.gap-2 {
+            gap: 0.5rem !important;
+        }
+        
+        .team-info-card {
+            margin-bottom: 1rem !important;
+        }
+        
+        .team-info-card .card-body {
+            padding: 1rem !important;
+        }
+    }
+</style>
 {% endblock %}

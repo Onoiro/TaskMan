@@ -39,12 +39,17 @@ class UserTestCase(TestCase):
 
     def test_user_list_content(self):
         response = self.c.get(reverse('user:user-list'))
-        self.assertContains(response, 'ID')
-        self.assertContains(response, _('User name'))
-        self.assertContains(response, _('Fullname'))
-        self.assertContains(response, _('Role'))
-        self.assertContains(response, _('Created at'))
         self.assertContains(response, _('Users'))
+        # Check that user card design is present
+        self.assertContains(response, 'user-card')
+        # Check that toolbar is present
+        self.assertContains(response, 'toolbar-row')
+        # Check that user counter is present
+        self.assertContains(response, 'task-counter')
+        # Check that reference book links are present
+        self.assertContains(response, 'Tasks')
+        self.assertContains(response, 'Statuses')
+        self.assertContains(response, 'Labels')
 
     def test_user_list_unauthenticated(self):
         """test that unauthenticated users get empty queryset"""
