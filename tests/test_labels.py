@@ -56,6 +56,11 @@ class LabelsTestCase(TestCase):
         self.assertContains(response, _("Statuses"))
         self.assertContains(response, reverse('statuses:statuses-list'))
 
+    def test_labels_list_has_users_button(self):
+        response = self.c.get(reverse('labels:labels-list'))
+        self.assertContains(response, _("Users"))
+        self.assertContains(response, reverse('user:user-list'))
+
     def test_labels_list_content_in_team_mode(self):
         self._set_active_team(self.team.id)
 

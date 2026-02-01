@@ -119,6 +119,12 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _("Labels"))
         self.assertContains(response, reverse('labels:labels-list'))
 
+    def test_tasks_list_has_users_link(self):
+        """Check that Users link is visible"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertContains(response, _("Users"))
+        self.assertContains(response, reverse('user:user-list'))
+
     def test_tasks_list_has_filter_button(self):
         """Check that Filter button is visible when filter is hidden"""
         response = self.c.get(reverse('tasks:tasks-list'))
