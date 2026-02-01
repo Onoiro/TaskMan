@@ -35,19 +35,19 @@
                     
                     <div class="container-fluid">
                         <div class="row mb-2">
-                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                            <div class="col-12 col-md-3 text-muted small">
                                 <strong>{% trans "Date joined" %}:</strong>
                             </div>
-                            <div class="col-8 col-md-9">
+                            <div class="col-12 col-md-9">
                                 {{ object.date_joined|date:"d.m.Y H:i" }}
                             </div>
                         </div>
                         
                         <div class="row mb-2">
-                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                            <div class="col-12 col-md-3 text-muted small">
                                 <strong>{% trans "Last login" %}:</strong>
                             </div>
-                            <div class="col-8 col-md-9">
+                            <div class="col-12 col-md-9">
                                 {% if object.last_login %}
                                     {{ object.last_login|date:"d.m.Y H:i" }}
                                 {% else %}
@@ -57,18 +57,18 @@
                         </div>
                         
                         <div class="row mb-3">
-                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                            <div class="col-12 col-md-3 text-muted small">
                                 <strong>{% trans "Teams" %}:</strong>
                             </div>
-                            <div class="col-8 col-md-9">
+                            <div class="col-12 col-md-9">
                                 {% if user_teams %}
                                     <div class="d-flex flex-wrap gap-1">
                                         {% for membership in user_teams %}
                                             {% if membership.user_id == object.id %}
-                                                <span class="badge bg-primary text-truncate" style="max-width: 120px;" title="{{ membership.team.name }}">
+                                                <span class="badge bg-primary text-truncate" style="max-width: 100%;" title="{{ membership.team.name }}">
                                                     {{ membership.team.name }}
                                                     {% if membership.role == 'admin' %}
-                                                        <span class="badge bg-secondary">Admin</span>
+                                                        <span class="badge bg-secondary ms-1">Admin</span>
                                                     {% endif %}
                                                 </span>
                                             {% endif %}
