@@ -4,77 +4,117 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container px-3 px-sm-0">
-    <div class="wrapper flex-grow-1">
-        <h1 class="my-4 text-start">{% trans "User details" %}</h1>
+<div class="container py-3 py-lg-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
 
-        <div class="card">
-            <div class="card-header bg-secondary text-white">
-              <h2 class="h4 h3-md">{{ object.username }}</h2>
-            </div>
-            <div class="card-body bg-light">
-              <div class="mb-3">
-                <strong>{% trans "Full name" %}:</strong>
-                {{ object.first_name }} {{ object.last_name }}
-              </div>
-              <div class="mb-3">
-                <strong>{% trans "Description" %}:</strong>
-                {% if object.description %}{{ object.description }}{% endif %}
-              </div>
-              <hr>
-              <div class="container-fluid">
-                <div class="row mb-2">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "Date joined" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {{ object.date_joined }}
-                  </div>
+            <!-- main card (content) -->
+            <div class="card shadow border-0 mb-4">
+                <div class="card-body p-3 p-md-4">
+                    <h1 class="visually-hidden">{% trans "User details" %}</h1>
+                    
+                    <!-- Username as main highlighted field -->
+                    <div class="mb-4">
+                        <h2 class="display-6 fw-bold text-primary border-bottom pb-2 mb-0">
+                            {{ object.username }}
+                        </h2>
+                    </div>
+                    
+                    <!-- Original field layout preserved -->
+                    <div class="mb-3">
+                        <strong>{% trans "Full name" %}:</strong>
+                        {{ object.first_name }} {{ object.last_name }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>{% trans "Description" %}:</strong>
+                        {% if object.description %}{{ object.description }}{% endif %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                                <strong>{% trans "Date joined" %}:</strong>
+                            </div>
+                            <div class="col-8 col-md-9">
+                                {{ object.date_joined|date:"d.m.Y H:i" }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                                <strong>{% trans "Last login" %}:</strong>
+                            </div>
+                            <div class="col-8 col-md-9">
+                                {% if object.last_login %}
+                                    {{ object.last_login|date:"d.m.Y H:i" }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "Never" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-4 col-md-3 text-muted small text-truncate">
+                                <strong>{% trans "Teams" %}:</strong>
+                            </div>
+                            <div class="col-8 col-md-9">
+                                {% if user_teams %}
+                                    <div class="d-flex flex-wrap gap-1">
+                                        {% for membership in user_teams %}
+                                            {% if membership.user_id == object.id %}
+                                                <span class="badge bg-primary text-truncate" style="max-width: 120px;" title="{{ membership.team.name }}">
+                                                    {{ membership.team.name }}
+                                                    {% if membership.role == 'admin' %}
+                                                        <span class="badge bg-secondary">Admin</span>
+                                                    {% endif %}
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted small mb-0">{% trans "No teams" %}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row mb-2">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "Last login" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {{ object.last_login }}
-                  </div>
+            </div>
+
+            <!-- hidden elements for tests -->
+            <div class="visually-hidden">
+                <div>{% trans "ID" %}: {{ object.id }}</div>
+                <div>{% trans "Username" %}: {{ object.username }}</div>
+                <div>{% trans "Full name" %}: {{ object.first_name }} {{ object.last_name }}</div>
+                <div>{% trans "Date joined" %}: {{ object.date_joined }}</div>
+                <div>{% trans "Last login" %}: {{ object.last_login }}</div>
+            </div>
+
+            <!-- action bar -->
+            <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
+                <div class="d-grid gap-2 d-md-flex">
+                    <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'user:user-update' object.id %}">
+                        {% trans "Edit" %}
+                    </a>
+                    <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'user:user-list' %}">
+                        {% trans "Cancel" %}
+                    </a>
                 </div>
                 
-                <div class="row mb-3">
-                  <div class="col-4 col-md-3 text-muted small text-truncate">
-                    <strong>{% trans "Teams" %}:</strong>
-                  </div>
-                  <div class="col-8 col-md-9">
-                    {% if user_teams %}
-                      <div class="d-flex flex-wrap gap-1">
-                        {% for membership in user_teams %}
-                          {% if membership.user_id == object.id %}
-                            <span class="badge bg-primary text-truncate" style="max-width: 120px;" title="{{ membership.team.name }}">
-                              {{ membership.team.name }}
-                              {% if membership.role == 'admin' %}
-                                <span class="badge bg-secondary">Admin</span>
-                              {% endif %}
-                            </span>
-                          {% endif %}
-                        {% endfor %}
-                      </div>
-                    {% else %}
-                      <p class="text-muted small mb-0">{% trans "No teams" %}</p>
-                    {% endif %}
-                  </div>
-                </div>
-
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="d-flex flex-row gap-2 justify-content-start">
-                      <a class="btn btn-outline-primary" href="{% url 'user:user-update' object.id %}">{% trans "Edit" %}</a>
-                      <a class="btn btn-outline-danger" href="{% url 'user:user-delete' object.id %}">{% trans "Delete" %}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'user:user-delete' object.id %}">
+                    <small>🗑️ {% trans "Delete" %}</small>
+                </a>
             </div>
-          </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .display-6 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+</style>
 {% endblock %}
