@@ -100,6 +100,13 @@
                         {% trans "Edit" %}
                     </a>
                     {% endif %}
+                    
+                    {% if can_change_role and membership_id %}
+                    <a class="btn btn-warning px-md-4 py-2" href="{% url 'teams:team-member-role-update' membership_id %}">
+                        {% trans "Change Role" %}
+                    </a>
+                    {% endif %}
+                    
                     <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'user:user-list' %}">
                         {% trans "Cancel" %}
                     </a>

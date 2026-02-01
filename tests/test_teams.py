@@ -991,8 +991,14 @@ class TeamTestCase(TestCase):
         self.assertContains(response, self.team.name)
         self.assertContains(response, self.team.description)
 
-    def test_team_detail_shows_members(self):
-        """test that team detail page shows all team members"""
+    def test_team_detail_shows_members_count(self):
+        """test team detail shows member count, not individual members"""
+        # Count existing memberships for this team first
+        team = self.team
+        existing_memberships = TeamMembership.objects.filter(
+            team=team
+        ).count()
+
         # create additional member
         new_member = User.objects.create_user(
             username='detail_member',
@@ -1008,13 +1014,28 @@ class TeamTestCase(TestCase):
             reverse('teams:team-detail', args=[self.team.id])
         )
 
-        # check that memberships are in context
+        # check that memberships are in context for counting
         self.assertIn('memberships', response.context)
         memberships = response.context['memberships']
 
-        # check that new member is in the list
-        member_users = [m.user for m in memberships]
-        self.assertIn(new_member, member_users)
+        # check that member count is displayed correctly
+        expected_count = (
+            existing_memberships + 1
+        )  # +1 for the new member we added
+        self.assertEqual(len(memberships), expected_count)
+        content = response.content.decode('utf-8')
+        self.assertIn(f'👥 {expected_count}', content)
+
+    def test_team_detail_no_member_table(self):
+        """test that team detail page does not show member table anymore"""
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.id])
+        )
+
+        content = response.content.decode('utf-8')
+        # check that the member table is not present
+        self.assertNotIn('Team Members', content)
+        self.assertNotIn('<table', content)
 
     def test_team_detail_shows_admin_status(self):
         """test that team detail correctly identifies admin status"""
