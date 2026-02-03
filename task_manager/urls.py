@@ -18,8 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
 from django.views.generic import TemplateView
+from django.views.generic import FileResponse
+from django.conf import settings
 from . import views
 
+
+def assetlinks(request):
+    with open('/home/abo/taskman/.well-known/assetlinks.json', 'r') as f:
+        return FileResponse(f)
 
 urlpatterns = [
     path('trigger-error/', views.trigger_error),
@@ -48,4 +54,5 @@ urlpatterns = [
         template_name='manifest.json',
         content_type='application/manifest+json'
     ), name='manifest.json'),
+    path('.well-known/assetlinks.json', assetlinks),
 ]

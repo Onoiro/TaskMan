@@ -1,52 +1,69 @@
-{% load static %}
-// Change version everytime when update static to update cliet's cache
-const CACHE_NAME = 'taskman-v8';
+const CACHE_NAME = 'taskman-v9';
 
-const ASSETS = [
-  "{% static 'css/custom.css' %}",
-  "{% static 'icons/icon-192x192.png' %}",
-  "{% static 'icons/icon-180x180.png' %}",
-  "{% static 'icons/icon-512x512.png' %}",
-  "{% static 'images/favicon.ico' %}",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
-  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+// Кешируем только критичные ресурсы
+const CRITICAL_ASSETS = [
+  '/static/css/custom.css',
+  '/static/icons/icon-192x192.png',
+  '/static/icons/icon-180x180.png', 
+  '/static/icons/icon-512x512.png',
+  '/static/images/favicon.ico'
 ];
 
+const EXTERNAL = [
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
+];
+
+// Установка: кешируем критические ресурсы
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME)
+      .then(cache => Promise.all([
+        cache.addAll(CRITICAL_ASSETS),
+        cache.addAll(EXTERNAL)
+      ]))
   );
 });
 
+// Активация: удаляем старые кеши
 self.addEventListener('activate', (e) => {
   e.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (key !== CACHE_NAME) {
-          return caches.delete(key);
-        }
-      }));
-    })
+    caches.keys().then(keyList => 
+      Promise.all(keyList.map(key => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }))
+    )
   );
 });
 
+// Fetch: стратегия Network First + Cache Fallback + ОФЛАЙН
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') {
+  const url = new URL(e.request.url);
+  
+  // Игнорируем небезопасные запросы
+  if (e.request.method !== 'GET') return;
+  
+  // Офлайн-страница для главной
+  if (url.pathname === '/' && e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).catch(() => 
+        caches.match('/static/offline.html')
+      ).catch(() => 
+        new Response('TaskMan временно недоступен. Проверьте соединение.', {
+          status: 503,
+          statusText: 'Service Unavailable'
+        })
+      )
+    );
     return;
   }
-
-  const url = new URL(e.request.url);
-
-  const isStatic = url.pathname.startsWith('/static/') || 
-                   url.hostname.includes('cdn.jsdelivr.net');
-
-  if (isStatic) {
+  
+  // Статические файлы: Cache First
+  if (url.pathname.startsWith('/static/') || url.hostname.includes('cdn.jsdelivr.net')) {
     e.respondWith(
-      caches.match(e.request).then((response) => {
-        return response || fetch(e.request);
-      })
+      caches.match(e.request)
+        .then(response => response || fetch(e.request))
+        .catch(() => caches.match('/static/offline.html'))
     );
-  } else {
-    return;
   }
 });
