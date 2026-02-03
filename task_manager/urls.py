@@ -18,14 +18,22 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
 from django.views.generic import TemplateView
-from django.views.generic import FileResponse
+from django.http import FileResponse, JsonResponse
+from django.views import View
+import os
 from django.conf import settings
 from . import views
 
 
-def assetlinks(request):
-    with open('/home/abo/taskman/.well-known/assetlinks.json', 'r') as f:
-        return FileResponse(f)
+class AssetLinksView(View):
+    def get(self, request):
+        filepath = os.path.join(
+            settings.BASE_DIR, '.well-known', 'assetlinks.json')
+        if os.path.exists(filepath):
+            return FileResponse(
+                open(filepath, 'rb'), content_type='application/json')
+        return JsonResponse({'error': 'Not found'}, status=404)
+
 
 urlpatterns = [
     path('trigger-error/', views.trigger_error),
@@ -54,5 +62,5 @@ urlpatterns = [
         template_name='manifest.json',
         content_type='application/manifest+json'
     ), name='manifest.json'),
-    path('.well-known/assetlinks.json', assetlinks),
+    path('.well-known/assetlinks.json', AssetLinksView.as_view()),
 ]
