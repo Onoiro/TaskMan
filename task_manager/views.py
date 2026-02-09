@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
@@ -18,6 +18,8 @@ def trigger_error(request):
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('tasks:tasks-list')
         content = {
             'taskman': _("TaskMan"),
             'manage': _("Manage Tasks Your Way"),

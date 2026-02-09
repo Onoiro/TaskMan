@@ -34,7 +34,7 @@ class UserLoginViewTestCase(TestCase):
         })
         self.assertTrue(response)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('index'))
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertNotEqual(len(messages), 0)
         self.assertEqual(str(messages[0]), _("You successfully logged in"))

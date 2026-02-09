@@ -63,7 +63,7 @@ class TeamTestCase(TestCase):
         self.assertIn(team, user_teams)
 
         # check redirect and message
-        self.assertRedirects(response, reverse('index'))
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Team created successfully'))
@@ -921,7 +921,7 @@ class TeamTestCase(TestCase):
                       or response.content.decode('utf-8'))
 
     def test_switch_team_redirect_home_without_referer(self):
-        """test redirect to home when no referer provided"""
+        """test redirect to tasks list when no referer provided"""
         # ensure user is a member of the team
         if not self.team.is_member(self.admin_user):
             TeamMembership.objects.create(
@@ -937,8 +937,8 @@ class TeamTestCase(TestCase):
             follow=True
         )
 
-        # check redirect to home
-        self.assertRedirects(response, '/')
+        # check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
 
     def test_switch_to_individual_redirect_from_labels_update(self):
         """test redirect to labels list when switching to individual
