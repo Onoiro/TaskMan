@@ -3,19 +3,40 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1"> 
-    <h1 class="my-4">{% trans "Edit Team" %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">
-                {% trans "Edit" %}
-            </button>
-            <a href="{% url 'teams:team-delete' object.id %}" class="btn btn-danger">
-                {% trans "Delete" %}
-            </a>
+<div class="container py-3 py-lg-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+            <form method="post" class="h-100 d-flex flex-column">
+                {% csrf_token %}
+
+                <!-- main card (content) -->
+                <div class="card shadow border-0 mb-4">
+                    <div class="card-body p-3 p-md-4">
+                        <h1 class="visually-hidden">{% trans "Edit Team" %}</h1>
+                        {% bootstrap_form form %}
+                    </div>
+                </div>
+
+                <!-- action bar -->
+                <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
+
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-primary px-md-4 py-2 fw-bold">
+                            {% trans "Edit" %}
+                        </button>
+                        <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'teams:team-detail' object.id %}">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+
+                    <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'teams:team-delete' object.id %}">
+                        <small>🗑️ {% trans "Delete" %}</small>
+                    </a>
+                </div>
+
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

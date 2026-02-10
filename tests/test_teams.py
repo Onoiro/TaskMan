@@ -220,6 +220,39 @@ class TeamTestCase(TestCase):
         self.team.refresh_from_db()
         self.assertNotEqual(self.team.name, updated_data['name'])
 
+    def test_update_team_has_cancel_button(self):
+        """Test that team update page has a Cancel button."""
+        # make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        response = self.c.get(
+            reverse('teams:team-update', args=[self.team.id]), follow=True)
+
+        # Check that Cancel button exists
+        self.assertContains(response, _('Cancel'))
+
+    def test_update_team_cancel_button_redirects_to_team_detail(self):
+        """Test that Cancel button redirects to team detail page."""
+        # make sure user is admin of the team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        response = self.c.get(
+            reverse('teams:team-update', args=[self.team.id]), follow=True)
+
+        # The Cancel button href should point to team detail
+        team_detail_url = reverse('teams:team-detail', args=[self.team.id])
+        self.assertIn(team_detail_url, response.content.decode('utf-8'))
+
     # delete
 
     def test_get_delete_team_response_200_and_check_content(self):
