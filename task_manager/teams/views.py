@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import (
     TeamAdminPermissions,
@@ -176,10 +176,13 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
-    success_url = reverse_lazy('index')
+
+    def get_success_url(self):
+        return reverse_lazy('tasks:tasks-list')
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        form.instance = form.save()
+        self.object = form.instance
 
         # create TeamMembership for team creator with role 'admin'
         TeamMembership.objects.create(
@@ -191,8 +194,11 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
         # create default statuses for new team
         Status.create_default_statuses_for_team(self.object, self.request.user)
 
+        # set the new team as active in session
+        self.request.session['active_team_id'] = self.object.id
+
         messages.success(self.request, _('Team created successfully'))
-        return response
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class TeamDetailView(LoginRequiredMixin, DetailView):

@@ -68,6 +68,26 @@ class TeamTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Team created successfully'))
 
+        # check that the new team is set as active in session
+        self.assertEqual(self.c.session.get('active_team_id'), team.id)
+
+    def test_create_team_redirects_to_new_team_tasks(self):
+        """Test that after creating a team, user is redirected to tasks list
+        with the new team set as active."""
+        response = self.c.post(reverse('teams:team-create'),
+                               self.team_data, follow=False)
+        self.assertEqual(response.status_code, 302)
+
+        # check that redirect goes to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+        # get the created team
+        team = Team.objects.filter(name=self.team_data['name']).first()
+        self.assertIsNotNone(team)
+
+        # check that active_team_id is set to the new team
+        self.assertEqual(self.c.session.get('active_team_id'), team.id)
+
     def test_check_for_not_create_team_with_same_name(self):
         # create a team
         self.c.post(reverse('teams:team-create'), self.team_data, follow=True)
