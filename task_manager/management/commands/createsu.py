@@ -14,17 +14,22 @@ class Command(BaseCommand):
         admin_password = os.getenv('ADMIN_PASSWORD', 'admin')
 
         if not admin_password:
-            print('Error: ADMIN_PASSWORD environment variable is not set!')
+            # use stderr for errors to capture them properly
+            self.stderr.write(
+                'Error: ADMIN_PASSWORD environment variable is not set!'
+            )
             return
 
         try:
             user = User.objects.get(username='admin')
             user.set_password(admin_password)
             user.save()
-            print('Superuser password has been updated.')
+            # use stdout instead of print
+            self.stdout.write('Superuser password has been updated.')
         except User.DoesNotExist:
             User.objects.create_superuser(
                 username='admin',
                 password=admin_password
             )
-            print('Superuser has been created.')
+            # use stdout instead of print
+            self.stdout.write('Superuser has been created.')
