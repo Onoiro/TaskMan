@@ -1,0 +1,5 @@
+[run]
+omit =
+    task_manager/asgi.py
+    task_manager/wsgi.py
+    manage.py
