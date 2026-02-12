@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.permissions import (
     TeamAdminPermissions,
@@ -25,10 +25,6 @@ from task_manager.statuses.models import Status
 # Constants
 TEAM_NOT_FOUND_MESSAGE = _('Team not found')
 USER_LIST_URL = 'user:user-list'
-
-
-def index(request):
-    return HttpResponse('teams')
 
 
 class SwitchTeamView(View):

@@ -703,6 +703,88 @@ class TeamTestCase(TestCase):
         self.assertEqual(str(messages[0]),
                          _('You are not a member of this team'))
 
+    def test_exit_team_get_confirmation_page(self):
+        """test get shows exit confirmation for valid user"""
+        regular_user = User.objects.create_user(
+            username='exit_confirm_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        response = self.c.get(
+            reverse(
+                'teams:team-exit',
+                args=[self.team.id]
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.team.name)
+
+    def test_exit_nonexistent_team_via_get(self):
+        """test get exit page for nonexistent team"""
+        response = self.c.get(
+            reverse(
+                'teams:team-exit',
+                args=[9999]
+            ),
+            follow=True
+        )
+        msgs = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(msgs), 0)
+        self.assertEqual(
+            str(msgs[0]),
+            _('Team not found')
+        )
+
+    def test_exit_team_clears_active_session(self):
+        """test exiting team clears active_team_id"""
+        regular_user = User.objects.create_user(
+            username='session_clear_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # set session correctly using single reference
+        session = self.c.session
+        session['active_team_id'] = self.team.id
+        session.save()
+
+        # verify session was set
+        self.assertEqual(
+            self.c.session.get('active_team_id'),
+            self.team.id
+        )
+
+        self.c.post(
+            reverse('teams:team-exit', args=[self.team.id]), follow=True)
+
+        # verify session was cleared
+        self.assertNotIn(
+            'active_team_id',
+            self.c.session
+        )
+        # verify membership removed
+        self.assertFalse(
+            TeamMembership.objects.filter(
+                user=regular_user,
+                team=self.team
+            ).exists()
+        )
+
     # switch team tests
 
     def test_switch_to_team_successfully(self):
