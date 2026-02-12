@@ -61,33 +61,36 @@ class UserTestCase(TestCase):
 
     # to do later - this test fails
 
-    # def test_user_list_with_team_context(self):
-    #     """test user list with active team context"""
-    #     # set active team in session
-    #     self.c.session['active_team_id'] = 1
-    #     self.c.session.save()
+    def test_user_list_with_team_context(self):
+        """test user list with active team context"""
+        # set active team in session
+        session = self.c.session
+        session['active_team_id'] = 1
+        session.save()
 
-    #     response = self.c.get(reverse('user:user-list'))
-    #     self.assertEqual(response.status_code, 200)
+        response = self.c.get(reverse('user:user-list'))
+        self.assertEqual(response.status_code, 200)
 
-    #     # check that user_memberships context is present
-    #     self.assertIn('user_memberships', response.context)
-    #     self.assertIn('user_membership', response.context)
+        # check that user_memberships context is present
+        self.assertIn('user_memberships', response.context)
+        self.assertIn('user_membership', response.context)
 
-    #     # should show team users that current user can see
-    #     # user 'he' (id=12) should see himself and possibly other team members
-    #     team_users = response.context['user_list']
-    #     actual_user_ids = [user.id for user in team_users]
+        # should show team users that current user can see
+        # user 'he' (id=12) should see himself and possibly other team members
+        team_users = response.context['user_list']
+        actual_user_ids = [user.id for user in team_users]
 
-    #     # at minimum, current user should be in the list
-    #     self.assertIn(self.user.id, actual_user_ids)
+        # at minimum, current user should be in the list
+        self.assertIn(self.user.id, actual_user_ids)
 
-    #     # check that user_memberships contains memberships for team 1
-    #     user_memberships = response.context['user_memberships']
-    #     membership_user_ids = [m.user.id for m in user_memberships]
-    #     expected_membership_user_ids = [10, 12]  # from fixtures
-    #     self.assertEqual(sorted(membership_user_ids),
-    #  sorted(expected_membership_user_ids))
+        # check that user_memberships contains memberships for team 1
+        user_memberships = response.context['user_memberships']
+        membership_user_ids = [m.user.id for m in user_memberships]
+        expected_membership_user_ids = [10, 12]  # from fixtures
+        self.assertEqual(
+            sorted(membership_user_ids),
+            sorted(expected_membership_user_ids)
+        )
 
     def test_user_list_without_team_context(self):
         """test user list without active team"""
@@ -110,20 +113,42 @@ class UserTestCase(TestCase):
 
     # to do later - this test fails
 
-    # def test_user_list_user_membership_context(self):
-    #     """test that user membership context is correctly set"""
-    #     self.c.session['active_team_id'] = 1
-    #     self.c.session.save()
+    def test_user_list_user_membership_context(self):
+        """test that user membership context is correctly set"""
+        session = self.c.session
+        session['active_team_id'] = 1
+        session.save()
 
-    #     response = self.c.get(reverse('user:user-list'))
-    #     self.assertEqual(response.status_code, 200)
+        response = self.c.get(reverse('user:user-list'))
+        self.assertEqual(response.status_code, 200)
 
-    #     # user 'he' (id=12) should have membership in team 1
-    #     user_membership = response.context['user_membership']
-    #     self.assertIsNotNone(user_membership)
-    #     self.assertEqual(user_membership.user.id, self.user.id)
-    #     self.assertEqual(user_membership.team.id, 1)
-    #     self.assertEqual(user_membership.role, 'member')
+        # user 'he' (id=12) should have membership in team 1
+        user_membership = response.context['user_membership']
+        self.assertIsNotNone(user_membership)
+        self.assertEqual(user_membership.user.id, self.user.id)
+        self.assertEqual(user_membership.team.id, 1)
+        self.assertEqual(user_membership.role, 'member')
+
+    def test_user_list_with_active_team(self):
+        """test user list shows team members when active"""
+        session = self.c.session
+        session['active_team_id'] = 1
+        session.save()
+
+        response = self.c.get(reverse('user:user-list'))
+        self.assertEqual(response.status_code, 200)
+
+        # should show team members, not just current user
+        users = response.context['user_list']
+        user_ids = [u.id for u in users]
+        self.assertIn(self.user.id, user_ids)
+
+        # membership context should be populated
+        memberships = response.context['user_memberships']
+        self.assertGreater(len(memberships), 0)
+        self.assertIsNotNone(
+            response.context['user_membership']
+        )
 
     # detail
 
@@ -199,6 +224,54 @@ class UserTestCase(TestCase):
         # Check that Edit and Delete buttons are NOT present for other users
         self.assertNotContains(response, 'Edit')
         self.assertNotContains(response, 'Delete')
+
+    def test_user_detail_admin_can_change_role(self):
+        """test admin sees change role for team member"""
+        admin_user = User.objects.get(username='me')
+        self.c.force_login(admin_user)
+        session = self.c.session
+        session['active_team_id'] = 1
+        session.save()
+
+        # view another team member's detail
+        member = User.objects.get(username='he')
+        response = self.c.get(
+            reverse(
+                'user:user-detail',
+                args=[member.id]
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            response.context['can_change_role']
+        )
+        self.assertIsNotNone(
+            response.context['membership_id']
+        )
+
+    def test_user_detail_admin_views_non_member(self):
+        """test admin views user who is not in active team"""
+        admin_user = User.objects.get(username='me')
+        self.c.force_login(admin_user)
+        session = self.c.session
+        session['active_team_id'] = 1
+        session.save()
+
+        # view user who has no team membership
+        alone = User.objects.get(username='alone')
+        response = self.c.get(
+            reverse(
+                'user:user-detail',
+                args=[alone.id]
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            response.context['can_change_role']
+        )
+        self.assertIsNone(
+            response.context['membership_id']
+        )
 
     # create
 
