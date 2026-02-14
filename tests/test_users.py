@@ -305,7 +305,11 @@ class UserTestCase(TestCase):
         self.assertEqual(user.last_name, self.user_data['last_name'])
 
         # user without team should redirect to tasks list
-        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        # Now redirects to index first, then to tasks-list
+        self.assertRedirects(
+            response, reverse('tasks:tasks-list'), status_code=302,
+            target_status_code=200, fetch_redirect_response=True
+        )
 
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
@@ -360,7 +364,11 @@ class UserTestCase(TestCase):
         # check user has no team membership
         self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
-        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        # Should redirect to tasks list after index redirect
+        self.assertRedirects(
+            response, reverse('tasks:tasks-list'), status_code=302,
+            target_status_code=200, fetch_redirect_response=True
+        )
 
     def test_check_for_not_create_user_with_same_username(self):
         self.c.post(
@@ -411,7 +419,11 @@ class UserTestCase(TestCase):
             reverse('user:user-create'), user_data_with_team, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        # Should redirect to tasks list after index redirect
+        self.assertRedirects(
+            response, reverse('tasks:tasks-list'), status_code=302,
+            target_status_code=200, fetch_redirect_response=True
+        )
 
         # check session has active team
         self.assertEqual(int(self.c.session['active_team_id']), team.id)

@@ -114,6 +114,9 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         # auto login after creating user
         login(self.request, self.object)
 
+        # Set flag to redirect to tasks list on first visit
+        self.request.session['redirect_after_login'] = True
+
         # if join to team
         team = form.cleaned_data.get('team_to_join')
         if team:

@@ -1073,7 +1073,10 @@ class TeamTestCase(TestCase):
         )
 
         # check redirect to tasks list
-        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        self.assertRedirects(
+            response, reverse('tasks:tasks-list'), status_code=302,
+            target_status_code=200, fetch_redirect_response=True
+        )
 
     def test_switch_to_individual_redirect_from_labels_update(self):
         """test redirect to labels list when switching to individual

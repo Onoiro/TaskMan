@@ -68,7 +68,8 @@ class SwitchTeamView(View):
         if ('/tasks/' in referer
                 and ('/update/' in referer or '/delete/' in referer)):
             return 'tasks:tasks-list'
-        return referer or '/'
+        # Redirect to tasks list if no referer provided
+        return referer or 'tasks:tasks-list'
 
 
 class TeamExitView(LoginRequiredMixin, View):
