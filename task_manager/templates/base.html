@@ -75,7 +75,7 @@
                   {% endif %}
                 </button>
                 <!-- dropdown-menu-end for mobile right alignment -->
-                <ul class="dropdown-menu dropdown-menu-end">
+                <ul class="dropdown-menu">
                   <li>
                     <a class="dropdown-item {% if request.resolver_match.url_name == 'user-list' %}active{% endif %}" href="{% url 'user:user-list' %}">
                       {% trans "Users" %}

@@ -1,34 +1,71 @@
-/* Увеличение областей касания */
-.nav-link, .btn {
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
+/* Увеличение областей касания для навигации */
+.navbar .nav-link {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
 }
 
-/* Адаптация форм */
-@media (max-width: 768px) {
-  .form-control {
-    font-size: 16px; /* Отключает масштабирование в iOS */
-  }
-}
-
-/* Тестирование на десктопе - принудительная мобильная ширина */
-@media (max-width: 1200px) {
-  .container {
-    max-width: 100%;
-    padding: 0 15px;
-  }
-}
-
-/* Улучшение видимости кнопок */
+/* Кнопки - увеличенные области касания */
 .btn {
-  min-width: 44px;
-  padding: 12px 16px;
+    min-height: 48px;
+    min-width: 44px;
+    padding: 12px 16px;
+    display: inline-flex;
+    align-items: center;
 }
 
-/* Цветовое кодирование статусов задач */
-.status-colored {
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+/* Элементы внутри dropdown НЕ должны наследовать эти стили */
+.dropdown-menu .dropdown-item {
+    min-height: auto;
+    display: flex;
+    padding: 0.5rem 1rem;
+}
+
+/* Dropdown всегда поверх контента */
+.navbar .dropdown-menu {
+    position: absolute !important;
+    z-index: 1050;
+}
+
+/* === Исправление навбара: всегда одна строка === */
+
+/* 1. Запрещаем перенос элементов на новую строку во всем навбаре */
+.navbar .container {
+    flex-wrap: nowrap !important;
+}
+
+/* 2. Настройки для мобильных устройств */
+@media (max-width: 767.98px) {
+    
+    /* Уменьшаем отступы контейнера, чтобы выиграть место */
+    .navbar .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Настройка средней кнопки (Пользователь/Команда) - order-2 */
+    /* Она будет сжиматься, если места мало */
+    .navbar-nav.order-2 {
+        min-width: 0; /* Позволяет элементу сжиматься меньше контента */
+        flex-shrink: 1; /* Разрешаем сжатие */
+        margin-left: auto; /* Прижимаем к правому краю, если есть место */
+        margin-right: 5px;
+    }
+
+    /* Обрезка текста внутри кнопки пользователя (например: "Длинное назван...") */
+    .navbar-nav.order-2 .nav-link {
+        white-space: nowrap;      /* Запрет переноса текста */
+        overflow: hidden;         /* Скрытие того, что не влезло */
+        text-overflow: ellipsis;  /* Добавление троеточия (...) */
+        max-width: 140px;         /* Максимальная ширина кнопки (можно подстроить) */
+        display: block;           /* Нужно для работы ellipsis */
+        padding-left: 5px;        /* Чуть уменьшим отступы внутри кнопки */
+        padding-right: 5px;
+    }
+
+    /* Чуть уменьшим отступы у переключателя языка (order-3), чтобы он влезал */
+    .navbar-nav.order-3 .nav-link {
+        padding-left: 5px;
+        padding-right: 0;
+    }
 }
