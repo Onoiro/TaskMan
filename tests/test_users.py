@@ -222,8 +222,11 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check that Edit and Delete buttons are NOT present for other users
-        self.assertNotContains(response, 'Edit')
-        self.assertNotContains(response, 'Delete')
+        # Check by URL instead of text to avoid false positives from navbar
+        self.assertNotContains(
+            response, reverse('user:user-update', args=[other_user.id]))
+        self.assertNotContains(
+            response, reverse('user:user-delete', args=[other_user.id]))
 
     def test_user_detail_admin_can_change_role(self):
         """test admin sees change role for team member"""

@@ -101,7 +101,7 @@
               {% if user.is_authenticated %}
                 <div class="dropdown">
                   <button class="btn btn-link nav-link text-white d-flex align-items-center gap-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- На мобильном: только иконка. На десктопе: иконка + имя -->
+                    <!-- Show only icon on mobile, icon + name on desktop -->
                     {% if active_team %}
                         <i class="bi bi-building-fill fs-5"></i>
                         <span class="d-none d-md-inline max-w-150 text-truncate">{{ active_team.name }}</span>
@@ -111,7 +111,7 @@
                     {% endif %}
                   </button>
                   
-                  <!-- dropdown-menu-end держит меню внутри экрана справа -->
+                  <!-- dropdown-menu-end keeps menu inside screen on the right -->
                   <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 240px;">
                     
                     <!-- Teams Section -->
@@ -156,7 +156,7 @@
                     <!-- User Actions -->
                     <li>
                         <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
-                            <i class="bi bi-pencil-square me-2"></i>{% trans "Edit Profile" %}
+                            <i class="bi bi-pencil-square me-2"></i>{% trans "Edit" %}
                         </a>
                     </li>
                     <li>
@@ -202,6 +202,28 @@
                 <div class="d-flex gap-2">
                     <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">{% trans "Login" %}</a>
                     <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-sm">{% trans "Signup" %}</a>
+                </div>
+
+                <!-- Language Switcher for Guests (separate dropdown) -->
+                <div class="dropdown">
+                    <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-globe"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                        {% get_current_language as CURRENT_LANGUAGE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang_code, lang_name in LANGUAGES %}
+                        <li>
+                            <form method="post" action="{% url 'set_language' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="{{ lang_code }}" />
+                                <button type="submit" class="dropdown-item {% if lang_code == CURRENT_LANGUAGE %}active{% endif %}">
+                                    {{ lang_name }} ({{ lang_code|upper }})
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
               {% endif %}
             </div>
