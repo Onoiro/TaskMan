@@ -1,71 +1,54 @@
-/* Увеличение областей касания для навигации */
-.navbar .nav-link {
-    min-height: 48px;
-    display: inline-flex;
-    align-items: center;
+/* Улучшение навбара */
+.navbar {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
-/* Кнопки - увеличенные области касания */
-.btn {
-    min-height: 48px;
-    min-width: 44px;
-    padding: 12px 16px;
-    display: inline-flex;
-    align-items: center;
-}
-
-/* Элементы внутри dropdown НЕ должны наследовать эти стили */
-.dropdown-menu .dropdown-item {
-    min-height: auto;
-    display: flex;
-    padding: 0.5rem 1rem;
-}
-
-/* Dropdown всегда поверх контента */
-.navbar .dropdown-menu {
-    position: absolute !important;
-    z-index: 1050;
-}
-
-/* === Исправление навбара: всегда одна строка === */
-
-/* 1. Запрещаем перенос элементов на новую строку во всем навбаре */
-.navbar .container {
+/* Принудительная одна строка */
+.navbar .container-fluid {
     flex-wrap: nowrap !important;
 }
 
-/* 2. Настройки для мобильных устройств */
-@media (max-width: 767.98px) {
+/* === Стили для имени пользователя/команды === */
+.context-name {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
     
-    /* Уменьшаем отступы контейнера, чтобы выиграть место */
-    .navbar .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    /* На мобильных (по умолчанию) */
+    max-width: 70px; 
+    font-size: 0.85rem;
+}
 
-    /* Настройка средней кнопки (Пользователь/Команда) - order-2 */
-    /* Она будет сжиматься, если места мало */
-    .navbar-nav.order-2 {
-        min-width: 0; /* Позволяет элементу сжиматься меньше контента */
-        flex-shrink: 1; /* Разрешаем сжатие */
-        margin-left: auto; /* Прижимаем к правому краю, если есть место */
-        margin-right: 5px;
+/* На планшетах и десктопах */
+@media (min-width: 768px) {
+    .context-name {
+        max-width: 150px;
+        font-size: 1rem;
     }
+}
 
-    /* Обрезка текста внутри кнопки пользователя (например: "Длинное назван...") */
-    .navbar-nav.order-2 .nav-link {
-        white-space: nowrap;      /* Запрет переноса текста */
-        overflow: hidden;         /* Скрытие того, что не влезло */
-        text-overflow: ellipsis;  /* Добавление троеточия (...) */
-        max-width: 140px;         /* Максимальная ширина кнопки (можно подстроить) */
-        display: block;           /* Нужно для работы ellipsis */
-        padding-left: 5px;        /* Чуть уменьшим отступы внутри кнопки */
-        padding-right: 5px;
+/* Дополнительные твики для мобильного заголовка */
+@media (max-width: 767.98px) {
+    /* Чтобы навбар не скакал по высоте */
+    .navbar-brand, .navbar-nav .nav-link {
+        font-size: 1rem;
     }
+}
 
-    /* Чуть уменьшим отступы у переключателя языка (order-3), чтобы он влезал */
-    .navbar-nav.order-3 .nav-link {
-        padding-left: 5px;
-        padding-right: 0;
-    }
+/* Области нажатия */
+.nav-link, .dropdown-item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+.dropdown-item i {
+    width: 1.5rem; 
+    text-align: center;
+}
+.btn-link:focus, .btn-link:active {
+    box-shadow: none;
 }

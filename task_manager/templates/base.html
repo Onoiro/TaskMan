@@ -6,209 +6,79 @@
 <html lang="{{ LANGUAGE_CODE }}">
 
   <head>
-    <!-- Main meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
     <meta name="theme-color" content="#007bff">
     
-    <!-- PWA manifest -->
+    <!-- ... ваши мета теги PWA и иконки ... -->
     <link rel="manifest" href="/manifest.json">
-    
-    <!-- Icons -->
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
-    <link rel="icon" href="{% static 'icons/icon-192x192.png' %}">
-    <link rel="apple-touch-icon" href="{% static 'icons/icon-180x180.png' %}">
-    
-    <!-- iOS PWA settings -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="TaskMan">
-
-    <!-- Android PWA settings -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="TaskMan">
-    
-    <!-- Colors Chrome for Android -->
-    <meta name="theme-color" content="#007bff">
-    <meta name="msapplication-navbutton-color" content="#007bff">
-    <meta name="msapplication-TileColor" content="#007bff">
-    <meta name="msapplication-TileImage" content="{% static 'icons/icon-192x192.png' %}">
-    
-    <!-- Title -->
     <title>{% block title %}{% trans "TaskMan" %}{% endblock %}</title>
     
-    <!-- CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Bootstrap Icons (Новое: для красивых иконок вместо емодзи) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
   </head>
 
   <body class="d-flex flex-column min-vh-100">
 
     {% block navbar %}
-      <div class="wrapper">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-          <div class="container">
-            <!-- Logo and brand name (always on left) -->
-            <a class="navbar-brand" href="{% url 'index' %}">
-              <img src="{% static 'icons/emodji.png' %}" alt="TaskMan" style="height: 24px; margin-right: 8px; vertical-align: middle;">
-              <!-- Hide text on mobile, show on desktop -->
-              <span class="d-none d-md-inline">{% trans "TaskMan" %}</span>
+      <div class="wrapper sticky-top"> <!-- sticky-top чтобы меню было всегда доступно -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+          <div class="container-fluid px-3 px-md-4"> <!-- container-fluid для большего места -->
+            
+            <!-- 1. LOGO -->
+            <a class="navbar-brand d-flex align-items-center me-2 me-md-4" href="{% url 'index' %}">
+              <img src="{% static 'icons/emodji.png' %}" alt="TaskMan" style="height: 28px; width: auto;">
+              
+              <!-- Логика отображения текста: 
+                   Показываем текст на десктопе (d-md-block).
+                   На мобильных (d-block d-md-none) показываем ТОЛЬКО если юзер НЕ залогинен. -->
+              <span class="ms-2 fw-bold {% if user.is_authenticated %}d-none d-md-block{% endif %}">
+                {% trans "TaskMan" %}
+              </span>
             </a>
 
-            <!-- Mobile navigation dropdown (visible only on mobile, order 1) -->
+            <!-- MOBILE NAV: Left side (Menu) -->
             {% if user.is_authenticated %}
-            <ul class="navbar-nav d-md-none order-1 me-2">
-              <li class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  {% if request.resolver_match.url_name == 'user-list' %}
-                    {% trans "Users" %}
-                  {% elif request.resolver_match.url_name == 'statuses-list' %}
-                    {% trans "Statuses" %}
-                  {% elif request.resolver_match.url_name == 'labels-list' %}
-                    {% trans "Labels" %}
-                  {% elif request.resolver_match.url_name == 'tasks-list' %}
-                    {% trans "Tasks" %}
-                  {% else %}
-                    {% trans "Menu" %}
-                  {% endif %}
+            <div class="d-flex d-md-none me-auto">
+              <div class="dropdown">
+                <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-list fs-2"></i> <!-- Иконка Гамбургер, большая и удобная -->
                 </button>
-                <!-- dropdown-menu-end for mobile right alignment -->
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'user-list' %}active{% endif %}" href="{% url 'user:user-list' %}">
-                      {% trans "Users" %}
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'tasks-list' %}active{% endif %}" href="{% url 'tasks:tasks-list' %}">
-                      {% trans "Tasks" %}
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'statuses-list' %}active{% endif %}" href="{% url 'statuses:statuses-list' %}">
-                      {% trans "Statuses" %}
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'labels-list' %}active{% endif %}" href="{% url 'labels:labels-list' %}">
-                      {% trans "Labels" %}
-                    </a>
-                  </li>
+                <ul class="dropdown-menu shadow">
+                    <li><h6 class="dropdown-header">{% trans "Navigation" %}</h6></li>
+                    <li>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'user-list' %}active{% endif %}" href="{% url 'user:user-list' %}">
+                          <i class="bi bi-people me-2"></i>{% trans "Users" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'tasks-list' %}active{% endif %}" href="{% url 'tasks:tasks-list' %}">
+                          <i class="bi bi-card-checklist me-2"></i>{% trans "Tasks" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'statuses-list' %}active{% endif %}" href="{% url 'statuses:statuses-list' %}">
+                          <i class="bi bi-flag me-2"></i>{% trans "Statuses" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'labels-list' %}active{% endif %}" href="{% url 'labels:labels-list' %}">
+                          <i class="bi bi-tags me-2"></i>{% trans "Labels" %}
+                        </a>
+                    </li>
                 </ul>
-              </li>
-            </ul>
+              </div>
+            </div>
             {% endif %}
 
-            <!-- User/team dropdown (visible on all screens, order 2 on mobile, order 2 on desktop) -->
-            {% if user.is_authenticated %}
-            <ul class="navbar-nav order-2 order-md-2 ms-auto me-2">
-              <li class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle bg-transparent border-0" type="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  {% if active_team %}
-                    🏢 {{ active_team.name }}
-                  {% else %}
-                    👤 {{ user.username }}
-                  {% endif %}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <!-- Switch between mode and teams -->
-                  {% if user_teams %}
-                  <li class="dropdown-header">{% trans "Switch team" %}</li>
-
-                  <!-- Individual mode -->
-                  <li>
-                    <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
-                      {% csrf_token %}
-                      <input type="hidden" name="team_id" value="individual">
-                      <button type="submit" class="dropdown-item {% if not active_team %}active{% endif %}">
-                        👤 {% trans "Individual mode" %}
-                      </button>
-                    </form>
-                  </li>
-
-                  <!-- List of teams -->
-                  {% for membership in user_teams %}
-                  <li>
-                    <form method="post" action="{% url 'teams:switch-team' %}" class="px-3 py-1">
-                      {% csrf_token %}
-                      <input type="hidden" name="team_id" value="{{ membership.team.id }}">
-                      <button type="submit" class="dropdown-item {% if active_team and active_team.id == membership.team.id %}active{% endif %}">
-                        🏢 {{ membership.team.name }}
-                        <small class="text-muted">({{ membership.get_role_display }})</small>
-                      </button>
-                    </form>
-                  </li>
-                  {% endfor %}
-
-                  <li><hr class="dropdown-divider"></li>
-                  {% endif %}
-
-                  <!-- Actions with user and teams -->
-                  <li>
-                    <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
-                      ✏️ {% trans "Update profile" %}
-                    </a>
-                  </li>
-                  <li>
-                      <a class="dropdown-item" href="{% url 'teams:team-create' %}">
-                          ➕ {% trans "Create Team" %}
-                      </a>
-                  </li>
-                  {% if active_team %}
-                  <li>
-                      <a href="{% url 'teams:team-exit' active_team.id %}" class="dropdown-item text-danger">
-                          🚪 {% trans "Exit Team" %}
-                      </a>
-                  </li>
-                  {% endif %}
-
-                  <!-- Logout -->
-                  <li><hr class="dropdown-divider"></li>
-                  <li>
-                    <form method="post" action="{% url 'logout' %}" class="px-3">
-                      {% csrf_token %}
-                      <button type="submit" class="dropdown-item">
-                        🚪 {% trans "Logout" %}
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            {% endif %}
-
-            <!-- Language selector dropdown (visible on all screens, order 3 on mobile, order 3 on desktop) -->
-            {% get_current_language as CURRENT_LANGUAGE %}
-            {% get_available_languages as LANGUAGES %}
-            <ul class="navbar-nav order-3 order-md-3 me-2">
-              <li class="nav-item dropdown">
-                <button class="nav-link dropdown-toggle bg-transparent border-0 px-2" type="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  {{ CURRENT_LANGUAGE|upper }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  {% for lang_code, lang_name in LANGUAGES %}
-                  <li>
-                    <form method="post" action="{% url 'set_language' %}" class="px-3 py-1">
-                      {% csrf_token %}
-                      <input type="hidden" name="language" value="{{ lang_code }}" />
-                      <button type="submit" class="dropdown-item {% if lang_code == CURRENT_LANGUAGE %}active{% endif %}">
-                        {{ lang_name }} ({{ lang_code|upper }})
-                      </button>
-                    </form>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </li>
-            </ul>
-
-            <!-- Desktop navigation links (visible only on desktop, order 1) -->
-            <div class="d-none d-md-block order-md-1">
-              <ul class="navbar-nav">
-                {% if user.is_authenticated %}
+            <!-- DESKTOP NAV: Center -->
+            <div class="collapse navbar-collapse" id="navbarText">
+              {% if user.is_authenticated %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'user-list' %}active{% endif %}" href="{% url 'user:user-list' %}">{% trans "Users" %}</a>
                   </li>
@@ -221,16 +91,121 @@
                   <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'labels-list' %}active{% endif %}" href="{% url 'labels:labels-list' %}">{% trans "Labels" %}</a>
                   </li>
-                {% else %}
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user:user-create' %}">{% trans "Signup" %}</a>
-                  </li>
-                {% endif %}
               </ul>
+              {% endif %}
             </div>
+
+            <!-- RIGHT SIDE: User Menu (Combined with Language) -->
+            <div class="d-flex align-items-center ms-auto">
+              
+              {% if user.is_authenticated %}
+                <div class="dropdown">
+                  <button class="btn btn-link nav-link text-white d-flex align-items-center gap-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- На мобильном: только иконка. На десктопе: иконка + имя -->
+                    {% if active_team %}
+                        <i class="bi bi-building-fill fs-5"></i>
+                        <span class="d-none d-md-inline max-w-150 text-truncate">{{ active_team.name }}</span>
+                    {% else %}
+                        <i class="bi bi-person-circle fs-5"></i>
+                        <span class="d-none d-md-inline max-w-150 text-truncate">{{ user.username }}</span>
+                    {% endif %}
+                  </button>
+                  
+                  <!-- dropdown-menu-end держит меню внутри экрана справа -->
+                  <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 240px;">
+                    
+                    <!-- Teams Section -->
+                    <li class="dropdown-header">
+                        {% if active_team %}{{ active_team.name }}{% else %}{{ user.username }}{% endif %}
+                    </li>
+                    
+                    {% if user_teams %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="dropdown-header">{% trans "Switch context" %}</li>
+                        
+                        <!-- Individual -->
+                        <li>
+                            <form method="post" action="{% url 'teams:switch-team' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="team_id" value="individual">
+                                <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center {% if not active_team %}active{% endif %}">
+                                    <span><i class="bi bi-person me-2"></i>{% trans "Individual" %}</span>
+                                    {% if not active_team %}<i class="bi bi-check"></i>{% endif %}
+                                </button>
+                            </form>
+                        </li>
+                        
+                        <!-- Teams Loop -->
+                        {% for membership in user_teams %}
+                        <li>
+                            <form method="post" action="{% url 'teams:switch-team' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="team_id" value="{{ membership.team.id }}">
+                                <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center {% if active_team.id == membership.team.id %}active{% endif %}">
+                                    <span class="text-truncate" style="max-width: 150px;">
+                                        <i class="bi bi-building me-2"></i>{{ membership.team.name }}
+                                    </span>
+                                </button>
+                            </form>
+                        </li>
+                        {% endfor %}
+                    {% endif %}
+
+                    <li><hr class="dropdown-divider"></li>
+                    
+                    <!-- User Actions -->
+                    <li>
+                        <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
+                            <i class="bi bi-pencil-square me-2"></i>{% trans "Edit Profile" %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'teams:team-create' %}">
+                            <i class="bi bi-plus-circle me-2"></i>{% trans "New Team" %}
+                        </a>
+                    </li>
+
+                    <!-- Language Switcher INSIDE User Menu -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-header">{% trans "Language" %}</li>
+                    {% get_current_language as CURRENT_LANGUAGE %}
+                    {% get_available_languages as LANGUAGES %}
+                    
+                    <li>
+                        <div class="d-flex px-3 py-1 gap-2">
+                            {% for lang_code, lang_name in LANGUAGES %}
+                            <form method="post" action="{% url 'set_language' %}" class="flex-fill">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="{{ lang_code }}" />
+                                <button type="submit" class="btn btn-sm w-100 {% if lang_code == CURRENT_LANGUAGE %}btn-primary{% else %}btn-outline-secondary{% endif %}">
+                                    {{ lang_code|upper }}
+                                </button>
+                            </form>
+                            {% endfor %}
+                        </div>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="bi bi-box-arrow-right me-2"></i>{% trans "Logout" %}
+                            </button>
+                        </form>
+                    </li>
+                  </ul>
+                </div>
+
+              {% else %}
+                <!-- Login/Signup for Guests -->
+                <div class="d-flex gap-2">
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">{% trans "Login" %}</a>
+                    <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-sm">{% trans "Signup" %}</a>
+                </div>
+              {% endif %}
+            </div>
+            
           </div>
         </nav>
       </div>
