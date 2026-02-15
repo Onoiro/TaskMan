@@ -9,6 +9,13 @@
     flex-wrap: nowrap !important;
 }
 
+/* === Стили для обрезки текста === */
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* === Стили для имени пользователя/команды === */
 .context-name {
     display: inline-block;
@@ -16,9 +23,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
-    
+
     /* На мобильных (по умолчанию) */
-    max-width: 70px; 
+    max-width: 70px;
     font-size: 0.85rem;
 }
 
@@ -46,7 +53,7 @@
     align-items: center;
 }
 .dropdown-item i {
-    width: 1.5rem; 
+    width: 1.5rem;
     text-align: center;
 }
 .btn-link:focus, .btn-link:active {

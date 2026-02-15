@@ -32,11 +32,10 @@
             <!-- 1. LOGO -->
             <a class="navbar-brand d-flex align-items-center me-2 me-md-4" href="{% url 'index' %}">
               <img src="{% static 'icons/emodji.png' %}" alt="TaskMan" style="height: 28px; width: auto;">
-              
-              <!-- Логика отображения текста: 
-                   Показываем текст на десктопе (d-md-block).
-                   На мобильных (d-block d-md-none) показываем ТОЛЬКО если юзер НЕ залогинен. -->
-              <span class="ms-2 fw-bold {% if user.is_authenticated %}d-none d-md-block{% endif %}">
+
+              <!-- Логика отображения текста:
+                   Показываем текст ТОЛЬКО на десктопе (d-none d-md-block). -->
+              <span class="ms-2 fw-bold d-none d-md-block">
                 {% trans "TaskMan" %}
               </span>
             </a>
@@ -46,7 +45,18 @@
             <div class="d-flex d-md-none me-auto">
               <div class="dropdown">
                 <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-list fs-2"></i> <!-- Иконка Гамбургер, большая и удобная -->
+                  <!-- Иконка текущей страницы -->
+                  {% if request.resolver_match.url_name == 'user-list' %}
+                    <i class="bi bi-people fs-2"></i>
+                  {% elif request.resolver_match.url_name == 'tasks-list' %}
+                    <i class="bi bi-card-checklist fs-2"></i>
+                  {% elif request.resolver_match.url_name == 'statuses-list' %}
+                    <i class="bi bi-flag fs-2"></i>
+                  {% elif request.resolver_match.url_name == 'labels-list' %}
+                    <i class="bi bi-tags fs-2"></i>
+                  {% else %}
+                    <i class="bi bi-list fs-2"></i>
+                  {% endif %}
                 </button>
                 <ul class="dropdown-menu shadow">
                     <li><h6 class="dropdown-header">{% trans "Navigation" %}</h6></li>
@@ -97,17 +107,17 @@
 
             <!-- RIGHT SIDE: User Menu (Combined with Language) -->
             <div class="d-flex align-items-center ms-auto">
-              
+
               {% if user.is_authenticated %}
                 <div class="dropdown">
                   <button class="btn btn-link nav-link text-white d-flex align-items-center gap-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- Show only icon on mobile, icon + name on desktop -->
+                    <!-- Show icon + name on both mobile and desktop with truncation -->
                     {% if active_team %}
                         <i class="bi bi-building-fill fs-5"></i>
-                        <span class="d-none d-md-inline max-w-150 text-truncate">{{ active_team.name }}</span>
+                        <span class="text-truncate d-inline-block" style="max-width: 80px;">{{ active_team.name }}</span>
                     {% else %}
                         <i class="bi bi-person-circle fs-5"></i>
-                        <span class="d-none d-md-inline max-w-150 text-truncate">{{ user.username }}</span>
+                        <span class="text-truncate d-inline-block" style="max-width: 80px;">{{ user.username }}</span>
                     {% endif %}
                   </button>
                   
