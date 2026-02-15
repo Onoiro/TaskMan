@@ -14,9 +14,8 @@
                 <!-- Блок мета-информации (Контекст) -->
                 <div class="card border-0 shadow-sm mb-3 bg-light">
                     <div class="card-body py-2 px-3">
-                        <!-- Верхняя строка: ID (слева), дата/время (справа) -->
+                        <!-- Верхняя строка: дата/время -->
                         <div class="d-flex justify-content-between small mb-2">
-                            <span class="badge bg-secondary">#{{ object.id }}</span>
                             <span class="text-muted" title="{% trans 'Created' %}">📅 {{ object.created_at|date:"d.m H:i" }}</span>
                         </div>
                         <!-- Средняя строка: статус (слева), метки (справа) -->

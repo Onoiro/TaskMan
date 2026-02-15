@@ -57,7 +57,6 @@
                                     <a href="{% url 'labels:labels-update' label.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ label.name }}
                                     </a>
-                                    <span class="text-muted small ms-1 align-top">#{{ label.id }}</span>
                                 </div>
                                 <div class="text-muted small text-nowrap mt-1">
                                     {{ label.created_at|date:"d.m.y" }}

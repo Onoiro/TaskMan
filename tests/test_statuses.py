@@ -76,14 +76,12 @@ class StatusesTestCase(TestCase):
             self.assertContains(response, status.name)
             # Check that status is displayed in card format
             self.assertContains(response, 'status-card')
-            # Check that status ID is displayed
-            self.assertContains(response, '#{}'.format(status.id))
 
         # other teams statuses and individual statuses should not be displayed
         other_statuses = Status.objects.exclude(team=self.team)
         for status in other_statuses:
             # check that other team statuses are not displayed
-            self.assertNotContains(response, '#{}'.format(status.id))
+            self.assertNotContains(response, status.name)
 
     def test_statuses_list_content_individual_mode(self):
         # remove active team

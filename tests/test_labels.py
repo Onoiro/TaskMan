@@ -72,14 +72,12 @@ class LabelsTestCase(TestCase):
             self.assertContains(response, label.name)
             # Check that label is displayed in card format
             self.assertContains(response, 'label-card')
-            # Check that label ID is displayed
-            self.assertContains(response, '#{}'.format(label.id))
 
         # labels of other teams and individual labels have not to be shown
         other_labels = Label.objects.exclude(team=self.team)
         for label in other_labels:
-            # check labels by id because names can be the same
-            self.assertNotContains(response, '#{}'.format(label.id))
+            # check labels by name because names should be unique
+            self.assertNotContains(response, label.name)
 
     def test_labels_list_content_individual_mode(self):
         self._set_active_team(None)
@@ -97,7 +95,7 @@ class LabelsTestCase(TestCase):
         # team labels have not to be shown
         team_labels = Label.objects.filter(team__isnull=False)
         for label in team_labels:
-            self.assertNotContains(response, '#{}'.format(label.id))
+            self.assertNotContains(response, label.name)
 
     def test_labels_list_team_switching(self):
         """test team switching"""

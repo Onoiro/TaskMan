@@ -176,7 +176,7 @@ class TaskTestCase(TestCase):
             self.assertContains(response, task.name)
 
     def test_tasks_list_card_shows_task_id(self):
-        """Check that task ID is visible in card"""
+        """Check that task name is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
 
         if self.team:
@@ -186,7 +186,7 @@ class TaskTestCase(TestCase):
                 author=self.user, team__isnull=True).first()
 
         if task:
-            self.assertContains(response, f'#{task.id}')
+            self.assertContains(response, task.name)
 
     def test_tasks_list_card_shows_status(self):
         """Check that task status is visible in card"""
