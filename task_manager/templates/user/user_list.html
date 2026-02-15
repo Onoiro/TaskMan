@@ -57,13 +57,13 @@
         <div class="toolbar-left">
             <div class="btn-group" role="group">
                 <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'tasks:tasks-list' %}">
-                    📋 <span class="d-none d-sm-inline ms-1">{% trans "Tasks" %}</span>
+                    <i class="bi bi-card-checklist"></i> <span class="d-none d-sm-inline ms-1">{% trans "Tasks" %}</span>
                 </a>
                 <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'statuses:statuses-list' %}">
-                    🚦 <span class="d-none d-sm-inline ms-1">{% trans "Statuses" %}</span>
+                    <i class="bi bi-flag"></i> <span class="d-none d-sm-inline ms-1">{% trans "Statuses" %}</span>
                 </a>
                 <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'labels:labels-list' %}">
-                    🏷️ <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
+                    <i class="bi bi-tags"></i> <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
                 </a>
             </div>
         </div>
