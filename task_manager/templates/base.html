@@ -12,6 +12,27 @@
     
     <!-- ... ваши мета теги PWA и иконки ... -->
     <link rel="manifest" href="/manifest.json">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-180x180.png' %}">
+    
+    <!-- iOS PWA settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TaskMan">
+
+    <!-- Android PWA settings -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="TaskMan">
+    
+    <!-- Colors Chrome for Android -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="msapplication-navbutton-color" content="#007bff">
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="msapplication-TileImage" content="{% static 'icons/icon-192x192.png' %}">
+
     <title>{% block title %}{% trans "TaskMan" %}{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
