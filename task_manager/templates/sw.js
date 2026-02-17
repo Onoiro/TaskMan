@@ -1,13 +1,21 @@
-const CACHE_NAME = 'taskman-v10';
+// ВАЖНО: менять версию при КАЖДОМ деплое!
+const CACHE_NAME = 'taskman-v11';
 
 const CRITICAL_ASSETS = [
+  '/static/css/vendor/bootstrap.min.css',
+  '/static/css/vendor/bootstrap-icons.min.css',
+  '/static/js/bootstrap.bundle.min.js',
+  '/static/css/vendor/fonts/bootstrap-icons.woff2',
   '/static/css/custom.css',
+  '/static/icons/emodji.png',
   '/static/icons/icon-192x192.png',
   '/static/icons/icon-180x180.png',
   '/static/icons/icon-512x512.png',
   '/static/images/favicon.ico',
   '/static/offline.html'
 ];
+
+// Больше никаких EXTERNAL — всё локально!
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
