@@ -9,24 +9,14 @@ const CRITICAL_ASSETS = [
   '/static/offline.html'
 ];
 
-const EXTERNAL = [
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
-];
-
-// Установка
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => Promise.all([
-        cache.addAll(CRITICAL_ASSETS),
-        cache.addAll(EXTERNAL)
-      ]))
+      .then(cache => cache.addAll(CRITICAL_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// Активация
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys()
@@ -39,38 +29,32 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Fetch
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
 
   const url = new URL(e.request.url);
 
-  // Все навигационные запросы (HTML-страницы): Network First
+  // Навигация: Network First
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
         .then(response => {
-          // Кешируем успешные ответы
           if (response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(e.request, responseClone);
-            });
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
           }
           return response;
         })
-        .catch(() => {
-          // Сначала пробуем кешированную версию страницы
-          return caches.match(e.request)
-            .then(cached => cached || caches.match('/static/offline.html'));
-        })
+        .catch(() =>
+          caches.match(e.request)
+            .then(cached => cached || caches.match('/static/offline.html'))
+        )
     );
     return;
   }
 
-  // Статические файлы: Cache First
-  if (url.pathname.startsWith('/static/') ||
-      url.hostname.includes('cdn.jsdelivr.net')) {
+  // Статика: Cache First
+  if (url.pathname.startsWith('/static/')) {
     e.respondWith(
       caches.match(e.request)
         .then(response => {
@@ -78,9 +62,7 @@ self.addEventListener('fetch', (e) => {
           return fetch(e.request).then(fetchResponse => {
             if (fetchResponse.status === 200) {
               const clone = fetchResponse.clone();
-              caches.open(CACHE_NAME).then(cache => {
-                cache.put(e.request, clone);
-              });
+              caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
             }
             return fetchResponse;
           });
@@ -90,6 +72,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // API/другие запросы: Network Only
+  // Остальное: Network Only
   e.respondWith(fetch(e.request));
 });
