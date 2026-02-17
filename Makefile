@@ -183,6 +183,9 @@ deploy:
 	sleep 15
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py collectstatic --no-input --clear
+	@echo "=== Проверка staticfiles ==="
+	@ls -la staticfiles/icons/ | head -20
+	@echo "=== Deploy complete ==="
 
 # quick start for development
 d-dev:
