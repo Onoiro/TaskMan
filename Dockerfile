@@ -27,13 +27,18 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /app && useradd -m -r appuser && chown -R appuser /app
+RUN mkdir /app && \
+    useradd -m -r -u 1000 appuser && \
+    chown -R appuser:appuser /app
+
 WORKDIR /app
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY --from=builder --chown=appuser:appuser /app /app
+
+RUN mkdir -p /app/staticfiles && chown -R appuser:appuser /app/staticfiles
 
 USER appuser
 
