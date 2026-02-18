@@ -1,5 +1,5 @@
 // ВАЖНО: менять версию при КАЖДОМ деплое!
-const CACHE_NAME = 'taskman-v11';
+const CACHE_NAME = 'taskman-v12';
 
 const CRITICAL_ASSETS = [
   '/static/css/vendor/bootstrap.min.css',

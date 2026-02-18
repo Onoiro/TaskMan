@@ -16,6 +16,10 @@
     text-overflow: ellipsis;
 }
 
+.tiny-text {
+    font-size: 0.75rem;
+}
+
 /* === Стили для имени пользователя/команды === */
 .context-name {
     display: inline-block;
@@ -58,4 +62,17 @@
 }
 .btn-link:focus, .btn-link:active {
     box-shadow: none;
+}
+
+/* Увеличение размера кнопок тулбара и иконок внутри них */
+.toolbar-left .btn-group .btn {
+    min-width: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.toolbar-left .btn-group .btn i {
+    font-size: 1.2rem;
 }
