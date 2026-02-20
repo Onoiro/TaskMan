@@ -165,7 +165,6 @@ LANGUAGE_CODE = os.getenv('DJANGO_LANGUAGE_CODE', 'ru')
 LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
-    ('es', _('Spanish')),
     ('tg', _('Tajik')),
 ]
 
