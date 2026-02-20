@@ -1,120 +1,116 @@
-# SOME DESCRIPTIVE TITLE.
+# Translation of TaskMan to Tajik.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: TaskMan 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-20 23:43+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-02-20 00:00+0000\n"
+"Last-Translator: TaskMan Team\n"
+"Language-Team: Tajik <tg@li.org>\n"
+"Language: tg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: forms.py:7
 msgid "Specify the subject:"
-msgstr "Укажите тему:"
+msgstr "Мавзӯъро муайян кунед:"
 
 #: forms.py:10
 msgid "Bug, suggestion, etc."
-msgstr "Баг, предложение и т.д."
+msgstr "Хатогӣ, пешниҳод ва ғайра."
 
 #: forms.py:14
 msgid "* Your email or Telegram (@username):"
-msgstr "* Ваш email или Telegram (@username):"
+msgstr "* Email ё Telegram-и шумо (@username):"
 
 #: forms.py:21
 msgid "* Message:"
-msgstr "* Сообщение:"
+msgstr "* Паём:"
 
 #: forms.py:24
 msgid "Describe your issue or suggestion..."
-msgstr "Опишите вашу проблему или предложение..."
+msgstr "Мушкилӣ ё пешниҳоди худро шарҳ диҳед..."
 
 #: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
 #: statuses/forms.py:14 statuses/models.py:13 tasks/models.py:26
 #: teams/models.py:13
 msgid "Name"
-msgstr "Имя"
+msgstr "Ном"
 
 #: labels/models.py:16 statuses/models.py:18 tasks/models.py:20
 msgid ""
 "Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
 "#, & are not allowed."
 msgstr ""
-"Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
-"не разрешены."
+"Танҳо ҳарфҳо, рақамҳо, фосилаҳо ва аломатҳои -_.,!? иҷозат дода мешаванд. "
+"Аломатҳои <, >, #, & иҷозат дода намешаванд."
 
 #: labels/views.py:37
 msgid "Label created successfully"
-msgstr "Метка успешно создана"
+msgstr "Барчасп бомуваффақият эҷод шуд"
 
 #: labels/views.py:57
 msgid "Label updated successfully"
-msgstr "Метка успешно изменена"
+msgstr "Барчасп бомуваффақият нав карда шуд"
 
 #: labels/views.py:79
 msgid "Label deleted successfully"
-msgstr " Метка успешно удалена"
+msgstr "Барчасп бомуваффақият ҳазф шуд"
 
 #: labels/views.py:100
 msgid "Cannot delete label because it is in use"
-msgstr "Невозможно удалить метку, потому что она используется"
+msgstr "Барчаспро ҳазф кардан ғайриимкон аст, зеро он истифода шуда истодааст"
 
 #: permissions.py:7
 msgid "You are not authorized! Please login."
-msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
+msgstr "Шумо иҷозат надоред! Лутфан, ворид шавед."
 
 #: permissions.py:24
 msgid "You don't have permissions to modify another user."
-msgstr "У вас нет прав для изменения другого пользователя."
+msgstr "Шумо ҳуқуқи тағйир додани корбари дигарро надоред."
 
 #: permissions.py:40
 msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
-"У вас нет прав, чтобы сделать это изменение. Это может сделать только админ "
-"команды"
+"Шумо ҳуқуқи тағйир додани инро надоред. Инро танҳо админи даста иҷро карда "
+"метавонад."
 
 #: permissions.py:65
 msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
 msgstr ""
-"У вас нет прав, чтобы управлять участниками команды. Это может сделать "
-"только администратор команды"
+"Шумо ҳуқуқи идоракунии иштирокчиёни дастаро надоред. Инро танҳо админи даста "
+"иҷро карда метавонад."
 
 #: permissions.py:74
 msgid "You cannot change your own role in the team."
-msgstr "Вы не можете изменить свою собственную роль в команде."
+msgstr "Шумо наметавонед нақши худро дар даста тағйир диҳед."
 
 #: permissions.py:79
 msgid "Team membership not found."
-msgstr "Участие в команде не найдено."
+msgstr "Узвият дар даста ёфт нашуд."
 
 #: settings.py:166 templates/index.html:63
 msgid "English"
-msgstr "Английский"
+msgstr "Англисӣ"
 
 #: settings.py:167 templates/index.html:67
 msgid "Russian"
-msgstr "Русский"
+msgstr "Русӣ"
 
 #: settings.py:168
 msgid "Spanish"
-msgstr "Испанский"
+msgstr "Испанӣ"
 
 #: settings.py:169
 msgid "Tajik"
-msgstr "Таджикский"
+msgstr "Тоҷикӣ"
 
 #: statuses/forms.py:18 statuses/forms.py:21 statuses/models.py:40
 #: tasks/models.py:30 teams/models.py:23
@@ -122,196 +118,196 @@ msgstr "Таджикский"
 #: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
 #: templates/user/user_detail.html:30 user/models.py:8
 msgid "Description"
-msgstr "Описание"
+msgstr "Тавсиф"
 
 #: statuses/forms.py:24 user/forms.py:15 user/forms.py:16 user/forms.py:17
 msgid "Optional"
-msgstr "Необязательно"
+msgstr "Ихтиёрӣ"
 
 #: statuses/forms.py:28 templates/statuses/statuses_update.html:28
 #: templates/statuses/statuses_update.html:59
 msgid "Color"
-msgstr "Цвет"
+msgstr "Ранг"
 
 #: statuses/forms.py:33
 msgid "Choose status color"
-msgstr "Выберите цвет статуса"
+msgstr "Ранги ҳолатро интихоб кунед"
 
 #: statuses/models.py:49 tasks/models.py:63 teams/models.py:33
 #: templates/labels/labels_update.html:56
 #: templates/statuses/statuses_update.html:58
 #: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
 msgid "Created at"
-msgstr "Дата создания"
+msgstr "Санаи эҷод"
 
 #: statuses/models.py:58
 msgid "To Do"
-msgstr "Сделать"
+msgstr "Барои иҷро"
 
 #: statuses/models.py:59
 msgid "Task has been created but not yet started"
-msgstr "Задача создана, но ещё не начата"
+msgstr "Вазифа эҷод шуд, аммо ҳанӯз оғоз нашудааст"
 
 #: statuses/models.py:63
 msgid "In Progress"
-msgstr "В работе"
+msgstr "Дар раванди иҷро"
 
 #: statuses/models.py:64
 msgid "Task is currently being worked on"
-msgstr "Задача выполняется в данный момент"
+msgstr "Дар болои вазифа кор рафта истодааст"
 
 #: statuses/models.py:68
 msgid "On Hold"
-msgstr "На паузе"
+msgstr "Таваққуф"
 
 #: statuses/models.py:69
 msgid "Task is temporarily paused"
-msgstr "Задача временно приостановлена"
+msgstr "Вазифа муваққатан боздошта шудааст"
 
 #: statuses/models.py:73
 msgid "Completed"
-msgstr "Завершена"
+msgstr "Анҷомёфта"
 
 #: statuses/models.py:74
 msgid "Task has been finished successfully"
-msgstr "Задача успешно выполнена"
+msgstr "Вазифа бомуваффақият иҷро шуд"
 
 #: statuses/models.py:78
 msgid "Cancelled"
-msgstr "Отменена"
+msgstr "Бекоршуда"
 
 #: statuses/models.py:79
 msgid "Task was abandoned or deemed unnecessary"
-msgstr "Задача отменена или больше не актуальна"
+msgstr "Вазифа бекор карда шуд ё дигар лозим нест"
 
 #: statuses/models.py:83
 msgid "Blocked"
-msgstr "Заблокирована"
+msgstr "Масдудшуда"
 
 #: statuses/models.py:85
 msgid "Task cannot proceed due to external dependencies"
-msgstr "Задача не может быть выполнена из-за внешних факторов"
+msgstr "Иҷрои вазифа аз сабаби омилҳои беруна ғайриимкон аст"
 
 #: statuses/views.py:37
 msgid "Status created successfully"
-msgstr "Статус успешно создан"
+msgstr "Ҳолат бомуваффақият эҷод шуд"
 
 #: statuses/views.py:57
 msgid "Status updated successfully"
-msgstr "Статус успешно изменен"
+msgstr "Ҳолат бомуваффақият тағйир дода шуд"
 
 #: statuses/views.py:64
 msgid "Status deleted successfully"
-msgstr "Статус успешно удален"
+msgstr "Ҳолат бомуваффақият ҳазф шуд"
 
 #: statuses/views.py:72
 msgid "Cannot delete status because it is in use"
-msgstr "Невозможно удалить статус, потому что он используется"
+msgstr "Ҳолатро ҳазф кардан ғайриимкон аст, зеро он истифода шуда истодааст"
 
 #: tasks/filters.py:15 tasks/models.py:43
 #: templates/statuses/statuses_update.html:51
 msgid "Status"
-msgstr "Статус"
+msgstr "Ҳолат"
 
 #: tasks/filters.py:22 tasks/models.py:49 templates/tasks/task_filter.html:278
 #: templates/tasks/task_update.html:40
 msgid "Executor"
-msgstr "Исполнитель"
+msgstr "Иҷрокунанда"
 
 #: tasks/filters.py:29 templates/labels/labels_update.html:49
 msgid "Label"
-msgstr "Метка"
+msgstr "Барчасп"
 
 #: tasks/filters.py:36
 msgid "Just my tasks"
-msgstr "Только свои задачи"
+msgstr "Танҳо вазифаҳои ман"
 
 #: tasks/filters.py:44
 msgid "After"
-msgstr "После"
+msgstr "Баъд аз"
 
 #: tasks/filters.py:54
 msgid "Before"
-msgstr "До"
+msgstr "Пеш аз"
 
 #: tasks/models.py:38 templates/labels/labels_update.html:28
 msgid "Team"
-msgstr "Команда"
+msgstr "Даста"
 
 #: tasks/models.py:59 templates/base.html:99 templates/base.html:121
 #: templates/index.html:52 templates/statuses/statuses_list.html:26
 #: templates/tasks/task_filter.html:25 templates/user/user_list.html:66
 msgid "Labels"
-msgstr "Метки"
+msgstr "Барчаспҳо"
 
 #: tasks/views.py:28
 msgid "Task can only be deleted by its author."
-msgstr "Задачу может удалить только ее автор"
+msgstr "Вазифаро танҳо муаллифи он ҳазф карда метавонад."
 
 #: tasks/views.py:39
 msgid "Task can only be updated by its author or executor."
-msgstr "Задачу может изменить только ее автор или исполнитель"
+msgstr "Вазифаро танҳо муаллиф ё иҷрокунандаи он тағйир дода метавонад."
 
 #: tasks/views.py:83
 msgid "Filter saved as default"
-msgstr "Фильтр сохранен по умолчанию"
+msgstr "Филтр ҳамчун пешфарз сабт шуд"
 
 #: tasks/views.py:147
 msgid "Task created successfully"
-msgstr "Задача успешно создана"
+msgstr "Вазифа бомуваффақият эҷод шуд"
 
 #: tasks/views.py:176
 msgid "Task updated successfully"
-msgstr "Задача успешно изменена"
+msgstr "Вазифа бомуваффақият тағйир дода шуд"
 
 #: tasks/views.py:189
 msgid "Task deleted successfully"
-msgstr "Задача успешно удалена"
+msgstr "Вазифа бомуваффақият ҳазф шуд"
 
 #: teams/forms.py:23 user/forms.py:22
 msgid "Password"
-msgstr "Пароль"
+msgstr "Рамз"
 
 #: teams/forms.py:25 user/forms.py:24
 msgid "Your password must contain at least 3 characters."
-msgstr "Ваш пароль должен содержать как минимум 3 символа."
+msgstr "Рамзи шумо бояд ҳадди ақал 3 аломат дошта бошад."
 
 #: teams/forms.py:29 user/forms.py:29
 msgid "Confirm password"
-msgstr "Подтверждение пароля"
+msgstr "Тасдиқи рамз"
 
 #: teams/forms.py:31 user/forms.py:31
 msgid "Please enter your password one more time"
-msgstr "Для подтверждения введите, пожалуйста, пароль ещё раз."
+msgstr "Лутфан, рамзро бори дигар ворид кунед"
 
 #: teams/forms.py:40 teams/forms.py:43 user/forms.py:86 user/forms.py:89
 msgid "Leave blank if you don't want to change password"
-msgstr "Оставьте поле пустым, если вы не хотите менять пароль"
+msgstr "Агар рамзро иваз кардан нахоҳед, майдонро холӣ гузоред"
 
 #: teams/forms.py:53 user/forms.py:58
 msgid "Your password is too short. It must contain at least 3 characters."
 msgstr ""
-"Введённый пароль слишком короткий. Он должен содержать как минимум 3 символа."
+"Рамзи воридшуда хеле кӯтоҳ аст. Он бояд ҳадди ақал 3 аломат дошта бошад."
 
 #: teams/forms.py:67 user/forms.py:74
 msgid "The entered passwords do not match."
-msgstr "Введенные пароли не совпадают."
+msgstr "Рамзҳои воридшуда мувофиқат намекунанд."
 
 #: teams/forms.py:78 user/forms.py:135
 msgid "Both password fields must be filled or both left blank"
-msgstr "Оба поля пароля должны быть заполнены или оба оставлены пустыми"
+msgstr "Ҳарду майдони рамз бояд пур карда шаванд ё ҳарду холӣ монанд"
 
 #: teams/forms.py:107
 msgid "Invalid role selected."
-msgstr "Выбрана недопустимая роль."
+msgstr "Нақши нодуруст интихоб шудааст."
 
 #: teams/models.py:18 user/forms.py:44
 msgid "Team password"
-msgstr "Пароль команды"
+msgstr "Рамзи даста"
 
 #: teams/models.py:19
 msgid "Minimum length is 3 characters"
-msgstr "Минимальная длина 3 символа"
+msgstr "Дарозии ҳадди ақал 3 аломат аст"
 
 #: teams/models.py:61 user/forms.py:100
 msgid "Admin"
@@ -319,109 +315,109 @@ msgstr "Админ"
 
 #: teams/models.py:62 user/forms.py:101
 msgid "Member"
-msgstr "Участник"
+msgstr "Иштирокчӣ"
 
 #: teams/views.py:26
 msgid "Team not found"
-msgstr "Команда не найдена"
+msgstr "Даста ёфт нашуд"
 
 #: teams/views.py:40
 msgid "Switched to individual mode"
-msgstr "Переключено в индивидуальный режим"
+msgstr "Ба реҷаи инфиродӣ гузаронида шуд"
 
 #: teams/views.py:51
 #, python-brace-format
 msgid "Switched to team: {team}"
-msgstr "Переключено на команду: {team}"
+msgstr "Ба дастаи {team} гузаронида шуд"
 
 #: teams/views.py:82
 msgid "You are not a member of this team"
-msgstr "Вы не являетесь участником этой команды"
+msgstr "Шумо узви ин даста нестед"
 
 #: teams/views.py:88
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
 msgstr ""
-"Админы команды не могут покинуть команду. Сначала передайте права админа "
-"другому участнику."
+"Администраторҳои даста наметавонанд дастаро тарк кунанд. Аввал ҳуқуқи "
+"админро ба узви дигар диҳед."
 
 #: teams/views.py:115
 #, python-brace-format
 msgid "You have successfully left the team {team}"
-msgstr "Вы успешно покинули команду {team}"
+msgstr "Шумо дастаи {team}-ро бомуваффақият тарк кардед"
 
 #: teams/views.py:155
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
 msgstr ""
-"Вы не можете покинуть команду, так как являетесь автором или исполнителем "
-"задач в этой команде."
+"Шумо наметавонед аз даста хориҷ шавед, зеро шумо муаллиф ё иҷрокунандаи "
+"вазифаҳо дар ин даста ҳастед."
 
 #: teams/views.py:197
 msgid "Team created successfully"
-msgstr "Команда успешно создана"
+msgstr "Даста бомуваффақият эҷод шуд"
 
 #: teams/views.py:226
 msgid "Team updated successfully"
-msgstr "Команда успешно изменена"
+msgstr "Даста бомуваффақият тағйир дода шуд"
 
 #: teams/views.py:242
 msgid "Cannot delete a team because it has tasks."
-msgstr "Невозможно удалить команду, так как у нее есть задачи."
+msgstr "Дастаро ҳазф кардан ғайриимкон аст, зеро он вазифаҳо дорад."
 
 #: teams/views.py:250
 msgid "Cannot delete a team because it has other members."
-msgstr "Невозможно удалить команду, потому что в ней есть участники"
+msgstr "Дастаро ҳазф кардан ғайриимкон аст, зеро дар он иштирокчиён мавҷуданд."
 
 #: teams/views.py:254
 msgid "Team deleted successfully"
-msgstr "Команда успешно удалена"
+msgstr "Даста бомуваффақият ҳазф шуд"
 
 #: teams/views.py:278
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
-msgstr "Пользователь {username} назначен админом команды."
+msgstr "Корбар {username} админи даста таъин шуд."
 
 #: teams/views.py:285
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
-msgstr "Пользователь {username} стал участником команды."
+msgstr "Корбар {username} узви оддии даста шуд."
 
 #: templates/base.html:36 templates/base.html:58 views.py:29
 msgid "TaskMan"
-msgstr "ТаскМан"
+msgstr "TaskMan"
 
 #: templates/base.html:81
 msgid "Navigation"
-msgstr ""
+msgstr "Паймоиш"
 
 #: templates/base.html:84 templates/base.html:112
 #: templates/labels/labels_list.html:29
 #: templates/statuses/statuses_list.html:29 templates/tasks/task_filter.html:28
 msgid "Users"
-msgstr "Пользователи"
+msgstr "Корбарон"
 
 #: templates/base.html:89 templates/base.html:115
 #: templates/labels/labels_list.html:23
 #: templates/statuses/statuses_list.html:23 templates/user/user_list.html:60
 msgid "Tasks"
-msgstr "Задачи"
+msgstr "Вазифаҳо"
 
 #: templates/base.html:94 templates/base.html:118
 #: templates/labels/labels_list.html:26 templates/tasks/task_filter.html:22
 #: templates/user/user_list.html:63
 msgid "Statuses"
-msgstr "Статусы"
+msgstr "Ҳолатҳо"
 
 #: templates/base.html:153
 msgid "Switch context"
-msgstr "Переключить контекст"
+msgstr "Ивази контекст"
 
 #: templates/base.html:161 templates/labels/labels_update.html:33
 msgid "Individual"
-msgstr "Индивидуальный режим"
+msgstr "Инфиродӣ"
 
 #: templates/base.html:188 templates/labels/labels_list.html:77
 #: templates/labels/labels_update.html:65
@@ -430,146 +426,144 @@ msgstr "Индивидуальный режим"
 #: templates/tasks/task_update.html:60 templates/teams/team_update.html:26
 #: templates/user/user_detail.html:99 templates/user/user_update.html:13
 msgid "Edit"
-msgstr "Изменить"
+msgstr "Таҳрир"
 
 #: templates/base.html:193
-#, fuzzy
-#| msgid "Team"
 msgid "New Team"
-msgstr "Команда"
+msgstr "Дастаи нав"
 
 #: templates/base.html:199
 msgid "Language"
-msgstr "Язык"
+msgstr "Забон"
 
 #: templates/base.html:222
 msgid "Logout"
-msgstr "Выход"
+msgstr "Хуруҷ"
 
 #: templates/base.html:232 templates/index.html:22 templates/index.html:32
 #: templates/login.html:8
 msgid "Login"
-msgstr "Вход"
+msgstr "Вуруд"
 
 #: templates/base.html:233 templates/user/user_create_form.html:8
 msgid "Signup"
-msgstr "Регистрация"
+msgstr "Бақайдгирӣ"
 
 #: templates/base.html:283 templates/feedback.html:7 templates/feedback.html:12
 #: views.py:66
 msgid "Feedback"
-msgstr "Обратная связь"
+msgstr "Бозхӯрд"
 
 #: templates/feedback.html:13
 msgid "Found a bug or have a suggestion? Let us know!"
-msgstr "Нашли баг или есть предложение? Сообщите нам!"
+msgstr "Хатогӣ ёфтед ё пешниҳоде доред? Ба мо хабар диҳед!"
 
 #: templates/feedback.html:21
 msgid "Send"
-msgstr "Отправить"
+msgstr "Ирсол кардан"
 
 #: templates/feedback.html:28
 msgid "Note"
-msgstr "Примечание"
+msgstr "Эзоҳ"
 
 #: templates/feedback.html:28
 msgid ""
 "Your message will be sent to developers via Telegram. We will reply to the "
 "contact you provide."
 msgstr ""
-"Ваше сообщение будет отправлено разработчикам через Telegram. Мы ответим по "
-"указанному контакту."
+"Паёми шумо тавассути Telegram ба таҳиягарон фиристода мешавад. Мо ба "
+"тамосҳои пешниҳодкардаи шумо ҷавоб хоҳем дод."
 
 #: templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
-msgstr "Telegram открыт! Отправьте сообщение там."
+msgstr "Telegram кушода шуд! Паёми худро онҷо фиристед."
 
 #: templates/index.html:19 templates/index.html:29
 msgid "Go to Tasks"
-msgstr "Перейти к задачам"
+msgstr "Гузариш ба вазифаҳо"
 
 #: templates/index.html:21 templates/index.html:31
 msgid "Get Started"
-msgstr "Начать"
+msgstr "Оғоз кунед"
 
 #: templates/index.html:36
 msgid "Features"
-msgstr "Возможности"
+msgstr "Имкониятҳо"
 
 #: templates/index.html:40
 msgid "Individual & Team Use"
-msgstr "Для индивидуального использования и команд"
+msgstr "Барои истифодаи инфиродӣ ва дастаӣ"
 
 #: templates/index.html:40
 msgid "Perfect for personal workflows or isolated team projects"
-msgstr "Подходит для личной работы и изолированных командных проектов"
+msgstr "Муносиб барои кори шахсӣ ва лоиҳаҳои дастаии ҷудогона"
 
 #: templates/index.html:44
 msgid "Task Creation"
-msgstr "Быстрое создание задач"
+msgstr "Эҷоди босуръати вазифаҳо"
 
 #: templates/index.html:44
 msgid "Add titles, descriptions, and assignees in seconds"
-msgstr "Добавляйте названия, описания и исполнителей за считанные секунды"
+msgstr "Номҳо, тавсифҳо ва иҷрокунандагонро дар якчанд сония илова кунед"
 
 #: templates/index.html:48
 msgid "Custom Statuses"
-msgstr "Пользовательские статусы"
+msgstr "Ҳолатҳои фармоишӣ"
 
 #: templates/index.html:48
 msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
 msgstr ""
-"Отслеживайте прогресс задач (например, «К выполнению», «В процессе», "
-"«Готово»)"
+"Раванди вазифаҳоро пайгирӣ кунед (мас., «Барои иҷро», «Дар раванд», "
+"«Тайёр»)"
 
 #: templates/index.html:52
 msgid "Organize tasks with tags for quick filtering"
-msgstr "Организуйте задачи с помощью тегов для быстрого поиска и фильтрации"
+msgstr "Вазифаҳоро бо тегҳо барои ҷустуҷӯ ва филтратсияи зуд ташкил кунед"
 
 #: templates/index.html:56
 msgid "User-Friendly"
-msgstr "Удобство для пользователя"
+msgstr "Осон барои истифода"
 
 #: templates/index.html:56
 msgid "Register once, manage everything"
-msgstr "Один раз зарегистрировались — управляйте всем"
+msgstr "Як бор сабти ном кунед — ҳама чизро идора намоед"
 
 #: templates/index.html:59
 msgid "Language Support"
-msgstr "Поддерживаемые языки"
+msgstr "Дастгирии забонҳо"
 
 #: templates/labels/labels_create.html:8
 msgid "Create label"
-msgstr "Создать метку"
+msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_create.html:13
 #: templates/statuses/statuses_create_form.html:13
 #: templates/tasks/task_create_form.html:13
 #: templates/teams/team_create_form.html:13
 msgid "Create"
-msgstr "Создать"
+msgstr "Эҷод кардан"
 
 #: templates/labels/labels_delete.html:8
 msgid "Delete labels"
-msgstr "Удаление метки"
+msgstr "Ҳазфи барчаспҳо"
 
 #: templates/labels/labels_delete.html:14
 msgid "Delete label"
-msgstr "Удаление метки"
+msgstr "Ҳазфи барчасп"
 
 #: templates/labels/labels_delete.html:17
 #: templates/statuses/statuses_delete.html:17
 #: templates/tasks/task_delete.html:17 templates/teams/team_delete.html:17
 #: templates/user/user_delete.html:17
 msgid "Are you sure you want to delete"
-msgstr "Вы уверены, что хотите удалить"
+msgstr "Оё мутмаинед, ки мехоҳед ҳазф кунед"
 
 #: templates/labels/labels_delete.html:20
 #: templates/statuses/statuses_delete.html:20
 #: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
 #: templates/user/user_delete.html:19
 msgid "Yes, delete"
-msgstr "Да, удалить"
+msgstr "Бале, ҳазф кардан"
 
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:68
@@ -582,11 +576,11 @@ msgstr "Да, удалить"
 #: templates/teams/team_update.html:29 templates/user/user_delete.html:22
 #: templates/user/user_detail.html:110 templates/user/user_update.html:16
 msgid "Cancel"
-msgstr "Отмена"
+msgstr "Бекор кардан"
 
 #: templates/labels/labels_list.html:13
 msgid "New label"
-msgstr "Создать метку"
+msgstr "Барчаспи нав"
 
 #: templates/labels/labels_list.html:80 templates/labels/labels_update.html:73
 #: templates/statuses/statuses_list.html:87
@@ -594,350 +588,348 @@ msgstr "Создать метку"
 #: templates/tasks/task_update.html:68 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:116
 msgid "Delete"
-msgstr "Удалить"
+msgstr "Ҳазф"
 
 #: templates/labels/labels_list.html:94
 msgid "No labels found"
-msgstr "Метки не найдены"
+msgstr "Барчаспҳо ёфт нашуданд"
 
 #: templates/labels/labels_list.html:95
 msgid "Create your first label to organize tasks"
-msgstr "Создайте первую метку для организации задач"
+msgstr "Аввалин барчаспи худро барои ташкили вазифаҳо эҷод кунед"
 
 #: templates/labels/labels_list.html:96
 msgid "Create Label"
-msgstr "Создать метку"
+msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_update.html:20
 #: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_update.html:19
 msgid "Created"
-msgstr "Создана"
+msgstr "Эҷод шудааст"
 
 #: templates/labels/labels_update.html:32
 msgid "Individual mode"
-msgstr "Индивидуальный режим"
+msgstr "Реҷаи инфиродӣ"
 
 #: templates/labels/labels_update.html:39
 #: templates/statuses/statuses_update.html:36
 msgid "Creator"
-msgstr "Создатель"
+msgstr "Эҷодкунанда"
 
 #: templates/login.html:13
 msgid "Log in"
-msgstr "Войти"
+msgstr "Ворид шудан"
 
 #: templates/statuses/statuses_create_form.html:8
 msgid "Create status"
-msgstr "Создать статус"
+msgstr "Эҷоди ҳолат"
 
 #: templates/statuses/statuses_delete.html:8
 #: templates/statuses/statuses_delete.html:14
 msgid "Delete status"
-msgstr "Удаление статуса"
+msgstr "Ҳазфи ҳолат"
 
 #: templates/statuses/statuses_list.html:13
 msgid "New status"
-msgstr "Создать статус"
+msgstr "Ҳолати нав"
 
 #: templates/statuses/statuses_list.html:101
 msgid "No statuses found"
-msgstr "Статусы не найдены"
+msgstr "Ҳолатҳо ёфт нашуданд"
 
 #: templates/statuses/statuses_list.html:102
 msgid "Create your first status to organize tasks"
-msgstr "Создайте первый статус для организации задач"
+msgstr "Аввалин ҳолати худро барои ташкили вазифаҳо эҷод кунед"
 
 #: templates/statuses/statuses_list.html:103
 msgid "Create Status"
-msgstr "Создать статус"
+msgstr "Эҷоди ҳолат"
 
 #: templates/statuses/statuses_update.html:41
 msgid "Has description"
-msgstr "Есть описание"
+msgstr "Тавсиф дорад"
 
 #: templates/tasks/task_create_form.html:8
 msgid "Create task"
-msgstr "Создать задачу"
+msgstr "Эҷоди вазифа"
 
 #: templates/tasks/task_delete.html:8 templates/tasks/task_delete.html:14
 msgid "Delete task"
-msgstr "Удаление задачи"
+msgstr "Ҳазфи вазифа"
 
 #: templates/tasks/task_filter.html:12
 msgid "New task"
-msgstr "Новая задача"
+msgstr "Вазифаи нав"
 
 #: templates/tasks/task_filter.html:49
 msgid "Hide"
-msgstr "Скрыть"
+msgstr "Пинҳон кардан"
 
 #: templates/tasks/task_filter.html:58
 msgid "Default filter is active"
-msgstr "Фильтр по умолчанию активен"
+msgstr "Филтри пешфарз фаъол аст"
 
 #: templates/tasks/task_filter.html:59
 msgid "Default"
-msgstr "По умолчанию"
+msgstr "Пешфарз"
 
 #: templates/tasks/task_filter.html:65 templates/tasks/task_filter.html:297
 msgid "Reset filters"
-msgstr "Сбросить фильтры"
+msgstr "Барқарор кардани филтрҳо"
 
 #: templates/tasks/task_filter.html:67
 msgid "Active"
-msgstr "Активен"
+msgstr "Фаъол"
 
 #: templates/tasks/task_filter.html:73
 msgid "Filter"
-msgstr "Фильтр"
+msgstr "Филтр"
 
 #: templates/tasks/task_filter.html:93 templates/tasks/task_filter.html:102
 #: templates/tasks/task_filter.html:116 templates/tasks/task_filter.html:125
 #: templates/tasks/task_filter.html:139 templates/tasks/task_filter.html:148
 #: templates/tasks/task_filter.html:162 templates/tasks/task_filter.html:171
 msgid "Exclude"
-msgstr "Исключить"
+msgstr "Хориҷ кардан"
 
 #: templates/tasks/task_filter.html:207
 msgid "Save as default"
-msgstr "Сохранить по умолчанию"
+msgstr "Ҳамчун пешфарз сабт кардан"
 
 #: templates/tasks/task_filter.html:208
 msgid "Save"
-msgstr "Сохранить"
+msgstr "Сабт кардан"
 
 #: templates/tasks/task_filter.html:219
 msgid "Reset"
-msgstr "Сбросить"
+msgstr "Барқарор кардан"
 
 #: templates/tasks/task_filter.html:222
 msgid "Apply"
-msgstr "Применить"
+msgstr "Татбиқ кардан"
 
 #: templates/tasks/task_filter.html:274 templates/tasks/task_update.html:36
 msgid "Author"
-msgstr "Автор"
+msgstr "Муаллиф"
 
 #: templates/tasks/task_filter.html:294
 msgid "No tasks found"
-msgstr "Задач нет"
+msgstr "Вазифаҳо ёфт нашуданд"
 
 #: templates/tasks/task_filter.html:295
 msgid "Try adjusting filters or create a new task"
-msgstr "Попробуйте настроить фильтры или создать новую задачу"
+msgstr "Филтрҳоро тағйир диҳед ё вазифаи нав эҷод кунед"
 
 #: templates/tasks/task_filter.html:299
 msgid "Create Task"
-msgstr "Создать Задачу"
+msgstr "Эҷоди вазифа"
 
 #: templates/teams/team_create_form.html:8
 msgid "Create Team "
-msgstr "Создание команды"
+msgstr "Эҷоди даста"
 
 #: templates/teams/team_delete.html:8 templates/user/user_delete.html:8
 #: templates/user/user_delete.html:14
 msgid "Delete user"
-msgstr "Удаление пользователя"
+msgstr "Ҳазфи корбар"
 
 #: templates/teams/team_delete.html:14
 msgid "Delete team"
-msgstr "Удаление команды"
+msgstr "Ҳазфи даста"
 
 #: templates/teams/team_detail.html:14
 msgid "Team details"
-msgstr "Данные команды"
+msgstr "Маълумоти даста"
 
 #: templates/teams/team_detail.html:26 templates/user/user_list.html:32
 msgid "No description"
-msgstr "Нет описания"
+msgstr "Тавсиф нест"
 
 #: templates/teams/team_detail.html:43
 msgid "Members"
-msgstr "Участники"
+msgstr "Иштирокчиён"
 
 #: templates/teams/team_detail.html:57
 msgid "Team name"
-msgstr "Название команды"
+msgstr "Номи даста"
 
 #: templates/teams/team_detail.html:67 templates/teams/team_update.html:16
 msgid "Edit Team"
-msgstr "Изменение команды"
+msgstr "Таҳрири даста"
 
 #: templates/teams/team_exit.html:8 templates/teams/team_exit.html:14
 msgid "Exit team"
-msgstr "Выход из команды"
+msgstr "Хуруҷ аз даста"
 
 #: templates/teams/team_exit.html:17
 msgid "Are you sure you want to exit the team"
-msgstr "Вы уверены, что хотите выйти из команды?"
+msgstr "Оё мутмаинед, ки мехоҳед аз даста хориҷ шавед?"
 
 #: templates/teams/team_exit.html:19
 msgid "Yes, exit"
-msgstr "Да, выйти"
+msgstr "Бале, хориҷ шудан"
 
 #: templates/teams/team_member_role_update.html:10
 msgid "Change Team Member Role"
-msgstr "Изменить роль участника команды"
+msgstr "Тағйири нақши узви даста"
 
 #: templates/teams/team_member_role_update.html:14
 msgid "You are changing the role for"
-msgstr "Вы изменяете роль для"
+msgstr "Шумо нақшро иваз карда истодаед барои"
 
 #: templates/teams/team_member_role_update.html:15
 msgid "in team"
-msgstr "в команде"
+msgstr "дар дастаи"
 
 #: templates/teams/team_member_role_update.html:22
 msgid "Role"
-msgstr "Роль"
+msgstr "Нақш"
 
 #: templates/teams/team_member_role_update.html:42
 msgid "Save Changes"
-msgstr "Сохранить изменения"
+msgstr "Сабти тағйирот"
 
 #: templates/user/user_create_form.html:13
 msgid "Sign up"
-msgstr "Зарегистрировать"
+msgstr "Сабти ном"
 
 #: templates/user/user_detail.html:14
 msgid "User details"
-msgstr "Данные пользователя"
+msgstr "Маълумоти корбар"
 
 #: templates/user/user_detail.html:25 templates/user/user_detail.html:89
 msgid "Full name"
-msgstr "Полное имя"
+msgstr "Номи пурра"
 
 #: templates/user/user_detail.html:39 templates/user/user_detail.html:90
 msgid "Date joined"
-msgstr "Дата создания"
+msgstr "Санаи ҳамроҳшавӣ"
 
 #: templates/user/user_detail.html:48 templates/user/user_detail.html:91
 msgid "Last login"
-msgstr "Последний вход"
+msgstr "Воридшавии охирин"
 
 #: templates/user/user_detail.html:54
 msgid "Never"
-msgstr "Никогда"
+msgstr "Ҳеҷ гоҳ"
 
 #: templates/user/user_detail.html:61
 msgid "Teams"
-msgstr "команды"
+msgstr "Дастаҳо"
 
 #: templates/user/user_detail.html:78
 msgid "No teams"
-msgstr "Команд нет"
+msgstr "Дастаҳо нестанд"
 
 #: templates/user/user_detail.html:88
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr "Номи корбарӣ"
 
 #: templates/user/user_detail.html:105
 msgid "Change Role"
-msgstr "Сменить роль"
+msgstr "Ивази нақш"
 
 #: templates/user/user_list.html:129
 msgid "Not in team"
-msgstr "Не в команде"
+msgstr "Дар даста нест"
 
 #: templates/user/user_list.html:144
 msgid "No users found"
-msgstr "Пользователей не найдено"
+msgstr "Корбарон ёфт нашуданд"
 
 #: templates/user/user_list.html:145
 msgid "No users available"
-msgstr "Пользователей нет"
+msgstr "Корбарон мавҷуд нестанд"
 
 #: templates/user/user_update.html:8
 msgid "Edit user"
-msgstr "Изменение пользователя"
+msgstr "Таҳрири корбар"
 
 #: user/admin.py:54
 msgid "Additional Info"
-msgstr "Дополнительная информация"
+msgstr "Маълумоти иловагӣ"
 
 #: user/forms.py:36
 msgid "Join team (optional)"
-msgstr "Присоединиться к команде (необязательно)"
+msgstr "Ҳамроҳшавӣ ба даста (ихтиёрӣ)"
 
 #: user/forms.py:38
 msgid ""
 "Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
-"Введите название команды, чтобы присоединиться к существующей команде, или "
-"оставьте поле пустым, чтобы работать индивидуально."
+"Номи дастаро барои ҳамроҳшавӣ ворид кунед, ё барои кори инфиродӣ майдонро "
+"холӣ гузоред."
 
 #: user/forms.py:46
 msgid "Required if joining a team"
-msgstr "Требуется, если присоединяетесь к команде"
+msgstr "Ҳангоми ҳамроҳшавӣ ба даста ҳатмист"
 
 #: user/forms.py:106
 msgid "Current teams"
-msgstr "Текущие команды"
+msgstr "Дастаҳои ҷорӣ"
 
 #: user/forms.py:122
 msgid "Join another team (optional)"
-msgstr "Присоединиться к другой команде (необязательно)"
+msgstr "Ҳамроҳшавӣ ба дастаи дигар (ихтиёрӣ)"
 
 #: user/forms.py:124
 msgid "Enter team name to join another team, or leave empty"
-msgstr ""
-"Введите название команды, к которой хотите присоединиться, или оставьте поле "
-"пустым"
+msgstr "Номи дастаро барои ҳамроҳшавӣ ворид кунед ё холӣ гузоред"
 
 #: user/forms.py:159
 msgid "Team password is required when joining a team"
-msgstr "Пароль команды обязателен при присоединении к команде"
+msgstr "Ҳангоми ҳамроҳшавӣ ба даста рамз ҳатмист"
 
 #: user/forms.py:168
 msgid "Team with this name does not exist"
-msgstr "Команды с таким названием не существует"
+msgstr "Даста бо чунин ном вуҷуд надорад"
 
 #: user/forms.py:175
 msgid "Invalid team password"
-msgstr "Неверный пароль команды"
+msgstr "Рамзи даста нодуруст аст"
 
 #: user/forms.py:186
 msgid "You are already a member of this team"
-msgstr "Вы уже участник этой команды"
+msgstr "Шумо аллакай узви ин даста ҳастед"
 
 #: user/views.py:110
 msgid "User created successfully"
-msgstr "Пользователь успешно зарегистрирован"
+msgstr "Корбар бомуваффақият бақайд гирифта шуд"
 
 #: user/views.py:127
 #, python-brace-format
 msgid "Welcome! You have joined team: {team}"
-msgstr "Добро пожаловать! Вы присоединились к команде: {team}"
+msgstr "Хуш омадед! Шумо ба дастаи {team} ҳамроҳ шудед"
 
 #: user/views.py:133
 msgid "Welcome! You can create a team or work individually"
-msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
+msgstr "Хуш омадед! Шумо метавонед даста созед ё инфиродӣ кор кунед"
 
 #: user/views.py:148
 msgid "User updated successfully"
-msgstr "Пользователь успешно изменен"
+msgstr "Корбар бомуваффақият тағйир дода шуд"
 
 #: user/views.py:161
 #, python-brace-format
 msgid "You have joined team: {team}"
-msgstr "Вы присоединились к команде: {team}"
+msgstr "Шумо ба дастаи {team} ҳамроҳ шудед"
 
 #: user/views.py:174
 msgid "User deleted successfully"
-msgstr "Пользователь успешно удален"
+msgstr "Корбар бомуваффақият ҳазф шуд"
 
 #: user/views.py:191
 msgid "Cannot delete user because they are admin of team(s): "
-msgstr "Невозможно удалить пользователя, потому что он админ команд: "
+msgstr "Корбарро ҳазф кардан ғайриимкон аст, зеро он админи даста(ҳо) мебошад: "
 
 #: user/views.py:204
 msgid "Cannot delete a user because it is in use"
-msgstr "Невозможно удалить пользователя, потому что он используется"
+msgstr "Корбарро ҳазф кардан ғайриимкон аст, зеро он истифода шуда истодааст"
 
 #: views.py:30
 msgid "Manage Tasks Your Way"
-msgstr "Управляйте задачами по-своему"
+msgstr "Вазифаҳоро бо усули худ идора кунед"
 
 #: views.py:31
 msgid ""
@@ -945,169 +937,18 @@ msgid ""
 "simplifies task management.<br>Create, assign, and track tasks effortlessly "
 "across projects."
 msgstr ""
-"TaskMan упрощает управление задачами - будь вы одним пользователем  или "
-"частью независимой команды. Создавайте, назначайте и отслеживайте задачи с "
-"легкостью в рамках разных проектов."
+"Новобаста аз он ки шумо танҳо кор мекунед ё бо якчанд дастаҳои мустақил, "
+"TaskMan идоракунии вазифаҳоро осон мекунад.<br>Вазифаҳоро дар доираи "
+"лоиҳаҳои гуногун ба осонӣ эҷод, таъин ва пайгирӣ кунед."
 
 #: views.py:36
 msgid "Read more"
-msgstr "Узнать больше"
+msgstr "Бештар хонед"
 
 #: views.py:45
 msgid "You successfully logged in"
-msgstr "Вы залогинены"
+msgstr "Шумо бомуваффақият ворид шудед"
 
 #: views.py:55
 msgid "You are logged out"
-msgstr "Вы разлогинены"
-
-#~ msgid "Update profile"
-#~ msgstr "Обновить профиль"
-
-#~ msgid "Create Team"
-#~ msgstr "Создание команды"
-
-#~ msgid "Exit Team"
-#~ msgstr "Выйти из команды"
-
-#~ msgid "ID"
-#~ msgstr "ID"
-
-#~ msgid "Team info"
-#~ msgstr "Информация о команде"
-
-#~ msgid "Team Members"
-#~ msgstr "Участники команды"
-
-#~ msgid "User"
-#~ msgstr "Пользователь"
-
-#~ msgid "Joined at"
-#~ msgstr "Дата присоединения"
-
-#~ msgid "Actions"
-#~ msgstr "Действия"
-
-#~ msgid "Your role"
-#~ msgstr "Ваша роль"
-
-#~ msgid "No members in this team yet."
-#~ msgstr "В этой команде пока нет участников."
-
-#~ msgid "description"
-#~ msgstr "описание"
-
-#~ msgid "created at"
-#~ msgstr "дата создания"
-
-#~ msgid "User name"
-#~ msgstr "Имя пользователя"
-
-#~ msgid "Fullname"
-#~ msgstr "Полное имя"
-
-#~ msgid "Hide filter"
-#~ msgstr "Скрыть фильтр"
-
-#~ msgid "Task Manager"
-#~ msgstr "Менеджер задач"
-
-#~ msgid "Home"
-#~ msgstr "Главная"
-
-#~ msgid "Edit label"
-#~ msgstr "Изменение метки"
-
-#~ msgid "Status view"
-#~ msgstr "Просмотр статуса"
-
-#~ msgid "Edit status"
-#~ msgstr "Изменение статуса"
-
-#~ msgid "Task view"
-#~ msgstr "Просмотр задачи"
-
-#~ msgid "No labels"
-#~ msgstr "Нет меток"
-
-#~ msgid "Show"
-#~ msgstr "Показать"
-
-#~ msgid "Compact view"
-#~ msgstr "Кратко"
-
-#~ msgid "Full view"
-#~ msgstr "Подробно"
-
-#~ msgid "No tasks"
-#~ msgstr "Задач нет"
-
-#~ msgid "Edit task"
-#~ msgstr "Изменение задачи"
-
-#~ msgid "You are already a member of this team!"
-#~ msgstr "Вы уже являетесь участником этой команды!"
-
-#~ msgid "You have successfully joined the team!"
-#~ msgstr "Вы успешно присоединились к команде!"
-
-#~ msgid "Team admin"
-#~ msgstr "Администратор команды"
-
-#~ msgid "Menu"
-#~ msgstr "Меню"
-
-#~ msgid "Exit"
-#~ msgstr "Выход"
-
-#~ msgid "Labels:"
-#~ msgstr "Метки"
-
-#~ msgid "admin name"
-#~ msgstr "администратор"
-
-#~ msgid "Register as Team Admin"
-#~ msgstr "Зарегистрироваться как Администратор Команды"
-
-#~ msgid "Sign up, then create your team."
-#~ msgstr "Зарегистрируйся, после создай свою команду"
-
-#~ msgid ""
-#~ "You can't signup as team admin and join existing team at the same time"
-#~ msgstr ""
-#~ "Вы не можете одновременно зарегистрироваться Администратором и стать "
-#~ "участником какой-либо команды"
-
-#~ msgid "There is no such team"
-#~ msgstr "Такой команды не существует"
-
-#~ msgid ""
-#~ "Cannot delete a user because it is team admin. Delete the team first."
-#~ msgstr ""
-#~ "Невозможно удалить пользователя, являющегося Администратором команды. "
-#~ "Сначала удалите команду."
-
-#~ msgid "info"
-#~ msgstr "инфо"
-
-# msgid "Welcome to Task Manager!"
-# msgstr "Добро пожаловать в Таск-менеджер!"
-#~ msgid ""
-#~ "Task Manager is a web application designed to manage tasks in an "
-#~ "organization or team.<br>Task Manager allows users to register, create "
-#~ "and effectively manage tasks."
-#~ msgstr ""
-#~ "Менеджер Задач - приложение для управления задачами в организации или "
-#~ "команде.<br>Регистрируйтесь, создавайте и эффективно управляйте задачами."
-
-#~ msgid "Hello from Hexlet!"
-#~ msgstr "Привет от Хекслета!"
-
-#~ msgid "Practical programming courses"
-#~ msgstr "Практические курсы по программированию"
-
-#~ msgid "First name"
-#~ msgstr "Имя"
-
-#~ msgid "Task_manager"
-#~ msgstr "Менеджер задач"
+msgstr "Шумо аз система баромадед"
