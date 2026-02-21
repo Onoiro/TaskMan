@@ -166,6 +166,8 @@ LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
     ('tg', _('Tajik')),
+    ('az', _('Azerbaijani')),
+    ('ky', _('Kyrgyz')),
 ]
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'), )

@@ -1,0 +1,950 @@
+# Translation of TaskMan to Azerbaijani.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TaskMan 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-20 23:43+0300\n"
+"PO-Revision-Date: 2026-02-21 00:00+0000\n"
+"Last-Translator: TaskMan Team\n"
+"Language-Team: Azerbaijani <az@li.org>\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms.py:7
+msgid "Specify the subject:"
+msgstr "Mövzunu göstərin:"
+
+#: forms.py:10
+msgid "Bug, suggestion, etc."
+msgstr "Xəta, təklif və s."
+
+#: forms.py:14
+msgid "* Your email or Telegram (@username):"
+msgstr "* Email və ya Telegram-ınız (@username):"
+
+#: forms.py:21
+msgid "* Message:"
+msgstr "* Mesaj:"
+
+#: forms.py:24
+msgid "Describe your issue or suggestion..."
+msgstr "Probleminizi və ya təklifinizi təsvir edin..."
+
+#: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
+#: statuses/forms.py:14 statuses/models.py:13 tasks/models.py:26
+#: teams/models.py:13
+msgid "Name"
+msgstr "Ad"
+
+#: labels/models.py:16 statuses/models.py:18 tasks/models.py:20
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
+msgstr ""
+"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. "
+"<, >, #, & simvollarına icazə verilmir."
+
+#: labels/views.py:37
+msgid "Label created successfully"
+msgstr "Etiket uğurla yaradıldı"
+
+#: labels/views.py:57
+msgid "Label updated successfully"
+msgstr "Etiket uğurla yeniləndi"
+
+#: labels/views.py:79
+msgid "Label deleted successfully"
+msgstr "Etiket uğurla silindi"
+
+#: labels/views.py:100
+msgid "Cannot delete label because it is in use"
+msgstr "Etiketi silmək mümkün deyil, çünki o istifadə olunur"
+
+#: permissions.py:7
+msgid "You are not authorized! Please login."
+msgstr "Siz avtorizasiya olunmamısınız! Zəhmət olmasa daxil olun."
+
+#: permissions.py:24
+msgid "You don't have permissions to modify another user."
+msgstr "Başqa istifadəçini dəyişdirmək üçün icazəniz yoxdur."
+
+#: permissions.py:40
+msgid "You don't have permissions to modify this. Only team admin can do this."
+msgstr "Bunu dəyişmək üçün icazəniz yoxdur. Bunu yalnız komanda admini edə bilər."
+
+#: permissions.py:65
+msgid ""
+"You don't have permissions to manage team members. Only team admin can do "
+"this."
+msgstr ""
+"Komanda üzvlərini idarə etmək üçün icazəniz yoxdur. Bunu yalnız komanda "
+"admini edə bilər."
+
+#: permissions.py:74
+msgid "You cannot change your own role in the team."
+msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
+
+#: permissions.py:79
+msgid "Team membership not found."
+msgstr "Komanda üzvlüyü tapılmadı."
+
+#: settings.py:166 templates/index.html:63
+msgid "English"
+msgstr "İngilis"
+
+#: settings.py:167 templates/index.html:67
+msgid "Russian"
+msgstr "Rus"
+
+#: settings.py:168
+msgid "Spanish"
+msgstr "İspan"
+
+#: settings.py:169
+msgid "Tajik"
+msgstr "Tacik"
+
+#: statuses/forms.py:18 statuses/forms.py:21 statuses/models.py:40
+#: tasks/models.py:30 teams/models.py:23
+#: templates/statuses/statuses_update.html:40
+#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
+#: templates/user/user_detail.html:30 user/models.py:8
+msgid "Description"
+msgstr "Təsvir"
+
+#: statuses/forms.py:24 user/forms.py:15 user/forms.py:16 user/forms.py:17
+msgid "Optional"
+msgstr "İstəyə bağlı"
+
+#: statuses/forms.py:28 templates/statuses/statuses_update.html:28
+#: templates/statuses/statuses_update.html:59
+msgid "Color"
+msgstr "Rəng"
+
+#: statuses/forms.py:33
+msgid "Choose status color"
+msgstr "Status rəngini seçin"
+
+#: statuses/models.py:49 tasks/models.py:63 teams/models.py:33
+#: templates/labels/labels_update.html:56
+#: templates/statuses/statuses_update.html:58
+#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
+msgid "Created at"
+msgstr "Yaradılma tarixi"
+
+#: statuses/models.py:58
+msgid "To Do"
+msgstr "Ediləcək"
+
+#: statuses/models.py:59
+msgid "Task has been created but not yet started"
+msgstr "Tapşırıq yaradılıb, lakin hələ başlanmayıb"
+
+#: statuses/models.py:63
+msgid "In Progress"
+msgstr "İcradadır"
+
+#: statuses/models.py:64
+msgid "Task is currently being worked on"
+msgstr "Hazırda tapşırıq üzərində iş gedir"
+
+#: statuses/models.py:68
+msgid "On Hold"
+msgstr "Gözləmədə"
+
+#: statuses/models.py:69
+msgid "Task is temporarily paused"
+msgstr "Tapşırıq müvəqqəti dayandırılıb"
+
+#: statuses/models.py:73
+msgid "Completed"
+msgstr "Tamamlandı"
+
+#: statuses/models.py:74
+msgid "Task has been finished successfully"
+msgstr "Tapşırıq uğurla tamamlandı"
+
+#: statuses/models.py:78
+msgid "Cancelled"
+msgstr "Ləğv edildi"
+
+#: statuses/models.py:79
+msgid "Task was abandoned or deemed unnecessary"
+msgstr "Tapşırıq dayandırılıb və ya artıq lazım deyil"
+
+#: statuses/models.py:83
+msgid "Blocked"
+msgstr "Bloklandı"
+
+#: statuses/models.py:85
+msgid "Task cannot proceed due to external dependencies"
+msgstr "Xarici asılılıqlar səbəbindən tapşırıq davam etdirilə bilmir"
+
+#: statuses/views.py:37
+msgid "Status created successfully"
+msgstr "Status uğurla yaradıldı"
+
+#: statuses/views.py:57
+msgid "Status updated successfully"
+msgstr "Status uğurla yeniləndi"
+
+#: statuses/views.py:64
+msgid "Status deleted successfully"
+msgstr "Status uğurla silindi"
+
+#: statuses/views.py:72
+msgid "Cannot delete status because it is in use"
+msgstr "Statusu silmək mümkün deyil, çünki o istifadə olunur"
+
+#: tasks/filters.py:15 tasks/models.py:43
+#: templates/statuses/statuses_update.html:51
+msgid "Status"
+msgstr "Status"
+
+#: tasks/filters.py:22 tasks/models.py:49 templates/tasks/task_filter.html:278
+#: templates/tasks/task_update.html:40
+msgid "Executor"
+msgstr "İcraçı"
+
+#: tasks/filters.py:29 templates/labels/labels_update.html:49
+msgid "Label"
+msgstr "Etiket"
+
+#: tasks/filters.py:36
+msgid "Just my tasks"
+msgstr "Yalnız mənim tapşırıqlarım"
+
+#: tasks/filters.py:44
+msgid "After"
+msgstr "Sonra"
+
+#: tasks/filters.py:54
+msgid "Before"
+msgstr "Əvvəl"
+
+#: tasks/models.py:38 templates/labels/labels_update.html:28
+msgid "Team"
+msgstr "Komanda"
+
+#: tasks/models.py:59 templates/base.html:99 templates/base.html:121
+#: templates/index.html:52 templates/statuses/statuses_list.html:26
+#: templates/tasks/task_filter.html:25 templates/user/user_list.html:66
+msgid "Labels"
+msgstr "Etiketlər"
+
+#: tasks/views.py:28
+msgid "Task can only be deleted by its author."
+msgstr "Tapşırığı yalnız onun müəllifi silə bilər."
+
+#: tasks/views.py:39
+msgid "Task can only be updated by its author or executor."
+msgstr "Tapşırığı yalnız müəllif və ya icraçı dəyişə bilər."
+
+#: tasks/views.py:83
+msgid "Filter saved as default"
+msgstr "Filtr standart olaraq yadda saxlanıldı"
+
+#: tasks/views.py:147
+msgid "Task created successfully"
+msgstr "Tapşırıq uğurla yaradıldı"
+
+#: tasks/views.py:176
+msgid "Task updated successfully"
+msgstr "Tapşırıq uğurla yeniləndi"
+
+#: tasks/views.py:189
+msgid "Task deleted successfully"
+msgstr "Tapşırıq uğurla silindi"
+
+#: teams/forms.py:23 user/forms.py:22
+msgid "Password"
+msgstr "Şifrə"
+
+#: teams/forms.py:25 user/forms.py:24
+msgid "Your password must contain at least 3 characters."
+msgstr "Şifrəniz ən azı 3 simvoldan ibarət olmalıdır."
+
+#: teams/forms.py:29 user/forms.py:29
+msgid "Confirm password"
+msgstr "Şifrənin təsdiqi"
+
+#: teams/forms.py:31 user/forms.py:31
+msgid "Please enter your password one more time"
+msgstr "Zəhmət olmasa şifrənizi bir daha daxil edin"
+
+#: teams/forms.py:40 teams/forms.py:43 user/forms.py:86 user/forms.py:89
+msgid "Leave blank if you don't want to change password"
+msgstr "Şifrəni dəyişmək istəmirsinizsə, boş saxlayın"
+
+#: teams/forms.py:53 user/forms.py:58
+msgid "Your password is too short. It must contain at least 3 characters."
+msgstr "Şifrəniz çox qısadır. O, ən azı 3 simvoldan ibarət olmalıdır."
+
+#: teams/forms.py:67 user/forms.py:74
+msgid "The entered passwords do not match."
+msgstr "Daxil edilmiş şifrələr uyğun gəlmir."
+
+#: teams/forms.py:78 user/forms.py:135
+msgid "Both password fields must be filled or both left blank"
+msgstr "Hər iki şifrə sahəsi doldurulmalı və ya hər ikisi boş saxlanmalıdır"
+
+#: teams/forms.py:107
+msgid "Invalid role selected."
+msgstr "Yanlış rol seçildi."
+
+#: teams/models.py:18 user/forms.py:44
+msgid "Team password"
+msgstr "Komanda şifrəsi"
+
+#: teams/models.py:19
+msgid "Minimum length is 3 characters"
+msgstr "Minimum uzunluq 3 simvoldur"
+
+#: teams/models.py:61 user/forms.py:100
+msgid "Admin"
+msgstr "Admin"
+
+#: teams/models.py:62 user/forms.py:101
+msgid "Member"
+msgstr "Üzv"
+
+#: teams/views.py:26
+msgid "Team not found"
+msgstr "Komanda tapılmadı"
+
+#: teams/views.py:40
+msgid "Switched to individual mode"
+msgstr "Fərdi rejimə keçildi"
+
+#: teams/views.py:51
+#, python-brace-format
+msgid "Switched to team: {team}"
+msgstr "Komandaya keçildi: {team}"
+
+#: teams/views.py:82
+msgid "You are not a member of this team"
+msgstr "Siz bu komandanın üzvü deyilsiniz"
+
+#: teams/views.py:88
+msgid ""
+"Team administrators cannot leave the team. Please transfer admin rights to "
+"another member first."
+msgstr ""
+"Komanda adminləri komandanı tərk edə bilməz. Zəhmət olmasa əvvəlcə admin "
+"hüquqlarını başqa üzvə verin."
+
+#: teams/views.py:115
+#, python-brace-format
+msgid "You have successfully left the team {team}"
+msgstr "Siz {team} komandasını uğurla tərk etdiniz"
+
+#: teams/views.py:155
+msgid ""
+"You cannot exit the team because you are author or executor of tasks in this "
+"team."
+msgstr ""
+"Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi və "
+"ya icraçısısınız."
+
+#: teams/views.py:197
+msgid "Team created successfully"
+msgstr "Komanda uğurla yaradıldı"
+
+#: teams/views.py:226
+msgid "Team updated successfully"
+msgstr "Komanda uğurla yeniləndi"
+
+#: teams/views.py:242
+msgid "Cannot delete a team because it has tasks."
+msgstr "Komandanı silmək mümkün deyil, çünki onun tapşırıqları var."
+
+#: teams/views.py:250
+msgid "Cannot delete a team because it has other members."
+msgstr "Komandanı silmək mümkün deyil, çünki onun başqa üzvləri var."
+
+#: teams/views.py:254
+msgid "Team deleted successfully"
+msgstr "Komanda uğurla silindi"
+
+#: teams/views.py:278
+#, python-brace-format
+msgid "User {username} has been promoted to team admin."
+msgstr "İstifadəçi {username} komanda admini təyin edildi."
+
+#: teams/views.py:285
+#, python-brace-format
+msgid "User {username} has been demoted to team member."
+msgstr "İstifadəçi {username} komanda üzvü edildi."
+
+#: templates/base.html:36 templates/base.html:58 views.py:29
+msgid "TaskMan"
+msgstr "TaskMan"
+
+#: templates/base.html:81
+msgid "Navigation"
+msgstr "Naviqasiya"
+
+#: templates/base.html:84 templates/base.html:112
+#: templates/labels/labels_list.html:29
+#: templates/statuses/statuses_list.html:29 templates/tasks/task_filter.html:28
+msgid "Users"
+msgstr "İstifadəçilər"
+
+#: templates/base.html:89 templates/base.html:115
+#: templates/labels/labels_list.html:23
+#: templates/statuses/statuses_list.html:23 templates/user/user_list.html:60
+msgid "Tasks"
+msgstr "Tapşırıqlar"
+
+#: templates/base.html:94 templates/base.html:118
+#: templates/labels/labels_list.html:26 templates/tasks/task_filter.html:22
+#: templates/user/user_list.html:63
+msgid "Statuses"
+msgstr "Statuslar"
+
+#: templates/base.html:153
+msgid "Switch context"
+msgstr "Konteksti dəyiş"
+
+#: templates/base.html:161 templates/labels/labels_update.html:33
+msgid "Individual"
+msgstr "Fərdi"
+
+#: templates/base.html:188 templates/labels/labels_list.html:77
+#: templates/labels/labels_update.html:65
+#: templates/statuses/statuses_list.html:84
+#: templates/statuses/statuses_update.html:67
+#: templates/tasks/task_update.html:60 templates/teams/team_update.html:26
+#: templates/user/user_detail.html:99 templates/user/user_update.html:13
+msgid "Edit"
+msgstr "Redaktə et"
+
+#: templates/base.html:193
+msgid "New Team"
+msgstr "Yeni komanda"
+
+#: templates/base.html:199
+msgid "Language"
+msgstr "Dil"
+
+#: templates/base.html:222
+msgid "Logout"
+msgstr "Çıxış"
+
+#: templates/base.html:232 templates/index.html:22 templates/index.html:32
+#: templates/login.html:8
+msgid "Login"
+msgstr "Giriş"
+
+#: templates/base.html:233 templates/user/user_create_form.html:8
+msgid "Signup"
+msgstr "Qeydiyyat"
+
+#: templates/base.html:283 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:66
+msgid "Feedback"
+msgstr "Əks əlaqə"
+
+#: templates/feedback.html:13
+msgid "Found a bug or have a suggestion? Let us know!"
+msgstr "Xəta tapdınız və ya təklifiniz var? Bizə bildirin!"
+
+#: templates/feedback.html:21
+msgid "Send"
+msgstr "Göndər"
+
+#: templates/feedback.html:28
+msgid "Note"
+msgstr "Qeyd"
+
+#: templates/feedback.html:28
+msgid ""
+"Your message will be sent to developers via Telegram. We will reply to the "
+"contact you provide."
+msgstr ""
+"Mesajınız Telegram vasitəsilə tərtibatçılara göndəriləcək. Göstərdiyiniz "
+"əlaqə vasitəsilə cavab verəcəyik."
+
+#: templates/feedback.html:51
+msgid "Telegram opened! Send your message there."
+msgstr "Telegram açıldı! Mesajınızı orada göndərin."
+
+#: templates/index.html:19 templates/index.html:29
+msgid "Go to Tasks"
+msgstr "Tapşırıqlara keç"
+
+#: templates/index.html:21 templates/index.html:31
+msgid "Get Started"
+msgstr "Başlayın"
+
+#: templates/index.html:36
+msgid "Features"
+msgstr "Xüsusiyyətlər"
+
+#: templates/index.html:40
+msgid "Individual & Team Use"
+msgstr "Fərdi və komanda istifadəsi"
+
+#: templates/index.html:40
+msgid "Perfect for personal workflows or isolated team projects"
+msgstr "Şəxsi iş axınları və ya ayrıca komanda layihələri üçün idealdır"
+
+#: templates/index.html:44
+msgid "Task Creation"
+msgstr "Tapşırıq yaratma"
+
+#: templates/index.html:44
+msgid "Add titles, descriptions, and assignees in seconds"
+msgstr "Başlıqları, təsvirləri və icraçıları bir neçə saniyəyə əlavə edin"
+
+#: templates/index.html:48
+msgid "Custom Statuses"
+msgstr "Fərdi statuslar"
+
+#: templates/index.html:48
+msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
+msgstr ""
+"İrəliləyişi izləyin (məs., «Ediləcək», «İcradadır», «Tamamlandı»)"
+
+#: templates/index.html:52
+msgid "Organize tasks with tags for quick filtering"
+msgstr "Sürətli axtarış və filtrasiya üçün tapşırıqları etiketlərlə təşkil edin"
+
+#: templates/index.html:56
+msgid "User-Friendly"
+msgstr "İstifadəçi üçün rahat"
+
+#: templates/index.html:56
+msgid "Register once, manage everything"
+msgstr "Bir dəfə qeydiyyatdan keçin — hər şeyi idarə edin"
+
+#: templates/index.html:59
+msgid "Language Support"
+msgstr "Dil dəstəyi"
+
+#: templates/labels/labels_create.html:8
+msgid "Create label"
+msgstr "Etiket yarat"
+
+#: templates/labels/labels_create.html:13
+#: templates/statuses/statuses_create_form.html:13
+#: templates/tasks/task_create_form.html:13
+#: templates/teams/team_create_form.html:13
+msgid "Create"
+msgstr "Yarat"
+
+#: templates/labels/labels_delete.html:8
+msgid "Delete labels"
+msgstr "Etiketləri sil"
+
+#: templates/labels/labels_delete.html:14
+msgid "Delete label"
+msgstr "Etiketi sil"
+
+#: templates/labels/labels_delete.html:17
+#: templates/statuses/statuses_delete.html:17
+#: templates/tasks/task_delete.html:17 templates/teams/team_delete.html:17
+#: templates/user/user_delete.html:17
+msgid "Are you sure you want to delete"
+msgstr "Silmək istədiyinizə əminsiniz"
+
+#: templates/labels/labels_delete.html:20
+#: templates/statuses/statuses_delete.html:20
+#: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
+#: templates/user/user_delete.html:19
+msgid "Yes, delete"
+msgstr "Bəli, sil"
+
+#: templates/labels/labels_delete.html:23
+#: templates/labels/labels_update.html:68
+#: templates/statuses/statuses_delete.html:23
+#: templates/statuses/statuses_update.html:70
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:63
+#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:71
+#: templates/teams/team_exit.html:22
+#: templates/teams/team_member_role_update.html:39
+#: templates/teams/team_update.html:29 templates/user/user_delete.html:22
+#: templates/user/user_detail.html:110 templates/user/user_update.html:16
+msgid "Cancel"
+msgstr "Ləğv et"
+
+#: templates/labels/labels_list.html:13
+msgid "New label"
+msgstr "Yeni etiket"
+
+#: templates/labels/labels_list.html:80 templates/labels/labels_update.html:73
+#: templates/statuses/statuses_list.html:87
+#: templates/statuses/statuses_update.html:75
+#: templates/tasks/task_update.html:68 templates/teams/team_update.html:34
+#: templates/user/user_detail.html:116
+msgid "Delete"
+msgstr "Sil"
+
+#: templates/labels/labels_list.html:94
+msgid "No labels found"
+msgstr "Etiket tapılmadı"
+
+#: templates/labels/labels_list.html:95
+msgid "Create your first label to organize tasks"
+msgstr "Tapşırıqları təşkil etmək üçün ilk etiketinizi yaradın"
+
+#: templates/labels/labels_list.html:96
+msgid "Create Label"
+msgstr "Etiket yarat"
+
+#: templates/labels/labels_update.html:20
+#: templates/statuses/statuses_update.html:20
+#: templates/tasks/task_update.html:19
+msgid "Created"
+msgstr "Yaradılıb"
+
+#: templates/labels/labels_update.html:32
+msgid "Individual mode"
+msgstr "Fərdi rejim"
+
+#: templates/labels/labels_update.html:39
+#: templates/statuses/statuses_update.html:36
+msgid "Creator"
+msgstr "Yaradan"
+
+#: templates/login.html:13
+msgid "Log in"
+msgstr "Daxil olun"
+
+#: templates/statuses/statuses_create_form.html:8
+msgid "Create status"
+msgstr "Status yarat"
+
+#: templates/statuses/statuses_delete.html:8
+#: templates/statuses/statuses_delete.html:14
+msgid "Delete status"
+msgstr "Statusu sil"
+
+#: templates/statuses/statuses_list.html:13
+msgid "New status"
+msgstr "Yeni status"
+
+#: templates/statuses/statuses_list.html:101
+msgid "No statuses found"
+msgstr "Status tapılmadı"
+
+#: templates/statuses/statuses_list.html:102
+msgid "Create your first status to organize tasks"
+msgstr "Tapşırıqları təşkil etmək üçün ilk statusunuzu yaradın"
+
+#: templates/statuses/statuses_list.html:103
+msgid "Create Status"
+msgstr "Status yarat"
+
+#: templates/statuses/statuses_update.html:41
+msgid "Has description"
+msgstr "Təsviri var"
+
+#: templates/tasks/task_create_form.html:8
+msgid "Create task"
+msgstr "Tapşırıq yarat"
+
+#: templates/tasks/task_delete.html:8 templates/tasks/task_delete.html:14
+msgid "Delete task"
+msgstr "Tapşırığı sil"
+
+#: templates/tasks/task_filter.html:12
+msgid "New task"
+msgstr "Yeni tapşırıq"
+
+#: templates/tasks/task_filter.html:49
+msgid "Hide"
+msgstr "Gizlət"
+
+#: templates/tasks/task_filter.html:58
+msgid "Default filter is active"
+msgstr "Standart filtr aktivdir"
+
+#: templates/tasks/task_filter.html:59
+msgid "Default"
+msgstr "Standart"
+
+#: templates/tasks/task_filter.html:65 templates/tasks/task_filter.html:297
+msgid "Reset filters"
+msgstr "Filtrləri sıfırla"
+
+#: templates/tasks/task_filter.html:67
+msgid "Active"
+msgstr "Aktiv"
+
+#: templates/tasks/task_filter.html:73
+msgid "Filter"
+msgstr "Filtr"
+
+#: templates/tasks/task_filter.html:93 templates/tasks/task_filter.html:102
+#: templates/tasks/task_filter.html:116 templates/tasks/task_filter.html:125
+#: templates/tasks/task_filter.html:139 templates/tasks/task_filter.html:148
+#: templates/tasks/task_filter.html:162 templates/tasks/task_filter.html:171
+msgid "Exclude"
+msgstr "İstisna et"
+
+#: templates/tasks/task_filter.html:207
+msgid "Save as default"
+msgstr "Standart kimi yadda saxla"
+
+#: templates/tasks/task_filter.html:208
+msgid "Save"
+msgstr "Yadda saxla"
+
+#: templates/tasks/task_filter.html:219
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: templates/tasks/task_filter.html:222
+msgid "Apply"
+msgstr "Tətbiq et"
+
+#: templates/tasks/task_filter.html:274 templates/tasks/task_update.html:36
+msgid "Author"
+msgstr "Müəllif"
+
+#: templates/tasks/task_filter.html:294
+msgid "No tasks found"
+msgstr "Tapşırıq tapılmadı"
+
+#: templates/tasks/task_filter.html:295
+msgid "Try adjusting filters or create a new task"
+msgstr "Filtrləri tənzimləyin və ya yeni tapşırıq yaradın"
+
+#: templates/tasks/task_filter.html:299
+msgid "Create Task"
+msgstr "Tapşırıq yarat"
+
+#: templates/teams/team_create_form.html:8
+msgid "Create Team "
+msgstr "Komanda yarat"
+
+#: templates/teams/team_delete.html:8 templates/user/user_delete.html:8
+#: templates/user/user_delete.html:14
+msgid "Delete user"
+msgstr "İstifadəçini sil"
+
+#: templates/teams/team_delete.html:14
+msgid "Delete team"
+msgstr "Komandanı sil"
+
+#: templates/teams/team_detail.html:14
+msgid "Team details"
+msgstr "Komanda məlumatları"
+
+#: templates/teams/team_detail.html:26 templates/user/user_list.html:32
+msgid "No description"
+msgstr "Təsvir yoxdur"
+
+#: templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "Üzvlər"
+
+#: templates/teams/team_detail.html:57
+msgid "Team name"
+msgstr "Komanda adı"
+
+#: templates/teams/team_detail.html:67 templates/teams/team_update.html:16
+msgid "Edit Team"
+msgstr "Komandanı redaktə et"
+
+#: templates/teams/team_exit.html:8 templates/teams/team_exit.html:14
+msgid "Exit team"
+msgstr "Komandadan çıx"
+
+#: templates/teams/team_exit.html:17
+msgid "Are you sure you want to exit the team"
+msgstr "Komandadan çıxmaq istədiyinizə əminsiniz?"
+
+#: templates/teams/team_exit.html:19
+msgid "Yes, exit"
+msgstr "Bəli, çıx"
+
+#: templates/teams/team_member_role_update.html:10
+msgid "Change Team Member Role"
+msgstr "Komanda üzvünün rolunu dəyiş"
+
+#: templates/teams/team_member_role_update.html:14
+msgid "You are changing the role for"
+msgstr "Siz rolunu dəyişirsiniz:"
+
+#: templates/teams/team_member_role_update.html:15
+msgid "in team"
+msgstr "komandada"
+
+#: templates/teams/team_member_role_update.html:22
+msgid "Role"
+msgstr "Rol"
+
+#: templates/teams/team_member_role_update.html:42
+msgid "Save Changes"
+msgstr "Dəyişiklikləri yadda saxla"
+
+#: templates/user/user_create_form.html:13
+msgid "Sign up"
+msgstr "Qeydiyyatdan keç"
+
+#: templates/user/user_detail.html:14
+msgid "User details"
+msgstr "İstifadəçi məlumatları"
+
+#: templates/user/user_detail.html:25 templates/user/user_detail.html:89
+msgid "Full name"
+msgstr "Tam ad"
+
+#: templates/user/user_detail.html:39 templates/user/user_detail.html:90
+msgid "Date joined"
+msgstr "Qoşulma tarixi"
+
+#: templates/user/user_detail.html:48 templates/user/user_detail.html:91
+msgid "Last login"
+msgstr "Son giriş"
+
+#: templates/user/user_detail.html:54
+msgid "Never"
+msgstr "Heç vaxt"
+
+#: templates/user/user_detail.html:61
+msgid "Teams"
+msgstr "Komandalar"
+
+#: templates/user/user_detail.html:78
+msgid "No teams"
+msgstr "Komanda yoxdur"
+
+#: templates/user/user_detail.html:88
+msgid "Username"
+msgstr "İstifadəçi adı"
+
+#: templates/user/user_detail.html:105
+msgid "Change Role"
+msgstr "Rolu dəyiş"
+
+#: templates/user/user_list.html:129
+msgid "Not in team"
+msgstr "Komandada deyil"
+
+#: templates/user/user_list.html:144
+msgid "No users found"
+msgstr "İstifadəçi tapılmadı"
+
+#: templates/user/user_list.html:145
+msgid "No users available"
+msgstr "İstifadəçi yoxdur"
+
+#: templates/user/user_update.html:8
+msgid "Edit user"
+msgstr "İstifadəçini redaktə et"
+
+#: user/admin.py:54
+msgid "Additional Info"
+msgstr "Əlavə məlumat"
+
+#: user/forms.py:36
+msgid "Join team (optional)"
+msgstr "Komandaya qoşul (istəyə bağlı)"
+
+#: user/forms.py:38
+msgid ""
+"Enter team name to join an existing team, or leave empty to work individually"
+msgstr ""
+"Mövcud komandaya qoşulmaq üçün komanda adını daxil edin və ya fərdi işləmək "
+"üçün boş saxlayın"
+
+#: user/forms.py:46
+msgid "Required if joining a team"
+msgstr "Komandaya qoşularkən tələb olunur"
+
+#: user/forms.py:106
+msgid "Current teams"
+msgstr "Cari komandalar"
+
+#: user/forms.py:122
+msgid "Join another team (optional)"
+msgstr "Başqa komandaya qoşul (istəyə bağlı)"
+
+#: user/forms.py:124
+msgid "Enter team name to join another team, or leave empty"
+msgstr "Başqa komandaya qoşulmaq üçün komanda adını daxil edin və ya boş saxlayın"
+
+#: user/forms.py:159
+msgid "Team password is required when joining a team"
+msgstr "Komandaya qoşulmaq üçün komanda şifrəsi tələb olunur"
+
+#: user/forms.py:168
+msgid "Team with this name does not exist"
+msgstr "Bu adla komanda mövcud deyil"
+
+#: user/forms.py:175
+msgid "Invalid team password"
+msgstr "Yanlış komanda şifrəsi"
+
+#: user/forms.py:186
+msgid "You are already a member of this team"
+msgstr "Siz artıq bu komandanın üzvüsünüz"
+
+#: user/views.py:110
+msgid "User created successfully"
+msgstr "İstifadəçi uğurla yaradıldı"
+
+#: user/views.py:127
+#, python-brace-format
+msgid "Welcome! You have joined team: {team}"
+msgstr "Xoş gəldiniz! Siz {team} komandasına qoşuldunuz"
+
+#: user/views.py:133
+msgid "Welcome! You can create a team or work individually"
+msgstr "Xoş gəldiniz! Siz komanda yarada və ya fərdi işləyə bilərsiniz"
+
+#: user/views.py:148
+msgid "User updated successfully"
+msgstr "İstifadəçi uğurla yeniləndi"
+
+#: user/views.py:161
+#, python-brace-format
+msgid "You have joined team: {team}"
+msgstr "Siz {team} komandasına qoşuldunuz"
+
+#: user/views.py:174
+msgid "User deleted successfully"
+msgstr "İstifadəçi uğurla silindi"
+
+#: user/views.py:191
+msgid "Cannot delete user because they are admin of team(s): "
+msgstr "İstifadəçini silmək mümkün deyil, çünki o komanda(lar)ın adminidir: "
+
+#: user/views.py:204
+msgid "Cannot delete a user because it is in use"
+msgstr "İstifadəçini silmək mümkün deyil, çünki o istifadə olunur"
+
+#: views.py:30
+msgid "Manage Tasks Your Way"
+msgstr "Tapşırıqları öz üsulunuzla idarə edin"
+
+#: views.py:31
+msgid ""
+"Whether you're working solo or with multiple independent teams, TaskMan "
+"simplifies task management.<br>Create, assign, and track tasks effortlessly "
+"across projects."
+msgstr ""
+"Tək işləsəniz də, bir neçə müstəqil komanda ilə işləsəniz də, TaskMan "
+"tapşırıqların idarə edilməsini sadələşdirir.<br>Tapşırıqları layihələr üzrə "
+"asanlıqla yaradın, təyin edin və izləyin."
+
+#: views.py:36
+msgid "Read more"
+msgstr "Daha çox"
+
+#: views.py:45
+msgid "You successfully logged in"
+msgstr "Siz uğurla daxil oldunuz"
+
+#: views.py:55
+msgid "You are logged out"
+msgstr "Siz sistemdən çıxış etdiniz"
