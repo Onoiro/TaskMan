@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from task_manager.user.models import User
 from task_manager.teams.models import Team
@@ -9,6 +11,12 @@ from django.utils.translation import gettext_lazy as _
 
 class Task(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        db_index=True
+    )
     name = models.CharField(
         max_length=150,
         unique=False,

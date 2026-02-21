@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from task_manager.user.models import User
 from django.utils.translation import gettext_lazy as _
@@ -57,6 +59,12 @@ class Team(models.Model):
 
 
 class TeamMembership(models.Model):
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        db_index=True
+    )
     ROLE_CHOICES = [
         ('admin', _('Admin')),
         ('member', _('Member')),
