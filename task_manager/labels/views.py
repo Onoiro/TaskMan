@@ -55,6 +55,8 @@ class LabelsUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     template_name = 'labels/labels_update.html'
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label updated successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def get_queryset(self):
         """Override to show only labels that user can update"""
@@ -77,6 +79,8 @@ class LabelsDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
     template_name = 'labels/labels_delete.html'
     success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label deleted successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def get_queryset(self):
         """Override to show only labels that user can delete"""

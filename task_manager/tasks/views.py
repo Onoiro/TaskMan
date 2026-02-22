@@ -174,6 +174,8 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
     template_name = 'tasks/task_update.html'
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task updated successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -187,3 +189,5 @@ class TaskDeleteView(TaskDeletePermissionMixin,
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task deleted successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'

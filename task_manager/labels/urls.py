@@ -16,10 +16,10 @@ urlpatterns = [
     path('create/',
          LabelsCreateView.as_view(),
          name='labels-create'),
-    path('<int:pk>/update/',
+    path('<uuid:uuid>/update/',
          LabelsUpdateView.as_view(),
          name='labels-update'),
-    path('<int:pk>/delete/',
+    path('<uuid:uuid>/delete/',
          LabelsDeleteView.as_view(),
          name='labels-delete'),
 ]

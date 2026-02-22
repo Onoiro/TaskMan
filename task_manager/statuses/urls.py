@@ -17,10 +17,10 @@ urlpatterns = [
     path('create/',
          StatusesCreateView.as_view(),
          name='statuses-create'),
-    path('<int:pk>/update/',
+    path('<uuid:uuid>/update/',
          StatusesUpdateView.as_view(),
          name='statuses-update'),
-    path('<int:pk>/delete/',
+    path('<uuid:uuid>/delete/',
          StatusesDeleteView.as_view(),
          name='statuses-delete'),
 ]

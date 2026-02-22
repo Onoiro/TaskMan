@@ -15,8 +15,8 @@ urlpatterns = [
     path('', TaskFilterView.as_view(), name="tasks-list"),
     path('create/',
          TaskCreateView.as_view(), name='task-create'),
-    path('<int:pk>/update/',
+    path('<uuid:uuid>/update/',
          TaskUpdateView.as_view(), name='task-update'),
-    path('<int:pk>/delete/',
+    path('<uuid:uuid>/delete/',
          TaskDeleteView.as_view(), name='task-delete'),
 ]

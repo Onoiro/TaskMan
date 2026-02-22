@@ -55,6 +55,8 @@ class StatusesUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
     template_name = 'statuses/statuses_update.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status updated successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
 
 class StatusesDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
@@ -62,6 +64,8 @@ class StatusesDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
     template_name = 'statuses/statuses_delete.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status deleted successfully')
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def form_valid(self, form):
         status = self.get_object()
