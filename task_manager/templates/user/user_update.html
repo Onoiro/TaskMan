@@ -12,7 +12,7 @@
         <button type="submit" class="btn btn-primary me-2">
             {% trans "Edit" %}
         </button>
-        <a href="{% url 'user:user-detail' user.id %}" class="btn btn-secondary">
+        <a href="{% url 'user:user-detail' user.username %}" class="btn btn-secondary">
             {% trans "Cancel" %}
         </a>
     </form>

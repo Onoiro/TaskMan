@@ -8,7 +8,7 @@
     
     <!-- Team info card -->
     {% if request.active_team %}
-    <a href="{% url 'teams:team-detail' request.active_team.id %}" class="text-decoration-none">
+    <a href="{% url 'teams:team-detail' request.active_team.uuid %}" class="text-decoration-none">
         <div class="card border-0 shadow-sm team-info-card mb-4">
             <div class="card-body p-4">
                 <div class="d-flex align-items-start justify-content-between">
@@ -91,7 +91,7 @@
                             <!-- Top row: Username + ID + Date -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
-                                    <a href="{% url 'user:user-detail' user.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                    <a href="{% url 'user:user-detail' user.username %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ user.username }}
                                     </a>
                                 </div>

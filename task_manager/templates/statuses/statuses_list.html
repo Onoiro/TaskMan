@@ -54,7 +54,7 @@
                             <!-- Верхняя строка: Название + ID + Дата -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
-                                    <a href="{% url 'statuses:statuses-update' status.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                    <a href="{% url 'statuses:statuses-update' status.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ status.name }}
                                     </a>
                                 </div>
@@ -80,10 +80,10 @@
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2 small d-none d-md-flex">
-                                    <a href="{% url 'statuses:statuses-update' status.id %}" class="text-decoration-none text-primary">
+                                    <a href="{% url 'statuses:statuses-update' status.uuid %}" class="text-decoration-none text-primary">
                                         ✏️ {% trans "Edit" %}
                                     </a>
-                                    <a href="{% url 'statuses:statuses-delete' status.id %}" class="text-decoration-none text-danger">
+                                    <a href="{% url 'statuses:statuses-delete' status.uuid %}" class="text-decoration-none text-danger">
                                         🗑️ {% trans "Delete" %}
                                     </a>
                                 </div>

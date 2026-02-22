@@ -8,6 +8,13 @@ from django.core.validators import MinLengthValidator
 
 class Team(models.Model):
     id = models.AutoField(primary_key=True)
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        db_index=True,
+    )
+
     name = models.CharField(
         max_length=150,
         unique=True,

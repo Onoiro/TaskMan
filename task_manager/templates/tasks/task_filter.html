@@ -240,7 +240,7 @@
                             <!-- Верхняя строка: Заголовок + ID + Дата -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
-                                    <a href="{% url 'tasks:task-update' obj.id %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                    <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ obj.name }}
                                     </a>
                                 </div>

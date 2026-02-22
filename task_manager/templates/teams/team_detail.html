@@ -63,7 +63,7 @@
             <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
                 <div class="d-grid gap-2 d-md-flex">
                     {% if is_admin %}
-                    <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'teams:team-update' team.id %}">
+                    <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'teams:team-update' team.uuid %}">
                         {% trans "Edit Team" %}
                     </a>
                     {% endif %}

@@ -25,12 +25,12 @@
                         <button type="submit" class="btn btn-primary px-md-4 py-2 fw-bold">
                             {% trans "Edit" %}
                         </button>
-                        <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'teams:team-detail' object.id %}">
+                        <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'teams:team-detail' object.uuid %}">
                             {% trans "Cancel" %}
                         </a>
                     </div>
 
-                    <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'teams:team-delete' object.id %}">
+                    <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'teams:team-delete' object.uuid %}">
                         <small>🗑️ {% trans "Delete" %}</small>
                     </a>
                 </div>

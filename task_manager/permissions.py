@@ -55,7 +55,7 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
             return redirect('login')
 
         try:
-            membership = TeamMembership.objects.get(pk=kwargs['pk'])
+            membership = TeamMembership.objects.get(uuid=kwargs['uuid'])
             team = membership.team
 
             # check if user is team admin or not
@@ -65,7 +65,7 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
                     _("You don't have permissions to manage team members."
                       " Only team admin can do this.")
                 )
-                return redirect('teams:team-detail', pk=team.pk)
+                return redirect('teams:team-detail', uuid=team.uuid)
 
             # check if user is trying to change their own role
             if membership.user == request.user:
@@ -73,7 +73,7 @@ class TeamMembershipAdminPermissions(LoginRequiredMixin):
                     request,
                     _("You cannot change your own role in the team.")
                 )
-                return redirect('teams:team-detail', pk=team.pk)
+                return redirect('teams:team-detail', uuid=team.uuid)
 
         except TeamMembership.DoesNotExist:
             messages.error(request, _("Team membership not found."))

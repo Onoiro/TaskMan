@@ -156,21 +156,21 @@
                         <li>
                             <form method="post" action="{% url 'teams:switch-team' %}">
                                 {% csrf_token %}
-                                <input type="hidden" name="team_id" value="individual">
+                                <input type="hidden" name="team_uuid" value="individual">
                                 <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center {% if not active_team %}active{% endif %}">
                                     <span><i class="bi bi-person me-2"></i>{% trans "Individual" %}</span>
                                     {% if not active_team %}<i class="bi bi-check"></i>{% endif %}
                                 </button>
                             </form>
                         </li>
-                        
+
                         <!-- Teams Loop -->
                         {% for membership in user_teams %}
                         <li>
                             <form method="post" action="{% url 'teams:switch-team' %}">
                                 {% csrf_token %}
-                                <input type="hidden" name="team_id" value="{{ membership.team.id }}">
-                                <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center {% if active_team.id == membership.team.id %}active{% endif %}">
+                                <input type="hidden" name="team_uuid" value="{{ membership.team.uuid }}">
+                                <button type="submit" class="dropdown-item d-flex justify-content-between align-items-center {% if active_team.uuid == membership.team.uuid %}active{% endif %}">
                                     <span class="text-truncate" style="max-width: 150px;">
                                         <i class="bi bi-building me-2"></i>{{ membership.team.name }}
                                     </span>
@@ -184,7 +184,7 @@
                     
                     <!-- User Actions -->
                     <li>
-                        <a class="dropdown-item" href="{% url 'user:user-update' user.id %}">
+                        <a class="dropdown-item" href="{% url 'user:user-update' user.username %}">
                             <i class="bi bi-pencil-square me-2"></i>{% trans "Edit" %}
                         </a>
                     </li>

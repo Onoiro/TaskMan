@@ -29,23 +29,23 @@ USER_LIST_URL = 'user:user-list'
 
 class SwitchTeamView(View):
     def post(self, request):
-        team_id = request.POST.get('team_id')
+        team_uuid = request.POST.get('team_uuid')
         referer = request.META.get('HTTP_REFERER', '')
 
-        if team_id:
-            if team_id == 'individual':
+        if team_uuid:
+            if team_uuid == 'individual':
                 # switch to individual mode
-                if 'active_team_id' in request.session:
-                    del request.session['active_team_id']
+                if 'active_team_uuid' in request.session:
+                    del request.session['active_team_uuid']
                 messages.success(request, _('Switched to individual mode'))
             else:
                 # switch to team
                 try:
                     team = Team.objects.get(
-                        id=team_id,
+                        uuid=team_uuid,
                         memberships__user=request.user
                     )
-                    request.session['active_team_id'] = team.id
+                    request.session['active_team_uuid'] = str(team.uuid)
                     messages.success(
                         request,
                         _("Switched to team: {team}").format(team=team.name)
@@ -73,10 +73,10 @@ class SwitchTeamView(View):
 
 
 class TeamExitView(LoginRequiredMixin, View):
-    def get(self, request, team_id):
+    def get(self, request, uuid):
         """display confirmation page for exiting team"""
         try:
-            team = Team.objects.get(id=team_id)
+            team = Team.objects.get(uuid=uuid)
 
             if not self._is_user_team_member(request.user, team):
                 messages.error(request, _('You are not a member of this team'))
@@ -101,10 +101,10 @@ class TeamExitView(LoginRequiredMixin, View):
             messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
 
-    def post(self, request, team_id):
+    def post(self, request, uuid):
         """process exit from team after confirmation"""
         try:
-            team = Team.objects.get(id=team_id)
+            team = Team.objects.get(uuid=uuid)
 
             self._remove_user_membership(request.user, team)
             self._clear_active_team_session(request, team)
@@ -161,8 +161,8 @@ class TeamExitView(LoginRequiredMixin, View):
 
     def _clear_active_team_session(self, request, team):
         """clear active team from session if it matches"""
-        if request.session.get('active_team_id') == team.id:
-            del request.session['active_team_id']
+        if request.session.get('active_team_uuid') == str(team.uuid):
+            del request.session['active_team_uuid']
 
     def _redirect_back(self, request):
         """redirect back to previous page or home"""
@@ -192,7 +192,7 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
         Status.create_default_statuses_for_team(self.object, self.request.user)
 
         # set the new team as active in session
-        self.request.session['active_team_id'] = self.object.id
+        self.request.session['active_team_uuid'] = str(self.object.uuid)
 
         messages.success(self.request, _('Team created successfully'))
         return HttpResponseRedirect(self.get_success_url())
@@ -202,6 +202,8 @@ class TeamDetailView(LoginRequiredMixin, DetailView):
     model = Team
     template_name = 'teams/team_detail.html'
     context_object_name = 'team'
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -221,6 +223,8 @@ class TeamUpdateView(TeamAdminPermissions, UpdateView):
     form_class = TeamForm
     template_name = 'teams/team_update.html'
     success_url = reverse_lazy(USER_LIST_URL)
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def form_valid(self, form):
         messages.success(self.request, _('Team updated successfully'))
@@ -231,6 +235,8 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
     model = Team
     template_name = 'teams/team_delete.html'
     success_url = reverse_lazy(USER_LIST_URL)
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def form_valid(self, form):
         team = self.get_object()
@@ -259,6 +265,8 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
     model = TeamMembership
     form_class = TeamMemberRoleForm
     template_name = 'teams/team_member_role_update.html'
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
 
     def get_success_url(self):
         return reverse_lazy(USER_LIST_URL)

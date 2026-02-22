@@ -95,13 +95,13 @@
             <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
                 <div class="d-grid gap-2 d-md-flex">
                     {% if request.user.is_authenticated and request.user.id == object.id %}
-                    <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'user:user-update' object.id %}">
+                    <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'user:user-update' object.username %}">
                         <i class="bi bi-pencil-square me-2"></i>{% trans "Edit" %}
                     </a>
                     {% endif %}
 
-                    {% if can_change_role and membership_id %}
-                    <a class="btn btn-warning px-md-4 py-2" href="{% url 'teams:team-member-role-update' membership_id %}">
+                    {% if can_change_role and membership_uuid %}
+                    <a class="btn btn-warning px-md-4 py-2" href="{% url 'teams:team-member-role-update' membership_uuid %}">
                         {% trans "Change Role" %}
                     </a>
                     {% endif %}
@@ -112,7 +112,7 @@
                 </div>
 
                 {% if request.user.is_authenticated and request.user.id == object.id %}
-                <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'user:user-delete' object.id %}">
+                <a class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0" href="{% url 'user:user-delete' object.username %}">
                     <small>🗑️ {% trans "Delete" %}</small>
                 </a>
                 {% endif %}

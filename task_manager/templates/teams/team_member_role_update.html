@@ -35,7 +35,7 @@
                         </div>
                         
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'teams:team-detail' pk=object.team.pk %}" class="btn btn-secondary">
+                            <a href="{% url 'teams:team-detail' uuid=object.team.uuid %}" class="btn btn-secondary">
                                 {% trans "Cancel" %}
                             </a>
                             <button type="submit" class="btn btn-primary">

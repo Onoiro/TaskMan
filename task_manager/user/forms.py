@@ -195,7 +195,7 @@ class UserForm(forms.ModelForm):
 
         return cleaned_data
 
-    def save(self, commit=True):
+    def save(self, commit=True, request=None):
         user = super().save(commit=False)
 
         # set password only if it inputed

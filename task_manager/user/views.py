@@ -66,6 +66,8 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'user/user_detail.html'
     context_object_name = 'object'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -78,7 +80,7 @@ class UserDetailView(DetailView):
 
         # Check if current user can change role of this user
         context['can_change_role'] = False
-        context['membership_id'] = None
+        context['membership_uuid'] = None
         context['active_team'] = getattr(self.request, 'active_team', None)
 
         is_authenticated = self.request.user.is_authenticated
@@ -95,7 +97,7 @@ class UserDetailView(DetailView):
                         user=user,
                         team=context['active_team']
                     )
-                    context['membership_id'] = membership.id
+                    context['membership_uuid'] = membership.uuid
                     context['can_change_role'] = True
                 except TeamMembership.DoesNotExist:
                     pass
@@ -110,9 +112,9 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_message = _('User created successfully')
 
     def form_valid(self, form):
-        super().form_valid(form)
+        user = form.save(commit=True, request=self.request)
         # auto login after creating user
-        login(self.request, self.object)
+        login(self.request, user)
 
         # Set flag to redirect to tasks list on first visit
         self.request.session['redirect_after_login'] = True
@@ -120,7 +122,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         # if join to team
         team = form.cleaned_data.get('team_to_join')
         if team:
-            self.request.session['active_team_id'] = team.id
+            self.request.session['active_team_uuid'] = str(team.uuid)
             messages.success(
                 self.request,
                 _(
@@ -146,16 +148,18 @@ class UserUpdateView(CustomPermissions,
     redirect_field_name = "redirect_to"
     success_url = reverse_lazy('user:user-list')
     success_message = _('User updated successfully')
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def form_valid(self, form):
-        super().form_valid(form)
+        user = form.save(commit=True, request=self.request)
         # relogin user after updating
-        login(self.request, self.object)
+        login(self.request, user)
 
         # if join to a new team
         team = form.cleaned_data.get('team_to_join')
         if team:
-            self.request.session['active_team_id'] = team.id
+            self.request.session['active_team_uuid'] = str(team.uuid)
             messages.success(
                 self.request,
                 _("You have joined team: {team}").format(team=team.name)
@@ -172,6 +176,8 @@ class UserDeleteView(CustomPermissions,
     template_name = 'user/user_delete.html'
     success_url = reverse_lazy('index')
     success_message = _('User deleted successfully')
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()

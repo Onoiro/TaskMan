@@ -8,22 +8,22 @@ class ActiveTeamMiddleware(MiddlewareMixin):
             request.active_team = None
             return
 
-        # get active team id from session
-        active_team_id = request.session.get('active_team_id')
+        # get active team uuid from session
+        active_team_uuid = request.session.get('active_team_uuid')
 
-        if active_team_id:
+        if active_team_uuid:
             try:
                 # check if user is a member of this team
                 # use .get() to raise DoesNotExist if not found
                 team = Team.objects.get(
-                    id=active_team_id,
+                    uuid=active_team_uuid,
                     memberships__user=request.user
                 )
                 request.active_team = team
             except Team.DoesNotExist:
                 request.active_team = None
                 # clear invalid session data
-                if 'active_team_id' in request.session:
-                    del request.session['active_team_id']
+                if 'active_team_uuid' in request.session:
+                    del request.session['active_team_uuid']
         else:
             request.active_team = None
