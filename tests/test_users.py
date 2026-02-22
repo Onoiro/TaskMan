@@ -350,7 +350,10 @@ class UserTestCase(TestCase):
 
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('User created successfully'))
+        self.assertEqual(
+            str(messages[0]),
+            _('Welcome! You can create a team or work individually')
+        )
 
     def test_default_statuses_created_for_new_user_without_team(self):
         # count statuses before creating new user
@@ -620,8 +623,8 @@ class UserTestCase(TestCase):
 
     def test_update_user_with_team_join(self):
         """test updating user and joining a team"""
-        # user 'he' is already a member of team pk=2, use team pk=1 instead
-        team = Team.objects.get(pk=1)  # user is not a member of this team
+        # user 'he' is already a member of team pk=1, use team pk=2 instead
+        team = Team.objects.get(pk=2)  # user is not a member of this team
         update_data = self.user_data.copy()
         update_data.update({
             'join_team_name': team.name,
@@ -798,7 +801,7 @@ class UserTestCase(TestCase):
         user = User.objects.get(username="new")
         self.c.force_login(user)
         response = self.c.post(reverse('user:user-delete',
-                                       args=[user.id]), follow=True)
+                                       args=[user.username]), follow=True)
         self.assertFalse(User.objects.filter(username="new").exists())
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('index'))
