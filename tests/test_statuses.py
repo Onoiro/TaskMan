@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+import uuid
 
 
 class StatusesTestCase(TestCase):
@@ -26,13 +27,44 @@ class StatusesTestCase(TestCase):
         }
         self.team = Team.objects.get(pk=1)  # user 'me' is member of this team
 
+        # Update UUIDs for fixtures that were loaded without them
+        self._update_fixture_uuids()
+
+    def _update_fixture_uuids(self):
+        """Update UUIDs for fixture-loaded objects"""
+        # Update teams
+        team1 = Team.objects.filter(pk=1).first()
+        team2 = Team.objects.filter(pk=2).first()
+        if team1 and not hasattr(team1, '_uuid_set'):
+            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
+            team1.save(update_fields=['uuid'])
+            team1._uuid_set = True
+        if team2 and not hasattr(team2, '_uuid_set'):
+            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
+            team2.save(update_fields=['uuid'])
+            team2._uuid_set = True
+
+        # Update statuses
+        statuses_data = [
+            (12, '550e8400-e29b-41d4-a716-446655440010'),
+            (13, '550e8400-e29b-41d4-a716-446655440011'),
+            (14, '550e8400-e29b-41d4-a716-446655440012'),
+            (15, '550e8400-e29b-41d4-a716-446655440013'),
+        ]
+        for status_pk, status_uuid in statuses_data:
+            status = Status.objects.filter(pk=status_pk).first()
+            if status:
+                status.uuid = uuid.UUID(status_uuid)
+                status.save(update_fields=['uuid'])
+
     def _set_active_team(self, team_id=None):
         """Helper for setting active team in session"""
         session = self.c.session
         if team_id:
-            session['active_team_id'] = team_id
+            team = Team.objects.get(pk=team_id)
+            session['active_team_uuid'] = str(team.uuid)
         else:
-            session.pop('active_team_id', None)
+            session.pop('active_team_uuid', None)
         session.save()
 
     # list
@@ -213,7 +245,7 @@ class StatusesTestCase(TestCase):
             'description': 'Updated description',
             'color': '#3B82F6'
         }
-        self.c.post(reverse('statuses:statuses-update', args=[status.id]),
+        self.c.post(reverse('statuses:statuses-update', args=[status.uuid]),
                     new_data, follow=True)
         status.refresh_from_db()
         self.assertEqual(
@@ -286,7 +318,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(reverse('statuses:statuses-update',
-                              args=[status.id]), follow=True)
+                              args=[status.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Edit'))
@@ -301,7 +333,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.post(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             self.statuses_data, follow=True)
         status.refresh_from_db()
         self.assertEqual(status.name, self.statuses_data['name'])
@@ -316,7 +348,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         self.statuses_data = {'name': ' ', 'color': '#6B7280'}
         response = self.c.post(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             self.statuses_data, follow=True)
         self.assertFalse(Status.objects.filter(name=" ").exists())
         message = _('This field is required.')
@@ -328,7 +360,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             follow=True)
 
         self.assertContains(response, _('ID'))
@@ -340,7 +372,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             follow=True)
 
         self.assertContains(response, _('Created at'))
@@ -351,7 +383,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             follow=True)
 
         self.assertContains(response, _('Color'))
@@ -363,7 +395,7 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             follow=True)
 
         self.assertContains(response, _('Cancel'))
@@ -377,12 +409,12 @@ class StatusesTestCase(TestCase):
 
         status = Status.objects.get(name="new")
         response = self.c.get(
-            reverse('statuses:statuses-update', args=[status.id]),
+            reverse('statuses:statuses-update', args=[status.uuid]),
             follow=True)
 
         self.assertContains(response, _('Delete'))
         # Check that Delete button links to delete page
-        delete_url = reverse('statuses:statuses-delete', args=[status.id])
+        delete_url = reverse('statuses:statuses-delete', args=[status.uuid])
         self.assertIn(delete_url, response.content.decode('utf-8'))
 
     # delete
@@ -393,7 +425,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.get(
             reverse('statuses:statuses-delete',
-                    args=[status.id]), follow=True)
+                    args=[status.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Delete status'))
         self.assertContains(response, _('Yes, delete'))
@@ -407,7 +439,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.get(
             reverse('statuses:statuses-delete',
-                    args=[status.id]), follow=True)
+                    args=[status.uuid]), follow=True)
 
         # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
@@ -420,7 +452,7 @@ class StatusesTestCase(TestCase):
 
         # Set HTTP_REFERER in request
         response = self.c.get(
-            reverse('statuses:statuses-delete', args=[status.id]),
+            reverse('statuses:statuses-delete', args=[status.uuid]),
             HTTP_REFERER=reverse('statuses:statuses-list'),
             follow=True
         )
@@ -440,7 +472,7 @@ class StatusesTestCase(TestCase):
 
         # Request without HTTP_REFERER
         response = self.c.get(
-            reverse('statuses:statuses-delete', args=[status.id]),
+            reverse('statuses:statuses-delete', args=[status.uuid]),
             follow=True
         )
 
@@ -464,7 +496,7 @@ class StatusesTestCase(TestCase):
 
         response = self.c.post(
             reverse('statuses:statuses-delete',
-                    args=[test_status.id]), follow=True)
+                    args=[test_status.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Status.objects.filter(name="test_to_delete").exists())
         self.assertRedirects(response, reverse('statuses:statuses-list'))
@@ -479,7 +511,7 @@ class StatusesTestCase(TestCase):
         status = Status.objects.get(name="new")
         response = self.c.post(
             reverse('statuses:statuses-delete',
-                    args=[status.id]), follow=True)
+                    args=[status.uuid]), follow=True)
         self.assertTrue(Status.objects.filter(name="new").exists())
         self.assertRedirects(response, reverse('statuses:statuses-list'))
         messages = list(get_messages(response.wsgi_request))

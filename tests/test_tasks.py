@@ -7,6 +7,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+import uuid
 
 
 class TaskTestCase(TestCase):
@@ -29,8 +30,11 @@ class TaskTestCase(TestCase):
         # set active_team to session if user has team
         if self.team:
             session = self.c.session
-            session['active_team_id'] = self.team.id
+            session['active_team_uuid'] = str(self.team.uuid)
             session.save()
+
+        # Update UUIDs for fixtures that were loaded without them
+        self._update_fixture_uuids()
 
         # get available for user statuses and labels
         if self.team:
@@ -89,6 +93,56 @@ class TaskTestCase(TestCase):
             ).values_list('user', flat=True).distinct()
         else:
             return [user.id]
+
+    def _update_fixture_uuids(self):
+        """Update UUIDs for fixture-loaded objects"""
+        # Update teams
+        team1 = Team.objects.filter(pk=1).first()
+        team2 = Team.objects.filter(pk=2).first()
+        if team1 and not hasattr(team1, '_uuid_set'):
+            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
+            team1.save(update_fields=['uuid'])
+            team1._uuid_set = True
+        if team2 and not hasattr(team2, '_uuid_set'):
+            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
+            team2.save(update_fields=['uuid'])
+            team2._uuid_set = True
+
+        # Update statuses
+        statuses_data = [
+            (12, '550e8400-e29b-41d4-a716-446655440010'),
+            (13, '550e8400-e29b-41d4-a716-446655440011'),
+            (14, '550e8400-e29b-41d4-a716-446655440012'),
+            (15, '550e8400-e29b-41d4-a716-446655440013'),
+        ]
+        for status_pk, status_uuid in statuses_data:
+            status = Status.objects.filter(pk=status_pk).first()
+            if status:
+                status.uuid = uuid.UUID(status_uuid)
+                status.save(update_fields=['uuid'])
+
+        # Update labels
+        labels_data = [
+            (1, '550e8400-e29b-41d4-a716-446655440020'),
+            (5, '550e8400-e29b-41d4-a716-446655440021'),
+            (7, '550e8400-e29b-41d4-a716-446655440022'),
+        ]
+        for label_pk, label_uuid in labels_data:
+            label = Label.objects.filter(pk=label_pk).first()
+            if label:
+                label.uuid = uuid.UUID(label_uuid)
+                label.save(update_fields=['uuid'])
+
+        # Update tasks
+        tasks_data = [
+            (5, '550e8400-e29b-41d4-a716-446655440001'),
+            (7, '550e8400-e29b-41d4-a716-446655440002'),
+        ]
+        for task_pk, task_uuid in tasks_data:
+            task = Task.objects.filter(pk=task_pk).first()
+            if task:
+                task.uuid = uuid.UUID(task_uuid)
+                task.save(update_fields=['uuid'])
 
     # ========== LIST VIEW TESTS ==========
 
@@ -316,7 +370,7 @@ class TaskTestCase(TestCase):
                 author=self.user, team__isnull=True).first()
 
         if task:
-            update_url = reverse('tasks:task-update', args=[task.id])
+            update_url = reverse('tasks:task-update', args=[task.uuid])
             self.assertContains(response, update_url)
 
     def test_tasks_list_shows_task_count(self):
@@ -498,7 +552,7 @@ class TaskTestCase(TestCase):
         self.c.force_login(solo_user)
 
         session = self.c.session
-        session['active_team_id'] = team.id
+        session['active_team_uuid'] = str(team.uuid)
         session.save()
 
         available_status = Status.objects.filter(team=team).first()
@@ -561,12 +615,12 @@ class TaskTestCase(TestCase):
 
     def test_task_update_view_response_200(self):
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertEqual(response.status_code, 200)
 
     def test_task_update_view_static_content(self):
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertContains(response, self.task.name)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
@@ -580,20 +634,20 @@ class TaskTestCase(TestCase):
     def test_task_update_view_shows_task_id(self):
         """Check that task ID is visible on update page"""
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertContains(response, _('ID'))
         self.assertContains(response, str(self.task.id))
 
     def test_task_update_view_shows_author(self):
         """Check that author is visible on update page"""
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertContains(response, self.task.author.username)
 
     def test_task_update_has_cancel_button(self):
         """Check that Cancel button exists and links to tasks list"""
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertContains(response, _('Cancel'))
         list_url = reverse('tasks:tasks-list')
         self.assertIn(list_url, response.content.decode('utf-8'))
@@ -601,15 +655,15 @@ class TaskTestCase(TestCase):
     def test_task_update_has_delete_button(self):
         """Check that Delete button exists and links to delete page"""
         response = self.c.get(
-            reverse('tasks:task-update', args=[self.task.id]))
+            reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertContains(response, _('Delete'))
-        delete_url = reverse('tasks:task-delete', args=[self.task.id])
+        delete_url = reverse('tasks:task-delete', args=[self.task.uuid])
         self.assertIn(delete_url, response.content.decode('utf-8'))
 
     def test_update_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
+            reverse('tasks:task-update', args=[task.uuid]),
             self.tasks_data, follow=True
         )
         self.assertEqual(response.status_code, 200)
@@ -617,7 +671,7 @@ class TaskTestCase(TestCase):
     def test_update_task_with_correct_data(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
+            reverse('tasks:task-update', args=[task.uuid]),
             self.tasks_data, follow=True
         )
 
@@ -658,7 +712,7 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
+            reverse('tasks:task-update', args=[task.uuid]),
             self.tasks_data, follow=True
         )
 
@@ -704,7 +758,7 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
+            reverse('tasks:task-update', args=[task.uuid]),
             self.tasks_data, follow=True
         )
 
@@ -733,7 +787,7 @@ class TaskTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('tasks:task-update', args=[task.id]),
+            reverse('tasks:task-update', args=[task.uuid]),
             self.tasks_data,
             follow=True
         )
@@ -748,13 +802,13 @@ class TaskTestCase(TestCase):
     def test_delete_task_response_200(self):
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
-                              args=[task.id]), follow=True)
+                              args=[task.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_task_content(self):
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
-                              args=[task.id]), follow=True)
+                              args=[task.uuid]), follow=True)
         self.assertContains(
             response, _('Are you sure you want to delete first task?')
         )
@@ -765,7 +819,7 @@ class TaskTestCase(TestCase):
         """Check that Cancel button exists on delete page"""
         task = Task.objects.get(name="first task")
         response = self.c.get(reverse('tasks:task-delete',
-                              args=[task.id]), follow=True)
+                              args=[task.uuid]), follow=True)
         self.assertContains(response, _('Cancel'))
 
     def test_delete_task_cancel_button_redirects_to_referer(self):
@@ -773,7 +827,7 @@ class TaskTestCase(TestCase):
         task = Task.objects.get(name="first task")
 
         response = self.c.get(
-            reverse('tasks:task-delete', args=[task.id]),
+            reverse('tasks:task-delete', args=[task.uuid]),
             HTTP_REFERER=reverse('tasks:tasks-list'),
             follow=True
         )
@@ -788,7 +842,7 @@ class TaskTestCase(TestCase):
         task = Task.objects.get(name="first task")
 
         response = self.c.get(
-            reverse('tasks:task-delete', args=[task.id]),
+            reverse('tasks:task-delete', args=[task.uuid]),
             follow=True
         )
 
@@ -798,13 +852,13 @@ class TaskTestCase(TestCase):
     def test_delete_task(self):
         task = Task.objects.get(name="first task")
         self.c.post(reverse('tasks:task-delete',
-                            args=[task.id]), follow=True)
+                            args=[task.uuid]), follow=True)
         self.assertFalse(Task.objects.filter(name="first task").exists())
 
     def test_delete_task_check_success_message(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(reverse('tasks:task-delete',
-                               args=[task.id]), follow=True)
+                               args=[task.uuid]), follow=True)
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Task deleted successfully'))
@@ -812,7 +866,7 @@ class TaskTestCase(TestCase):
     def test_success_redirect_when_delete_task(self):
         task = Task.objects.get(name="first task")
         response = self.c.post(reverse('tasks:task-delete',
-                               args=[task.id]), follow=True)
+                               args=[task.uuid]), follow=True)
         self.assertRedirects(response, reverse('tasks:tasks-list'))
 
     def test_delete_task_can_only_author(self):
@@ -821,7 +875,7 @@ class TaskTestCase(TestCase):
         self.c.force_login(user)
         task = Task.objects.get(name="second task")
         self.c.post(reverse('tasks:task-delete',
-                            args=[task.id]), follow=True)
+                            args=[task.uuid]), follow=True)
         self.assertTrue(Task.objects.filter(name="second task").exists())
 
     def test_check_message_when_delete_user_is_not_author_of_task(self):
@@ -830,7 +884,7 @@ class TaskTestCase(TestCase):
         self.c.force_login(user)
         task = Task.objects.get(name="second task")
         response = self.c.post(reverse('tasks:task-delete',
-                                       args=[task.id]), follow=True)
+                                       args=[task.uuid]), follow=True)
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(
@@ -844,7 +898,7 @@ class TaskTestCase(TestCase):
         self.c.force_login(user)
         task = Task.objects.get(name="second task")
         response = self.c.post(reverse('tasks:task-delete',
-                                       args=[task.id]), follow=True)
+                                       args=[task.uuid]), follow=True)
         self.assertNotEqual(response.status_code, 302)
 
     # ========== SAVED FILTER TESTS ==========

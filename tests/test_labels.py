@@ -5,6 +5,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+import uuid
 
 
 class LabelsTestCase(TestCase):
@@ -22,13 +23,43 @@ class LabelsTestCase(TestCase):
         self.labels_data = {'name': 'new_test_label'}
         self.team = Team.objects.get(pk=1)  # user 'me' is member of this team
 
+        # Update UUIDs for fixtures that were loaded without them
+        self._update_fixture_uuids()
+
+    def _update_fixture_uuids(self):
+        """Update UUIDs for fixture-loaded objects"""
+        # Update teams
+        team1 = Team.objects.filter(pk=1).first()
+        team2 = Team.objects.filter(pk=2).first()
+        if team1 and not hasattr(team1, '_uuid_set'):
+            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
+            team1.save(update_fields=['uuid'])
+            team1._uuid_set = True
+        if team2 and not hasattr(team2, '_uuid_set'):
+            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
+            team2.save(update_fields=['uuid'])
+            team2._uuid_set = True
+
+        # Update labels
+        labels_data = [
+            (1, '550e8400-e29b-41d4-a716-446655440020'),
+            (5, '550e8400-e29b-41d4-a716-446655440021'),
+            (7, '550e8400-e29b-41d4-a716-446655440022'),
+        ]
+        for label_pk, label_uuid in labels_data:
+            label = Label.objects.filter(pk=label_pk).first()
+            if label:
+                label.uuid = uuid.UUID(label_uuid)
+                label.save(update_fields=['uuid'])
+
     def _set_active_team(self, team_id=None):
         """Helper for setting active team in session"""
         session = self.c.session
         if team_id:
-            session['active_team_id'] = team_id
+            team = Team.objects.get(pk=team_id)
+            session['active_team_uuid'] = str(team.uuid)
         else:
-            session.pop('active_team_id', None)
+            session.pop('active_team_uuid', None)
         session.save()
 
     # list
@@ -139,7 +170,7 @@ class LabelsTestCase(TestCase):
         response = self.c.get(reverse('labels:labels-list'))
 
         # Check that label name is wrapped in <a> tag pointing to edit page
-        expected_url = reverse('labels:labels-update', args=[label.id])
+        expected_url = reverse('labels:labels-update', args=[label.uuid])
         # Check for the new structure with additional classes
         self.assertContains(response, f'href="{expected_url}"')
         self.assertContains(
@@ -276,7 +307,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.post(
-            reverse('labels:labels-update', args=[label.id]),
+            reverse('labels:labels-update', args=[label.uuid]),
             self.labels_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -285,7 +316,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.get(
-            reverse('labels:labels-update', args=[label.id]),
+            reverse('labels:labels-update', args=[label.uuid]),
             self.labels_data, follow=True)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Edit'))
@@ -299,7 +330,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.post(
-            reverse('labels:labels-update', args=[label.id]),
+            reverse('labels:labels-update', args=[label.uuid]),
             self.labels_data, follow=True)
         label.refresh_from_db()
         self.assertEqual(label.name, self.labels_data['name'])
@@ -314,7 +345,7 @@ class LabelsTestCase(TestCase):
         label = Label.objects.get(name="bug")
         self.labels_data = {'name': ' '}
         response = self.c.post(
-            reverse('labels:labels-update', args=[label.id]),
+            reverse('labels:labels-update', args=[label.uuid]),
             self.labels_data, follow=True)
         self.assertFalse(Label.objects.filter(name=" ").exists())
         message = _('This field is required.')
@@ -328,7 +359,7 @@ class LabelsTestCase(TestCase):
         # try update label from team with id 1
         label = Label.objects.get(name="bug")  # this label is from team 1
         self.c.post(reverse('labels:labels-update',
-                            args=[label.id]), {'name': 'hacked'}, follow=True)
+                            args=[label.uuid]), {'name': 'hacked'}, follow=True)
 
         # label doesn't changed
         label.refresh_from_db()
@@ -339,10 +370,10 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
 
         self.assertContains(response, _('Delete'))
-        delete_url = reverse('labels:labels-delete', args=[label.id])
+        delete_url = reverse('labels:labels-delete', args=[label.uuid])
         self.assertContains(response, f'href="{delete_url}"')
 
     def test_update_page_has_cancel_button(self):
@@ -350,7 +381,7 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
 
         self.assertContains(response, _('Cancel'))
 
@@ -359,7 +390,7 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.id]))
+        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
 
         # Check that card exists and contains label details
         self.assertContains(response, 'card')
@@ -381,7 +412,7 @@ class LabelsTestCase(TestCase):
         )
 
         response = self.c.post(reverse('labels:labels-delete',
-                               args=[label_to_delete.id]), follow=True)
+                               args=[label_to_delete.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Label.objects.filter(name="to_delete").exists())
 
@@ -390,7 +421,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.get(reverse('labels:labels-delete',
-                              args=[label.id]), follow=True)
+                              args=[label.uuid]), follow=True)
         self.assertContains(response, _('Delete label'))
         self.assertContains(response, _('Yes, delete'))
         self.assertContains(response,
@@ -402,7 +433,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.get(reverse('labels:labels-delete',
-                              args=[label.id]), follow=True)
+                              args=[label.uuid]), follow=True)
 
         # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
@@ -415,7 +446,7 @@ class LabelsTestCase(TestCase):
 
         # Set HTTP_REFERER in request
         response = self.c.get(
-            reverse('labels:labels-delete', args=[label.id]),
+            reverse('labels:labels-delete', args=[label.uuid]),
             HTTP_REFERER=reverse('labels:labels-list'),
             follow=True
         )
@@ -435,7 +466,7 @@ class LabelsTestCase(TestCase):
 
         # Request without HTTP_REFERER
         response = self.c.get(
-            reverse('labels:labels-delete', args=[label.id]),
+            reverse('labels:labels-delete', args=[label.uuid]),
             follow=True
         )
 
@@ -449,7 +480,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="feature")
         response = self.c.post(reverse('labels:labels-delete',
-                               args=[label.id]), follow=True)
+                               args=[label.uuid]), follow=True)
         self.assertFalse(Label.objects.filter(name="feature").exists())
         self.assertRedirects(response, reverse('labels:labels-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -462,7 +493,7 @@ class LabelsTestCase(TestCase):
 
         label = Label.objects.get(name="bug")
         response = self.c.post(reverse('labels:labels-delete',
-                               args=[label.id]), follow=True)
+                               args=[label.uuid]), follow=True)
         self.assertTrue(Label.objects.filter(name="bug").exists())
         self.assertRedirects(response, reverse('labels:labels-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -481,7 +512,7 @@ class LabelsTestCase(TestCase):
         )
 
         response = self.c.post(
-            reverse('labels:labels-delete', args=[personal_label.id]),
+            reverse('labels:labels-delete', args=[personal_label.uuid]),
             follow=True)
 
         self.assertFalse(

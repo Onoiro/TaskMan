@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
 from django.contrib.auth.hashers import check_password
+import uuid
 
 
 class UserTestCase(TestCase):
@@ -30,6 +31,35 @@ class UserTestCase(TestCase):
             'join_team_name': '',
             'join_team_password': ''
         }
+
+        # Update UUIDs for fixtures that were loaded without them
+        self._update_fixture_uuids()
+
+    def _update_fixture_uuids(self):
+        """Update UUIDs for fixture-loaded objects"""
+        # Update teams
+        team1 = Team.objects.filter(pk=1).first()
+        team2 = Team.objects.filter(pk=2).first()
+        if team1 and not hasattr(team1, '_uuid_set'):
+            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
+            team1.save(update_fields=['uuid'])
+            team1._uuid_set = True
+        if team2 and not hasattr(team2, '_uuid_set'):
+            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
+            team2.save(update_fields=['uuid'])
+            team2._uuid_set = True
+
+        # Update memberships
+        memberships_data = [
+            (1, '550e8400-e29b-41d4-a716-446655440040'),
+            (2, '550e8400-e29b-41d4-a716-446655440041'),
+            (3, '550e8400-e29b-41d4-a716-446655440042'),
+        ]
+        for membership_pk, membership_uuid in memberships_data:
+            membership = TeamMembership.objects.filter(pk=membership_pk).first()
+            if membership:
+                membership.uuid = uuid.UUID(membership_uuid)
+                membership.save(update_fields=['uuid'])
 
     # list
 
@@ -65,7 +95,7 @@ class UserTestCase(TestCase):
         """test user list with active team context"""
         # set active team in session
         session = self.c.session
-        session['active_team_id'] = 1
+        session['active_team_uuid'] = str(Team.objects.get(pk=1).uuid)
         session.save()
 
         response = self.c.get(reverse('user:user-list'))
@@ -95,8 +125,8 @@ class UserTestCase(TestCase):
     def test_user_list_without_team_context(self):
         """test user list without active team"""
         # ensure no active team
-        if 'active_team_id' in self.c.session:
-            del self.c.session['active_team_id']
+        if 'active_team_uuid' in self.c.session:
+            del self.c.session['active_team_uuid']
         self.c.session.save()
 
         response = self.c.get(reverse('user:user-list'))
@@ -116,7 +146,7 @@ class UserTestCase(TestCase):
     def test_user_list_user_membership_context(self):
         """test that user membership context is correctly set"""
         session = self.c.session
-        session['active_team_id'] = 1
+        session['active_team_uuid'] = str(Team.objects.get(pk=1).uuid)
         session.save()
 
         response = self.c.get(reverse('user:user-list'))
@@ -132,7 +162,7 @@ class UserTestCase(TestCase):
     def test_user_list_with_active_team(self):
         """test user list shows team members when active"""
         session = self.c.session
-        session['active_team_id'] = 1
+        session['active_team_uuid'] = str(Team.objects.get(pk=1).uuid)
         session.save()
 
         response = self.c.get(reverse('user:user-list'))
@@ -154,12 +184,12 @@ class UserTestCase(TestCase):
 
     def test_user_detail_view_response_200(self):
         """test user detail view returns 200"""
-        response = self.c.get(reverse('user:user-detail', args=[self.user.id]))
+        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
         self.assertEqual(response.status_code, 200)
 
     def test_user_detail_view_context(self):
         """test user detail view context data"""
-        response = self.c.get(reverse('user:user-detail', args=[self.user.id]))
+        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
         self.assertEqual(response.status_code, 200)
 
         # check context object is correct
@@ -178,7 +208,7 @@ class UserTestCase(TestCase):
         # user 'me' has description in fixture
         user_with_desc = User.objects.get(username='me')
         response = self.c.get(reverse('user:user-detail',
-                                      args=[user_with_desc.id]))
+                                      args=[user_with_desc.username]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Description'))
         self.assertContains(response, 'Team administrator and task creator')
@@ -187,7 +217,7 @@ class UserTestCase(TestCase):
         """test user detail view shows empty when no description"""
         user_without_desc = User.objects.get(username='he')
         response = self.c.get(reverse('user:user-detail',
-                                      args=[user_without_desc.id]))
+                                      args=[user_without_desc.username]))
         self.assertEqual(response.status_code, 200)
         # Description label should still be present
         self.assertContains(response, _('Description'))
@@ -197,7 +227,7 @@ class UserTestCase(TestCase):
         """test user detail view for user without teams"""
         alone_user = User.objects.get(username='alone')
         response = self.c.get(reverse(
-            'user:user-detail', args=[alone_user.id]))
+            'user:user-detail', args=[alone_user.username]))
         self.assertEqual(response.status_code, 200)
 
         # should have empty user_teams
@@ -207,7 +237,7 @@ class UserTestCase(TestCase):
     def test_user_detail_edit_delete_buttons_for_current_user(self):
         """test that Edit/Delete buttons are shown only for current user"""
         # User should see Edit/Delete buttons on their own detail page
-        response = self.c.get(reverse('user:user-detail', args=[self.user.id]))
+        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
         self.assertEqual(response.status_code, 200)
 
         # Check that Edit and Delete buttons are present for current user
@@ -218,22 +248,22 @@ class UserTestCase(TestCase):
         """test that Edit/Delete buttons are not shown for other users"""
         # Test with another user from fixtures
         other_user = User.objects.get(username='me')
-        response = self.c.get(reverse('user:user-detail', args=[other_user.id]))
+        response = self.c.get(reverse('user:user-detail', args=[other_user.username]))
         self.assertEqual(response.status_code, 200)
 
         # Check that Edit and Delete buttons are NOT present for other users
         # Check by URL instead of text to avoid false positives from navbar
         self.assertNotContains(
-            response, reverse('user:user-update', args=[other_user.id]))
+            response, reverse('user:user-update', args=[other_user.username]))
         self.assertNotContains(
-            response, reverse('user:user-delete', args=[other_user.id]))
+            response, reverse('user:user-delete', args=[other_user.username]))
 
     def test_user_detail_admin_can_change_role(self):
         """test admin sees change role for team member"""
         admin_user = User.objects.get(username='me')
         self.c.force_login(admin_user)
         session = self.c.session
-        session['active_team_id'] = 1
+        session['active_team_uuid'] = str(Team.objects.get(pk=1).uuid)
         session.save()
 
         # view another team member's detail
@@ -241,7 +271,7 @@ class UserTestCase(TestCase):
         response = self.c.get(
             reverse(
                 'user:user-detail',
-                args=[member.id]
+                args=[member.username]
             )
         )
         self.assertEqual(response.status_code, 200)
@@ -257,7 +287,7 @@ class UserTestCase(TestCase):
         admin_user = User.objects.get(username='me')
         self.c.force_login(admin_user)
         session = self.c.session
-        session['active_team_id'] = 1
+        session['active_team_uuid'] = str(Team.objects.get(pk=1).uuid)
         session.save()
 
         # view user who has no team membership
@@ -265,7 +295,7 @@ class UserTestCase(TestCase):
         response = self.c.get(
             reverse(
                 'user:user-detail',
-                args=[alone.id]
+                args=[alone.username]
             )
         )
         self.assertEqual(response.status_code, 200)
@@ -429,7 +459,7 @@ class UserTestCase(TestCase):
         )
 
         # check session has active team
-        self.assertEqual(int(self.c.session['active_team_id']), team.id)
+        self.assertEqual(self.c.session['active_team_uuid'], str(team.uuid))
 
         # check welcome message with team info
         messages = list(get_messages(response.wsgi_request))
@@ -494,7 +524,7 @@ class UserTestCase(TestCase):
 
     def test_update_user_status_200_and_check_content(self):
         response = self.c.get(
-            reverse('user:user-update', args=[self.user.id]), follow=True)
+            reverse('user:user-update', args=[self.user.username]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('First name'))
         self.assertContains(response, _('Last name'))
@@ -511,7 +541,7 @@ class UserTestCase(TestCase):
 
     def test_update_user_successfully(self):
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             self.user_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -531,7 +561,7 @@ class UserTestCase(TestCase):
 
     def test_user_auto_login_after_update(self):
         self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             self.user_data, follow=True)
 
         # check for user stay login
@@ -548,7 +578,7 @@ class UserTestCase(TestCase):
             'join_team_password': ''
         }
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             new_user_data, follow=True)
         message = _('A user with that username already exists.')
         self.assertContains(response, message)
@@ -565,7 +595,7 @@ class UserTestCase(TestCase):
             'join_team_password': ''
         }
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             new_user_data, follow=True)
         self.assertFalse(User.objects.filter(username=" ").exists())
         message = _('This field is required.')
@@ -576,7 +606,7 @@ class UserTestCase(TestCase):
         user_data['password2'] = 'different_password'
 
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             user_data, follow=True)
 
         # check for validation error message
@@ -595,7 +625,7 @@ class UserTestCase(TestCase):
         })
 
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             update_data, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -607,7 +637,7 @@ class UserTestCase(TestCase):
         self.assertIsNotNone(membership)
 
         # check session updated
-        self.assertEqual(int(self.c.session['active_team_id']), team.id)
+        self.assertEqual(self.c.session['active_team_uuid'], str(team.uuid))
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
@@ -630,7 +660,7 @@ class UserTestCase(TestCase):
         }
 
         response = self.c.post(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             update_data, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -647,14 +677,14 @@ class UserTestCase(TestCase):
     def test_cancel_button_on_user_update_page(self):
         """Test Cancel button exists and redirects to user detail."""
         response = self.c.get(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             follow=True
         )
 
         self.assertEqual(response.status_code, 200)
 
         # Check that Cancel button with link to user-detail exists
-        user_detail_url = reverse('user:user-detail', args=[self.user.id])
+        user_detail_url = reverse('user:user-detail', args=[self.user.username])
         self.assertContains(response, user_detail_url)
 
         # Check that Cancel button has correct text (translated)
@@ -667,7 +697,7 @@ class UserTestCase(TestCase):
         # Should be on user detail page
         self.assertContains(response, self.user.username)
         response = self.c.get(
-            reverse('user:user-update', args=[self.user.id]),
+            reverse('user:user-update', args=[self.user.username]),
             follow=True
         )
 
@@ -697,7 +727,7 @@ class UserTestCase(TestCase):
         self.c.force_login(new_user)
         response = self.c.get(
             reverse('user:user-delete',
-                    args=[new_user.id]), follow=False)
+                    args=[new_user.username]), follow=False)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Delete user'))
         self.assertContains(response, _('Yes, delete'))
@@ -712,7 +742,7 @@ class UserTestCase(TestCase):
         self.c.force_login(new_user)
         response = self.c.get(
             reverse('user:user-delete',
-                    args=[new_user.id]), follow=True)
+                    args=[new_user.username]), follow=True)
 
         # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
@@ -726,7 +756,7 @@ class UserTestCase(TestCase):
 
         # Set HTTP_REFERER in request
         response = self.c.get(
-            reverse('user:user-delete', args=[new_user.id]),
+            reverse('user:user-delete', args=[new_user.username]),
             HTTP_REFERER=reverse('user:user-list'),
             follow=True
         )
@@ -747,7 +777,7 @@ class UserTestCase(TestCase):
 
         # Request without HTTP_REFERER
         response = self.c.get(
-            reverse('user:user-delete', args=[new_user.id]),
+            reverse('user:user-delete', args=[new_user.username]),
             follow=True
         )
 
@@ -773,7 +803,7 @@ class UserTestCase(TestCase):
 
     def test_can_not_delete_user_bound_with_task(self):
         response = self.c.get(reverse('user:user-delete',
-                                      args=[self.user.id]), follow=True)
+                                      args=[self.user.username]), follow=True)
         self.assertTrue(User.objects.filter(username="he").exists())
         self.assertRedirects(response, reverse('user:user-list'))
         messages = list(get_messages(response.wsgi_request))
@@ -803,7 +833,7 @@ class UserTestCase(TestCase):
 
         # try to delete new user
         response = self.c.get(reverse('user:user-delete',
-                                      args=[new_user.id]), follow=True)
+                                      args=[new_user.username]), follow=True)
 
         # check that new user still exist
         self.assertTrue(User.objects.filter(username="new").exists())
@@ -858,7 +888,7 @@ class UserTestCase(TestCase):
         self.c.force_login(author_user)
 
         response = self.c.get(reverse(
-            'user:user-delete', args=[author_user.id]), follow=True)
+            'user:user-delete', args=[author_user.username]), follow=True)
 
         # should redirect and show error message
         self.assertRedirects(response, reverse('user:user-list'))
@@ -877,7 +907,7 @@ class UserTestCase(TestCase):
         executor_user = User.objects.get(username='he')
 
         response = self.c.get(reverse(
-            'user:user-delete', args=[executor_user.id]), follow=True)
+            'user:user-delete', args=[executor_user.username]), follow=True)
 
         # should redirect and show error message
         self.assertRedirects(response, reverse('user:user-list'))

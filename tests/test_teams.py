@@ -4,6 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+import uuid
 
 
 class TeamTestCase(TestCase):
@@ -25,6 +26,35 @@ class TeamTestCase(TestCase):
             'password2': '111'
         }
         self.team = Team.objects.get(pk=1)  # test team
+
+        # Update UUIDs for fixtures that were loaded without them
+        self._update_fixture_uuids()
+
+    def _update_fixture_uuids(self):
+        """Update UUIDs for fixture-loaded objects"""
+        # Update teams
+        team1 = Team.objects.filter(pk=1).first()
+        team2 = Team.objects.filter(pk=2).first()
+        if team1 and not hasattr(team1, '_uuid_set'):
+            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
+            team1.save(update_fields=['uuid'])
+            team1._uuid_set = True
+        if team2 and not hasattr(team2, '_uuid_set'):
+            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
+            team2.save(update_fields=['uuid'])
+            team2._uuid_set = True
+
+        # Update memberships
+        memberships_data = [
+            (1, '550e8400-e29b-41d4-a716-446655440040'),
+            (2, '550e8400-e29b-41d4-a716-446655440041'),
+            (3, '550e8400-e29b-41d4-a716-446655440042'),
+        ]
+        for membership_pk, membership_uuid in memberships_data:
+            membership = TeamMembership.objects.filter(pk=membership_pk).first()
+            if membership:
+                membership.uuid = uuid.UUID(membership_uuid)
+                membership.save(update_fields=['uuid'])
 
     def _get_user_teams(self, user):
         """Helper to get user's teams"""
@@ -64,12 +94,12 @@ class TeamTestCase(TestCase):
 
         # check redirect and message
         self.assertRedirects(response, reverse('tasks:tasks-list'))
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('Team created successfully'))
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages_list), 0)
+        self.assertEqual(str(messages_list[0]), _('Team created successfully'))
 
         # check that the new team is set as active in session
-        self.assertEqual(self.c.session.get('active_team_id'), team.id)
+        self.assertEqual(self.c.session.get('active_team_uuid'), str(team.uuid))
 
     def test_create_team_redirects_to_new_team_tasks(self):
         """Test that after creating a team, user is redirected to tasks list
@@ -85,8 +115,8 @@ class TeamTestCase(TestCase):
         team = Team.objects.filter(name=self.team_data['name']).first()
         self.assertIsNotNone(team)
 
-        # check that active_team_id is set to the new team
-        self.assertEqual(self.c.session.get('active_team_id'), team.id)
+        # check that active_team_uuid is set to the new team
+        self.assertEqual(self.c.session.get('active_team_uuid'), str(team.uuid))
 
     def test_check_for_not_create_team_with_same_name(self):
         # create a team
@@ -124,7 +154,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-update', args=[self.team.id]), follow=True)
+            reverse('teams:team-update', args=[self.team.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
         self.assertContains(response, _('Description'))
@@ -149,7 +179,7 @@ class TeamTestCase(TestCase):
             'password2': '111'
         }
         response = self.c.post(
-            reverse('teams:team-update', args=[self.team.id]),
+            reverse('teams:team-update', args=[self.team.uuid]),
             updated_team_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -183,7 +213,7 @@ class TeamTestCase(TestCase):
             'password2': '111'
         }
         response = self.c.post(
-            reverse('teams:team-update', args=[self.team.id]),
+            reverse('teams:team-update', args=[self.team.uuid]),
             update_data, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Team with this Name already exists.'))
@@ -211,7 +241,7 @@ class TeamTestCase(TestCase):
 
         # try to get team update form
         response = self.c.get(
-            reverse('teams:team-update', args=[self.team.id]), follow=True)
+            reverse('teams:team-update', args=[self.team.uuid]), follow=True)
 
         # check for redirect
         self.assertEqual(len(response.redirect_chain), 1)
@@ -233,7 +263,7 @@ class TeamTestCase(TestCase):
             'password2': '111'
         }
         response = self.c.post(
-            reverse('teams:team-update', args=[self.team.id]),
+            reverse('teams:team-update', args=[self.team.uuid]),
             updated_data, follow=True)
 
         # check that data has not been changed
@@ -251,7 +281,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-update', args=[self.team.id]), follow=True)
+            reverse('teams:team-update', args=[self.team.uuid]), follow=True)
 
         # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
@@ -267,10 +297,10 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-update', args=[self.team.id]), follow=True)
+            reverse('teams:team-update', args=[self.team.uuid]), follow=True)
 
         # The Cancel button href should point to team detail
-        team_detail_url = reverse('teams:team-detail', args=[self.team.id])
+        team_detail_url = reverse('teams:team-detail', args=[self.team.uuid])
         self.assertIn(team_detail_url, response.content.decode('utf-8'))
 
     # delete
@@ -285,7 +315,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-delete', args=[self.team.id]), follow=True)
+            reverse('teams:team-delete', args=[self.team.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Delete team'))
         self.assertContains(response, _('Yes, delete'))
@@ -303,7 +333,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-delete', args=[self.team.id]), follow=True)
+            reverse('teams:team-delete', args=[self.team.uuid]), follow=True)
 
         # Check that Cancel button exists
         self.assertContains(response, _('Cancel'))
@@ -320,7 +350,7 @@ class TeamTestCase(TestCase):
 
         # Set HTTP_REFERER in request
         response = self.c.get(
-            reverse('teams:team-delete', args=[self.team.id]),
+            reverse('teams:team-delete', args=[self.team.uuid]),
             HTTP_REFERER=reverse('user:user-list'),
             follow=True
         )
@@ -344,7 +374,7 @@ class TeamTestCase(TestCase):
 
         # Request without HTTP_REFERER
         response = self.c.get(
-            reverse('teams:team-delete', args=[self.team.id]),
+            reverse('teams:team-delete', args=[self.team.uuid]),
             follow=True
         )
 
@@ -358,7 +388,7 @@ class TeamTestCase(TestCase):
         response = self.c.post(reverse('teams:team-create'),
                                self.team_data, follow=True)
         team = Team.objects.get(name=self.team_data['name'])
-        team_id = team.id  # save id for check after deleting
+        team_uuid = team.uuid  # save uuid for check after deleting
 
         # ensure user is admin of this new team
         # (should be created automatically by the view)
@@ -369,7 +399,7 @@ class TeamTestCase(TestCase):
 
         # delete team
         response = self.c.post(reverse('teams:team-delete',
-                                       args=[team.id]), follow=True)
+                                       args=[team.uuid]), follow=True)
 
         # check team has been deleted
         self.assertEqual(Team.objects.count(), teams_count - 1)
@@ -386,7 +416,7 @@ class TeamTestCase(TestCase):
         self.assertFalse(
             TeamMembership.objects.filter(
                 user=self.admin_user,
-                team_id=team_id  # use saved id
+                team_id=team.id
             ).exists()
         )
 
@@ -417,7 +447,7 @@ class TeamTestCase(TestCase):
 
         # try to delete team
         response = self.c.post(reverse('teams:team-delete',
-                                       args=[self.team.id]), follow=True)
+                                       args=[self.team.uuid]), follow=True)
 
         # check that team still exists
         self.assertTrue(Team.objects.filter(pk=self.team.id).exists())
@@ -457,7 +487,7 @@ class TeamTestCase(TestCase):
 
         # attempt to delete the team
         response = self.c.post(
-            reverse('teams:team-delete', args=[new_team.id]), follow=True)
+            reverse('teams:team-delete', args=[new_team.uuid]), follow=True)
 
         # ensure the team still exists
         self.assertTrue(Team.objects.filter(pk=new_team.id).exists())
@@ -481,7 +511,7 @@ class TeamTestCase(TestCase):
         # try to delete team
         teams_count = Team.objects.count()
         response = self.c.post(reverse('teams:team-delete',
-                               args=[self.team.id]), follow=True)
+                               args=[self.team.uuid]), follow=True)
 
         # check that team exists
         self.assertEqual(Team.objects.count(), teams_count)
@@ -516,7 +546,7 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_user)
 
         # set active team in session
-        self.c.session['active_team_id'] = self.team.id
+        self.c.session['active_team_uuid'] = self.team.id
         self.c.session.save()
 
         # check membership exists before exit
@@ -524,7 +554,7 @@ class TeamTestCase(TestCase):
         self.assertEqual(regular_user.member_teams.count(), 1)
 
         # exit the team
-        response = self.c.post(reverse('teams:team-exit', args=[self.team.id]),
+        response = self.c.post(reverse('teams:team-exit', args=[self.team.uuid]),
                                follow=True)
 
         # check that membership was removed
@@ -532,7 +562,7 @@ class TeamTestCase(TestCase):
         self.assertEqual(regular_user.member_teams.count(), 0)
 
         # check that active team was cleared from session
-        self.assertNotIn('active_team_id', self.c.session)
+        self.assertNotIn('active_team_uuid', self.c.session)
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
@@ -557,7 +587,7 @@ class TeamTestCase(TestCase):
         # try to exit as admin
         response = self.c.get(
             reverse('teams:team-exit',
-                    args=[new_team.id]), follow=True)
+                    args=[new_team.uuid]), follow=True)
 
         # check that membership still exists
         self.assertTrue(new_team.is_member(self.admin_user))
@@ -606,7 +636,7 @@ class TeamTestCase(TestCase):
         # try to exit the team
         response = self.c.get(
             reverse('teams:team-exit',
-                    args=[self.team.id]), follow=True)
+                    args=[self.team.uuid]), follow=True)
 
         # check that membership still exists
         self.assertTrue(self.team.is_member(regular_user))
@@ -655,7 +685,7 @@ class TeamTestCase(TestCase):
         # try to exit the team
         response = self.c.get(
             reverse('teams:team-exit',
-                    args=[self.team.id]), follow=True)
+                    args=[self.team.uuid]), follow=True)
 
         # check that membership still exists
         self.assertTrue(self.team.is_member(regular_user))
@@ -669,12 +699,12 @@ class TeamTestCase(TestCase):
 
     def test_cannot_exit_nonexistent_team(self):
         """test that user cannot exit a team that doesn't exist"""
-        nonexistent_team_id = 9999
+        nonexistent_team_uuid = "550e8400-e29b-41d4-a716-446655449999"
 
         # try to exit nonexistent team
         response = self.c.post(
             reverse('teams:team-exit',
-                    args=[nonexistent_team_id]), follow=True)
+                    args=[nonexistent_team_uuid]), follow=True)
 
         # check error message
         messages = list(get_messages(response.wsgi_request))
@@ -694,7 +724,7 @@ class TeamTestCase(TestCase):
 
         # try to exit the team
         response = self.c.get(reverse('teams:team-exit',
-                              args=[self.team.id]),
+                              args=[self.team.uuid]),
                               follow=True)
 
         # check error message
@@ -721,7 +751,7 @@ class TeamTestCase(TestCase):
         response = self.c.get(
             reverse(
                 'teams:team-exit',
-                args=[self.team.id]
+                args=[self.team.uuid]
             )
         )
         self.assertEqual(response.status_code, 200)
@@ -732,7 +762,7 @@ class TeamTestCase(TestCase):
         response = self.c.get(
             reverse(
                 'teams:team-exit',
-                args=[9999]
+                args=["550e8400-e29b-41d4-a716-446655449999"]
             ),
             follow=True
         )
@@ -744,7 +774,7 @@ class TeamTestCase(TestCase):
         )
 
     def test_exit_team_clears_active_session(self):
-        """test exiting team clears active_team_id"""
+        """test exiting team clears active_team_uuid"""
         regular_user = User.objects.create_user(
             username='session_clear_user',
             password='password123'
@@ -760,21 +790,21 @@ class TeamTestCase(TestCase):
 
         # set session correctly using single reference
         session = self.c.session
-        session['active_team_id'] = self.team.id
+        session['active_team_uuid'] = self.team.id
         session.save()
 
         # verify session was set
         self.assertEqual(
-            self.c.session.get('active_team_id'),
+            self.c.session.get('active_team_uuid'),
             self.team.id
         )
 
         self.c.post(
-            reverse('teams:team-exit', args=[self.team.id]), follow=True)
+            reverse('teams:team-exit', args=[self.team.uuid]), follow=True)
 
         # verify session was cleared
         self.assertNotIn(
-            'active_team_id',
+            'active_team_uuid',
             self.c.session
         )
         # verify membership removed
@@ -800,12 +830,12 @@ class TeamTestCase(TestCase):
         # switch to team
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
+            {'team_uuid': str(self.team.uuid)},
             follow=True
         )
 
-        # check that active_team_id is set in session
-        self.assertEqual(self.c.session.get('active_team_id'), self.team.id)
+        # check that active_team_uuid is set in session
+        self.assertEqual(self.c.session.get('active_team_uuid'), str(self.team.uuid))
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
@@ -819,18 +849,26 @@ class TeamTestCase(TestCase):
         """test switching to individual mode from team mode"""
         # set active team in session
         session = self.c.session
-        session['active_team_id'] = self.team.id
+        session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
         # switch to individual mode
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': 'individual'},
+            {'team_uuid': 'individual'},
             follow=True
         )
 
-        # check that active_team_id is removed from session
-        self.assertNotIn('active_team_id', self.c.session)
+        # check that active_team_uuid is removed from session
+        self.assertNotIn('active_team_uuid', self.c.session)
+
+        # check success message
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages_list), 0)
+        self.assertEqual(
+            str(messages_list[0]),
+            _('Switched to individual mode')
+        )
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
@@ -842,22 +880,22 @@ class TeamTestCase(TestCase):
 
     def test_cannot_switch_to_nonexistent_team(self):
         """test that user cannot switch to a team that doesn't exist"""
-        nonexistent_team_id = 9999
+        nonexistent_team_uuid = "550e8400-e29b-41d4-a716-446655449999"
 
         # try to switch to nonexistent team
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': nonexistent_team_id},
+            {'team_uuid': nonexistent_team_uuid},
             follow=True
         )
 
-        # check that active_team_id is not set
-        self.assertNotIn('active_team_id', self.c.session)
+        # check that active_team_uuid is not set
+        self.assertNotIn('active_team_uuid', self.c.session)
 
         # check error message
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('Team not found'))
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages_list), 0)
+        self.assertEqual(str(messages_list[0]), _('Team not found'))
 
     def test_cannot_switch_to_team_not_member(self):
         """test that user cannot switch to a team they are not a member of"""
@@ -874,30 +912,30 @@ class TeamTestCase(TestCase):
         # try to switch to team
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
+            {'team_uuid': str(self.team.uuid)},
             follow=True
         )
 
-        # check that active_team_id is not set
-        self.assertNotIn('active_team_id', self.c.session)
+        # check that active_team_uuid is not set
+        self.assertNotIn('active_team_uuid', self.c.session)
 
         # check error message
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
-        self.assertEqual(str(messages[0]), _('Team not found'))
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages_list), 0)
+        self.assertEqual(str(messages_list[0]), _('Team not found'))
 
     def test_switch_team_without_team_id(self):
         """test switching without providing team_id"""
         # set active team in session
         session = self.c.session
-        session['active_team_id'] = self.team.id
+        session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
         # call switch without team_id
         self.c.post(reverse('teams:switch-team'), {}, follow=True)
 
-        # check that active_team_id is still in session (unchanged)
-        self.assertEqual(self.c.session.get('active_team_id'), self.team.id)
+        # check that active_team_uuid is still in session (unchanged)
+        self.assertEqual(self.c.session.get('active_team_uuid'), str(self.team.uuid))
 
     def test_switch_team_redirect_from_labels_update(self):
         """test redirect to labels list when switching from labels
@@ -913,8 +951,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing labels update path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/labels/1/update/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/labels/{self.team.uuid}/update/',
             follow=True
         )
 
@@ -935,8 +973,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing labels delete path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/labels/1/delete/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/labels/{self.team.uuid}/delete/',
             follow=True
         )
 
@@ -957,8 +995,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing statuses update path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/statuses/1/update/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/statuses/{self.team.uuid}/update/',
             follow=True
         )
 
@@ -979,8 +1017,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing statuses delete path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/statuses/1/delete/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/statuses/{self.team.uuid}/delete/',
             follow=True
         )
 
@@ -1001,8 +1039,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing tasks update path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/tasks/1/update/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/tasks/{self.team.uuid}/update/',
             follow=True
         )
 
@@ -1023,8 +1061,8 @@ class TeamTestCase(TestCase):
         # switch to team with referer containing tasks delete path
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
-            HTTP_REFERER='/tasks/1/delete/',
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/tasks/{self.team.uuid}/delete/',
             follow=True
         )
 
@@ -1046,7 +1084,7 @@ class TeamTestCase(TestCase):
         # update/delete
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
+            {'team_uuid': str(self.team.uuid)},
             HTTP_REFERER='/labels/',
             follow=True
         )
@@ -1068,7 +1106,7 @@ class TeamTestCase(TestCase):
         # switch to team without referer
         response = self.c.post(
             reverse('teams:switch-team'),
-            {'team_id': self.team.id},
+            {'team_uuid': str(self.team.uuid)},
             follow=True
         )
 
@@ -1083,7 +1121,7 @@ class TeamTestCase(TestCase):
         from labels update page"""
         # set active team in session
         session = self.c.session
-        session['active_team_id'] = self.team.id
+        session['active_team_uuid'] = self.team.id
         session.save()
 
         # switch to individual mode with referer containing labels
@@ -1091,7 +1129,7 @@ class TeamTestCase(TestCase):
         response = self.c.post(
             reverse('teams:switch-team'),
             {'team_id': 'individual'},
-            HTTP_REFERER='/labels/1/update/',
+            HTTP_REFERER=f'/labels/{self.team.uuid}/update/',
             follow=True
         )
 
@@ -1103,7 +1141,7 @@ class TeamTestCase(TestCase):
         from tasks delete page"""
         # set active team in session
         session = self.c.session
-        session['active_team_id'] = self.team.id
+        session['active_team_uuid'] = self.team.id
         session.save()
 
         # switch to individual mode with referer containing tasks
@@ -1111,7 +1149,7 @@ class TeamTestCase(TestCase):
         response = self.c.post(
             reverse('teams:switch-team'),
             {'team_id': 'individual'},
-            HTTP_REFERER='/tasks/1/delete/',
+            HTTP_REFERER=f'/tasks/{self.team.uuid}/delete/',
             follow=True
         )
 
@@ -1123,7 +1161,7 @@ class TeamTestCase(TestCase):
     def test_team_detail_page_response_200_and_content(self):
         """test that team detail page displays correctly"""
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.team.name)
@@ -1149,7 +1187,7 @@ class TeamTestCase(TestCase):
         )
 
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
 
         # check that memberships are in context for counting
@@ -1167,7 +1205,7 @@ class TeamTestCase(TestCase):
     def test_team_detail_no_member_table(self):
         """test that team detail page does not show member table anymore"""
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
 
         content = response.content.decode('utf-8')
@@ -1186,7 +1224,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
 
         # check that is_admin is True in context
@@ -1208,7 +1246,7 @@ class TeamTestCase(TestCase):
         self.c.force_login(regular_member)
 
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
 
         # check that is_admin is False in context
@@ -1218,7 +1256,7 @@ class TeamTestCase(TestCase):
     def test_team_detail_context_contains_team(self):
         """test that team detail context contains team object"""
         response = self.c.get(
-            reverse('teams:team-detail', args=[self.team.id])
+            reverse('teams:team-detail', args=[self.team.uuid])
         )
 
         # check that team is in context with correct context_object_name
@@ -1249,7 +1287,7 @@ class TeamTestCase(TestCase):
             )
 
         response = self.c.get(
-            reverse('teams:team-member-role-update', args=[membership.id])
+            reverse('teams:team-member-role-update', args=[membership.uuid])
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, member.username)
@@ -1277,7 +1315,7 @@ class TeamTestCase(TestCase):
 
         # promote to admin
         response = self.c.post(
-            reverse('teams:team-member-role-update', args=[membership.id]),
+            reverse('teams:team-member-role-update', args=[membership.uuid]),
             {'role': 'admin'},
             follow=True
         )
@@ -1317,7 +1355,7 @@ class TeamTestCase(TestCase):
 
         # demote to member
         response = self.c.post(
-            reverse('teams:team-member-role-update', args=[membership.id]),
+            reverse('teams:team-member-role-update', args=[membership.uuid]),
             {'role': 'member'},
             follow=True
         )
@@ -1357,7 +1395,7 @@ class TeamTestCase(TestCase):
 
         # update to the same role
         response = self.c.post(
-            reverse('teams:team-member-role-update', args=[membership.id]),
+            reverse('teams:team-member-role-update', args=[membership.uuid]),
             {'role': 'member'},
             follow=True
         )
@@ -1398,7 +1436,7 @@ class TeamTestCase(TestCase):
 
         # try to update member2's role
         response = self.c.post(
-            reverse('teams:team-member-role-update', args=[membership2.id]),
+            reverse('teams:team-member-role-update', args=[membership2.uuid]),
             {'role': 'admin'},
             follow=True
         )
@@ -1444,7 +1482,7 @@ class TeamTestCase(TestCase):
 
         # try to access the update page
         response = self.c.get(
-            reverse('teams:team-member-role-update', args=[membership2.id]),
+            reverse('teams:team-member-role-update', args=[membership2.uuid]),
             follow=True
         )
 
