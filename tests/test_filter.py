@@ -28,10 +28,10 @@ class TaskTestCase(TestCase):
         membership = TeamMembership.objects.filter(user=self.user).first()
         self.team = membership.team if membership else None
 
-        # set active_team_id in session if team is set
+        # set active_team_uuid in session if team is set
         if self.team:
             session = self.c.session
-            session['active_team_id'] = self.team.id
+            session['active_team_uuid'] = str(self.team.uuid)
             session.save()
 
         # filter tasks by status, executor, label and team
@@ -91,10 +91,10 @@ class TaskTestCase(TestCase):
         membership = TeamMembership.objects.filter(user=user).first()
         team = membership.team if membership else None
 
-        # set active_team_id in session if team is set
+        # set active_team_uuid in session if team is set
         if team:
             session = self.c.session
-            session['active_team_id'] = team.id
+            session['active_team_uuid'] = str(team.uuid)
             session.save()
 
         # make request with self_tasks=on to filter own tasks

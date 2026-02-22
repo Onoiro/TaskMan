@@ -10,7 +10,8 @@ from task_manager.user.models import User
 from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
+
 
 import os
 import django
@@ -152,20 +153,37 @@ class UserUpdateView(CustomPermissions,
     slug_url_kwarg = 'username'
 
     def form_valid(self, form):
-        user = form.save(commit=True, request=self.request)
-        # relogin user after updating
-        login(self.request, user)
+        # Step 1: Save the user object to database and store it
+        # We use self.object so the redirect URL works correctly
+        self.object = form.save(commit=True, request=self.request)
 
-        # if join to a new team
+        # Step 2: Keep the user session active after password change
+        # Without this, the user would be logged out after changing password
+        if self.request.user == self.object:
+            update_session_auth_hash(self.request, self.object)
+
+        # Step 3: Handle team change logic
+        # Check if user selected a new team to join
         team = form.cleaned_data.get('team_to_join')
         if team:
+            # Save the new team ID in the session
             self.request.session['active_team_uuid'] = str(team.uuid)
+            # Show message to user about joining the team
             messages.success(
                 self.request,
                 _("You have joined team: {team}").format(team=team.name)
             )
 
-        return super().form_valid(form)
+        # Step 4: Add success message manually
+        # We call super() in a different way,
+        # so we need to add this message ourselves
+        success_message = self.get_success_message(form.cleaned_data)
+        if success_message:
+            messages.success(self.request, success_message)
+
+        # Step 5: Redirect user to the success page
+        # We return redirect instead of calling the parent method
+        return redirect(self.get_success_url())
 
 
 class UserDeleteView(CustomPermissions,

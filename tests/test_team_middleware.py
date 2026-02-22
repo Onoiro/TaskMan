@@ -38,7 +38,9 @@ class ActiveTeamMiddlewareTest(TestCase):
         request = self.factory.get('/')
         request.user = Mock()
         request.user.is_authenticated = True
-        request.session = {'active_team_id': 1}
+        request.session = {
+            'active_team_uuid': '550e8400-e29b-41d4-a716-446655440030'
+        }
 
         # mock database returning a team
         mock_team = Mock()
@@ -50,7 +52,7 @@ class ActiveTeamMiddlewareTest(TestCase):
         self.assertEqual(request.active_team, mock_team)
         # verify get was called with correct args
         mock_get.assert_called_with(
-            id=1,
+            uuid='550e8400-e29b-41d4-a716-446655440030',
             memberships__user=request.user
         )
 
@@ -60,7 +62,9 @@ class ActiveTeamMiddlewareTest(TestCase):
         request = self.factory.get('/')
         request.user = Mock()
         request.user.is_authenticated = True
-        request.session = {'active_team_id': 999}
+        request.session = {
+            'active_team_uuid': '550e8400-e29b-41d4-a716-446655440099'
+        }
 
         # mock database raising DoesNotExist
         mock_get.side_effect = Team.DoesNotExist
@@ -70,4 +74,4 @@ class ActiveTeamMiddlewareTest(TestCase):
         # active_team should be none
         self.assertIsNone(request.active_team)
         # verify session key was removed
-        self.assertNotIn('active_team_id', request.session)
+        self.assertNotIn('active_team_uuid', request.session)

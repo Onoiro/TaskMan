@@ -283,7 +283,7 @@ class UserTestCase(TestCase):
             response.context['can_change_role']
         )
         self.assertIsNotNone(
-            response.context['membership_id']
+            response.context['membership_uuid']
         )
 
     def test_user_detail_admin_views_non_member(self):
@@ -307,7 +307,7 @@ class UserTestCase(TestCase):
             response.context['can_change_role']
         )
         self.assertIsNone(
-            response.context['membership_id']
+            response.context['membership_uuid']
         )
 
     # create
@@ -569,7 +569,8 @@ class UserTestCase(TestCase):
             self.user_data, follow=True)
 
         # check for user stay login
-        self.assertEqual(int(self.c.session['_auth_user_id']), self.user.pk)
+        self.assertEqual(
+            str(self.c.session['_auth_user_id']), str(self.user.pk))
 
     def test_check_can_not_update_user_if_same_user_exist(self):
         new_user_data = {
@@ -619,7 +620,8 @@ class UserTestCase(TestCase):
 
     def test_update_user_with_team_join(self):
         """test updating user and joining a team"""
-        team = Team.objects.get(pk=2)  # user is not admin of this team
+        # user 'he' is already a member of team pk=2, use team pk=1 instead
+        team = Team.objects.get(pk=1)  # user is not a member of this team
         update_data = self.user_data.copy()
         update_data.update({
             'join_team_name': team.name,
