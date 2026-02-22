@@ -165,7 +165,7 @@ class UserUpdateView(CustomPermissions,
                 _("You have joined team: {team}").format(team=team.name)
             )
 
-        return redirect('user:user-list')
+        return super().form_valid(form)
 
 
 class UserDeleteView(CustomPermissions,
