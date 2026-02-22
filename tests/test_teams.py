@@ -388,7 +388,6 @@ class TeamTestCase(TestCase):
         response = self.c.post(reverse('teams:team-create'),
                                self.team_data, follow=True)
         team = Team.objects.get(name=self.team_data['name'])
-        team_uuid = team.uuid  # save uuid for check after deleting
 
         # ensure user is admin of this new team
         # (should be created automatically by the view)
@@ -554,8 +553,8 @@ class TeamTestCase(TestCase):
         self.assertEqual(regular_user.member_teams.count(), 1)
 
         # exit the team
-        response = self.c.post(reverse('teams:team-exit', args=[self.team.uuid]),
-                               follow=True)
+        url = reverse('teams:team-exit', args=[self.team.uuid])
+        response = self.c.post(url, follow=True)
 
         # check that membership was removed
         self.assertFalse(self.team.is_member(regular_user))
@@ -835,7 +834,10 @@ class TeamTestCase(TestCase):
         )
 
         # check that active_team_uuid is set in session
-        self.assertEqual(self.c.session.get('active_team_uuid'), str(self.team.uuid))
+        self.assertEqual(
+            self.c.session.get('active_team_uuid'),
+            str(self.team.uuid)
+        )
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
@@ -935,7 +937,10 @@ class TeamTestCase(TestCase):
         self.c.post(reverse('teams:switch-team'), {}, follow=True)
 
         # check that active_team_uuid is still in session (unchanged)
-        self.assertEqual(self.c.session.get('active_team_uuid'), str(self.team.uuid))
+        self.assertEqual(
+            self.c.session.get('active_team_uuid'),
+            str(self.team.uuid)
+        )
 
     def test_switch_team_redirect_from_labels_update(self):
         """test redirect to labels list when switching from labels

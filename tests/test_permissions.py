@@ -116,15 +116,17 @@ class PermissionsTestCase(TestCase):
 
     def test_team_membership_admin_permissions_unauthenticated_user(self):
         membership = TeamMembership.objects.get(pk=2)
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=[membership.uuid]), follow=True)
+        url = reverse('teams:team-member-role-update',
+                      args=[membership.uuid])
+        response = self.client.get(url, follow=True)
         self.assertRedirects(response, reverse('login'))
 
     def test_team_membership_admin_permissions_non_admin_user(self):
         self.client.force_login(self.he)
         membership = TeamMembership.objects.get(pk=2)
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=[membership.uuid]), follow=True)
+        url = reverse('teams:team-member-role-update',
+                      args=[membership.uuid])
+        response = self.client.get(url, follow=True)
         self.assertRedirects(response, reverse(
             'teams:team-detail', kwargs={'uuid': membership.team.uuid}))
         messages = list(get_messages(response.wsgi_request))
@@ -137,15 +139,17 @@ class PermissionsTestCase(TestCase):
     def test_team_membership_admin_permissions_admin_user(self):
         self.client.force_login(self.user)
         membership = TeamMembership.objects.get(pk=2)
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=[membership.uuid]))
+        url = reverse('teams:team-member-role-update',
+                      args=[membership.uuid])
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_team_membership_admin_permissions_trying_to_change_own_role(self):
         self.client.force_login(self.user)
         membership = TeamMembership.objects.get(pk=1)
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=[membership.uuid]), follow=True)
+        url = reverse('teams:team-member-role-update',
+                      args=[membership.uuid])
+        response = self.client.get(url, follow=True)
         self.assertRedirects(response, reverse(
             'teams:team-detail', kwargs={'uuid': membership.team.uuid}))
         messages = list(get_messages(response.wsgi_request))
@@ -156,8 +160,10 @@ class PermissionsTestCase(TestCase):
 
     def test_team_membership_admin_permissions_nonexistent_membership(self):
         self.client.force_login(self.user)
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=["550e8400-e29b-41d4-a716-446655449999"]), follow=True)
+        fake_uuid = "550e8400-e29b-41d4-a716-446655449999"
+        url = reverse('teams:team-member-role-update',
+                      args=[fake_uuid])
+        response = self.client.get(url, follow=True)
         self.assertRedirects(response, reverse('user:user-list'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
@@ -169,8 +175,9 @@ class PermissionsTestCase(TestCase):
         self.client.force_login(self.user)
         membership = TeamMembership.objects.get(pk=2)
         self.user.team_memberships.filter(team=membership.team).delete()
-        response = self.client.get(reverse(
-            'teams:team-member-role-update', args=[membership.uuid]), follow=True)
+        url = reverse('teams:team-member-role-update',
+                      args=[membership.uuid])
+        response = self.client.get(url, follow=True)
         self.assertRedirects(response, reverse(
             'teams:team-detail', kwargs={'uuid': membership.team.uuid}))
         messages = list(get_messages(response.wsgi_request))

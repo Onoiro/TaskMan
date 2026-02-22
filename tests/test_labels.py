@@ -370,10 +370,12 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
+        url = reverse('labels:labels-update', args=[label.uuid])
+        response = self.c.get(url)
 
         self.assertContains(response, _('Delete'))
-        delete_url = reverse('labels:labels-delete', args=[label.uuid])
+        delete_url = reverse('labels:labels-delete',
+                             args=[label.uuid])
         self.assertContains(response, f'href="{delete_url}"')
 
     def test_update_page_has_cancel_button(self):
@@ -381,7 +383,8 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
+        response = self.c.get(reverse('labels:labels-update',
+                                      args=[label.uuid]))
 
         self.assertContains(response, _('Cancel'))
 
@@ -390,7 +393,8 @@ class LabelsTestCase(TestCase):
         self._set_active_team(self.team.id)
 
         label = Label.objects.get(name="bug")
-        response = self.c.get(reverse('labels:labels-update', args=[label.uuid]))
+        response = self.c.get(reverse('labels:labels-update',
+                                      args=[label.uuid]))
 
         # Check that card exists and contains label details
         self.assertContains(response, 'card')

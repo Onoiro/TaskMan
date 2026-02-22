@@ -184,12 +184,14 @@ class UserTestCase(TestCase):
 
     def test_user_detail_view_response_200(self):
         """test user detail view returns 200"""
-        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
+        url = reverse('user:user-detail', args=[self.user.username])
+        response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_user_detail_view_context(self):
         """test user detail view context data"""
-        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
+        url = reverse('user:user-detail', args=[self.user.username])
+        response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
         # check context object is correct
@@ -237,7 +239,8 @@ class UserTestCase(TestCase):
     def test_user_detail_edit_delete_buttons_for_current_user(self):
         """test that Edit/Delete buttons are shown only for current user"""
         # User should see Edit/Delete buttons on their own detail page
-        response = self.c.get(reverse('user:user-detail', args=[self.user.username]))
+        url = reverse('user:user-detail', args=[self.user.username])
+        response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
         # Check that Edit and Delete buttons are present for current user
@@ -248,7 +251,8 @@ class UserTestCase(TestCase):
         """test that Edit/Delete buttons are not shown for other users"""
         # Test with another user from fixtures
         other_user = User.objects.get(username='me')
-        response = self.c.get(reverse('user:user-detail', args=[other_user.username]))
+        url = reverse('user:user-detail', args=[other_user.username])
+        response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
         # Check that Edit and Delete buttons are NOT present for other users

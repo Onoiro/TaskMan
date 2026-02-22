@@ -96,19 +96,26 @@ class TaskTestCase(TestCase):
 
     def _update_fixture_uuids(self):
         """Update UUIDs for fixture-loaded objects"""
-        # Update teams
-        team1 = Team.objects.filter(pk=1).first()
-        team2 = Team.objects.filter(pk=2).first()
-        if team1 and not hasattr(team1, '_uuid_set'):
-            team1.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440030')
-            team1.save(update_fields=['uuid'])
-            team1._uuid_set = True
-        if team2 and not hasattr(team2, '_uuid_set'):
-            team2.uuid = uuid.UUID('550e8400-e29b-41d4-a716-446655440031')
-            team2.save(update_fields=['uuid'])
-            team2._uuid_set = True
+        self._update_team_uuids()
+        self._update_status_uuids()
+        self._update_label_uuids()
+        self._update_task_uuids()
 
-        # Update statuses
+    def _update_team_uuids(self):
+        """Update UUIDs for teams"""
+        teams_data = [
+            (1, '550e8400-e29b-41d4-a716-446655440030'),
+            (2, '550e8400-e29b-41d4-a716-446655440031'),
+        ]
+        for team_pk, team_uuid in teams_data:
+            team = Team.objects.filter(pk=team_pk).first()
+            if team and not hasattr(team, '_uuid_set'):
+                team.uuid = uuid.UUID(team_uuid)
+                team.save(update_fields=['uuid'])
+                team._uuid_set = True
+
+    def _update_status_uuids(self):
+        """Update UUIDs for statuses"""
         statuses_data = [
             (12, '550e8400-e29b-41d4-a716-446655440010'),
             (13, '550e8400-e29b-41d4-a716-446655440011'),
@@ -121,7 +128,8 @@ class TaskTestCase(TestCase):
                 status.uuid = uuid.UUID(status_uuid)
                 status.save(update_fields=['uuid'])
 
-        # Update labels
+    def _update_label_uuids(self):
+        """Update UUIDs for labels"""
         labels_data = [
             (1, '550e8400-e29b-41d4-a716-446655440020'),
             (5, '550e8400-e29b-41d4-a716-446655440021'),
@@ -133,7 +141,8 @@ class TaskTestCase(TestCase):
                 label.uuid = uuid.UUID(label_uuid)
                 label.save(update_fields=['uuid'])
 
-        # Update tasks
+    def _update_task_uuids(self):
+        """Update UUIDs for tasks"""
         tasks_data = [
             (5, '550e8400-e29b-41d4-a716-446655440001'),
             (7, '550e8400-e29b-41d4-a716-446655440002'),
