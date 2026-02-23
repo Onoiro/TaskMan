@@ -11,9 +11,12 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Environment :: Web Environment",
-    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.1",
     "Natural Language :: Russian",
     "Natural Language :: English",
+    "Natural Language :: Tajik",
+    "Natural Language :: Azerbaijani",
+    "Natural Language :: Kirghiz",
     "Operating System :: POSIX :: Linux",
     "Topic :: Office/Business :: Groupware"
 ]
