@@ -395,7 +395,7 @@ msgstr "ТаскМан"
 
 #: templates/base.html:81
 msgid "Navigation"
-msgstr ""
+msgstr "Навигация"
 
 #: templates/base.html:84 templates/base.html:112
 #: templates/labels/labels_list.html:29
@@ -433,10 +433,8 @@ msgid "Edit"
 msgstr "Изменить"
 
 #: templates/base.html:193
-#, fuzzy
-#| msgid "Team"
 msgid "New Team"
-msgstr "Команда"
+msgstr "Создать команду"
 
 #: templates/base.html:199
 msgid "Language"
