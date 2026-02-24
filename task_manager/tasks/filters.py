@@ -17,7 +17,7 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
-    executor = django_filters.ModelChoiceFilter(
+    executors = django_filters.ModelChoiceFilter(
         queryset=User.objects.all(),
         label=_('Executor'),
         widget=forms.Select(attrs={'class': 'form-select'}),
@@ -62,7 +62,7 @@ class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
         fields = [
-            'status', 'executor', 'labels', 'self_tasks',
+            'status', 'executors', 'labels', 'self_tasks',
             'created_after', 'created_before'
         ]
 
@@ -79,11 +79,11 @@ class TaskFilter(django_filters.FilterSet):
                 team_memberships__team=team
             ).distinct()
 
-            self.filters['executor'].queryset = team_users
+            self.filters['executors'].queryset = team_users
             self.filters['status'].queryset = Status.objects.filter(team=team)
             self.filters['labels'].queryset = Label.objects.filter(team=team)
         else:
-            self.filters['executor'].queryset = User.objects.filter(pk=user.pk)
+            self.filters['executors'].queryset = User.objects.filter(pk=user.pk)
             self.filters['status'].queryset = Status.objects.filter(
                 creator=user,
                 team__isnull=True
@@ -110,6 +110,14 @@ class TaskFilter(django_filters.FilterSet):
         if self.form.is_valid():
             value = self.form.cleaned_data.get(field_name)
             if value is not None:
+                # Handle list of User objects for ManyToMany fields
+                if isinstance(value, (list, tuple)) and value:
+                    first = value[0]
+                    if hasattr(first, 'pk'):
+                        return [item.pk for item in value]
+                # Handle single User object
+                if hasattr(value, 'pk'):
+                    return value.pk
                 return value
         return self.form.initial.get(field_name)
 
@@ -133,7 +141,11 @@ class TaskFilter(django_filters.FilterSet):
         lookup_field = lookup_field or field_name
         exclude_mode = self._is_excluded(f'{field_name}_exclude')
 
-        condition = Q(**{lookup_field: value})
+        # Handle list of IDs for ManyToMany fields
+        if isinstance(value, (list, tuple)):
+            condition = Q(**{f'{lookup_field}__in': value})
+        else:
+            condition = Q(**{lookup_field: value})
         return qs.filter(~condition if exclude_mode else condition)
 
     def _apply_date_filters(self, qs):
@@ -166,7 +178,7 @@ class TaskFilter(django_filters.FilterSet):
 
         # Apply model choice filters
         qs = self._apply_model_filter(qs, 'status')
-        qs = self._apply_model_filter(qs, 'executor')
+        qs = self._apply_model_filter(qs, 'executors')
         qs = self._apply_model_filter(qs, 'labels')
 
         # Apply special filters

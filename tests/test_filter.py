@@ -37,21 +37,21 @@ class TaskTestCase(TestCase):
         # filter tasks by status, executor, label and team
         if self.team:
             self.filtered_tasks = Task.objects.filter(
-                executor=self.user,
+                executors__in=[self.user],
                 status=self.status,
                 labels=self.label,
                 team=self.team
             )
         else:
             self.filtered_tasks = Task.objects.filter(
-                executor=self.user,
+                executors__in=[self.user],
                 status=self.status,
                 labels=self.label,
                 team__isnull=True
             )
 
         self.response = self.c.get(reverse('tasks:tasks-list'),
-                                   {'executor': self.user.id,
+                                   {'executors': self.user.id,
                                     'status': self.status.id,
                                     'labels': self.label.id
                                     })
@@ -124,14 +124,14 @@ class TaskTestCase(TestCase):
     def test_filter_by_executor_only(self):
         """Test filtering by executor only"""
         response = self.c.get(reverse('tasks:tasks-list'),
-                              {'executor': self.user.id})
+                              {'executors': self.user.id})
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('filter', response.context)
 
         filtered_tasks = response.context['filter'].qs
         for task in filtered_tasks:
-            self.assertEqual(task.executor, self.user)
+            self.assertIn(self.user, task.executors.all())
 
     def test_filter_by_label_only(self):
         """Test filtering by label only"""
@@ -179,10 +179,10 @@ class TaskTestCase(TestCase):
         task = Task.objects.create(
             name='Personal Task',
             author=user_no_team,
-            executor=user_no_team,
             status=status,
             team=None
         )
+        task.executors.add(user_no_team)
 
         self.c.logout()
         self.c.force_login(user_no_team)
@@ -277,8 +277,8 @@ class TaskTestCase(TestCase):
             self.skipTest("No other user available for exclude test")
 
         response = self.c.get(reverse('tasks:tasks-list'), {
-            'executor': other_user.pk,
-            'executor_exclude': 'on'
+            'executors': other_user.pk,
+            'executors_exclude': 'on'
         })
 
         self.assertEqual(response.status_code, 200)
@@ -288,7 +288,7 @@ class TaskTestCase(TestCase):
 
         # All tasks should NOT have the excluded executor
         for task in filtered_tasks:
-            self.assertNotEqual(task.executor, other_user)
+            self.assertNotIn(other_user, task.executors.all())
 
     def test_filter_exclude_by_label(self):
         """Test exclude mode for label filter"""
@@ -336,7 +336,7 @@ class TaskTestCase(TestCase):
         response = self.c.get(reverse('tasks:tasks-list'), {
             'status': other_status.pk,
             'status_exclude': 'on',
-            'executor': self.user.id
+            'executors': self.user.id
         })
 
         self.assertEqual(response.status_code, 200)
@@ -346,7 +346,7 @@ class TaskTestCase(TestCase):
 
         # Tasks should have the specified executor
         for task in filtered_tasks:
-            self.assertEqual(task.executor, self.user)
+            self.assertIn(self.user, task.executors.all())
             # And should NOT have the excluded status
             self.assertNotEqual(task.status, other_status)
 
@@ -427,7 +427,7 @@ class TaskTestCase(TestCase):
         when filters are active"""
         response = self.c.get(reverse('tasks:tasks-list'), {
             'status': self.status.id,
-            'executor': self.user.id
+            'executors': self.user.id
         })
 
         self.assertEqual(response.status_code, 200)
@@ -468,9 +468,9 @@ class TaskTestCase(TestCase):
         """Test counting multiple exclude filters correctly"""
         response = self.c.get(reverse('tasks:tasks-list'), {
             'status': self.status.id,
-            'executor': self.user.id,
+            'executors': self.user.id,
             'status_exclude': 'on',
-            'executor_exclude': 'on'
+            'executors_exclude': 'on'
         })
 
         self.assertEqual(response.status_code, 200)
@@ -505,7 +505,7 @@ class TaskTestCase(TestCase):
         """Test that empty filter values are not counted"""
         response = self.c.get(reverse('tasks:tasks-list'), {
             'status': self.status.id,
-            'executor': '',
+            'executors': '',
             'labels': ''
         })
 
@@ -531,7 +531,7 @@ class TaskTestCase(TestCase):
 
     def test_saved_filter_params_context(self):
         """Test that saved filter parameters are passed to context"""
-        saved_params = {'status': self.status.id, 'executor': self.user.id}
+        saved_params = {'status': self.status.id, 'executors': self.user.id}
 
         session = self.c.session
         session['task_filter_params'] = saved_params
@@ -661,7 +661,8 @@ class TaskTestCase(TestCase):
 
         # Test getting filter value when form is valid
         value = filter_instance._get_filter_value('status')
-        self.assertEqual(value, self.status)
+        # Returns ID for objects with pk attribute
+        self.assertEqual(value, self.status.pk)
 
     def test_apply_model_filter_with_empty_value(self):
         """Test _apply_model_filter when filter value is empty"""

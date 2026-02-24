@@ -33,10 +33,12 @@ class TaskDeletePermissionMixin():
 class TaskUpdatePermissionMixin():
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
-        if task.author != request.user and task.executor != request.user:
+        is_author = task.author == request.user
+        is_executor = request.user in task.executors.all()
+        if not is_author and not is_executor:
             messages.error(
                 request,
-                _("Task can only be updated by its author or executor.")
+                _("Task can only be updated by its author or executors.")
             )
             return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)
@@ -153,9 +155,13 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
         if team:
             form.instance.team = team
             if team.memberships.count() == 1:
-                form.instance.executor = self.request.user
+                form.instance.save()
+                form.instance.executors.add(self.request.user)
+                return super().form_valid(form)
         else:
-            form.instance.executor = self.request.user
+            form.instance.save()
+            form.instance.executors.add(self.request.user)
+            return super().form_valid(form)
 
         return super().form_valid(form)
 

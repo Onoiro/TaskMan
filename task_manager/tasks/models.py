@@ -50,11 +50,11 @@ class Task(models.Model):
         on_delete=models.PROTECT,
         verbose_name=_('Status'),
     )
-    executor = models.ForeignKey(
+    executors = models.ManyToManyField(
         User,
-        related_name='executor_set',
-        on_delete=models.PROTECT,
-        verbose_name=_('Executor'),
+        related_name='executor_tasks',
+        blank=True,
+        verbose_name=_('Executors'),
     )
     author = models.ForeignKey(
         User,

@@ -31,14 +31,18 @@
                             </div>
                             {% endif %}
                         </div>
-                        <!-- Нижняя строка: автор (слева), исполнитель (справа) -->
+                        <!-- Нижняя строка: автор (слева), исполнители (справа) -->
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Author' %}">
                                 <span class="me-1">👤</span> {{ object.author.username }}
                             </div>
-                            {% if object.executor and object.executor != object.author %}
-                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Executor' %}">
-                                <span class="me-1">👉</span> {{ object.executor.username }}
+                            {% if object.executors.all %}
+                            <div class="d-flex align-items-center gap-1">
+                                {% for executor in object.executors.all %}
+                                <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Executor' %}">
+                                    <span class="me-1">👉</span> {{ executor.username }}
+                                </div>
+                                {% endfor %}
                             </div>
                             {% endif %}
                         </div>

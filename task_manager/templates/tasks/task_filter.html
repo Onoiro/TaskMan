@@ -105,23 +105,23 @@
                     </div>
                 </div>
 
-                <!-- Executor filter with exclude -->
+                <!-- Executors filter with exclude -->
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6 col-lg-3">
                         <label class="form-label small text-uppercase text-muted fw-bold">
-                            {{ filter.form.executor.label }}
+                            {{ filter.form.executors.label }}
                         </label>
                         <div class="input-group">
-                            {{ filter.form.executor }}
-                            <span class="input-group-text filter-exclude-toggle{% if request.GET.executor_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
+                            {{ filter.form.executors }}
+                            <span class="input-group-text filter-exclude-toggle{% if request.GET.executors_exclude %} bg-danger text-white border-danger{% endif %}" title="{% trans 'Exclude' %}">
                                 🚫
                             </span>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3 d-flex align-items-end">
-                        <div class="form-check{% if request.GET.executor_exclude %} text-danger{% endif %}">
-                            <input type="checkbox" name="executor_exclude" id="id_executor_exclude" class="form-check-input"{% if request.GET.executor_exclude %} checked{% endif %}>
-                            <label class="form-check-label small fw-bold" for="id_executor_exclude">
+                        <div class="form-check{% if request.GET.executors_exclude %} text-danger{% endif %}">
+                            <input type="checkbox" name="executors_exclude" id="id_executors_exclude" class="form-check-input"{% if request.GET.executors_exclude %} checked{% endif %}>
+                            <label class="form-check-label small fw-bold" for="id_executors_exclude">
                                 {% trans 'Exclude' %}
                             </label>
                         </div>
@@ -274,11 +274,11 @@
                                     <span class="user-badge" title="{% trans 'Author' %}">
                                         👤 {{ obj.author.username }}
                                     </span>
-                                    {% if obj.executor %}
+                                    {% for executor in obj.executors.all %}
                                     <span class="user-badge" title="{% trans 'Executor' %}">
-                                        👉 {{ obj.executor.username }}
+                                        👉 {{ executor.username }}
                                     </span>
-                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>

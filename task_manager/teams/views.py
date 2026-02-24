@@ -141,7 +141,7 @@ class TeamExitView(LoginRequiredMixin, View):
         """check if user has tasks as author or executor in the team"""
         return (
             Task.objects.filter(team=team, author=user).exists()
-            or Task.objects.filter(team=team, executor=user).exists()
+            or Task.objects.filter(team=team, executors=user).exists()
         )
 
     def _get_task_error_message(self, user, team):
@@ -149,7 +149,7 @@ class TeamExitView(LoginRequiredMixin, View):
         has_author_tasks = Task.objects.filter(
             team=team, author=user).exists()
         has_executor_tasks = Task.objects.filter(
-            team=team, executor=user).exists()
+            team=team, executors=user).exists()
 
         if has_author_tasks or has_executor_tasks:
             return _('You cannot exit the team because you are'

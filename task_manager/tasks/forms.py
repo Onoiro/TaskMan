@@ -12,7 +12,7 @@ class TaskForm(forms.ModelForm):
             'name',
             'description',
             'status',
-            'executor',
+            'executors',
             'labels',
         ]
 
@@ -31,7 +31,7 @@ class TaskForm(forms.ModelForm):
 
         if team:
             # team mode
-            self.fields['executor'].queryset = User.objects.filter(
+            self.fields['executors'].queryset = User.objects.filter(
                 team_memberships__team=team
             )
             self.fields['status'].queryset = Status.objects.filter(
@@ -42,11 +42,10 @@ class TaskForm(forms.ModelForm):
             )
             # if team has only one member - set executor to author
             if team.memberships.count() == 1:
-                self.fields['executor'].initial = user
-                self.fields['executor'].widget.attrs['readonly'] = True
+                self.fields['executors'].initial = [user]
         else:
             # individual mode
-            self.fields['executor'].queryset = User.objects.filter(
+            self.fields['executors'].queryset = User.objects.filter(
                 pk=user.pk
             )
             self.fields['status'].queryset = Status.objects.filter(
@@ -57,6 +56,6 @@ class TaskForm(forms.ModelForm):
                 creator=user,
                 team__isnull=True
             )
-            # user is exucutor in individual mode
-            self.fields['executor'].initial = user
-            self.fields['executor'].widget.attrs['readonly'] = True
+            # user is executor in individual mode
+            self.fields['executors'].initial = [user]
+            self.fields['executors'].widget.attrs['readonly'] = True

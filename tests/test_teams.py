@@ -480,7 +480,6 @@ class TeamTestCase(TestCase):
             description='Task description',
             status=status,
             author=self.admin_user,
-            executor=self.admin_user,
             team=new_team
         )
 
@@ -618,15 +617,14 @@ class TeamTestCase(TestCase):
         # get a status for the task
         status = Status.objects.first()
 
-        # create a task where user is the author
-        Task.objects.create(
+        task = Task.objects.create(
             name='Test Task',
             description='Task description',
             status=status,
             author=regular_user,
-            executor=self.admin_user,  # different user as executor
             team=self.team
         )
+        task.executors.add(self.admin_user)
 
         # login as regular user
         self.c.logout()
@@ -634,8 +632,9 @@ class TeamTestCase(TestCase):
 
         # try to exit the team
         response = self.c.get(
-            reverse('teams:team-exit',
-                    args=[self.team.uuid]), follow=True)
+            reverse('teams:team-exit', args=[self.team.uuid]),
+            follow=True
+        )
 
         # check that membership still exists
         self.assertTrue(self.team.is_member(regular_user))
@@ -668,14 +667,14 @@ class TeamTestCase(TestCase):
         status = Status.objects.first()
 
         # create a task where user is the executor
-        Task.objects.create(
+        task = Task.objects.create(
             name='Executor Task',
             description='Task for executor test',
             status=status,
             author=self.admin_user,  # different user as author
-            executor=regular_user,
             team=self.team
         )
+        task.executors.add(regular_user)
 
         # login as regular user
         self.c.logout()

@@ -74,7 +74,7 @@ class TaskTestCase(TestCase):
             'name': 'new_test_task',
             'description': 'new_test_description',
             'status': available_status.id,
-            'executor': available_executor.id,
+            'executors': [available_executor.id],
         }
 
         # add labels if available
@@ -278,7 +278,7 @@ class TaskTestCase(TestCase):
             self.assertContains(response, task.author.username)
 
     def test_tasks_list_card_shows_executor(self):
-        """Check that executor or 'No assignee' is visible in card"""
+        """Check that executors or 'No assignee' is visible in card"""
         response = self.c.get(reverse('tasks:tasks-list'))
 
         if self.team:
@@ -288,8 +288,10 @@ class TaskTestCase(TestCase):
                 author=self.user, team__isnull=True).first()
 
         if task:
-            if task.executor:
-                self.assertContains(response, task.executor.username)
+            executors = task.executors.all()
+            if executors:
+                for executor in executors:
+                    self.assertContains(response, executor.username)
             else:
                 self.assertContains(response, _('No assignee'))
 
@@ -328,10 +330,10 @@ class TaskTestCase(TestCase):
             name="Task with description",
             description="This is a test description for preview",
             author=self.user,
-            executor=self.user,
             status=status,
             team=self.team
         )
+        task.executors.add(self.user)
 
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertContains(response, "This is a test description")
@@ -356,10 +358,10 @@ class TaskTestCase(TestCase):
         task = Task.objects.create(
             name="Task with label",
             author=self.user,
-            executor=self.user,
             status=status,
             team=self.team
         )
+        task.executors.add(self.user)
         task.labels.add(label)
 
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -501,8 +503,8 @@ class TaskTestCase(TestCase):
         self.assertIsNotNone(task, "Task was not created")
         self.assertEqual(task.author, self.user)
 
-        expected_executor = User.objects.get(pk=self.tasks_data['executor'])
-        self.assertEqual(task.executor, expected_executor)
+        expected_executor = User.objects.get(pk=self.tasks_data['executors'][0])
+        self.assertIn(expected_executor, task.executors.all())
 
         self.assertEqual(response.status_code, 200)
 
@@ -523,7 +525,7 @@ class TaskTestCase(TestCase):
             'name': 'solo_task',
             'description': 'task for user without team',
             'status': status.id,
-            'executor': user_no_team.id,
+            'executors': [user_no_team.id],
             'labels': []
         }
 
@@ -533,7 +535,7 @@ class TaskTestCase(TestCase):
         self.assertIsNotNone(task, "Task was not created")
 
         self.assertEqual(task.author, user_no_team)
-        self.assertEqual(task.executor, user_no_team)
+        self.assertIn(user_no_team, task.executors.all())
         self.assertIsNone(task.team)
 
         # cleanup
@@ -580,7 +582,7 @@ class TaskTestCase(TestCase):
             'name': 'solo_team_task',
             'description': 'task for solo team user',
             'status': available_status.id,
-            'executor': available_executor.id,
+            'executors': [available_executor.id],
         }
 
         self.c.post(reverse('tasks:task-create'), task_data, follow=True)
@@ -589,7 +591,7 @@ class TaskTestCase(TestCase):
         self.assertIsNotNone(task, "Task was not created")
 
         self.assertEqual(task.author, solo_user)
-        self.assertEqual(task.executor, solo_user)
+        self.assertIn(solo_user, task.executors.all())
         self.assertEqual(task.team, team)
 
         # cleanup
@@ -611,11 +613,11 @@ class TaskTestCase(TestCase):
 
         form = response.context.get('form')
         if form:
-            executor_queryset = form.fields['executor'].queryset
-            self.assertEqual(executor_queryset.count(), 1)
-            self.assertEqual(executor_queryset.first(), user_no_team)
+            executors_queryset = form.fields['executors'].queryset
+            self.assertEqual(executors_queryset.count(), 1)
+            self.assertEqual(executors_queryset.first(), user_no_team)
             self.assertTrue(
-                form.fields['executor'].widget.attrs.get('readonly'))
+                form.fields['executors'].widget.attrs.get('readonly'))
 
         # cleanup
         user_no_team.delete()
@@ -715,10 +717,10 @@ class TaskTestCase(TestCase):
         task = Task.objects.create(
             name="author task",
             author=author,
-            executor=executor,
             status=status,
             team=self.team
         )
+        task.executors.add(executor)
 
         response = self.c.post(
             reverse('tasks:task-update', args=[task.uuid]),
@@ -761,10 +763,10 @@ class TaskTestCase(TestCase):
         task = Task.objects.create(
             name="executor task",
             author=author,
-            executor=executor,
             status=status,
             team=self.team
         )
+        task.executors.add(executor)
 
         response = self.c.post(
             reverse('tasks:task-update', args=[task.uuid]),
@@ -791,9 +793,9 @@ class TaskTestCase(TestCase):
         task = Task.objects.create(
             name="restricted task",
             author=author,
-            executor=executor,
             status_id=12
         )
+        task.executors.add(executor)
 
         response = self.c.post(
             reverse('tasks:task-update', args=[task.uuid]),
@@ -803,7 +805,9 @@ class TaskTestCase(TestCase):
 
         self.assertRedirects(response, reverse('tasks:tasks-list'))
 
-        error_message = _("Task can only be updated by its author or executor.")
+        error_message = _(
+            "Task can only be updated by its author or executors."
+        )
         self.assertContains(response, error_message)
 
     # ========== DELETE TASK TESTS ==========
@@ -962,7 +966,7 @@ class TaskTestCase(TestCase):
 
         # Visit with different parameters
         response = self.c.get(
-            reverse('tasks:tasks-list') + '?executor=1'
+            reverse('tasks:tasks-list') + '?executors=1'
         )
 
         # Should NOT redirect, user params take priority
@@ -1091,7 +1095,7 @@ class TaskTestCase(TestCase):
     def test_save_filter_only_saves_non_empty_values(self):
         """Check that empty filter values are not saved"""
         url = reverse('tasks:tasks-list')
-        query_params = '?status=1&executor=&save_as_default=1'
+        query_params = '?status=1&executors=&save_as_default=1'
         self.c.get(url + query_params, follow=True)
 
         session = self.c.session
@@ -1137,14 +1141,14 @@ class TaskTestCase(TestCase):
     def test_save_multiple_filter_params(self):
         """Check that multiple filter parameters are saved correctly"""
         url = reverse('tasks:tasks-list')
-        params = '?status=1&executor=1&self_tasks=on&save_as_default=1'
+        params = '?status=1&executors=1&self_tasks=on&save_as_default=1'
         self.c.get(url + params, follow=True)
 
         session = self.c.session
         saved_params = session.get('task_filter_params', {})
 
         self.assertIn('status', saved_params)
-        self.assertIn('executor', saved_params)
+        self.assertIn('executors', saved_params)
         self.assertIn('self_tasks', saved_params)
 
     def test_saved_filter_persists_across_requests(self):

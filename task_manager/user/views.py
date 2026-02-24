@@ -218,9 +218,9 @@ class UserDeleteView(CustomPermissions,
             )
             return redirect('user:user-list')
 
-        # check for user's tasks (author and exucutor)
+        # check for user's tasks (author and executor)
         user_tasks_as_author = Task.objects.filter(author=self.object)
-        user_tasks_as_executor = Task.objects.filter(executor=self.object)
+        user_tasks_as_executor = Task.objects.filter(executors=self.object)
 
         if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
             messages.error(
