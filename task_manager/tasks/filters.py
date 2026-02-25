@@ -110,12 +110,7 @@ class TaskFilter(django_filters.FilterSet):
         if self.form.is_valid():
             value = self.form.cleaned_data.get(field_name)
             if value is not None:
-                # Handle list of User objects for ManyToMany fields
-                if isinstance(value, (list, tuple)) and value:
-                    first = value[0]
-                    if hasattr(first, 'pk'):
-                        return [item.pk for item in value]
-                # Handle single User object
+                # Handle single model object
                 if hasattr(value, 'pk'):
                     return value.pk
                 return value
