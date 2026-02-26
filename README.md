@@ -20,9 +20,12 @@ TaskMan is a web application designed to manage tasks individually or in teams (
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team
 
 ## Language Support
-The TaskMan application is available in two languages:
+The TaskMan application is available in multiple languages:
 - **English**
 - **Russian**
+- **Tajik**
+- **Azerbaijani**
+- **Kyrgyz**
 
 ## Requirements
 - **OS**: Linux (recommended)
