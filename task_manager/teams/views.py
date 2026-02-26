@@ -73,54 +73,142 @@ class SwitchTeamView(View):
 
 
 class TeamExitView(LoginRequiredMixin, View):
-    def get(self, request, uuid):
-        """display confirmation page for exiting team"""
+    def get(self, request, uuid, membership_uuid=None):
+        """display confirmation page for exiting team or removing member"""
         try:
             team = Team.objects.get(uuid=uuid)
 
-            if not self._is_user_team_member(request.user, team):
-                messages.error(request, _('You are not a member of this team'))
+            # Determine which user is being removed
+            target_user, is_removing_self = self._get_target_user(
+                request, team, membership_uuid)
+
+            if target_user is None:
                 return self._redirect_back(request)
 
-            if self._is_user_team_admin(request.user, team):
-                messages.error(
-                    request,
-                    _('Team administrators cannot leave the team. '
-                      'Please transfer admin rights to another member first.')
-                )
-                return self._redirect_back(request)
+            # Check permissions and constraints
+            error = self._check_removal_allowed(
+                request, team, target_user, is_removing_self)
+            if error:
+                return error
 
-            if self._has_user_tasks_in_team(request.user, team):
-                messages.error(
-                    request, self._get_task_error_message(request.user, team))
-                return self._redirect_back(request)
-
-            return render(request, 'teams/team_exit.html', {'team': team})
+            return render(request, 'teams/team_exit.html', {
+                'team': team,
+                'target_user': target_user,
+                'is_removing_self': is_removing_self,
+            })
 
         except Team.DoesNotExist:
             messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
 
-    def post(self, request, uuid):
-        """process exit from team after confirmation"""
+    def _check_removal_allowed(
+        self, request, team, target_user, is_removing_self
+    ):
+        """Check if removal is allowed, return error response or None"""
+        if is_removing_self:
+            return self._check_self_removal_allowed(request, team)
+        else:
+            return self._check_admin_removal_allowed(
+                request, team, target_user
+            )
+
+    def _check_self_removal_allowed(self, request, team):
+        """Check if user can leave the team themselves"""
+        if not self._is_user_team_member(request.user, team):
+            messages.error(request, _('You are not a member of this team'))
+            return self._redirect_back(request)
+
+        if self._is_user_team_admin(request.user, team):
+            messages.error(
+                request,
+                _('Team administrators cannot leave the team. '
+                  'Please transfer admin rights to another member first.')
+            )
+            return self._redirect_back(request)
+
+        if self._has_user_tasks_in_team(request.user, team):
+            messages.error(
+                request,
+                self._get_task_error_message(request.user, team))
+            return self._redirect_back(request)
+
+        return None
+
+    def _check_admin_removal_allowed(self, request, team, target_user):
+        """Check if admin can remove another member"""
+        if not team.is_admin(request.user):
+            messages.error(
+                request,
+                _('You do not have rights to manage team members. '
+                  'This can only be done by the team administrator'))
+            return self._redirect_back(request)
+
+        if not self._is_user_team_member(target_user, team):
+            messages.error(request, _('User is not a member of this team'))
+            return self._redirect_back(request)
+
+        if self._has_user_tasks_in_team(target_user, team):
+            messages.error(
+                request,
+                self._get_task_error_message(target_user, team))
+            return self._redirect_back(request)
+
+        return None
+
+    def post(self, request, uuid, membership_uuid=None):
+        """process exit from team or member removal after confirmation"""
         try:
             team = Team.objects.get(uuid=uuid)
 
-            self._remove_user_membership(request.user, team)
-            self._clear_active_team_session(request, team)
+            # Determine which user is being removed
+            target_user, is_removing_self = self._get_target_user(
+                request, team, membership_uuid)
 
-            messages.success(
-                request,
-                _(
-                    "You have successfully left the team {team}"
-                ).format(team=team.name)
-            )
+            if target_user is None:
+                return self._redirect_back(request)
+
+            # Perform removal
+            self._remove_user_membership(target_user, team)
+
+            # If removing self, clear session; if admin removing others,
+            # don't clear session
+            if is_removing_self:
+                self._clear_active_team_session(request, team)
+
+            if is_removing_self:
+                messages.success(
+                    request,
+                    _("You have successfully left the team {team}").format(
+                        team=team.name)
+                )
+            else:
+                messages.success(
+                    request,
+                    _("User {username} has been removed from the team {team}"
+                      ).format(
+                        username=target_user.username,
+                        team=team.name)
+                )
 
             return redirect(USER_LIST_URL)
 
         except Team.DoesNotExist:
             messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
+
+    def _get_target_user(self, request, team, membership_uuid):
+        """Determine target user and whether user is removing themselves"""
+        if membership_uuid:
+            # Admin is removing another member
+            try:
+                membership = TeamMembership.objects.get(uuid=membership_uuid)
+                return membership.user, False
+            except TeamMembership.DoesNotExist:
+                messages.error(request, _('Team membership not found'))
+                return None, False
+        else:
+            # User is leaving themselves
+            return request.user, True
 
     def _is_user_team_member(self, user, team):
         """check if user is a member of the team"""

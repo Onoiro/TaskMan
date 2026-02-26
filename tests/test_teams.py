@@ -1497,3 +1497,366 @@ class TeamTestCase(TestCase):
             _("You don't have permissions"),
             str(messages[0])
         )
+
+    # Admin remove member tests
+
+    def test_admin_remove_member_get_confirmation_page(self):
+        """test admin can see removal confirmation page for member"""
+        # create a member to remove
+        member = User.objects.create_user(
+            username='member_to_remove',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # admin tries to get removal page
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('target_user', response.context)
+        self.assertIn('is_removing_self', response.context)
+        self.assertFalse(response.context['is_removing_self'])
+
+    def test_admin_remove_member_successfully(self):
+        """test admin can successfully remove member from team"""
+        # create a member to remove
+        member = User.objects.create_user(
+            username='removable_member',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # verify membership exists
+        self.assertTrue(self.team.is_member(member))
+
+        # admin removes member
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        response = self.c.post(url, follow=True)
+
+        # check membership was removed
+        self.assertFalse(self.team.is_member(member))
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('has been removed from the team'),
+            str(messages[0])
+        )
+
+    def test_admin_cannot_remove_member_with_tasks(self):
+        """test admin cannot remove member who has tasks in team"""
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a member
+        member_with_tasks = User.objects.create_user(
+            username='member_with_tasks',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member_with_tasks,
+            team=self.team,
+            role='member'
+        )
+
+        # create a task where member is author
+        status = Status.objects.first()
+        Task.objects.create(
+            name='Member Task',
+            description='Task by member',
+            status=status,
+            author=member_with_tasks,
+            team=self.team
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # admin tries to remove member
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check membership still exists
+        self.assertTrue(self.team.is_member(member_with_tasks))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('author or executor of tasks'),
+            str(messages[0])
+        )
+
+    def test_admin_cannot_remove_member_who_is_executor(self):
+        """test admin cannot remove member who is executor of tasks"""
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a member
+        member_executor = User.objects.create_user(
+            username='member_executor',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member_executor,
+            team=self.team,
+            role='member'
+        )
+
+        # create a task where member is executor
+        status = Status.objects.first()
+        task = Task.objects.create(
+            name='Executor Task',
+            description='Task with executor',
+            status=status,
+            author=self.admin_user,
+            team=self.team
+        )
+        task.executors.add(member_executor)
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # admin tries to remove member
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check membership still exists
+        self.assertTrue(self.team.is_member(member_executor))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('author or executor of tasks'),
+            str(messages[0])
+        )
+
+    def test_non_admin_cannot_remove_member(self):
+        """test that non-admin cannot remove other members"""
+        # create two members
+        member1 = User.objects.create_user(
+            username='member1_remove',
+            password='password123'
+        )
+        member2 = User.objects.create_user(
+            username='member2_remove',
+            password='password123'
+        )
+
+        TeamMembership.objects.create(
+            user=member1,
+            team=self.team,
+            role='member'
+        )
+        membership2 = TeamMembership.objects.create(
+            user=member2,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin so there's another admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # login as member1 (not admin)
+        self.c.logout()
+        self.c.force_login(member1)
+
+        # try to remove member2
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership2.uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check for error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('do not have rights to manage team members'),
+            str(messages[0])
+        )
+
+    def test_admin_cannot_remove_nonexistent_membership(self):
+        """test admin gets error when membership doesn't exist"""
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # try to remove with non-existent membership UUID
+        fake_uuid = '550e8400-e29b-41d4-a716-446655449999'
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, fake_uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Team membership not found'),
+            str(messages[0])
+        )
+
+    def test_admin_remove_member_post_nonexistent_membership(self):
+        """test admin POST with non-existent membership returns error"""
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # try to remove with non-existent membership UUID
+        fake_uuid = '550e8400-e29b-41d4-a716-446655449999'
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, fake_uuid]
+        )
+        response = self.c.post(url, follow=True)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Team membership not found'),
+            str(messages[0])
+        )
+
+    def test_admin_remove_member_not_in_team(self):
+        """test admin cannot remove user who is not a team member"""
+        # create a user who is not in the team
+        outsider = User.objects.create_user(
+            username='outsider_user',
+            password='password123'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # create membership and delete it to have invalid UUID
+        membership = TeamMembership.objects.create(
+            user=outsider,
+            team=self.team,
+            role='member'
+        )
+        membership_uuid = membership.uuid
+        membership.delete()
+
+        # try to remove with the deleted membership UUID
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership_uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check error message about membership not found
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Team membership not found'),
+            str(messages[0])
+        )
+
+    def test_admin_remove_member_preserves_session(self):
+        """test removing member does not clear admin's active team session"""
+        # create a member to remove
+        member = User.objects.create_user(
+            username='session_preserved_member',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # set active team in session
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        # admin removes member
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        self.c.post(url, follow=True)
+
+        # check that admin's session is preserved
+        self.assertEqual(
+            self.c.session.get('active_team_uuid'),
+            str(self.team.uuid)
+        )

@@ -43,6 +43,17 @@
                             </button>
                         </div>
                     </form>
+
+                    <hr class="my-4">
+
+                    <form method="post" 
+                          action="{% url 'teams:team-member-remove' uuid=object.team.uuid membership_uuid=object.uuid %}"
+                          onsubmit="return confirm('{% trans "Are you sure you want to remove this user from the team?" %}');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100">
+                            {% trans "Remove from team" %}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

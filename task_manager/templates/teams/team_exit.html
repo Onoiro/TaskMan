@@ -5,16 +5,22 @@
 {% load i18n %}
 
 {% block title %}
-  {% trans "Exit team" %}
+  {% if is_removing_self %}{% trans "Exit team" %}{% else %}{% trans "Remove team member" %}{% endif %}
 {% endblock %}
 
 {% block content %}
 
 <div class="container wrapper flex-grow-1">
-  <h1 class="my-4"> {% trans "Exit team" %}</h1>
+  <h1 class="my-4">
+    {% if is_removing_self %}{% trans "Exit team" %}{% else %}{% trans "Remove team member" %}{% endif %}
+  </h1>
     <form method="post" class="form">
         {% csrf_token %}
-        <p>{% trans "Are you sure you want to exit the team" %} "{{ team.name }}"?</p>
+        {% if is_removing_self %}
+            <p>{% trans "Are you sure you want to exit the team" %} "{{ team.name }}"?</p>
+        {% else %}
+            <p>{% blocktrans with username=target_user.username team_name=team.name %}Are you sure you want to remove user {{ username }} from the team {{ team_name }}?{% endblocktrans %}</p>
+        {% endif %}
         <button type="submit" class="btn btn-danger">
           {% trans "Yes, exit" %}
         </button>
