@@ -62,17 +62,50 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 {% if user_teams %}
-                                    <div class="d-flex flex-wrap gap-1">
-                                        {% for membership in user_teams %}
-                                            {% if membership.user_id == object.id %}
-                                                <span class="badge bg-primary text-truncate" style="max-width: 100%;" title="{{ membership.team.name }}">
-                                                    {{ membership.team.name }}
-                                                    {% if membership.role == 'admin' %}
-                                                        <span class="badge bg-secondary ms-1">Admin</span>
-                                                    {% endif %}
+                                    {% for info in team_task_info %}
+                                        <div class="mb-2">
+                                            <span class="badge bg-primary text-truncate" style="max-width: 100%;" title="{{ info.team.name }}">
+                                                {{ info.team.name }}
+                                                {% if info.role == 'admin' %}
+                                                    <span class="badge bg-secondary ms-1">Admin</span>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="ms-3 ps-2 border-start border-2">
+                                            <div class="small text-muted">
+                                                <strong>{% trans "Tasks" %}:</strong>
+                                            </div>
+                                            <div class="d-flex flex-wrap gap-2 gap-md-3">
+                                                <span class="small">
+                                                    <strong>{% trans "Author" %}:</strong> {{ info.author_count }}
                                                 </span>
-                                            {% endif %}
-                                        {% endfor %}
+                                                <span class="small">
+                                                    <strong>{% trans "Executor" %}:</strong> {{ info.executor_count }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <!-- Individual mode section -->
+                                    <div class="mt-3">
+                                        <div class="mb-2">
+                                            <span class="badge bg-secondary text-truncate" style="max-width: 100%;">
+                                                {{ object.username }}
+                                            </span>
+                                        </div>
+                                        <div class="ms-3 ps-2 border-start border-2">
+                                            <div class="small text-muted">
+                                                <strong>{% trans "Tasks" %}:</strong>
+                                            </div>
+                                            <div class="d-flex flex-wrap gap-2 gap-md-3">
+                                                <span class="small">
+                                                    <strong>{% trans "Author" %}:</strong> {{ individual_task_info.author_count }}
+                                                </span>
+                                                <span class="small">
+                                                    <strong>{% trans "Executor" %}:</strong> {{ individual_task_info.executor_count }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 {% else %}
                                     <p class="text-muted small mb-0">{% trans "No teams" %}</p>

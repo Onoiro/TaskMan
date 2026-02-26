@@ -76,8 +76,40 @@ class UserDetailView(DetailView):
 
         # get user's teams
         from task_manager.teams.models import TeamMembership
+        from task_manager.tasks.models import Task
+
         user_teams = TeamMembership.objects.filter(user=user)
         context['user_teams'] = user_teams
+
+        # Get task counts for each team
+        team_task_info = []
+        for membership in user_teams:
+            team = membership.team
+            author_count = Task.objects.filter(
+                team=team, author=user
+            ).count()
+            executor_count = Task.objects.filter(
+                team=team, executors=user
+            ).count()
+            team_task_info.append({
+                'team': team,
+                'role': membership.role,
+                'author_count': author_count,
+                'executor_count': executor_count,
+            })
+        context['team_task_info'] = team_task_info
+
+        # Get individual task counts (no team)
+        individual_author_count = Task.objects.filter(
+            author=user, team__isnull=True
+        ).count()
+        individual_executor_count = Task.objects.filter(
+            executors=user, team__isnull=True
+        ).count()
+        context['individual_task_info'] = {
+            'author_count': individual_author_count,
+            'executor_count': individual_executor_count,
+        }
 
         # Check if current user can change role of this user
         context['can_change_role'] = False
