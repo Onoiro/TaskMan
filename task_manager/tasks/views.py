@@ -23,9 +23,16 @@ SERVICE_PARAMS = ('show_filter', 'save_as_default', 'reset_default')
 class TaskDeletePermissionMixin():
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
-        if not task.author == request.user:
-            messages.error(request,
-                           _("Task can only be deleted by its author."))
+        is_author = task.author == request.user
+        is_team_admin = (
+            task.team
+            and task.team.is_admin(request.user)
+        )
+        if not is_author and not is_team_admin:
+            messages.error(
+                request,
+                _("Task can only be deleted by its author or team admin.")
+            )
             return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)
 
@@ -35,10 +42,15 @@ class TaskUpdatePermissionMixin():
         task = self.get_object()
         is_author = task.author == request.user
         is_executor = request.user in task.executors.all()
-        if not is_author and not is_executor:
+        is_team_admin = (
+            task.team
+            and task.team.is_admin(request.user)
+        )
+        if not is_author and not is_executor and not is_team_admin:
             messages.error(
                 request,
-                _("Task can only be updated by its author or executors.")
+                _("Task can only be updated by its author, executors "
+                  "or team admin.")
             )
             return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)

@@ -806,9 +806,43 @@ class TaskTestCase(TestCase):
         self.assertRedirects(response, reverse('tasks:tasks-list'))
 
         error_message = _(
-            "Task can only be updated by its author or executors."
+            "Task can only be updated by its author, executors or team admin."
         )
         self.assertContains(response, error_message)
+
+    def test_update_task_by_team_admin_allowed(self):
+        """Test that team admin can edit any task in their team"""
+        # User 10 is admin of team 1
+        admin_user = User.objects.get(pk=10)
+        # User 12 is member of team 1 (not author or executor)
+        author = User.objects.get(pk=12)
+
+        # Create task in team 1 by author (user 12)
+        task = Task.objects.create(
+            name="task for admin test",
+            author=author,
+            status_id=12,
+            team_id=1
+        )
+
+        # Login as admin (user 10)
+        self.c.force_login(admin_user)
+        # Set active team
+        self.c.session['team_id'] = 1
+
+        response = self.c.post(
+            reverse('tasks:task-update', args=[task.uuid]),
+            self.tasks_data,
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        task.refresh_from_db()
+        self.assertEqual(task.name, self.tasks_data['name'])
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _("Task updated successfully"))
 
     # ========== DELETE TASK TESTS ==========
 
@@ -902,8 +936,41 @@ class TaskTestCase(TestCase):
         self.assertGreater(len(messages), 0)
         self.assertEqual(
             str(messages[0]),
-            _('Task can only be deleted by its author.')
+            _('Task can only be deleted by its author or team admin.')
         )
+
+    def test_delete_task_by_team_admin_allowed(self):
+        """Test that team admin can delete any task in their team"""
+        # User 10 is admin of team 1
+        admin_user = User.objects.get(pk=10)
+        # User 12 is member of team 1 (not author)
+        author = User.objects.get(pk=12)
+
+        # Create task in team 1 by author (user 12)
+        task = Task.objects.create(
+            name="task for admin delete test",
+            author=author,
+            status_id=12,
+            team_id=1
+        )
+        task_uuid = task.uuid
+
+        # Login as admin (user 10)
+        self.c.force_login(admin_user)
+        # Set active team
+        self.c.session['team_id'] = 1
+
+        response = self.c.post(
+            reverse('tasks:task-delete', args=[task.uuid]),
+            follow=True
+        )
+
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        self.assertFalse(Task.objects.filter(uuid=task_uuid).exists())
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(str(messages[0]), _("Task deleted successfully"))
 
     def test_no_redirect_when_not_delete_task(self):
         self.c.logout()
