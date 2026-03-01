@@ -76,6 +76,10 @@ class TeamMembership(models.Model):
         ('admin', _('Admin')),
         ('member', _('Member')),
     ]
+    STATUS_CHOICES = [
+        ('pending', _('Pending')),
+        ('active', _('Active')),
+    ]
 
     user = models.ForeignKey(
         'user.User',
@@ -91,6 +95,11 @@ class TeamMembership(models.Model):
         max_length=10,
         choices=ROLE_CHOICES,
         default='member'
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pending'
     )
     joined_at = models.DateTimeField(auto_now_add=True)
 

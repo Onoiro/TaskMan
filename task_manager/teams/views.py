@@ -273,7 +273,8 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
         TeamMembership.objects.create(
             user=self.request.user,
             team=self.object,
-            role='admin'
+            role='admin',
+            status='active'
         )
 
         # create default statuses for new team
@@ -363,9 +364,12 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
         membership = self.get_object()
         old_role = membership.role
         new_role = form.cleaned_data['role']
+        old_status = membership.status
+        new_status = form.cleaned_data['status']
 
         response = super().form_valid(form)
 
+        # Handle role changes
         if old_role != new_role:
             if new_role == 'admin':
                 messages.success(
@@ -379,6 +383,24 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
                     self.request,
                     _(
                         "User {username} has been demoted to team member."
+                    ).format(username=membership.user.username)
+                )
+
+        # Handle status changes (approval)
+        if old_status != new_status:
+            if new_status == 'active':
+                messages.success(
+                    self.request,
+                    _(
+                        "User {username} has been approved and is now "
+                        "a member of the team."
+                    ).format(username=membership.user.username)
+                )
+            elif new_status == 'pending':
+                messages.warning(
+                    self.request,
+                    _(
+                        "User {username} membership has been set to pending."
                     ).format(username=membership.user.username)
                 )
 

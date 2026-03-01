@@ -31,9 +31,18 @@ class UserListView(ListView):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            team_users = User.objects.filter(
-                team_memberships__team=team
-            ).distinct()
+            is_admin = team.is_admin(current_user)
+            if is_admin:
+                # Admin sees all members including pending
+                team_users = User.objects.filter(
+                    team_memberships__team=team
+                ).distinct()
+            else:
+                # Regular members see only active members
+                team_users = User.objects.filter(
+                    team_memberships__team=team,
+                    team_memberships__status='active'
+                ).distinct()
             return team_users
         else:
             return User.objects.filter(id=current_user.id)
@@ -44,10 +53,28 @@ class UserListView(ListView):
 
         if team:
             from task_manager.teams.models import TeamMembership
-            # get all memberships in current active team
-            context['user_memberships'] = (
-                TeamMembership.objects.filter(team=team)
-            )
+            is_admin = team.is_admin(self.request.user)
+
+            if is_admin:
+                # Admin sees all memberships including pending
+                context['user_memberships'] = (
+                    TeamMembership.objects.filter(team=team)
+                )
+                # Get pending memberships for display
+                context['pending_memberships'] = (
+                    TeamMembership.objects.filter(
+                        team=team, status='pending'
+                    ).select_related('user')
+                )
+            else:
+                # Regular members see only active memberships
+                context['user_memberships'] = (
+                    TeamMembership.objects.filter(
+                        team=team, status='active'
+                    )
+                )
+                context['pending_memberships'] = []
+
             # get membership of current user
             try:
                 context['user_membership'] = TeamMembership.objects.get(
@@ -56,9 +83,13 @@ class UserListView(ListView):
                 )
             except TeamMembership.DoesNotExist:
                 context['user_membership'] = None
+
+            context['is_team_admin'] = is_admin
         else:
             context['user_memberships'] = []
             context['user_membership'] = None
+            context['pending_memberships'] = []
+            context['is_team_admin'] = False
 
         return context
 
@@ -155,11 +186,12 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         # if join to team
         team = form.cleaned_data.get('team_to_join')
         if team:
-            self.request.session['active_team_uuid'] = str(team.uuid)
-            messages.success(
+            # User is now pending, don't set as active team
+            messages.info(
                 self.request,
                 _(
-                    "Welcome! You have joined team: {team}"
+                    "Your request to join team {team} has been sent. "
+                    "Waiting for admin approval."
                 ).format(team=team.name)
             )
         else:
@@ -198,12 +230,13 @@ class UserUpdateView(CustomPermissions,
         # Check if user selected a new team to join
         team = form.cleaned_data.get('team_to_join')
         if team:
-            # Save the new team ID in the session
-            self.request.session['active_team_uuid'] = str(team.uuid)
-            # Show message to user about joining the team
-            messages.success(
+            # Show message about pending approval
+            messages.info(
                 self.request,
-                _("You have joined team: {team}").format(team=team.name)
+                _(
+                    "Your request to join team {team} has been sent. "
+                    "Waiting for admin approval."
+                ).format(team=team.name)
             )
 
         # Step 4: Add success message manually

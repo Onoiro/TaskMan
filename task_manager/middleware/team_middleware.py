@@ -1,5 +1,5 @@
 from django.utils.deprecation import MiddlewareMixin
-from task_manager.teams.models import Team
+from task_manager.teams.models import TeamMembership
 
 
 class ActiveTeamMiddleware(MiddlewareMixin):
@@ -13,14 +13,14 @@ class ActiveTeamMiddleware(MiddlewareMixin):
 
         if active_team_uuid:
             try:
-                # check if user is a member of this team
-                # use .get() to raise DoesNotExist if not found
-                team = Team.objects.get(
-                    uuid=active_team_uuid,
-                    memberships__user=request.user
+                # check if user is an active member of this team
+                membership = TeamMembership.objects.get(
+                    team__uuid=active_team_uuid,
+                    user=request.user,
+                    status='active'
                 )
-                request.active_team = team
-            except Team.DoesNotExist:
+                request.active_team = membership.team
+            except TeamMembership.DoesNotExist:
                 request.active_team = None
                 # clear invalid session data
                 if 'active_team_uuid' in request.session:

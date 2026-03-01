@@ -94,9 +94,10 @@ class TeamMemberRoleForm(forms.ModelForm):
 
     class Meta:
         model = TeamMembership
-        fields = ['role']
+        fields = ['role', 'status']
         widgets = {
             'role': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
     def clean_role(self):
@@ -107,3 +108,12 @@ class TeamMemberRoleForm(forms.ModelForm):
             raise forms.ValidationError(_("Invalid role selected."))
 
         return role
+
+    def clean_status(self):
+        status = self.cleaned_data['status']
+
+        # check if status is valid
+        if status not in dict(TeamMembership.STATUS_CHOICES):
+            raise forms.ValidationError(_("Invalid status selected."))
+
+        return status

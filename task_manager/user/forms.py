@@ -89,9 +89,10 @@ class UserForm(forms.ModelForm):
                 "Leave blank if you don't want to change password"
             )
 
-            # show user's current teams
+            # show user's current teams (only active ones)
             memberships = TeamMembership.objects.filter(
-                user=self.instance
+                user=self.instance,
+                status='active'
             ).select_related('team')
 
             if memberships.exists():
@@ -99,7 +100,10 @@ class UserForm(forms.ModelForm):
                 for m in memberships:
                     role_str = (_("Admin") if m.role == 'admin'
                                 else _("Member"))
-                    teams_info.append(f"{m.team.name} ({role_str})")
+                    status_str = ""
+                    if m.status == 'pending':
+                        status_str = f" ({_('Pending')})"
+                    teams_info.append(f"{m.team.name} ({role_str}){status_str}")
 
                 # add read-only field with current teams info
                 self.fields['current_teams'] = forms.CharField(
@@ -176,12 +180,22 @@ class UserForm(forms.ModelForm):
             )
 
     def _check_existing_membership(self, team):
-        """Check if user is already a member of the team."""
+        """Check if user is already a member of the team (active or pending)."""
         existing = TeamMembership.objects.filter(
             user=self.instance,
             team=team
         ).exists()
         if existing:
+            # Check if there's already a pending request
+            pending = TeamMembership.objects.filter(
+                user=self.instance,
+                team=team,
+                status='pending'
+            ).exists()
+            if pending:
+                raise forms.ValidationError(
+                    _("You already have a pending request to join this team")
+                )
             raise forms.ValidationError(
                 _("You are already a member of this team")
             )
@@ -214,7 +228,8 @@ class UserForm(forms.ModelForm):
                 TeamMembership.objects.create(
                     user=user,
                     team=team,
-                    role='member'
+                    role='member',
+                    status='pending'
                 )
 
             # create default statuses for new users

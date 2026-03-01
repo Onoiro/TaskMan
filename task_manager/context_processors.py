@@ -4,9 +4,10 @@ from task_manager.teams.models import TeamMembership
 def team_context(request):
     context = {}
     if request.user.is_authenticated:
-        # use right way to get user's teams
+        # Get only active team memberships
         user_teams = TeamMembership.objects.filter(
-            user=request.user
+            user=request.user,
+            status='active'
         ).select_related('team')
 
         context['user_teams'] = user_teams
