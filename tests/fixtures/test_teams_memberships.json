@@ -6,6 +6,7 @@
             "user": 10,
             "team": 1,
             "role": "admin",
+            "status": "active",
             "joined_at": "2024-03-17T19:45:51.127Z",
             "uuid": "550e8400-e29b-41d4-a716-446655440040"
         }
@@ -17,6 +18,7 @@
             "user": 12,
             "team": 1,
             "role": "member",
+            "status": "active",
             "joined_at": "2024-03-17T19:45:51.127Z",
             "uuid": "550e8400-e29b-41d4-a716-446655440041"
         }
@@ -28,6 +30,7 @@
             "user": 10,
             "team": 2,
             "role": "admin",
+            "status": "active",
             "joined_at": "2024-03-17T20:45:51.127Z",
             "uuid": "550e8400-e29b-41d4-a716-446655440042"
         }

@@ -167,12 +167,12 @@ class TeamMemberRoleFormTestCase(TestCase):
         self.membership = TeamMembership.objects.get(pk=1)
 
     def test_TeamMemberRoleForm_valid(self):
-        form_data = {'role': 'member'}
+        form_data = {'role': 'member', 'status': 'active'}
         form = TeamMemberRoleForm(data=form_data, instance=self.membership)
         self.assertTrue(form.is_valid())
 
     def test_TeamMemberRoleForm_invalid_role(self):
-        form_data = {'role': 'invalid_role'}
+        form_data = {'role': 'invalid_role', 'status': 'active'}
         form = TeamMemberRoleForm(data=form_data, instance=self.membership)
         self.assertFalse(form.is_valid())
         self.assertIn('role', form.errors)
@@ -180,7 +180,7 @@ class TeamMemberRoleFormTestCase(TestCase):
         self.assertIn('Select a valid choice', form.errors['role'][0])
 
     def test_TeamMemberRoleForm_save(self):
-        form_data = {'role': 'member'}
+        form_data = {'role': 'member', 'status': 'active'}
         form = TeamMemberRoleForm(data=form_data, instance=self.membership)
         self.assertTrue(form.is_valid())
         updated_membership = form.save()

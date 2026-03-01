@@ -99,7 +99,7 @@ class TeamMembership(models.Model):
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
-        default='pending'
+        default='active'
     )
     joined_at = models.DateTimeField(auto_now_add=True)
 

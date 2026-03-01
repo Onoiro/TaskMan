@@ -1320,7 +1320,7 @@ class TeamTestCase(TestCase):
         # promote to admin
         response = self.c.post(
             reverse('teams:team-member-role-update', args=[membership.uuid]),
-            {'role': 'admin'},
+            {'role': 'admin', 'status': 'active'},
             follow=True
         )
 
@@ -1360,7 +1360,7 @@ class TeamTestCase(TestCase):
         # demote to member
         response = self.c.post(
             reverse('teams:team-member-role-update', args=[membership.uuid]),
-            {'role': 'member'},
+            {'role': 'member', 'status': 'active'},
             follow=True
         )
 
@@ -1400,7 +1400,7 @@ class TeamTestCase(TestCase):
         # update to the same role
         response = self.c.post(
             reverse('teams:team-member-role-update', args=[membership.uuid]),
-            {'role': 'member'},
+            {'role': 'member', 'status': 'active'},
             follow=True
         )
 
@@ -1441,7 +1441,7 @@ class TeamTestCase(TestCase):
         # try to update member2's role
         response = self.c.post(
             reverse('teams:team-member-role-update', args=[membership2.uuid]),
-            {'role': 'admin'},
+            {'role': 'admin', 'status': 'active'},
             follow=True
         )
 

@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory
 from unittest.mock import Mock, patch
 from task_manager.middleware.team_middleware import ActiveTeamMiddleware
-from task_manager.teams.models import Team
+from task_manager.teams.models import TeamMembership
 
 
 class ActiveTeamMiddlewareTest(TestCase):
@@ -32,7 +32,7 @@ class ActiveTeamMiddlewareTest(TestCase):
         # active_team should be none
         self.assertIsNone(request.active_team)
 
-    @patch('task_manager.teams.models.Team.objects.get')
+    @patch('task_manager.middleware.team_middleware.TeamMembership.objects.get')
     def test_authenticated_valid_team(self, mock_get):
         # test case: user logged in and has valid team
         request = self.factory.get('/')
@@ -42,9 +42,11 @@ class ActiveTeamMiddlewareTest(TestCase):
             'active_team_uuid': '550e8400-e29b-41d4-a716-446655440030'
         }
 
-        # mock database returning a team
+        # mock database returning a membership with a team
+        mock_membership = Mock()
         mock_team = Mock()
-        mock_get.return_value = mock_team
+        mock_membership.team = mock_team
+        mock_get.return_value = mock_membership
 
         self.middleware.process_request(request)
 
@@ -52,11 +54,12 @@ class ActiveTeamMiddlewareTest(TestCase):
         self.assertEqual(request.active_team, mock_team)
         # verify get was called with correct args
         mock_get.assert_called_with(
-            uuid='550e8400-e29b-41d4-a716-446655440030',
-            memberships__user=request.user
+            team__uuid='550e8400-e29b-41d4-a716-446655440030',
+            user=request.user,
+            status='active'
         )
 
-    @patch('task_manager.teams.models.Team.objects.get')
+    @patch('task_manager.middleware.team_middleware.TeamMembership.objects.get')
     def test_authenticated_invalid_team(self, mock_get):
         # test case: team in session does not exist (triggers exception)
         request = self.factory.get('/')
@@ -67,7 +70,7 @@ class ActiveTeamMiddlewareTest(TestCase):
         }
 
         # mock database raising DoesNotExist
-        mock_get.side_effect = Team.DoesNotExist
+        mock_get.side_effect = TeamMembership.DoesNotExist
 
         self.middleware.process_request(request)
 

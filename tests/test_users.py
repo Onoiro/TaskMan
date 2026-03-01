@@ -465,13 +465,19 @@ class UserTestCase(TestCase):
             target_status_code=200, fetch_redirect_response=True
         )
 
-        # check session has active team
-        self.assertEqual(self.c.session['active_team_uuid'], str(team.uuid))
+        # check that membership was created with pending status
+        new_user = User.objects.get(username=self.user_data['username'])
+        membership = TeamMembership.objects.filter(
+            user=new_user, team=team
+        ).first()
+        self.assertIsNotNone(membership)
+        self.assertEqual(membership.status, 'pending')
 
         # check welcome message with team info
         messages = list(get_messages(response.wsgi_request))
         team_messages = [
-            str(msg) for msg in messages if 'joined team' in str(msg)
+            str(msg) for msg in messages
+            if 'request to join team' in str(msg).lower()
         ]
         self.assertEqual(len(team_messages), 1)
 
@@ -640,18 +646,17 @@ class UserTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('user:user-list'))
 
-        # check user joined the team
+        # check user has pending membership in the team
         membership = TeamMembership.objects.filter(
             user=self.user, team=team).first()
         self.assertIsNotNone(membership)
-
-        # check session updated
-        self.assertEqual(self.c.session['active_team_uuid'], str(team.uuid))
+        self.assertEqual(membership.status, 'pending')
 
         # check success message
         messages = list(get_messages(response.wsgi_request))
         success_messages = [
-            str(msg) for msg in messages if 'joined team' in str(msg)
+            str(msg) for msg in messages
+            if 'request to join team' in str(msg).lower()
         ]
         self.assertEqual(len(success_messages), 1)
 
