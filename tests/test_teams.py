@@ -1860,3 +1860,351 @@ class TeamTestCase(TestCase):
             self.c.session.get('active_team_uuid'),
             str(self.team.uuid)
         )
+
+    # Status change tests (pending -> active)
+
+    def test_approve_member_sets_status_to_active(self):
+        """test admin can approve pending member"""
+        # create a pending member
+        member = User.objects.create_user(
+            username='pending_member',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member',
+            status='pending'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # approve member (set to active)
+        response = self.c.post(
+            reverse(
+                'teams:team-member-role-update',
+                args=[membership.uuid]
+            ),
+            {'role': 'member', 'status': 'active'},
+            follow=True
+        )
+
+        # check status was updated
+        membership.refresh_from_db()
+        self.assertEqual(membership.status, 'active')
+
+        # check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('has been approved'),
+            str(messages[0])
+        )
+
+    def test_set_member_to_pending(self):
+        """test admin can set member status to pending"""
+        # create an active member
+        member = User.objects.create_user(
+            username='active_member',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # set to pending
+        response = self.c.post(
+            reverse(
+                'teams:team-member-role-update',
+                args=[membership.uuid]
+            ),
+            {'role': 'member', 'status': 'pending'},
+            follow=True
+        )
+
+        # check status was updated
+        membership.refresh_from_db()
+        self.assertEqual(membership.status, 'pending')
+
+        # check warning message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('membership has been set to pending'),
+            str(messages[0])
+        )
+
+    def test_update_status_to_same_status(self):
+        """test updating status to same status"""
+        # create a member with active status
+        member = User.objects.create_user(
+            username='same_status_member',
+            password='password123'
+        )
+        membership = TeamMembership.objects.create(
+            user=member,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # update to same status
+        self.c.post(
+            reverse(
+                'teams:team-member-role-update',
+                args=[membership.uuid]
+            ),
+            {'role': 'member', 'status': 'active'},
+            follow=True
+        )
+
+        # check status is still active
+        membership.refresh_from_db()
+        self.assertEqual(membership.status, 'active')
+
+    # Exit team POST with tasks tests
+
+    def test_cannot_exit_team_post_with_tasks(self):
+        """test user cannot exit team via POST if they have tasks"""
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a regular user who is a member
+        regular_user = User.objects.create_user(
+            username='post_task_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        # get a status for the task
+        status = Status.objects.first()
+
+        # create a task where user is author
+        Task.objects.create(
+            name='Post Task',
+            description='Task for POST test',
+            status=status,
+            author=regular_user,
+            team=self.team
+        )
+
+        # login as regular user
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # try to exit via POST
+        response = self.c.post(
+            reverse('teams:team-exit', args=[self.team.uuid]),
+            follow=True
+        )
+
+        # check membership still exists
+        self.assertTrue(self.team.is_member(regular_user))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('author or executor of tasks'),
+            str(messages[0])
+        )
+
+    def test_cannot_exit_team_post_as_executor(self):
+        """test user cannot exit team via POST if they are executor"""
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        # create a regular user who is a member
+        regular_user = User.objects.create_user(
+            username='post_executor_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        # get a status for the task
+        status = Status.objects.first()
+
+        # create task where user is executor
+        task = Task.objects.create(
+            name='Executor Post Task',
+            description='Task for POST executor test',
+            status=status,
+            author=self.admin_user,
+            team=self.team
+        )
+        task.executors.add(regular_user)
+
+        # login as regular user
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        # try to exit via POST
+        response = self.c.post(
+            reverse('teams:team-exit', args=[self.team.uuid]),
+            follow=True
+        )
+
+        # check membership still exists
+        self.assertTrue(self.team.is_member(regular_user))
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('author or executor of tasks'),
+            str(messages[0])
+        )
+
+    # Switch team without referer test
+
+    def test_switch_team_without_referer(self):
+        """test switch team redirects to tasks when no referer"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team without HTTP_REFERER
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(self.team.uuid)},
+            follow=False
+        )
+
+        # check redirect to tasks list
+        self.assertRedirects(
+            response, reverse('tasks:tasks-list'),
+            status_code=302, fetch_redirect_response=False
+        )
+
+
+class TeamMemberRoleFormTestCase(TestCase):
+    """test cases for TeamMemberRoleForm validation"""
+
+    def test_invalid_role_raises_error(self):
+        """test form fails with invalid role value"""
+        from task_manager.teams.forms import TeamMemberRoleForm
+        from task_manager.teams.models import Team, TeamMembership
+        from task_manager.user.models import User
+
+        # create test team and membership
+        user = User.objects.create_user(
+            username='form_test_user',
+            password='password123'
+        )
+        team = Team.objects.create(
+            name='Form Test Team',
+            password='123'
+        )
+        membership = TeamMembership.objects.create(
+            user=user,
+            team=team,
+            role='member'
+        )
+
+        # try to submit form with invalid role
+        form = TeamMemberRoleForm(
+            data={'role': 'invalid_role', 'status': 'active'},
+            instance=membership
+        )
+
+        # form should not be valid
+        self.assertFalse(form.is_valid())
+        self.assertIn('role', form.errors)
+
+    def test_invalid_status_raises_error(self):
+        """test form fails with invalid status value"""
+        from task_manager.teams.forms import TeamMemberRoleForm
+        from task_manager.teams.models import Team, TeamMembership
+        from task_manager.user.models import User
+
+        # create test team and membership
+        user = User.objects.create_user(
+            username='form_test_user2',
+            password='password123'
+        )
+        team = Team.objects.create(
+            name='Form Test Team 2',
+            password='123'
+        )
+        membership = TeamMembership.objects.create(
+            user=user,
+            team=team,
+            role='member'
+        )
+
+        # try to submit form with invalid status
+        form = TeamMemberRoleForm(
+            data={'role': 'member', 'status': 'invalid_status'},
+            instance=membership
+        )
+
+        # form should not be valid
+        self.assertFalse(form.is_valid())
+        self.assertIn('status', form.errors)
+
+    def test_valid_form_data(self):
+        """test form is valid with correct role and status"""
+        from task_manager.teams.forms import TeamMemberRoleForm
+        from task_manager.teams.models import Team, TeamMembership
+        from task_manager.user.models import User
+
+        # create test team and membership
+        user = User.objects.create_user(
+            username='form_test_user3',
+            password='password123'
+        )
+        team = Team.objects.create(
+            name='Form Test Team 3',
+            password='123'
+        )
+        membership = TeamMembership.objects.create(
+            user=user,
+            team=team,
+            role='member'
+        )
+
+        # submit form with valid data
+        form = TeamMemberRoleForm(
+            data={'role': 'admin', 'status': 'pending'},
+            instance=membership
+        )
+
+        # form should be valid
+        self.assertTrue(form.is_valid())

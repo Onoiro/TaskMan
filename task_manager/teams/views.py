@@ -167,34 +167,52 @@ class TeamExitView(LoginRequiredMixin, View):
             if target_user is None:
                 return self._redirect_back(request)
 
-            # Perform removal
-            self._remove_user_membership(target_user, team)
+            # Check permissions and constraints before removal
+            error = self._check_removal_allowed(
+                request, team, target_user, is_removing_self)
+            if error:
+                return error
 
-            # If removing self, clear session; if admin removing others,
-            # don't clear session
-            if is_removing_self:
-                self._clear_active_team_session(request, team)
-
-            if is_removing_self:
-                messages.success(
-                    request,
-                    _("You have successfully left the team {team}").format(
-                        team=team.name)
-                )
-            else:
-                messages.success(
-                    request,
-                    _("User {username} has been removed from the team {team}"
-                      ).format(
-                        username=target_user.username,
-                        team=team.name)
-                )
+            # Perform removal and send message
+            self._process_removal(
+                request, team, target_user, is_removing_self)
 
             return redirect(USER_LIST_URL)
 
         except Team.DoesNotExist:
             messages.error(request, TEAM_NOT_FOUND_MESSAGE)
             return self._redirect_back(request)
+
+    def _process_removal(self, request, team, target_user, is_removing_self):
+        """handle user removal and send appropriate message"""
+        # Perform removal
+        self._remove_user_membership(target_user, team)
+
+        # Clear session if removing self
+        if is_removing_self:
+            self._clear_active_team_session(request, team)
+
+        # Send success message
+        self._send_removal_message(request, team, target_user, is_removing_self)
+
+    def _send_removal_message(
+        self, request, team, target_user, is_removing_self
+    ):
+        """send success message after team removal"""
+        if is_removing_self:
+            messages.success(
+                request,
+                _("You have successfully left the team {team}").format(
+                    team=team.name)
+            )
+        else:
+            messages.success(
+                request,
+                _("User {username} has been removed from the team {team}"
+                  ).format(
+                    username=target_user.username,
+                    team=team.name)
+            )
 
     def _get_target_user(self, request, team, membership_uuid):
         """Determine target user and whether user is removing themselves"""
