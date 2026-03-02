@@ -1575,8 +1575,8 @@ class TeamTestCase(TestCase):
             str(messages[0])
         )
 
-    def test_admin_cannot_remove_member_with_tasks(self):
-        """test admin cannot remove member who has tasks in team"""
+    def test_admin_can_remove_member_who_is_author(self):
+        """test admin can remove member who is author of tasks"""
         from task_manager.tasks.models import Task
         from task_manager.statuses.models import Status
 
@@ -1593,7 +1593,7 @@ class TeamTestCase(TestCase):
 
         # create a task where member is author
         status = Status.objects.first()
-        Task.objects.create(
+        task = Task.objects.create(
             name='Member Task',
             description='Task by member',
             status=status,
@@ -1609,26 +1609,30 @@ class TeamTestCase(TestCase):
                 defaults={'role': 'admin'}
             )
 
-        # admin tries to remove member
+        # admin removes member
         url = reverse(
             'teams:team-member-remove',
             args=[self.team.uuid, membership.uuid]
         )
-        response = self.c.get(url, follow=True)
+        response = self.c.post(url, follow=True)
 
-        # check membership still exists
-        self.assertTrue(self.team.is_member(member_with_tasks))
+        # check membership was removed
+        self.assertFalse(self.team.is_member(member_with_tasks))
 
-        # check error message
+        # check author is preserved (not changed)
+        task.refresh_from_db()
+        self.assertEqual(task.author, member_with_tasks)
+
+        # check success message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertIn(
-            _('author or executor of tasks'),
+            _('has been removed from the team'),
             str(messages[0])
         )
 
-    def test_admin_cannot_remove_member_who_is_executor(self):
-        """test admin cannot remove member who is executor of tasks"""
+    def test_admin_remove_member_clears_executors(self):
+        """test admin removes member and clears executors from tasks"""
         from task_manager.tasks.models import Task
         from task_manager.statuses.models import Status
 
@@ -1662,21 +1666,25 @@ class TeamTestCase(TestCase):
                 defaults={'role': 'admin'}
             )
 
-        # admin tries to remove member
+        # admin removes member
         url = reverse(
             'teams:team-member-remove',
             args=[self.team.uuid, membership.uuid]
         )
-        response = self.c.get(url, follow=True)
+        response = self.c.post(url, follow=True)
 
-        # check membership still exists
-        self.assertTrue(self.team.is_member(member_executor))
+        # check membership was removed
+        self.assertFalse(self.team.is_member(member_executor))
 
-        # check error message
+        # check executor was cleared from task
+        task.refresh_from_db()
+        self.assertFalse(task.executors.filter(pk=member_executor.pk).exists())
+
+        # check success message
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertIn(
-            _('author or executor of tasks'),
+            _('has been removed from the team'),
             str(messages[0])
         )
 

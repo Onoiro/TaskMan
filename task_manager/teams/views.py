@@ -147,12 +147,7 @@ class TeamExitView(LoginRequiredMixin, View):
             messages.error(request, _('User is not a member of this team'))
             return self._redirect_back(request)
 
-        if self._has_user_tasks_in_team(target_user, team):
-            messages.error(
-                request,
-                self._get_task_error_message(target_user, team))
-            return self._redirect_back(request)
-
+        # Admin can remove any member, no task checks needed
         return None
 
     def post(self, request, uuid, membership_uuid=None):
@@ -185,6 +180,9 @@ class TeamExitView(LoginRequiredMixin, View):
 
     def _process_removal(self, request, team, target_user, is_removing_self):
         """handle user removal and send appropriate message"""
+        # Clear executors from team tasks before removing membership
+        self._clear_user_as_executor(target_user, team)
+
         # Perform removal
         self._remove_user_membership(target_user, team)
 
@@ -194,6 +192,12 @@ class TeamExitView(LoginRequiredMixin, View):
 
         # Send success message
         self._send_removal_message(request, team, target_user, is_removing_self)
+
+    def _clear_user_as_executor(self, user, team):
+        """Clear user from executors in all team tasks"""
+        tasks = Task.objects.filter(team=team, executors=user)
+        for task in tasks:
+            task.executors.remove(user)
 
     def _send_removal_message(
         self, request, team, target_user, is_removing_self
