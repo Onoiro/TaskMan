@@ -75,8 +75,10 @@ class TaskFilter(django_filters.FilterSet):
         team = getattr(request, 'active_team', None)
 
         if team:
+            # Only active team members can be executors
             team_users = User.objects.filter(
-                team_memberships__team=team
+                team_memberships__team=team,
+                team_memberships__status='active'
             ).distinct()
 
             self.filters['executors'].queryset = team_users

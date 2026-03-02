@@ -30,9 +30,10 @@ class TaskForm(forms.ModelForm):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            # team mode
+            # team mode - only active members can be executors
             self.fields['executors'].queryset = User.objects.filter(
-                team_memberships__team=team
+                team_memberships__team=team,
+                team_memberships__status='active'
             )
             self.fields['status'].queryset = Status.objects.filter(
                 team=team

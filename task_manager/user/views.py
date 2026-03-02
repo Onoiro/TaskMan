@@ -31,18 +31,11 @@ class UserListView(ListView):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            is_admin = team.is_admin(current_user)
-            if is_admin:
-                # Admin sees all members including pending
-                team_users = User.objects.filter(
-                    team_memberships__team=team
-                ).distinct()
-            else:
-                # Regular members see only active members
-                team_users = User.objects.filter(
-                    team_memberships__team=team,
-                    team_memberships__status='active'
-                ).distinct()
+            # All users (admin and regular) see only active members
+            team_users = User.objects.filter(
+                team_memberships__team=team,
+                team_memberships__status='active'
+            ).distinct()
             return team_users
         else:
             return User.objects.filter(id=current_user.id)
