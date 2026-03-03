@@ -104,3 +104,100 @@ class LanguageSwitchTestCase(TestCase):
 
         # Translations should be different
         self.assertNotEqual(login_ru, login_en)
+
+
+class LanguageSwitchOnIndexPageTestCase(TestCase):
+    """Tests for clickable language links on index page."""
+
+    def setUp(self):
+        self.client = Client()
+        self.index_url = '/'
+        self.set_language_url = reverse('set_language')
+
+    def test_clickable_language_forms_exist_on_index(self):
+        """Test that clickable language forms exist on index page."""
+        response = self.client.get(self.index_url)
+        self.assertEqual(response.status_code, 200)
+
+        # Check that forms for each language exist
+        for lang_code in ['en', 'ru', 'tg', 'az', 'ky']:
+            # Check hidden input with language code
+            self.assertContains(
+                response,
+                f'<input type="hidden" name="language" value="{lang_code}">'
+            )
+
+    def test_clickable_language_en_switches_to_english(self):
+        """Test clicking English language on index switches to English."""
+        # Initial language is Russian
+        with translation.override('ru'):
+            pass
+
+        # Switch to English via index page form
+        response = self.client.post(
+            self.set_language_url,
+            {'language': 'en'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'en')
+
+    def test_clickable_language_ru_switches_to_russian(self):
+        """Test clicking Russian language on index switches to Russian."""
+        # Switch to Russian via index page form
+        response = self.client.post(
+            self.set_language_url,
+            {'language': 'ru'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'ru')
+
+    def test_clickable_language_tg_switches_to_tajik(self):
+        """Test clicking Tajik language on index switches to Tajik."""
+        response = self.client.post(
+            self.set_language_url,
+            {'language': 'tg'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'tg')
+
+    def test_clickable_language_az_switches_to_azerbaijani(self):
+        """Test clicking Azerbaijani language on index switches to Azerbaijani."""
+        response = self.client.post(
+            self.set_language_url,
+            {'language': 'az'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'az')
+
+    def test_clickable_language_ky_switches_to_kyrgyz(self):
+        """Test clicking Kyrgyz language on index switches to Kyrgyz."""
+        response = self.client.post(
+            self.set_language_url,
+            {'language': 'ky'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'ky')
+
+    def test_clickable_language_csrf_token_present(self):
+        """Test that CSRF token is present in language forms on index page."""
+        response = self.client.get(self.index_url)
+
+        # Check that csrf token input exists (there should be multiple forms)
+        self.assertContains(response, 'csrfmiddlewaretoken')
+
+    def test_all_language_buttons_have_submit_type(self):
+        """Test that all language buttons are submit buttons."""
+        response = self.client.get(self.index_url)
+
+        # Should have submit buttons for each language
+        self.assertContains(response, '<button type="submit"')

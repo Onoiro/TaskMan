@@ -63,23 +63,53 @@
       <ul class="list-unstyled">
         <li class="mb-2 d-flex align-items-center">
           <span class="me-2" role="img" aria-label="USA Flag">🇺🇸</span>
-          <span lang="en"><strong>{% trans "English" %}</strong></span>
+          <form method="post" action="{% url 'set_language' %}" class="d-inline mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="en">
+            <button type="submit" class="btn btn-link p-0 text-decoration-none">
+              <strong>{% trans "English" %}</strong>
+            </button>
+          </form>
         </li>
         <li class="mb-2 d-flex align-items-center">
           <span class="me-2" role="img" aria-label="Russia Flag">🇷🇺</span>
-          <span lang="ru"><strong>{% trans "Russian" %}</strong></span>
+          <form method="post" action="{% url 'set_language' %}" class="d-inline mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="ru">
+            <button type="submit" class="btn btn-link p-0 text-decoration-none">
+              <strong>{% trans "Russian" %}</strong>
+            </button>
+          </form>
         </li>
         <li class="mb-2 d-flex align-items-center">
           <span class="me-2" role="img" aria-label="Tajikistan Flag">🇹🇯</span>
-          <span lang="tg"><strong>{% trans "Tajik" %}</strong></span>
+          <form method="post" action="{% url 'set_language' %}" class="d-inline mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="tg">
+            <button type="submit" class="btn btn-link p-0 text-decoration-none">
+              <strong>{% trans "Tajik" %}</strong>
+            </button>
+          </form>
         </li>
         <li class="mb-2 d-flex align-items-center">
           <span class="me-2" role="img" aria-label="Azerbaijan Flag">🇦🇿</span>
-          <span lang="az"><strong>{% trans "Azerbaijani" %}</strong></span>
+          <form method="post" action="{% url 'set_language' %}" class="d-inline mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="az">
+            <button type="submit" class="btn btn-link p-0 text-decoration-none">
+              <strong>{% trans "Azerbaijani" %}</strong>
+            </button>
+          </form>
         </li>
         <li class="mb-2 d-flex align-items-center">
           <span class="me-2" role="img" aria-label="Kyrgyzstan Flag">🇰🇬</span>
-          <span lang="ky"><strong>{% trans "Kyrgyz" %}</strong></span>
+          <form method="post" action="{% url 'set_language' %}" class="d-inline mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="ky">
+            <button type="submit" class="btn btn-link p-0 text-decoration-none">
+              <strong>{% trans "Kyrgyz" %}</strong>
+            </button>
+          </form>
         </li>
       </ul>
       
