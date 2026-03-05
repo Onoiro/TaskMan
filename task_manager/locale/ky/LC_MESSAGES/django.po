@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 02:03+0300\n"
+"POT-Creation-Date: 2026-03-05 23:31+0300\n"
 "PO-Revision-Date: 2026-03-01 02:03+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Kyrgyz\n"
@@ -81,7 +81,9 @@ msgstr "Муну озгортуугo укугунуз жок. Муну кома�
 msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
-msgstr "Команданын мучолорун башкарууга укугунуз жок. Муну команда админи гана жасай алат."
+msgstr ""
+"Команданын мучолорун башкарууга укугунуз жок. Муну команда админи гана жасай "
+"алат."
 
 #: permissions.py:74
 msgid "You cannot change your own role in the team."
@@ -91,23 +93,23 @@ msgstr "Командадагы оз ролунузду озгорто албай
 msgid "Team membership not found."
 msgstr "Командадагы мучолук табылган жок."
 
-#: settings.py:166 templates/index.html:66
+#: settings.py:166 templates/index.html:67
 msgid "English"
 msgstr "Англисче"
 
-#: settings.py:167 templates/index.html:70
+#: settings.py:167 templates/index.html:76
 msgid "Russian"
 msgstr "Орусча"
 
-#: settings.py:168 templates/index.html:74
+#: settings.py:168 templates/index.html:85
 msgid "Tajik"
 msgstr "Тажикче"
 
-#: settings.py:169 templates/index.html:78
+#: settings.py:169 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Азербайжанча"
 
-#: settings.py:170 templates/index.html:82
+#: settings.py:170 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Кыргызча"
 
@@ -205,6 +207,7 @@ msgstr "Статусту очуруу мумкун эмес, анткени ал
 
 #: tasks/filters.py:15 tasks/models.py:51
 #: templates/statuses/statuses_update.html:51
+#: templates/teams/team_member_role_update.html:38
 msgid "Status"
 msgstr "Статус"
 
@@ -239,7 +242,7 @@ msgid "Executors"
 msgstr "Аткаруучулар"
 
 #: tasks/models.py:67 templates/base.html:99 templates/base.html:121
-#: templates/index.html:54 templates/statuses/statuses_list.html:26
+#: templates/index.html:49 templates/statuses/statuses_list.html:26
 #: templates/tasks/task_filter.html:25 templates/user/user_list.html:66
 msgid "Labels"
 msgstr "Тегдер"
@@ -250,7 +253,8 @@ msgstr "Тапшырманы анын автору же команда адми�
 
 #: tasks/views.py:52
 msgid "Task can only be updated by its author, executors or team admin."
-msgstr "Тапшырманы анын автору, аткаруучулар же команда админи гана озгорто алат."
+msgstr ""
+"Тапшырманы анын автору, аткаруучулар же команда админи гана озгорто алат."
 
 #: tasks/views.py:97
 msgid "Filter saved as default"
@@ -296,13 +300,17 @@ msgstr "Сырсоз отo кыска. Ал кеминде 3 белгиден т
 msgid "The entered passwords do not match."
 msgstr "Киргизилген сырсоздор дал келбейт."
 
-#: teams/forms.py:78 user/forms.py:135
+#: teams/forms.py:78 user/forms.py:139
 msgid "Both password fields must be filled or both left blank"
 msgstr "Сырсоздун эки талаасы тең толтурулушу же экөө тең бош болушу керек"
 
-#: teams/forms.py:107
+#: teams/forms.py:108
 msgid "Invalid role selected."
 msgstr "Туура эмес роль тандалды."
+
+#: teams/forms.py:117
+msgid "Invalid status selected."
+msgstr "Туура эмес статус тандалды."
 
 #: teams/models.py:27 user/forms.py:44
 msgid "Team password"
@@ -312,13 +320,21 @@ msgstr "Команданын сырсозу"
 msgid "Minimum length is 3 characters"
 msgstr "Минималдуу узундук — 3 белги"
 
-#: teams/models.py:76 user/forms.py:100
+#: teams/models.py:76 user/forms.py:101
 msgid "Admin"
 msgstr "Админ"
 
-#: teams/models.py:77 user/forms.py:101
+#: teams/models.py:77 user/forms.py:102
 msgid "Member"
 msgstr "Мучо"
+
+#: teams/models.py:80 templates/user/user_list.html:104
+msgid "Pending"
+msgstr "Кутууде"
+
+#: teams/models.py:81 templates/tasks/task_filter.html:67
+msgid "Active"
+msgstr "Активдуу"
 
 #: teams/views.py:26
 msgid "Team not found"
@@ -341,67 +357,83 @@ msgstr "Сиз бул команданын мучосу эмессиз"
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
-msgstr "Команданын админдери команданы таштай алышпайт. Админ укуктарын алгач башка мучого откоруп бериниз."
+msgstr ""
+"Команданын админдери команданы таштай алышпайт. Админ укуктарын алгач башка "
+"мучого откоруп бериниз."
 
 #: teams/views.py:142
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
-msgstr "Команданын мучолорун башкарууга укугунуз жок. Бул ишти команда админи гана жасай алат."
+msgstr ""
+"Команданын мучолорун башкарууга укугунуз жок. Бул ишти команда админи гана "
+"жасай алат."
 
 #: teams/views.py:147
 msgid "User is not a member of this team"
 msgstr "Колдонуучу бул команданын мучосу эмес"
 
-#: teams/views.py:181
+#: teams/views.py:209
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Сиз {team} командасынан ийгиликтуу чыктыныз"
 
-#: teams/views.py:187
+#: teams/views.py:215
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "Колдонуучу {username} {team} командасынан чыгарылды."
 
-#: teams/views.py:207
+#: teams/views.py:229
 msgid "Team membership not found"
 msgstr "Командадагы мучолук табылган жок"
 
-#: teams/views.py:243
+#: teams/views.py:265
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
-msgstr "Сиз командадан чыга албайсыз, анткени бул командадагы тапшырмалардын автору же аткаруучусусуз."
+msgstr ""
+"Сиз командадан чыга албайсыз, анткени бул командадагы тапшырмалардын автору "
+"же аткаруучусусуз."
 
-#: teams/views.py:285
+#: teams/views.py:308
 msgid "Team created successfully"
 msgstr "Команда ийгиликтуу тузулду"
 
-#: teams/views.py:318
+#: teams/views.py:341
 msgid "Team updated successfully"
 msgstr "Команда ийгиликтуу озгортулду"
 
-#: teams/views.py:336
+#: teams/views.py:359
 msgid "Cannot delete a team because it has tasks."
 msgstr "Команданы очуруу мумкун эмес, анткени анда тапшырмалар бар."
 
-#: teams/views.py:344
+#: teams/views.py:367
 msgid "Cannot delete a team because it has other members."
 msgstr "Команданы очуруу мумкун эмес, анткени анда башка мучолор бар."
 
-#: teams/views.py:348
+#: teams/views.py:371
 msgid "Team deleted successfully"
 msgstr "Команда ийгиликтуу очурулду"
 
-#: teams/views.py:374
+#: teams/views.py:400
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "Колдонуучу {username} команда админи болуп дайындалды."
 
-#: teams/views.py:381
+#: teams/views.py:407
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "Колдонуучу {username} команда мучосу болуп озгортулду."
+
+#: teams/views.py:417
+#, python-brace-format
+msgid "User {username} has been approved and is now a member of the team."
+msgstr "Колдонуучу {username} бекитилди жана эми команданын мучосу."
+
+#: teams/views.py:425
+#, python-brace-format
+msgid "User {username} membership has been set to pending."
+msgstr "Колдонуучу {username} мучолугу кутуу статусуна которулду."
 
 #: templates/base.html:36 templates/base.html:58 views.py:29
 msgid "TaskMan"
@@ -464,8 +496,7 @@ msgstr "Командадан чыгуу"
 msgid "Logout"
 msgstr "Чыгуу"
 
-#: templates/base.html:241 templates/index.html:22 templates/index.html:32
-#: templates/login.html:8
+#: templates/base.html:241 templates/login.html:8
 msgid "Login"
 msgstr "Кируу"
 
@@ -494,61 +525,67 @@ msgstr "Эскертүү"
 msgid ""
 "Your message will be sent to developers via Telegram. We will reply to the "
 "contact you provide."
-msgstr "Билдирууңуз Telegram аркылуу иштеп чыгуучуларга жонотулот. Биз сиз корсоткон байланыш аркылуу жооп беребиз."
+msgstr ""
+"Билдирууңуз Telegram аркылуу иштеп чыгуучуларга жонотулот. Биз сиз корсоткон "
+"байланыш аркылуу жооп беребиз."
 
 #: templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
 msgstr "Telegram ачылды. Билдирууңузду ошол жактан жонотуңуз."
 
-#: templates/index.html:19 templates/index.html:29
+#: templates/index.html:7
+msgid "Task Manager"
+msgstr "Тапшырма менеджери"
+
+#: templates/index.html:20
 msgid "Go to Tasks"
 msgstr "Тапшырмаларга отуу"
 
-#: templates/index.html:21 templates/index.html:31
+#: templates/index.html:24
 msgid "Get Started"
 msgstr "Баштоо"
 
-#: templates/index.html:38
+#: templates/index.html:32
 msgid "Features"
 msgstr "Мумкунчулуктор"
 
-#: templates/index.html:42
+#: templates/index.html:37
 msgid "Individual & Team Use"
 msgstr "Жеке жана команда менен колдонуу"
 
-#: templates/index.html:42
-msgid "Perfect for personal workflows or isolated team projects"
-msgstr "Жеке иш агымдарына же озунчо команда долбоорлоруна ылайыктуу"
+#: templates/index.html:37
+msgid "For solo work or team projects"
+msgstr "Жеке иш же команда долбоорлору учун"
 
-#: templates/index.html:46
-msgid "Task Creation"
-msgstr "Тапшырма тузуу"
+#: templates/index.html:41
+msgid "Quick Task Creation"
+msgstr "Тапшырманы тез тузуу"
 
-#: templates/index.html:46
-msgid "Add titles, descriptions, and assignees in seconds"
-msgstr "Аталыштарды, суроттомолорду жана аткаруучуларды бир нече секундда кошуңуз"
+#: templates/index.html:41
+msgid "Title, description, assignee - done in seconds"
+msgstr "Аталышы, суроттомосу, аткаруучусу — бир нече секундда даяр"
 
-#: templates/index.html:50
+#: templates/index.html:45
 msgid "Custom Statuses"
 msgstr "Ынгайлаштырылган статустар"
 
-#: templates/index.html:50
-msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
-msgstr "Илгерилоону козомолдонуз (мис., «Аткаруу керек», «Аткарылууда», «Аткарылды»)"
+#: templates/index.html:45
+msgid "To Do, In Progress, Done - or your own"
+msgstr "Аткаруу керек, Аткарылууда, Даяр — же озунуздун статустарыңыз"
 
-#: templates/index.html:54
-msgid "Organize tasks with tags for quick filtering"
-msgstr "Тапшырмаларды тегдер менен уюштуруп, тез издoo жана чыпкалоо мумкунчулугун алыңыз"
+#: templates/index.html:49
+msgid "Tag and filter tasks instantly"
+msgstr "Тапшырмаларды дароо тегтеңиз жана чыпкалаңыз"
+
+#: templates/index.html:53
+msgid "Any Device"
+msgstr "Каалаган түзмөк"
+
+#: templates/index.html:53
+msgid "Works on desktop, tablet, and mobile"
+msgstr "Компьютерде, планшетте жана телефондо иштейт"
 
 #: templates/index.html:58
-msgid "User-Friendly"
-msgstr "Колдонууга ынгайлуу"
-
-#: templates/index.html:58
-msgid "Register once, manage everything"
-msgstr "Бир жолу катталыныз — баарын башкарыныз"
-
-#: templates/index.html:62
 msgid "Language Support"
 msgstr "Тил колдоосу"
 
@@ -592,7 +629,7 @@ msgstr "Ооба, очуруу"
 #: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:67
 #: templates/teams/team_delete.html:22 templates/teams/team_detail.html:71
 #: templates/teams/team_exit.html:28
-#: templates/teams/team_member_role_update.html:39
+#: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_delete.html:22
 #: templates/user/user_detail.html:143 templates/user/user_update.html:16
 msgid "Cancel"
@@ -698,10 +735,6 @@ msgstr "Демейки"
 msgid "Reset filters"
 msgstr "Чыпкаларды тазалоо"
 
-#: templates/tasks/task_filter.html:67
-msgid "Active"
-msgstr "Активдуу"
-
 #: templates/tasks/task_filter.html:73
 msgid "Filter"
 msgstr "Чыпка"
@@ -792,19 +825,20 @@ msgstr "Чын эле командадан чыккыныз келеби?"
 msgid ""
 "Are you sure you want to remove user %(username)s from the team "
 "%(team_name)s?"
-msgstr "Колдонуучу %(username)s-ди %(team_name)s командасынан очургунуз келеби?"
+msgstr ""
+"Колдонуучу %(username)s-ди %(team_name)s командасынан очургунуз келеби?"
 
 #: templates/teams/team_exit.html:25
 msgid "Yes, exit"
 msgstr "Ооба, чыгуу"
 
 #: templates/teams/team_member_role_update.html:10
-msgid "Change Team Member Role"
-msgstr "Команда мучосунун ролун озгортуу"
+msgid "Manage Team Member"
+msgstr "Команда мучосун башкаруу"
 
 #: templates/teams/team_member_role_update.html:14
-msgid "You are changing the role for"
-msgstr "Сиз ролду озгортуп жатасыз:"
+msgid "You are managing membership for"
+msgstr "Сиз мучолугун башкарып жатасыз:"
 
 #: templates/teams/team_member_role_update.html:15
 msgid "in team"
@@ -814,15 +848,15 @@ msgstr "командада"
 msgid "Role"
 msgstr "Роль"
 
-#: templates/teams/team_member_role_update.html:42
+#: templates/teams/team_member_role_update.html:58
 msgid "Save Changes"
 msgstr "Озгортулорду сактоо"
 
-#: templates/teams/team_member_role_update.html:51
+#: templates/teams/team_member_role_update.html:67
 msgid "Are you sure you want to remove this user from the team?"
 msgstr "Бул колдонуучуну командадан очургунуз келеби?"
 
-#: templates/teams/team_member_role_update.html:54
+#: templates/teams/team_member_role_update.html:70
 msgid "Remove from team"
 msgstr "Командадан очуруу"
 
@@ -866,15 +900,23 @@ msgstr "Колдонуучунун аты"
 msgid "Change Role"
 msgstr "Ролду алмаштыруу"
 
-#: templates/user/user_list.html:129
+#: templates/user/user_list.html:88
+msgid "Pending approval"
+msgstr "Бекитууну кутууде"
+
+#: templates/user/user_list.html:114
+msgid "Review"
+msgstr "Карап чыгуу"
+
+#: templates/user/user_list.html:172
 msgid "Not in team"
 msgstr "Командада эмес"
 
-#: templates/user/user_list.html:144
+#: templates/user/user_list.html:187
 msgid "No users found"
 msgstr "Колдонуучулар табылган жок"
 
-#: templates/user/user_list.html:145
+#: templates/user/user_list.html:188
 msgid "No users available"
 msgstr "Колдонуучулар жок"
 
@@ -893,71 +935,76 @@ msgstr "Командага кошулуу (милдеттуу эмес)"
 #: user/forms.py:38
 msgid ""
 "Enter team name to join an existing team, or leave empty to work individually"
-msgstr "Бар командага кошулуу учун команданын атын киргизиниз, же жеке иштоо учун бош калтырыныз."
+msgstr ""
+"Бар командага кошулуу учун команданын атын киргизиниз, же жеке иштоо учун "
+"бош калтырыныз."
 
 #: user/forms.py:46
 msgid "Required if joining a team"
 msgstr "Командага кошулууда милдеттуу"
 
-#: user/forms.py:106
+#: user/forms.py:110
 msgid "Current teams"
 msgstr "Учурдагы командалар"
 
-#: user/forms.py:122
+#: user/forms.py:126
 msgid "Join another team (optional)"
 msgstr "Башка командага кошулуу (милдеттуу эмес)"
 
-#: user/forms.py:124
+#: user/forms.py:128
 msgid "Enter team name to join another team, or leave empty"
-msgstr "Башка командага кошулуу учун команданын атын киргизиниз же бош калтырыныз"
+msgstr ""
+"Башка командага кошулуу учун команданын атын киргизиниз же бош калтырыныз"
 
-#: user/forms.py:159
+#: user/forms.py:163
 msgid "Team password is required when joining a team"
 msgstr "Командага кошулууда команданын сырсозу милдеттуу"
 
-#: user/forms.py:168
+#: user/forms.py:172
 msgid "Team with this name does not exist"
 msgstr "Мындай аталыштагы команда жок"
 
-#: user/forms.py:175
+#: user/forms.py:179
 msgid "Invalid team password"
 msgstr "Команданын сырсозу туура эмес"
 
-#: user/forms.py:186
+#: user/forms.py:197
+msgid "You already have a pending request to join this team"
+msgstr "Бул командага кошулуу учун сиздин кутуудогу суроо-талабыңыз бар"
+
+#: user/forms.py:200
 msgid "You are already a member of this team"
 msgstr "Сиз буга чейин бул команданын мучосусуз"
 
-#: user/views.py:145
+#: user/views.py:169
 msgid "User created successfully"
 msgstr "Колдонуучу ийгиликтуу катталды"
 
-#: user/views.py:162
+#: user/views.py:186 user/views.py:230
 #, python-brace-format
-msgid "Welcome! You have joined team: {team}"
-msgstr "Кош келиңиз! Сиз {team} командасына кошулдуңуз"
+msgid ""
+"Your request to join team {team} has been sent. Waiting for admin approval."
+msgstr ""
+"{team} командасына кошулуу суроо-талабыңыз жонотулду. Админдин бекитуусун "
+"кутуңуз."
 
-#: user/views.py:168
+#: user/views.py:193
 msgid "Welcome! You can create a team or work individually"
 msgstr "Кош келиңиз! Сиз команда тузо аласыз же жеке иштей аласыз"
 
-#: user/views.py:183
+#: user/views.py:208
 msgid "User updated successfully"
 msgstr "Колдонуучу ийгиликтуу озгортулду"
 
-#: user/views.py:206
-#, python-brace-format
-msgid "You have joined team: {team}"
-msgstr "Сиз {team} командасына кошулдуңуз"
-
-#: user/views.py:228
+#: user/views.py:254
 msgid "User deleted successfully"
 msgstr "Колдонуучу ийгиликтуу очурулду"
 
-#: user/views.py:247
+#: user/views.py:273
 msgid "Cannot delete user because they are admin of team(s): "
 msgstr "Колдонуучуну очуруу мумкун эмес, анткени ал команда(лар)дын админи: "
 
-#: user/views.py:260
+#: user/views.py:286
 msgid "Cannot delete a user because it is in use"
 msgstr "Колдонуучуну очуруу мумкун эмес, анткени ал колдонулуп жатат"
 
@@ -971,9 +1018,9 @@ msgid ""
 "simplifies task management.<br>Create, assign, and track tasks effortlessly "
 "across projects."
 msgstr ""
-"Жалгыз иштесеңиз да же бир нече коз карандысыз команда менен иштесеңиз да, TaskMan "
-"тапшырмаларды башкарууну женокеилотот.<br>Тапшырмаларды ар кандай долбоорлордо "
-"оной тузуп, дайындап жана козомолдонуз."
+"Жалгыз иштесеңиз да же бир нече коз карандысыз команда менен иштесеңиз да, "
+"TaskMan тапшырмаларды башкарууну женокеилотот.<br>Тапшырмаларды ар кандай "
+"долбоорлордо оной тузуп, дайындап жана козомолдонуз."
 
 #: views.py:36
 msgid "Read more"
@@ -986,6 +1033,3 @@ msgstr "Сиз ийгиликтуу кирдиниз"
 #: views.py:55
 msgid "You are logged out"
 msgstr "Сиз системадан чыктыныз"
-
-#~ msgid "Spanish"
-#~ msgstr "Испанча"
