@@ -71,9 +71,50 @@ class Task(models.Model):
         verbose_name=_('Created at')
     )
 
+    @property
+    def checklist_total(self):
+        return self.checklist_items.count()
+
+    @property
+    def checklist_done(self):
+        return self.checklist_items.filter(is_done=True).count()
+
+    @property
+    def checklist_progress(self):
+        if self.checklist_total == 0:
+            return 0
+        return int((self.checklist_done / self.checklist_total) * 100)
+
     def save(self, *args, **kwargs):
-        # Автоматически определяем команду, если не указана
+        # Auto-detect team if not specified
         if not self.team and self.author:
-            # Если задача создается без команды, это индивидуальная задача
+            # If task is created without team, it's an individual task
             pass
         super().save(*args, **kwargs)
+
+
+class ChecklistItem(models.Model):
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        related_name='checklist_items',
+        verbose_name=_('Task')
+    )
+    text = models.CharField(
+        max_length=300,
+        verbose_name=_('Text')
+    )
+    is_done = models.BooleanField(
+        default=False,
+        verbose_name=_('Done')
+    )
+    position = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Position')
+    )
+
+    class Meta:
+        ordering = ['position', 'id']
+
+    def __str__(self):
+        return self.text[:50]

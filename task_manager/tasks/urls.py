@@ -4,7 +4,10 @@ from task_manager.tasks.views import (
     TaskFilterView,
     TaskCreateView,
     TaskUpdateView,
-    TaskDeleteView
+    TaskDeleteView,
+    checklist_add,
+    checklist_toggle,
+    checklist_delete,
 )
 
 
@@ -19,4 +22,19 @@ urlpatterns = [
          TaskUpdateView.as_view(), name='task-update'),
     path('<uuid:uuid>/delete/',
          TaskDeleteView.as_view(), name='task-delete'),
+    path(
+        '<uuid:uuid>/checklist/add/',
+        checklist_add,
+        name='checklist-add'
+    ),
+    path(
+        '<uuid:uuid>/checklist/<int:item_id>/toggle/',
+        checklist_toggle,
+        name='checklist-toggle'
+    ),
+    path(
+        '<uuid:uuid>/checklist/<int:item_id>/delete/',
+        checklist_delete,
+        name='checklist-delete'
+    ),
 ]

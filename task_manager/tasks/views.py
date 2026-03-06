@@ -4,12 +4,17 @@ from task_manager.permissions import CustomPermissions
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Task
+from django.db import models
+from .models import Task, ChecklistItem
 from task_manager.tasks.forms import TaskForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django_filters.views import FilterView
 from task_manager.tasks.filters import TaskFilter
 from urllib.parse import urlencode
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+import json
 
 
 # Session keys for storing filter settings
@@ -209,3 +214,108 @@ class TaskDeleteView(TaskDeletePermissionMixin,
     success_message = _('Task deleted successfully')
     slug_field = 'uuid'
     slug_url_kwarg = 'uuid'
+
+
+def _check_task_edit_permission(request, task):
+    """Check if user can edit task (author, executor or team admin)."""
+    is_author = task.author == request.user
+    is_executor = request.user in task.executors.all()
+    is_team_admin = task.team and task.team.is_admin(request.user)
+
+    if not is_author and not is_executor and not is_team_admin:
+        return JsonResponse(
+            {'error': _("Task can only be updated by its author, "
+                        "executors or team admin.")},
+            status=403
+        )
+    return None
+
+
+@login_required
+@require_POST
+def checklist_add(request, uuid):
+    """Add a new checklist item to a task."""
+    task = get_object_or_404(Task, uuid=uuid)
+    error = _check_task_edit_permission(request, task)
+    if error:
+        return error
+
+    try:
+        data = json.loads(request.body)
+        text = data.get('text', '').strip()
+    except (json.JSONDecodeError, TypeError):
+        text = ''.strip()
+
+    if not text:
+        return JsonResponse({'error': _('Text is required')}, status=400)
+
+    if len(text) > 300:
+        return JsonResponse(
+            {'error': _('Text must be 300 characters or less')},
+            status=400
+        )
+
+    # Get next position
+    max_position = task.checklist_items.aggregate(
+        models.Max('position')
+    )['position__max'] or 0
+
+    item = ChecklistItem.objects.create(
+        task=task,
+        text=text,
+        position=max_position + 1
+    )
+
+    return JsonResponse({
+        'id': item.id,
+        'text': item.text,
+        'is_done': item.is_done,
+        'position': item.position,
+        'total': task.checklist_total,
+        'done': task.checklist_done,
+        'progress': task.checklist_progress,
+    })
+
+
+@login_required
+@require_POST
+def checklist_toggle(request, uuid, item_id):
+    """Toggle is_done status of a checklist item."""
+    task = get_object_or_404(Task, uuid=uuid)
+    error = _check_task_edit_permission(request, task)
+    if error:
+        return error
+
+    item = get_object_or_404(ChecklistItem, id=item_id, task=task)
+
+    item.is_done = not item.is_done
+    item.save()
+
+    return JsonResponse({
+        'id': item.id,
+        'is_done': item.is_done,
+        'total': task.checklist_total,
+        'done': task.checklist_done,
+        'progress': task.checklist_progress,
+    })
+
+
+@login_required
+@require_POST
+def checklist_delete(request, uuid, item_id):
+    """Delete a checklist item."""
+    task = get_object_or_404(Task, uuid=uuid)
+    error = _check_task_edit_permission(request, task)
+    if error:
+        return error
+
+    item = get_object_or_404(ChecklistItem, id=item_id, task=task)
+
+    item.delete()
+
+    return JsonResponse({
+        'deleted': True,
+        'total': task.checklist_total,
+        'done': task.checklist_done,
+        'progress': task.checklist_progress,
+    })

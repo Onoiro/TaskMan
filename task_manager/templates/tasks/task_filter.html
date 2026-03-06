@@ -242,6 +242,11 @@
                                 <div class="me-2">
                                     <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
                                         {{ obj.name }}
+                                        {% if obj.checklist_total > 0 %}
+                                        <span class="text-muted small ms-1" title="{% trans 'Checklist' %}">
+                                            <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
+                                        </span>
+                                        {% endif %}
                                     </a>
                                 </div>
                                 <div class="text-muted small text-nowrap mt-1">

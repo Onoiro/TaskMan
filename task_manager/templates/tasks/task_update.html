@@ -52,7 +52,84 @@
                 <!-- Основная карточка (Контент) -->
                 <div class="card shadow border-0 mb-4">
                     <div class="card-body p-3 p-md-4">
-                        {% bootstrap_form form %}
+                        {% bootstrap_field form.name %}
+                        {% bootstrap_field form.description %}
+
+                        <!-- Секция чеклиста (после описания) -->
+                        {% csrf_token %}
+                        <div id="checklist-section"
+                             data-task-uuid="{{ object.uuid }}"
+                             data-add-url="{% url 'tasks:checklist-add' object.uuid %}"
+                             data-toggle-url="{% url 'tasks:checklist-toggle' object.uuid 0 %}"
+                             data-delete-url="{% url 'tasks:checklist-delete' object.uuid 0 %}">
+
+                            <!-- Заголовок с счётчиком -->
+                            <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+                                <h5 class="fw-bold mb-0">
+                                    <i class="bi bi-check2-square"></i> {% trans "Checklist" %}
+                                    <span class="text-muted fw-normal" id="checklist-counter">
+                                        ({{ object.checklist_done }}/{{ object.checklist_total }})
+                                    </span>
+                                </h5>
+                            </div>
+
+                            <!-- Прогресс-бар -->
+                            {% if object.checklist_total > 0 %}
+                            <div class="progress mb-3" style="height: 5px;">
+                                <div class="progress-bar bg-success"
+                                     id="checklist-progress"
+                                     role="progressbar"
+                                     style="width: {{ object.checklist_progress }}%"
+                                     aria-valuenow="{{ object.checklist_progress }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- Список пунктов -->
+                            <div class="checklist-items" id="checklist-items">
+                                {% for item in object.checklist_items.all %}
+                                <div class="form-check d-flex align-items-start p-0 mb-2 checklist-item"
+                                     data-id="{{ item.id }}">
+                                    <input type="checkbox"
+                                           class="form-check-input mt-1 me-2"
+                                           id="check-{{ item.id }}"
+                                           {% if item.is_done %}checked{% endif %}>
+                                    <label for="check-{{ item.id }}"
+                                           class="form-check-label flex-grow-1{% if item.is_done %} text-decoration-line-through text-muted{% endif %}"
+                                           style="cursor: pointer;">
+                                        {{ item.text }}
+                                    </label>
+                                    <button type="button"
+                                            class="btn btn-sm text-danger p-0 ms-2 checklist-delete"
+                                            title="{% trans 'Delete' %}"
+                                            data-id="{{ item.id }}">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Форма добавления -->
+                            <div class="input-group mt-3">
+                                <input type="text"
+                                       class="form-control"
+                                       id="checklist-input"
+                                       placeholder="{% trans 'Add item...' %}"
+                                       maxlength="300">
+                                <button class="btn btn-primary"
+                                        type="button"
+                                        id="checklist-add-btn">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        {% bootstrap_field form.status %}
+                        {% bootstrap_field form.executors %}
+                        {% bootstrap_field form.labels %}
+
                     </div>
                 </div>
 
@@ -80,9 +157,12 @@
 
 <style>
     textarea.form-control {
-        min-height: 200px;
+        min-height: 80px;
+        height: 80px;
         background-color: #fcfcfc;
         line-height: 1.6;
+        resize: vertical;
+        overflow-y: hidden;
     }
 
     input[name="name"] {
@@ -98,5 +178,165 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
+
+    .checklist-delete {
+        opacity: 1 !important;
+    }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-resize textarea
+    const textarea = document.querySelector('textarea[name="description"]');
+    if (textarea) {
+        function resize() {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+        textarea.addEventListener('input', resize);
+        resize();
+    }
+
+    // Checklist functionality
+    const section = document.getElementById('checklist-section');
+    const taskUuid = section.dataset.taskUuid;
+    const addUrlBase = section.dataset.addUrl;
+    const toggleUrlTemplate = section.dataset.toggleUrl;
+    const deleteUrlTemplate = section.dataset.deleteUrl;
+    const counter = document.getElementById('checklist-counter');
+    const progress = document.getElementById('checklist-progress');
+    const itemsContainer = document.getElementById('checklist-items');
+    const input = document.getElementById('checklist-input');
+    const addBtn = document.getElementById('checklist-add-btn');
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    function updateProgress(data) {
+        counter.textContent = `(${data.done}/${data.total})`;
+        if (progress) {
+            progress.style.width = data.progress + '%';
+            progress.setAttribute('aria-valuenow', data.progress);
+        }
+    }
+
+    function createItemElement(item) {
+        const div = document.createElement('div');
+        div.className = 'form-check d-flex align-items-start p-0 mb-2 checklist-item';
+        div.dataset.id = item.id;
+        div.innerHTML = `
+            <input type="checkbox" class="form-check-input mt-1 me-2" id="check-${item.id}" ${item.is_done ? 'checked' : ''}>
+            <label for="check-${item.id}" class="form-check-label flex-grow-1${item.is_done ? ' text-decoration-line-through text-muted' : ''}" style="cursor: pointer;">${item.text}</label>
+            <button type="button" class="btn btn-sm text-danger p-0 ms-2 checklist-delete" title="{% trans 'Delete' %}" data-id="${item.id}"><i class="bi bi-x"></i></button>
+        `;
+        return div;
+    }
+
+    // Add item
+    function addItem() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        fetch(addUrlBase, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ text: text })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            input.value = '';
+            itemsContainer.appendChild(createItemElement(data));
+            updateProgress(data);
+            input.focus();
+            // Show progress bar if first item
+            if (data.total === 1) {
+                const cardBody = section.querySelector('.card-body');
+                const progressHtml = '<div class="progress mb-3" style="height: 5px;"><div class="progress-bar bg-success" id="checklist-progress" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>';
+                cardBody.insertAdjacentHTML('afterbegin', progressHtml);
+            }
+        });
+    }
+
+    addBtn.addEventListener('click', addItem);
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addItem();
+        }
+    });
+
+    // Toggle and delete using event delegation
+    itemsContainer.addEventListener('click', function(e) {
+        const item = e.target.closest('.checklist-item');
+        if (!item) return;
+
+        const itemId = item.dataset.id;
+
+        // Toggle checkbox
+        if (e.target.type === 'checkbox' || e.target.tagName === 'LABEL') {
+            const url = toggleUrlTemplate.replace('/0/', '/' + itemId + '/');
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    e.target.checked = !e.target.checked;
+                    return;
+                }
+                const label = item.querySelector('label');
+                if (data.is_done) {
+                    label.classList.add('text-decoration-line-through', 'text-muted');
+                } else {
+                    label.classList.remove('text-decoration-line-through', 'text-muted');
+                }
+                updateProgress(data);
+            });
+        }
+
+        // Delete button
+        if (e.target.closest('.checklist-delete')) {
+            if (!confirm('{% trans "Delete this item?" %}')) return;
+            const url = deleteUrlTemplate.replace('/0/', '/' + itemId + '/');
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                // Smooth fade out before removing
+                item.style.transition = 'opacity 0.3s';
+                item.style.opacity = '0';
+                setTimeout(function() {
+                    item.remove();
+                    updateProgress(data);
+                    // Hide progress bar if no items
+                    if (data.total === 0 && progress) {
+                        progress.parentElement.remove();
+                    }
+                }, 300);
+            });
+        }
+    });
+});
+</script>
 {% endblock %}
