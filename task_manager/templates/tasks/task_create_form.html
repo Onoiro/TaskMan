@@ -52,12 +52,13 @@
 
 <style>
     textarea.form-control {
-        min-height: 80px;
-        height: 80px;
+        min-height: 40px;
+        height: 40px;
         background-color: #fcfcfc;
         line-height: 1.6;
-        resize: vertical;
+        resize: none;
         overflow-y: hidden;
+        transition: height 0.1s ease;
     }
 
     input[name="name"] {
@@ -81,11 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const textarea = document.querySelector('textarea[name="description"]');
     if (textarea) {
         function resize() {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+            textarea.style.height = '40px';
+            const newHeight = Math.max(40, textarea.scrollHeight);
+            textarea.style.height = newHeight + 'px';
         }
         textarea.addEventListener('input', resize);
-        resize();
+        setTimeout(resize, 0);
     }
 });
 </script>
