@@ -345,3 +345,102 @@ class ChecklistViewTestCase(TestCase):
         self.assertEqual(self.task.checklist_total, 3)
         self.assertEqual(self.task.checklist_done, 2)
         self.assertEqual(self.task.checklist_progress, 66)
+
+    def test_checklist_toggle_by_non_author_fails(self):
+        """Test that non-author cannot toggle checklist items."""
+        item = ChecklistItem.objects.create(task=self.task, text="Test")
+        other_user = User.objects.get(username='alone')
+        self.client.force_login(other_user)
+
+        toggle_url = reverse(
+            'tasks:checklist-toggle', args=[self.task.uuid, item.id]
+        )
+        response = self.client.post(
+            toggle_url,
+            data=json.dumps({}),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_checklist_delete_by_non_author_fails(self):
+        """Test that non-author cannot delete checklist items."""
+        item = ChecklistItem.objects.create(task=self.task, text="Test")
+        other_user = User.objects.get(username='alone')
+        self.client.force_login(other_user)
+
+        delete_url = reverse(
+            'tasks:checklist-delete', args=[self.task.uuid, item.id]
+        )
+        response = self.client.post(
+            delete_url,
+            data=json.dumps({}),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+
+class TaskChecklistFlowTestCase(TestCase):
+    """Tests for the 'Add Checklist' button flow in views."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_tasks.json",
+        "tests/fixtures/test_labels.json"
+    ]
+
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.get(username='me')
+        self.client.force_login(self.user)
+
+        # Set active team in session
+        from task_manager.teams.models import TeamMembership
+        membership = TeamMembership.objects.filter(user=self.user).first()
+        if membership:
+            session = self.client.session
+            session['active_team_uuid'] = str(membership.team.uuid)
+            session.save()
+
+        self.status = Task.objects.get(name="first task").status
+
+    def test_create_task_with_add_checklist_button(self):
+        """Test redirect to update with focus_checklist param on create."""
+        url = reverse('tasks:task-create')
+        data = {
+            'name': 'New Task with Checklist',
+            'status': self.status.id,
+            'executors': [self.user.id],
+            'add_checklist': '1'
+        }
+        response = self.client.post(url, data)
+
+        task = Task.objects.get(name='New Task with Checklist')
+        expected_url = reverse(
+            'tasks:task-update', kwargs={'uuid': task.uuid}
+        ) + '?focus_checklist=1'
+
+        self.assertRedirects(response, expected_url)
+
+    def test_update_task_with_add_checklist_button(self):
+        """Test redirect to update with focus_checklist param on update."""
+        task = Task.objects.get(name="first task")
+        url = reverse('tasks:task-update', kwargs={'uuid': task.uuid})
+
+        data = {
+            'name': 'Updated Name',
+            'status': task.status.id,
+            'executors': [self.user.id],
+            'add_checklist': '1'
+        }
+        response = self.client.post(url, data)
+
+        expected_url = reverse(
+            'tasks:task-update', kwargs={'uuid': task.uuid}
+        ) + '?focus_checklist=1'
+
+        self.assertRedirects(response, expected_url)
