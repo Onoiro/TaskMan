@@ -55,8 +55,8 @@
                         {% bootstrap_field form.name %}
                         {% bootstrap_field form.description %}
 
-                        <!-- Секция чеклиста (после описания) -->
-                        {% csrf_token %}
+                        <!-- Секция чеклиста -->
+                        {% if object.checklist_items.exists or request.GET.focus_checklist %}
                         <div id="checklist-section"
                              data-task-uuid="{{ object.uuid }}"
                              data-add-url="{% url 'tasks:checklist-add' object.uuid %}"
@@ -74,8 +74,7 @@
                             </div>
 
                             <!-- Прогресс-бар -->
-                            {% if object.checklist_total > 0 %}
-                            <div class="progress mb-3" style="height: 5px;">
+                            <div class="progress mb-3" id="checklist-progress-container" style="height: 5px; {% if object.checklist_total == 0 %}display:none;{% endif %}">
                                 <div class="progress-bar bg-success"
                                      id="checklist-progress"
                                      role="progressbar"
@@ -85,7 +84,6 @@
                                      aria-valuemax="100">
                                 </div>
                             </div>
-                            {% endif %}
 
                             <!-- Список пунктов -->
                             <div class="checklist-items" id="checklist-items">
@@ -117,7 +115,8 @@
                                        class="form-control"
                                        id="checklist-input"
                                        placeholder="{% trans 'Add item...' %}"
-                                       maxlength="300">
+                                       maxlength="300"
+                                       {% if request.GET.focus_checklist %}autofocus{% endif %}>
                                 <button class="btn btn-primary"
                                         type="button"
                                         id="checklist-add-btn">
@@ -125,6 +124,13 @@
                                 </button>
                             </div>
                         </div>
+                        {% else %}
+                        <div class="mb-3 mt-2">
+                            <button type="submit" name="add_checklist" value="1" class="btn btn-sm btn-outline-primary border-0 p-0 text-decoration-none">
+                                <i class="bi bi-plus-square me-1"></i> {% trans "Add checklist" %}
+                            </button>
+                        </div>
+                        {% endif %}
 
                         {% bootstrap_field form.status %}
                         {% bootstrap_field form.executors %}
@@ -269,6 +275,12 @@ document.addEventListener('DOMContentLoaded', function() {
             addItem();
         }
     });
+
+    // Focus input if requested
+    if (new URLSearchParams(window.location.search).has('focus_checklist')) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
     // Toggle and delete using event delegation
     itemsContainer.addEventListener('click', function(e) {

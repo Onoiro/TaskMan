@@ -162,8 +162,15 @@ class TaskFilterView(FilterView):
 class TaskCreateView(SuccessMessageMixin, CreateView):
     form_class = TaskForm
     template_name = 'tasks/task_create_form.html'
-    success_url = reverse_lazy('tasks:tasks-list')
     success_message = _('Task created successfully')
+
+    def get_success_url(self):
+        if 'add_checklist' in self.request.POST:
+            return reverse_lazy(
+                'tasks:task-update',
+                kwargs={'uuid': self.object.uuid}
+            ) + '?focus_checklist=1'
+        return reverse_lazy('tasks:tasks-list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -174,10 +181,12 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
             if team.memberships.count() == 1:
                 form.instance.save()
                 form.instance.executors.add(self.request.user)
+                self.object = form.instance
                 return super().form_valid(form)
         else:
             form.instance.save()
             form.instance.executors.add(self.request.user)
+            self.object = form.instance
             return super().form_valid(form)
 
         return super().form_valid(form)
@@ -199,6 +208,17 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
     success_message = _('Task updated successfully')
     slug_field = 'uuid'
     slug_url_kwarg = 'uuid'
+
+    def get_success_url(self):
+        if 'add_checklist' in self.request.POST:
+            return reverse_lazy(
+                'tasks:task-update',
+                kwargs={'uuid': self.object.uuid}
+            ) + '?focus_checklist=1'
+        return reverse_lazy('tasks:tasks-list')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
