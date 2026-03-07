@@ -65,7 +65,8 @@ class Status(models.Model):
             {
                 'name': _("To Do"),
                 'description': _("Task has been created but not yet started"),
-                'color': '#A78BFA'  # Лавандовый
+                'color': '#64748B'  # Slate (Серо-синий)
+                # 'color': '#A78BFA'  # Лавандовый
             },
             {
                 'name': _("In Progress"),
