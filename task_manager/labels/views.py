@@ -33,8 +33,13 @@ class LabelsListView(CustomPermissions, ListView):
 class LabelsCreateView(SuccessMessageMixin, CreateView):
     form_class = LabelForm
     template_name = 'labels/labels_create.html'
-    success_url = reverse_lazy('labels:labels-list')
     success_message = _('Label created successfully')
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        return reverse_lazy('labels:labels-list')
 
     def form_valid(self, form):
         label = form.save(commit=False)

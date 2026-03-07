@@ -134,7 +134,19 @@
 
                         {% bootstrap_field form.status %}
                         {% bootstrap_field form.executors %}
-                        {% bootstrap_field form.labels %}
+                        
+                        <div class="d-flex align-items-end gap-2">
+                            <div class="flex-grow-1">
+                                {% bootstrap_field form.labels %}
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" name="save_and_add_label" value="1" 
+                                        class="btn btn-outline-secondary" 
+                                        title="{% trans 'Create label' %}">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

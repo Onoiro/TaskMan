@@ -170,6 +170,12 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
                 'tasks:task-update',
                 kwargs={'uuid': self.object.uuid}
             ) + '?focus_checklist=1'
+        if 'save_and_add_label' in self.request.POST:
+            update_url = reverse_lazy(
+                'tasks:task-update',
+                kwargs={'uuid': self.object.uuid}
+            )
+            return f"{reverse_lazy('labels:labels-create')}?next={update_url}"
         return reverse_lazy('tasks:tasks-list')
 
     def form_valid(self, form):
@@ -215,6 +221,12 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
                 'tasks:task-update',
                 kwargs={'uuid': self.object.uuid}
             ) + '?focus_checklist=1'
+        if 'save_and_add_label' in self.request.POST:
+            update_url = reverse_lazy(
+                'tasks:task-update',
+                kwargs={'uuid': self.object.uuid}
+            )
+            return f"{reverse_lazy('labels:labels-create')}?next={update_url}"
         return reverse_lazy('tasks:tasks-list')
 
     def form_valid(self, form):

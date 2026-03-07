@@ -526,3 +526,27 @@ class LabelsTestCase(TestCase):
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]), _('Label deleted successfully'))
+
+    def test_labels_create_with_next_url(self):
+        """Test creating label with next url param."""
+        url = reverse('labels:labels-create') + '?next=/tasks/create/'
+        data = {'name': 'New Label with Next'}
+        response = self.c.post(url, data)
+        self.assertRedirects(response, '/tasks/create/')
+
+    def test_labels_update_queryset_individual_mode(self):
+        """Test that update queryset works correctly in individual mode."""
+        # User 'me' has team, let's use user 'alone' who has no team
+        user = User.objects.get(username='alone')
+        self.c.force_login(user)
+
+        # Clear session to ensure individual mode
+        self._set_active_team(None)
+
+        # Create a personal label
+        label = Label.objects.create(name="Personal", creator=user)
+
+        url = reverse('labels:labels-update', kwargs={'uuid': label.uuid})
+        response = self.c.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Personal")

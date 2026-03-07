@@ -4,14 +4,20 @@
 {% load i18n %}
 
 {% block content %}
+{% url 'labels:labels-list' as labels_list_url %}
 <div class="container wrapper flex-grow-1"> 
     <h1 class="my-4">{% trans "Create label" %}</h1>
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">
-            {% trans "Create" %}
-        </button>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                {% trans "Create" %}
+            </button>
+            <a href="{{ request.GET.next|default:labels_list_url }}" class="btn btn-outline-secondary">
+                {% trans "Cancel" %}
+            </a>
+        </div>
     </form>
 </div>
 {% endblock %}

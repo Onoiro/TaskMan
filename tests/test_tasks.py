@@ -440,6 +440,45 @@ class TaskTestCase(TestCase):
 
     # ========== CREATE TASK TESTS ==========
 
+    def test_create_task_with_add_checklist_button(self):
+        """Test redirect to update with focus_checklist param on create."""
+        url = reverse('tasks:task-create')
+        status = Status.objects.filter(team=self.team).first()
+        data = {
+            'name': 'New Task with Checklist',
+            'status': status.id,
+            'executors': [self.user.id],
+            'add_checklist': '1'
+        }
+        response = self.c.post(url, data)
+
+        task = Task.objects.get(name='New Task with Checklist')
+        expected_url = reverse(
+            'tasks:task-update', kwargs={'uuid': task.uuid}
+        ) + '?focus_checklist=1'
+
+        self.assertRedirects(response, expected_url)
+
+    def test_create_task_with_save_and_add_label_button(self):
+        """Test redirect to label create with next param on create task."""
+        url = reverse('tasks:task-create')
+        status = Status.objects.filter(team=self.team).first()
+        data = {
+            'name': 'Task for Label Flow',
+            'status': status.id,
+            'executors': [self.user.id],
+            'save_and_add_label': '1'
+        }
+        response = self.c.post(url, data)
+
+        task = Task.objects.get(name='Task for Label Flow')
+        update_url = reverse(
+            'tasks:task-update', kwargs={'uuid': task.uuid}
+        )
+        expected_url = f"{reverse('labels:labels-create')}?next={update_url}"
+
+        self.assertRedirects(response, expected_url)
+
     def test_create_task_response_200_and_check_content(self):
         response = self.c.get(reverse('tasks:task-create'))
         self.assertEqual(response.status_code, 200)
@@ -623,6 +662,43 @@ class TaskTestCase(TestCase):
         user_no_team.delete()
 
     # ========== UPDATE TASK TESTS ==========
+
+    def test_update_task_with_add_checklist_button(self):
+        """Test redirect to update with focus_checklist param on update."""
+        url = reverse('tasks:task-update', kwargs={'uuid': self.task.uuid})
+
+        data = {
+            'name': 'Updated Name',
+            'status': self.task.status.id,
+            'executors': [self.user.id],
+            'add_checklist': '1'
+        }
+        response = self.c.post(url, data)
+
+        expected_url = reverse(
+            'tasks:task-update', kwargs={'uuid': self.task.uuid}
+        ) + '?focus_checklist=1'
+
+        self.assertRedirects(response, expected_url)
+
+    def test_update_task_with_save_and_add_label_button(self):
+        """Test redirect to label create with next param on update task."""
+        url = reverse('tasks:task-update', kwargs={'uuid': self.task.uuid})
+
+        data = {
+            'name': 'Updated with Label',
+            'status': self.task.status.id,
+            'executors': [self.user.id],
+            'save_and_add_label': '1'
+        }
+        response = self.c.post(url, data)
+
+        update_url = reverse(
+            'tasks:task-update', kwargs={'uuid': self.task.uuid}
+        )
+        expected_url = f"{reverse('labels:labels-create')}?next={update_url}"
+
+        self.assertRedirects(response, expected_url)
 
     def test_task_update_view_response_200(self):
         response = self.c.get(
