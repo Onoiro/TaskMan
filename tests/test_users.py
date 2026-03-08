@@ -807,25 +807,36 @@ class UserTestCase(TestCase):
         self.c.force_login(user)
         response = self.c.post(reverse('user:user-delete',
                                        args=[user.username]), follow=True)
-        self.assertFalse(User.objects.filter(username="new").exists())
+        # User still exists because of soft delete,
+        # but is inactive and has a new username
+        user.refresh_from_db()
+        self.assertTrue(user.is_deleted)
+        self.assertFalse(user.is_active)
+        self.assertNotEqual(user.username, "new")
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('index'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                         _('User deleted successfully'))
+                         _('User account has been deleted'))
 
     def test_can_not_delete_user_bound_with_task(self):
-        response = self.c.get(reverse('user:user-delete',
-                                      args=[self.user.username]), follow=True)
-        self.assertTrue(User.objects.filter(username="he").exists())
-        self.assertRedirects(response, reverse('user:user-list'))
+        # Soft delete is now allowed even if user is bound to task
+        self.c.force_login(self.user)
+        response = self.c.post(reverse('user:user-delete',
+                                       args=[self.user.username]), follow=True)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.is_deleted)
+        self.assertRedirects(response, reverse('index'))
         messages = list(get_messages(response.wsgi_request))
         self.assertGreater(len(messages), 0)
         self.assertEqual(str(messages[0]),
-                         _('Cannot delete a user because it is in use'))
+                         _('User account has been deleted'))
 
     def test_can_not_delete_user_being_team_admin(self):
+        # Soft delete is now allowed: if it's the last admin, team is deleted
+        # If there are other members, one is promoted
+
         # create new user
         self.c.post(reverse('user:user-create'),
                     self.user_data, follow=True)
@@ -846,29 +857,19 @@ class UserTestCase(TestCase):
         self.c.force_login(new_user)
 
         # try to delete new user
-        response = self.c.get(reverse('user:user-delete',
-                                      args=[new_user.username]), follow=True)
+        response = self.c.post(reverse('user:user-delete',
+                                       args=[new_user.username]), follow=True)
 
-        # check that new user still exist
-        self.assertTrue(User.objects.filter(username="new").exists())
+        # user should be soft deleted
+        new_user.refresh_from_db()
+        self.assertTrue(new_user.is_deleted)
 
-        # check for redirect
-        self.assertRedirects(response, reverse('user:user-list'))
+        # check for redirect to index (since logout happens)
+        self.assertRedirects(response, reverse('index'))
 
-        # check for error message
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
-        self.assertEqual(
-            str(messages[0]),
-            _(
-                'Cannot delete user because they are admin '
-                'of team(s): New Test Team. Transfer admin rights '
-                'or delete the team(s) first.'
-            )
-        )
-
-        # delete team after test
-        team.delete()
+        # delete team after test (if it still exists)
+        if Team.objects.filter(id=team.id).exists():
+            team.delete()
 
     def test_can_join_existing_team(self):
         team = Team.objects.get(pk=1)
@@ -896,40 +897,33 @@ class UserTestCase(TestCase):
         self.assertEqual(Status.objects.filter(creator=user).count(), 0)
 
     def test_delete_user_with_tasks_as_author(self):
-        """test cannot delete user who is author of tasks"""
+        """test user can be soft deleted even if they are author of tasks"""
         # user 'me' (id=10) is author of tasks
         author_user = User.objects.get(username='me')
         self.c.force_login(author_user)
 
-        response = self.c.get(reverse(
+        response = self.c.post(reverse(
             'user:user-delete', args=[author_user.username]), follow=True)
 
-        # should redirect and show error message
-        self.assertRedirects(response, reverse('user:user-list'))
-        messages = list(get_messages(response.wsgi_request))
-        error_messages = [
-            str(msg) for msg in messages if 'Cannot delete' in str(msg)
-        ]
-        self.assertEqual(len(error_messages), 1)
+        # should redirect to index after logout
+        self.assertRedirects(response, reverse('index'))
 
-        # user should still exist
-        self.assertTrue(User.objects.filter(username='me').exists())
+        # user should be soft deleted
+        author_user.refresh_from_db()
+        self.assertTrue(author_user.is_deleted)
 
     def test_delete_user_with_tasks_as_executor(self):
-        """test cannot delete user who is executor of tasks"""
+        """test user can be soft deleted even if they are executor of tasks"""
         # user 'he' (id=12) is executor of tasks
         executor_user = User.objects.get(username='he')
+        self.c.force_login(executor_user)
 
-        response = self.c.get(reverse(
+        response = self.c.post(reverse(
             'user:user-delete', args=[executor_user.username]), follow=True)
 
-        # should redirect and show error message
-        self.assertRedirects(response, reverse('user:user-list'))
-        messages = list(get_messages(response.wsgi_request))
-        error_messages = [
-            str(msg) for msg in messages if 'Cannot delete' in str(msg)
-        ]
-        self.assertEqual(len(error_messages), 1)
+        # should redirect to index after logout
+        self.assertRedirects(response, reverse('index'))
 
-        # user should still exist
-        self.assertTrue(User.objects.filter(username='he').exists())
+        # user should be soft deleted
+        executor_user.refresh_from_db()
+        self.assertTrue(executor_user.is_deleted)
