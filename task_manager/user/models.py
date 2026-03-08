@@ -22,12 +22,13 @@ class User(AbstractUser):
 
     def soft_delete(self):
         """
-        Soft delete the user, deactivating the account and anonymizing the username.
+        Soft delete the user, deactivating the account
+        and anonymizing the username.
         """
         self.is_deleted = True
         self.deleted_at = timezone.now()
         self.is_active = False
-        
+
         # Anonymize username to free it up for reuse
         unique_suffix = uuid.uuid4().hex[:8]
         self.username = f"deleted_{self.id}_{unique_suffix}"
@@ -43,8 +44,10 @@ class User(AbstractUser):
             team = membership.team
             if membership.role == 'admin':
                 # Check for other active admins or members
-                other_memberships = team.memberships.exclude(user=self).filter(status='active')
-                
+                other_memberships = team.memberships.exclude(
+                    user=self
+                ).filter(status='active')
+
                 if other_memberships.exists():
                     # Promote the next member to admin
                     next_admin = other_memberships.order_by('joined_at').first()
@@ -53,7 +56,7 @@ class User(AbstractUser):
                 else:
                     # No other active members, delete the team
                     team.delete()
-                    continue # Team is gone, membership is gone by CASCADE
+                    continue  # Team is gone, membership is gone by CASCADE
 
             # Deactivate membership
             membership.status = 'inactive'

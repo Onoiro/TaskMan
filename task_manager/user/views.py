@@ -8,7 +8,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.user.forms import UserForm
 from task_manager.user.models import User
-from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -258,12 +257,12 @@ class UserDeleteView(CustomPermissions,
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         success_url = self.get_success_url()
-        
+
         # Perform soft delete instead of physical delete
         self.object.soft_delete()
-        
+
         # Log out the user after deletion
         logout(request)
-        
+
         messages.success(request, self.success_message)
         return redirect(success_url)
