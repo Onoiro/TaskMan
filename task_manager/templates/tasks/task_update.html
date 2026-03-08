@@ -34,7 +34,7 @@
                         <!-- Нижняя строка: автор (слева), исполнители (справа) -->
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Author' %}">
-                                <span class="me-1">👤</span> {{ object.author.username }}
+                                <span class="me-1">👤</span> {{ object.author.display_name|default:_("Deleted user") }}
                             </div>
                             {% if object.executors.all %}
                             <div class="d-flex align-items-center gap-1">

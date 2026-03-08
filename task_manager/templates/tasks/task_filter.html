@@ -277,7 +277,7 @@
 
                                 <div class="d-flex align-items-center gap-2 small text-muted">
                                     <span class="user-badge" title="{% trans 'Author' %}">
-                                        👤 {{ obj.author.username }}
+                                        👤 {{ obj.author.display_name|default:_("Deleted user") }}
                                     </span>
                                     {% for executor in obj.executors.all %}
                                     <span class="user-badge" title="{% trans 'Executor' %}">

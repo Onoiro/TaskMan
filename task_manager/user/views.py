@@ -1,3 +1,4 @@
+from django.contrib.auth import login, update_session_auth_hash, logout
 from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.permissions import CustomPermissions, UserPermissions
 from django.urls import reverse_lazy
@@ -10,7 +11,6 @@ from task_manager.user.models import User
 from task_manager.tasks.models import Task
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.contrib.auth import login, update_session_auth_hash
 
 
 import os
@@ -251,40 +251,19 @@ class UserDeleteView(CustomPermissions,
     model = User
     template_name = 'user/user_delete.html'
     success_url = reverse_lazy('index')
-    success_message = _('User deleted successfully')
+    success_message = _('User account has been deleted')
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-
-        # check if user is admin of any team
-        from task_manager.teams.models import TeamMembership
-        admin_memberships = TeamMembership.objects.filter(
-            user=self.object,
-            role='admin'
-        )
-
-        if admin_memberships.exists():
-            team_names = ', '.join([m.team.name for m in admin_memberships])
-            messages.error(
-                self.request,
-                _(
-                    f"Cannot delete user because they are admin of team(s): "
-                    f"{team_names}. "
-                    "Transfer admin rights or delete the team(s) first.")
-            )
-            return redirect('user:user-list')
-
-        # check for user's tasks (author and executor)
-        user_tasks_as_author = Task.objects.filter(author=self.object)
-        user_tasks_as_executor = Task.objects.filter(executors=self.object)
-
-        if user_tasks_as_author.exists() or user_tasks_as_executor.exists():
-            messages.error(
-                self.request,
-                _("Cannot delete a user because it is in use")
-            )
-            return redirect('user:user-list')
-
-        return super().get(request, *args, **kwargs)
+        success_url = self.get_success_url()
+        
+        # Perform soft delete instead of physical delete
+        self.object.soft_delete()
+        
+        # Log out the user after deletion
+        logout(request)
+        
+        messages.success(request, self.success_message)
+        return redirect(success_url)

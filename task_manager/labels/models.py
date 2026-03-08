@@ -37,7 +37,8 @@ class Label(models.Model):
     )
     creator = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         related_name='created_labels'
     )
     created_at = models.DateTimeField(auto_now_add=True)

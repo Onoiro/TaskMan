@@ -59,7 +59,8 @@ class Task(models.Model):
     author = models.ForeignKey(
         User,
         related_name='author_set',
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
+        null=True,
     )
     labels = models.ManyToManyField(
         Label,

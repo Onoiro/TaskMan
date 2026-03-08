@@ -1,5 +1,7 @@
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -9,20 +11,50 @@ class User(AbstractUser):
         blank=True,
         default=''
     )
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
-    # def user_str(self):
-    #     return f"{self.first_name} {self.last_name}"
+    @property
+    def display_name(self):
+        if self.is_deleted:
+            return _('Deleted user')
+        return self.username
 
-    # def get_teams(self):
-    #     """Получить все команды пользователя через TeamMembership"""
-    #     from task_manager.teams.models import TeamMembership
-    #     return TeamMembership.objects.filter(user=self).select_related('team')
+    def soft_delete(self):
+        """
+        Soft delete the user, deactivating the account and anonymizing the username.
+        """
+        self.is_deleted = True
+        self.deleted_at = timezone.now()
+        self.is_active = False
+        
+        # Anonymize username to free it up for reuse
+        unique_suffix = uuid.uuid4().hex[:8]
+        self.username = f"deleted_{self.id}_{unique_suffix}"
+        self.set_unusable_password()
+        self.save()
 
-    # def is_admin_of_team(self, team):
-    #     """Проверить, является ли пользователь админом команды"""
-    #     from task_manager.teams.models import TeamMembership
-    #     try:
-    #         membership = TeamMembership.objects.get(user=self, team=team)
-    #         return membership.role == 'admin'
-    #     except TeamMembership.DoesNotExist:
-    #         return False
+        # 1. Remove from executors in all tasks
+        self.executor_tasks.clear()
+
+        # 2. Handle TeamMemberships and Teams
+        memberships = self.team_memberships.all()
+        for membership in memberships:
+            team = membership.team
+            if membership.role == 'admin':
+                # Check for other active admins or members
+                other_memberships = team.memberships.exclude(user=self).filter(status='active')
+                
+                if other_memberships.exists():
+                    # Promote the next member to admin
+                    next_admin = other_memberships.order_by('joined_at').first()
+                    next_admin.role = 'admin'
+                    next_admin.save()
+                else:
+                    # No other active members, delete the team
+                    team.delete()
+                    continue # Team is gone, membership is gone by CASCADE
+
+            # Deactivate membership
+            membership.status = 'inactive'
+            membership.save()
