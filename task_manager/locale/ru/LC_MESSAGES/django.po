@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 23:11+0300\n"
+"POT-Creation-Date: 2026-03-10 01:46+0300\n"
 "PO-Revision-Date: 2026-03-01 02:03+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -51,19 +51,19 @@ msgstr ""
 "Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
 "не разрешены."
 
-#: labels/views.py:37
+#: labels/views.py:36
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:57
+#: labels/views.py:62
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
 
-#: labels/views.py:81
+#: labels/views.py:86
 msgid "Label deleted successfully"
 msgstr "Метка успешно удалена"
 
-#: labels/views.py:104
+#: labels/views.py:109
 msgid "Cannot delete label because it is in use"
 msgstr "Невозможно удалить метку, потому что она используется"
 
@@ -121,7 +121,7 @@ msgstr "Киргизский"
 #: tasks/models.py:38 teams/models.py:32
 #: templates/statuses/statuses_update.html:40
 #: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
-#: templates/user/user_detail.html:30 user/models.py:8
+#: templates/user/user_detail.html:30 user/models.py:10
 msgid "Description"
 msgstr "Описание"
 
@@ -138,7 +138,7 @@ msgstr "Цвет"
 msgid "Choose status color"
 msgstr "Выберите цвет статуса"
 
-#: statuses/models.py:57 tasks/models.py:71 teams/models.py:42
+#: statuses/models.py:57 tasks/models.py:72 teams/models.py:42
 #: templates/labels/labels_update.html:56
 #: templates/statuses/statuses_update.html:58
 #: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
@@ -153,43 +153,43 @@ msgstr "К выполнению"
 msgid "Task has been created but not yet started"
 msgstr "Задача создана, но еще не начата"
 
-#: statuses/models.py:71
+#: statuses/models.py:72
 msgid "In Progress"
 msgstr "В работе"
 
-#: statuses/models.py:72
+#: statuses/models.py:73
 msgid "Task is currently being worked on"
 msgstr "Задача выполняется в данный момент"
 
-#: statuses/models.py:76
+#: statuses/models.py:77
 msgid "On Hold"
 msgstr "На паузе"
 
-#: statuses/models.py:77
+#: statuses/models.py:78
 msgid "Task is temporarily paused"
 msgstr "Задача временно приостановлена"
 
-#: statuses/models.py:81
+#: statuses/models.py:82
 msgid "Completed"
 msgstr "Завершена"
 
-#: statuses/models.py:82
+#: statuses/models.py:83
 msgid "Task has been finished successfully"
 msgstr "Задача успешно выполнена"
 
-#: statuses/models.py:86
+#: statuses/models.py:87
 msgid "Cancelled"
 msgstr "Отменена"
 
-#: statuses/models.py:87
+#: statuses/models.py:88
 msgid "Task was abandoned or deemed unnecessary"
 msgstr "Задача отменена или больше не актуальна"
 
-#: statuses/models.py:91
+#: statuses/models.py:92
 msgid "Blocked"
 msgstr "Заблокирована"
 
-#: statuses/models.py:93
+#: statuses/models.py:94
 msgid "Task cannot proceed due to external dependencies"
 msgstr "Задача не может быть выполнена из-за внешних факторов"
 
@@ -215,7 +215,7 @@ msgstr "Невозможно удалить статус, потому что о
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:22 templates/tasks/task_filter.html:278
+#: tasks/filters.py:22 templates/tasks/task_filter.html:283
 #: templates/tasks/task_update.html:42 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:105
 msgid "Executor"
@@ -245,36 +245,60 @@ msgstr "Команда"
 msgid "Executors"
 msgstr "Исполнители"
 
-#: tasks/models.py:67 templates/base.html:99 templates/base.html:121
+#: tasks/models.py:68 templates/base.html:99 templates/base.html:121
 #: templates/index.html:49 templates/statuses/statuses_list.html:26
 #: templates/tasks/task_filter.html:25 templates/user/user_list.html:66
 msgid "Labels"
 msgstr "Метки"
 
-#: tasks/views.py:34
+#: tasks/models.py:102
+msgid "Task"
+msgstr "Задача"
+
+#: tasks/models.py:106
+msgid "Text"
+msgstr "Текст"
+
+#: tasks/models.py:110
+msgid "Done"
+msgstr "Сделано"
+
+#: tasks/models.py:114
+msgid "Position"
+msgstr "Позиция"
+
+#: tasks/views.py:39
 msgid "Task can only be deleted by its author or team admin."
 msgstr "Задачу может удалить только ее автор или администратор команды."
 
-#: tasks/views.py:52
+#: tasks/views.py:57 tasks/views.py:259
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Задачу может изменить только ее автор, исполнитель или администратор команды."
 
-#: tasks/views.py:97
+#: tasks/views.py:102
 msgid "Filter saved as default"
 msgstr "Фильтр сохранен по умолчанию"
 
-#: tasks/views.py:161
+#: tasks/views.py:165
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:194
+#: tasks/views.py:214
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:209
+#: tasks/views.py:246
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
+
+#: tasks/views.py:282
+msgid "Text is required"
+msgstr "Введите текст"
+
+#: tasks/views.py:286
+msgid "Text must be 300 characters or less"
+msgstr "Текст не должен превышать 300 символов"
 
 #: teams/forms.py:23 user/forms.py:22
 msgid "Password"
@@ -479,7 +503,7 @@ msgstr "Индивидуальный режим"
 #: templates/labels/labels_update.html:65
 #: templates/statuses/statuses_list.html:84
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_update.html:64 templates/teams/team_update.html:26
+#: templates/tasks/task_update.html:159 templates/teams/team_update.html:26
 #: templates/user/user_detail.html:132 templates/user/user_update.html:13
 msgid "Edit"
 msgstr "Изменить"
@@ -510,7 +534,7 @@ msgid "Signup"
 msgstr "Регистрация"
 
 #: templates/base.html:292 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:66
+#: views.py:64
 msgid "Feedback"
 msgstr "Обратная связь"
 
@@ -555,12 +579,12 @@ msgid "Features"
 msgstr "Возможности"
 
 #: templates/index.html:37
-msgid "Individual & Team Use"
-msgstr "Индивидуальная работа и команды"
+msgid "Personal space and teams"
+msgstr "Личное пространство и команды"
 
 #: templates/index.html:37
-msgid "For solo work or team projects"
-msgstr "Для индивидуальной работы или командных проектов"
+msgid "Switch context in one click"
+msgstr "Переключение контекста в один клик"
 
 #: templates/index.html:41
 msgid "Quick Task Creation"
@@ -594,16 +618,32 @@ msgstr "Работает на компьютере, планшете и теле
 msgid "Language Support"
 msgstr "Поддержка языков"
 
-#: templates/labels/labels_create.html:8
+#: templates/labels/labels_create.html:9
+#: templates/tasks/task_create_form.html:39
+#: templates/tasks/task_update.html:145
 msgid "Create label"
 msgstr "Создать метку"
 
-#: templates/labels/labels_create.html:13
+#: templates/labels/labels_create.html:15
 #: templates/statuses/statuses_create_form.html:13
-#: templates/tasks/task_create_form.html:13
+#: templates/tasks/task_create_form.html:52
 #: templates/teams/team_create_form.html:13
 msgid "Create"
 msgstr "Создать"
+
+#: templates/labels/labels_create.html:18
+#: templates/labels/labels_delete.html:23
+#: templates/labels/labels_update.html:68
+#: templates/statuses/statuses_delete.html:23
+#: templates/statuses/statuses_update.html:70
+#: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:162 templates/teams/team_delete.html:22
+#: templates/teams/team_detail.html:71 templates/teams/team_exit.html:28
+#: templates/teams/team_member_role_update.html:55
+#: templates/teams/team_update.html:29 templates/user/user_delete.html:22
+#: templates/user/user_detail.html:143 templates/user/user_update.html:16
+msgid "Cancel"
+msgstr "Отмена"
 
 #: templates/labels/labels_delete.html:8
 msgid "Delete labels"
@@ -627,19 +667,6 @@ msgstr "Вы уверены, что хотите удалить"
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
-#: templates/labels/labels_delete.html:23
-#: templates/labels/labels_update.html:68
-#: templates/statuses/statuses_delete.html:23
-#: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:67
-#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:71
-#: templates/teams/team_exit.html:28
-#: templates/teams/team_member_role_update.html:55
-#: templates/teams/team_update.html:29 templates/user/user_delete.html:22
-#: templates/user/user_detail.html:143 templates/user/user_update.html:16
-msgid "Cancel"
-msgstr "Отмена"
-
 #: templates/labels/labels_list.html:13
 msgid "New label"
 msgstr "Новая метка"
@@ -647,7 +674,8 @@ msgstr "Новая метка"
 #: templates/labels/labels_list.html:80 templates/labels/labels_update.html:73
 #: templates/statuses/statuses_list.html:87
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:72 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:104 templates/tasks/task_update.html:167
+#: templates/tasks/task_update.html:249 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:149
 msgid "Delete"
 msgstr "Удалить"
@@ -712,9 +740,14 @@ msgstr "Создать статус"
 msgid "Has description"
 msgstr "Есть описание"
 
-#: templates/tasks/task_create_form.html:8
+#: templates/tasks/task_create_form.html:11
 msgid "Create task"
 msgstr "Создать задачу"
+
+#: templates/tasks/task_create_form.html:25
+#: templates/tasks/task_update.html:130
+msgid "Add checklist"
+msgstr "Добавить чек-лист"
 
 #: templates/tasks/task_delete.html:8 templates/tasks/task_delete.html:14
 msgid "Delete task"
@@ -736,7 +769,7 @@ msgstr "Активен фильтр по умолчанию"
 msgid "Default"
 msgstr "По умолчанию"
 
-#: templates/tasks/task_filter.html:65 templates/tasks/task_filter.html:297
+#: templates/tasks/task_filter.html:65 templates/tasks/task_filter.html:302
 msgid "Reset filters"
 msgstr "Сбросить фильтры"
 
@@ -767,22 +800,39 @@ msgstr "Сбросить"
 msgid "Apply"
 msgstr "Применить"
 
-#: templates/tasks/task_filter.html:274 templates/tasks/task_update.html:36
+#: templates/tasks/task_filter.html:246 templates/tasks/task_update.html:69
+msgid "Checklist"
+msgstr "Чек-лист"
+
+#: templates/tasks/task_filter.html:279 templates/tasks/task_update.html:36
 #: templates/user/user_detail.html:80 templates/user/user_detail.html:102
 msgid "Author"
 msgstr "Автор"
 
-#: templates/tasks/task_filter.html:294
+#: templates/tasks/task_filter.html:280 templates/tasks/task_update.html:37
+#: user/models.py:20
+msgid "Deleted user"
+msgstr "Удалённый пользователь"
+
+#: templates/tasks/task_filter.html:299
 msgid "No tasks found"
 msgstr "Задач нет"
 
-#: templates/tasks/task_filter.html:295
+#: templates/tasks/task_filter.html:300
 msgid "Try adjusting filters or create a new task"
 msgstr "Попробуйте изменить фильтры или создать новую задачу"
 
-#: templates/tasks/task_filter.html:299
+#: templates/tasks/task_filter.html:304
 msgid "Create Task"
 msgstr "Создать задачу"
+
+#: templates/tasks/task_update.html:117
+msgid "Add item..."
+msgstr "Добавить пункт"
+
+#: templates/tasks/task_update.html:337
+msgid "Delete this item?"
+msgstr "Удалить эту команду"
 
 #: templates/teams/team_create_form.html:8
 msgid "Create Team "
@@ -983,11 +1033,11 @@ msgstr "У вас уже есть неподтверждённая заявка 
 msgid "You are already a member of this team"
 msgstr "Вы уже участник этой команды"
 
-#: user/views.py:169
+#: user/views.py:168
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: user/views.py:186 user/views.py:230
+#: user/views.py:185 user/views.py:229
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -995,51 +1045,68 @@ msgstr ""
 "Ваша заявка на вступление в команду {team} отправлена. Ожидайте одобрения "
 "администратора."
 
-#: user/views.py:193
+#: user/views.py:192
 msgid "Welcome! You can create a team or work individually"
 msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
-#: user/views.py:208
+#: user/views.py:207
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменен"
 
-#: user/views.py:254
-msgid "User deleted successfully"
-msgstr "Пользователь успешно удален"
-
-#: user/views.py:273
-msgid "Cannot delete user because they are admin of team(s): "
-msgstr "Невозможно удалить пользователя, потому что он администратор команд: "
-
-#: user/views.py:286
-msgid "Cannot delete a user because it is in use"
-msgstr "Невозможно удалить пользователя, потому что он используется"
+#: user/views.py:253
+msgid "User account has been deleted"
+msgstr "Аккаунт пользователя удален"
 
 #: views.py:30
-msgid "Manage Tasks Your Way"
-msgstr "Управляйте задачами так, как вам удобно"
+msgid "Personal. Family. Work."
+msgstr "Личное. Семья. Работа."
 
 #: views.py:31
 msgid ""
-"Whether you're working solo or with multiple independent teams, TaskMan "
-"simplifies task management.<br>Create, assign, and track tasks effortlessly "
-"across projects."
-msgstr ""
-"TaskMan упрощает управление задачами — независимо от того, работаете ли вы в "
-"одиночку или в нескольких независимых командах.<br>Создавайте, назначайте и "
-"отслеживайте задачи без лишних усилий в разных проектах."
+"One planner for everything: from notes and personal goals to family tasks "
+"and team projects."
+msgstr "Один планировщик для всего: от заметок и личных целей "
+"до семейных дел и командных проектов."
 
-#: views.py:36
+#: views.py:34
 msgid "Read more"
 msgstr "Подробнее"
 
-#: views.py:45
+#: views.py:43
 msgid "You successfully logged in"
 msgstr "Вы успешно вошли"
 
-#: views.py:55
+#: views.py:53
 msgid "You are logged out"
 msgstr "Вы вышли из системы"
+
+#~ msgid "Individual & Team Use"
+#~ msgstr "Индивидуальная работа и команды"
+
+#~ msgid "For solo work or team projects"
+#~ msgstr "Для индивидуальной работы или командных проектов"
+
+#~ msgid "User deleted successfully"
+#~ msgstr "Пользователь успешно удален"
+
+#~ msgid "Cannot delete user because they are admin of team(s): "
+#~ msgstr ""
+#~ "Невозможно удалить пользователя, потому что он администратор команд: "
+
+#~ msgid "Cannot delete a user because it is in use"
+#~ msgstr "Невозможно удалить пользователя, потому что он используется"
+
+#~ msgid "Manage Tasks Your Way"
+#~ msgstr "Управляйте задачами так, как вам удобно"
+
+#~ msgid ""
+#~ "Whether you're working solo or with multiple independent teams, TaskMan "
+#~ "simplifies task management.<br>Create, assign, and track tasks "
+#~ "effortlessly across projects."
+#~ msgstr ""
+#~ "TaskMan упрощает управление задачами — независимо от того, работаете ли "
+#~ "вы в одиночку или в нескольких независимых командах.<br>Создавайте, "
+#~ "назначайте и отслеживайте задачи без лишних усилий в разных проектах."
 
 #~ msgid "Track progress (e.g., 'To Do', 'In Progress', 'Done')"
 #~ msgstr ""
