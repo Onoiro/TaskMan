@@ -27,12 +27,10 @@ class IndexView(View):
             return redirect('tasks:tasks-list')
         content = {
             'taskman': _("TaskMan"),
-            'manage': _("Manage Tasks Your Way"),
-            'description': _("Whether you're working solo"
-                             " or with multiple independent teams, "
-                             "TaskMan simplifies task management.<br>"
-                             "Create, assign, and track tasks"
-                             " effortlessly across projects."),
+            'manage': _("Personal. Family. Work."),
+            'description': _("One planner for everything:"
+                             " from notes and personal goals"
+                             " to family tasks and team projects."),
             'read_more': _("Read more"),
         }
         return render(request, 'index.html', context=content)
