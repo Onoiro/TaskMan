@@ -40,13 +40,17 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '.taskman.2-way.ru',
+    '.taskman.tech',
     'testserver',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8001',
     'https://taskman.2-way.ru',
-    'https://www.taskman.2-way.ru'
+    'https://www.taskman.2-way.ru',
+    'https://taskman.tech',
+    'https://www.taskman.tech',
+    'https://staging.taskman.tech'
 ]
 
 # Application definition
