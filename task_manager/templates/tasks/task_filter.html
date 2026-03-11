@@ -41,6 +41,21 @@
             </span>
             {% endif %}
 
+            <!-- Кнопка переключения вида списка -->
+            {% if request.GET.view_mode == 'simple' %}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'view_mode' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
+                class="btn btn-sm btn-outline-secondary view-mode-btn"
+                title="{% trans 'Full view' %}">
+                    <i class="bi bi-card-text"></i><span class="d-none d-sm-inline ms-1">{% trans "Full" %}</span>
+                </a>
+            {% else %}
+                <a href="?{% for key, value in request.GET.items %}{% if key != 'view_mode' %}{{ key }}={{ value }}&{% endif %}{% endfor %}view_mode=simple" 
+                class="btn btn-sm btn-outline-secondary view-mode-btn"
+                title="{% trans 'Simple view' %}">
+                    <i class="bi bi-list-ul"></i><span class="d-none d-sm-inline ms-1">{% trans "Simple" %}</span>
+                </a>
+            {% endif %}
+
             <!-- Кнопка фильтра (объединяет все индикаторы) -->
             {% if request.GET.show_filter %}
                 {# Фильтр открыт - кнопка "Скрыть" #}
@@ -229,84 +244,115 @@
     </div>
     {% endif %}
 
-    <!-- Task List (Cards) -->
-    <div class="d-flex flex-column gap-3">
-        {% if filter.qs %}
-            {% for obj in filter.qs %}
-            <div class="card border-0 shadow-sm task-card{% if obj.status %} status-indicator{% endif %}"{% if obj.status %} style="--status-color: {{ obj.status.color|default:'#dee2e6' }};"{% endif %}>
-                <div class="card-body p-3">
-                    <div class="row g-0">
-                        <div class="col">
-                            <!-- Верхняя строка: Заголовок + ID + Дата -->
-                            <div class="d-flex w-100 justify-content-between align-items-start mb-1">
-                                <div class="me-2">
-                                    <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
-                                        {{ obj.name }}
-                                        {% if obj.checklist_total > 0 %}
-                                        <span class="text-muted small ms-1" title="{% trans 'Checklist' %}">
-                                            <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
+    <!-- Task List -->
+    {% if request.GET.view_mode == 'simple' %}
+        {# Простой вид списка #}
+        <div class="d-flex flex-column gap-1">
+            {% if filter.qs %}
+                {% for obj in filter.qs %}
+                <div class="simple-task-item py-2 px-2{% if forloop.last %} rounded-bottom{% else %} border-bottom{% endif %}{% if forloop.first %} rounded-top{% endif %}">
+                    <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark d-flex align-items-center gap-2">
+                        <span class="status-dot flex-shrink-0" style="background-color: {{ obj.status.color|default:'#dee2e6' }};"></span>
+                        <span class="text-truncate">{{ obj.name }}</span>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="card border-0 bg-light py-5 text-center">
+                    <div class="card-body">
+                        <div class="display-1 text-muted opacity-25 mb-3">📋</div>
+                        <h4 class="text-muted">{% trans "No tasks found" %}</h4>
+                        <p class="text-muted small">{% trans "Try adjusting filters or create a new task" %}</p>
+                        {% if request.GET|length > 0 %}
+                            <a href="{% url 'tasks:tasks-list' %}" class="btn btn-outline-secondary mt-2">{% trans "Reset filters" %}</a>
+                        {% else %}
+                            <a href="{% url 'tasks:task-create' %}" class="btn btn-primary mt-2">{% trans "Create Task" %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        {# Полный вид списка (карточки) #}
+        <div class="d-flex flex-column gap-3">
+            {% if filter.qs %}
+                {% for obj in filter.qs %}
+                <div class="card border-0 shadow-sm task-card{% if obj.status %} status-indicator{% endif %}"{% if obj.status %} style="--status-color: {{ obj.status.color|default:'#dee2e6' }};"{% endif %}>
+                    <div class="card-body p-3">
+                        <div class="row g-0">
+                            <div class="col">
+                                <!-- Верхняя строка: Заголовок + ID + Дата -->
+                                <div class="d-flex w-100 justify-content-between align-items-start mb-1">
+                                    <div class="me-2">
+                                        <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                            {{ obj.name }}
+                                            {% if obj.checklist_total > 0 %}
+                                            <span class="text-muted small ms-1" title="{% trans 'Checklist' %}">
+                                                <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
+                                            </span>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <div class="text-muted small text-nowrap mt-1">
+                                        {{ obj.created_at|date:"d.m.y" }}
+                                        <span class="d-none d-sm-inline">{{ obj.created_at|date:"H:i" }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Описание -->
+                                {% if obj.description %}
+                                <p class="text-muted small mb-2 text-truncate-2">
+                                    {{ obj.description }}
+                                </p>
+                                {% endif %}
+
+                                <!-- Нижняя строка: Статус/Метки + Люди -->
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
+                                    <div class="d-flex flex-wrap align-items-center gap-1 position-relative" style="z-index: 2;">
+                                        <span class="badge border bg-white" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
+                                            {{ obj.status.name }}
                                         </span>
-                                        {% endif %}
-                                    </a>
-                                </div>
-                                <div class="text-muted small text-nowrap mt-1">
-                                    {{ obj.created_at|date:"d.m.y" }}
-                                    <span class="d-none d-sm-inline">{{ obj.created_at|date:"H:i" }}</span>
-                                </div>
-                            </div>
+                                        {% for label in obj.labels.all %}
+                                        <span class="badge bg-light text-secondary border fw-normal">
+                                            {{ label.name }}
+                                        </span>
+                                        {% endfor %}
+                                    </div>
 
-                            <!-- Описание -->
-                            {% if obj.description %}
-                            <p class="text-muted small mb-2 text-truncate-2">
-                                {{ obj.description }}
-                            </p>
-                            {% endif %}
-
-                            <!-- Нижняя строка: Статус/Метки + Люди -->
-                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
-                                <div class="d-flex flex-wrap align-items-center gap-1 position-relative" style="z-index: 2;">
-                                    <span class="badge border bg-white" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
-                                        {{ obj.status.name }}
-                                    </span>
-                                    {% for label in obj.labels.all %}
-                                    <span class="badge bg-light text-secondary border fw-normal">
-                                        {{ label.name }}
-                                    </span>
-                                    {% endfor %}
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2 small text-muted">
-                                    <span class="user-badge" title="{% trans 'Author' %}">
-                                        👤 {{ obj.author.display_name|default:_("Deleted user") }}
-                                    </span>
-                                    {% for executor in obj.executors.all %}
-                                    <span class="user-badge" title="{% trans 'Executor' %}">
-                                        👉 {{ executor.username }}
-                                    </span>
-                                    {% endfor %}
+                                    <div class="d-flex align-items-center gap-2 small text-muted">
+                                        <span class="user-badge" title="{% trans 'Author' %}">
+                                            👤 {{ obj.author.display_name|default:_("Deleted user") }}
+                                        </span>
+                                        {% for executor in obj.executors.all %}
+                                        <span class="user-badge" title="{% trans 'Executor' %}">
+                                            👉 {{ executor.username }}
+                                        </span>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <!-- Empty State -->
-            <div class="card border-0 bg-light py-5 text-center">
-                <div class="card-body">
-                    <div class="display-1 text-muted opacity-25 mb-3">📋</div>
-                    <h4 class="text-muted">{% trans "No tasks found" %}</h4>
-                    <p class="text-muted small">{% trans "Try adjusting filters or create a new task" %}</p>
-                    {% if request.GET|length > 0 %}
-                        <a href="{% url 'tasks:tasks-list' %}" class="btn btn-outline-secondary mt-2">{% trans "Reset filters" %}</a>
-                    {% else %}
-                        <a href="{% url 'tasks:task-create' %}" class="btn btn-primary mt-2">{% trans "Create Task" %}</a>
-                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="card border-0 bg-light py-5 text-center">
+                    <div class="card-body">
+                        <div class="display-1 text-muted opacity-25 mb-3">📋</div>
+                        <h4 class="text-muted">{% trans "No tasks found" %}</h4>
+                        <p class="text-muted small">{% trans "Try adjusting filters or create a new task" %}</p>
+                        {% if request.GET|length > 0 %}
+                            <a href="{% url 'tasks:tasks-list' %}" class="btn btn-outline-secondary mt-2">{% trans "Reset filters" %}</a>
+                        {% else %}
+                            <a href="{% url 'tasks:task-create' %}" class="btn btn-primary mt-2">{% trans "Create Task" %}</a>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
+    {% endif %}
 </div>
 
 <style>
@@ -455,6 +501,33 @@
         .text-center-mobile {
             text-align: center !important;
         }
+    }
+
+    /* ===== VIEW MODE BUTTON ===== */
+    .view-mode-btn {
+        min-width: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+    }
+
+    /* ===== SIMPLE VIEW STYLES ===== */
+    .simple-task-item {
+        background-color: #fff;
+        transition: background-color 0.15s ease;
+    }
+    .simple-task-item:hover {
+        background-color: #f8f9fa;
+    }
+    .simple-task-item a:hover {
+        color: #0d6efd !important;
+    }
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        flex-shrink: 0;
     }
 </style>
 {% endblock %}
