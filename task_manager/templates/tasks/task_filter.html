@@ -75,7 +75,7 @@
                     </a>
                 {% elif active_filter_count > 0 %}
                     {# Есть активные фильтры (не сохранённые) #}
-                    <a href="{% url 'tasks:tasks-list' %}" 
+                    <a href="?{% if request.GET.view_mode %}view_mode={{ request.GET.view_mode }}&{% endif %}show_filter=1" 
                     class="btn btn-sm btn-warning filter-btn"
                     title="{% trans 'Reset filters' %}">
                         🔍 <span class="filter-badge">{{ active_filter_count }}</span>
@@ -83,7 +83,7 @@
                     </a>
                 {% else %}
                     {# Нет активных фильтров #}
-                    <a href="?show_filter=1" 
+                    <a href="?{% if request.GET.view_mode %}view_mode={{ request.GET.view_mode }}&{% endif %}show_filter=1" 
                     class="btn btn-sm btn-outline-secondary filter-btn">
                         🔍 <span class="d-none d-sm-inline">{% trans "Filter" %}</span>
                     </a>
@@ -206,6 +206,7 @@
                 </div>
 
                 <input type="hidden" name="show_filter" value="1">
+                {% if request.GET.view_mode %}<input type="hidden" name="view_mode" value="{{ request.GET.view_mode }}">{% endif %}
 
                 <!-- Кнопки управления -->
                 <div class="mt-3 border-top pt-3">

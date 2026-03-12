@@ -22,7 +22,12 @@ SESSION_FILTER_KEY = 'task_filter_params'
 SESSION_FILTER_ENABLED_KEY = 'task_filter_enabled'
 
 # Service parameters that we do not save
-SERVICE_PARAMS = ('show_filter', 'save_as_default', 'reset_default')
+SERVICE_PARAMS = (
+    'show_filter',
+    'save_as_default',
+    'reset_default',
+    'view_mode'
+)
 
 
 class TaskDeletePermissionMixin():
@@ -111,6 +116,11 @@ class TaskFilterView(FilterView):
         # If show_filter parameter exists
         #  - user opened the filter panel, do not redirect
         if 'show_filter' in request.GET:
+            return False
+
+        # If view_mode parameter exists
+        #  - user changed view mode, do not redirect
+        if 'view_mode' in request.GET:
             return False
 
         # Check if saved filter exists
