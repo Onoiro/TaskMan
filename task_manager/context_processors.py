@@ -1,8 +1,9 @@
+from django.conf import settings
 from task_manager.teams.models import TeamMembership
 
 
 def team_context(request):
-    context = {}
+    context = {'VERSION': settings.VERSION}
     if request.user.is_authenticated:
         # Get only active team memberships
         user_teams = TeamMembership.objects.filter(

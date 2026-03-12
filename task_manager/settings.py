@@ -24,6 +24,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Read version from pyproject.toml
+import tomllib
+with open(BASE_DIR / 'pyproject.toml', 'rb') as f:
+    VERSION = tomllib.load(f)['tool']['poetry']['version']
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
