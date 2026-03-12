@@ -1320,3 +1320,80 @@ class TaskTestCase(TestCase):
 
         # Should load page directly, no redirect
         self.assertEqual(response.status_code, 200)
+
+    # ========== VIEW MODE TESTS ==========
+
+    def test_view_mode_simple_parameter_accepted(self):
+        """Check that view_mode=simple parameter is accepted"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?view_mode=simple')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_mode_full_parameter_accepted(self):
+        """Check that view_mode=full parameter is accepted"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?view_mode=full')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_mode_not_counted_as_filter(self):
+        """Check that view_mode is not counted as active filter"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?view_mode=simple')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('active_filter_count', response.context)
+        # view_mode should NOT be counted as a filter
+        self.assertEqual(response.context['active_filter_count'], 0)
+
+    def test_view_mode_preserved_when_filter_saved(self):
+        """Check that view_mode is not saved with filter params"""
+        # Save a filter with view_mode
+        response = self.c.get(
+            reverse('tasks:tasks-list'),
+            {'status': '1', 'view_mode': 'simple', 'save_as_default': '1'},
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Check session contains saved filter
+        session = self.c.session
+        saved_params = session.get('task_filter_params', {})
+
+        # view_mode should NOT be in saved filter params
+        self.assertNotIn('view_mode', saved_params)
+        # But status should be saved
+        self.assertIn('status', saved_params)
+
+    def test_view_mode_not_applied_when_saved_filter_exists(self):
+        """Check that saved filter is not applied when view_mode is present"""
+        # Save a filter
+        self.c.get(
+            reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
+            follow=True
+        )
+
+        # Visit with view_mode parameter - should NOT redirect to saved filter
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?view_mode=simple'
+        )
+
+        # Should NOT redirect - user has own params (view_mode)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_mode_simple_renders_simple_list(self):
+        """Check that view_mode=simple renders simple list template"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?view_mode=simple')
+        self.assertEqual(response.status_code, 200)
+        # Simple view should show simple-task-item class
+        self.assertContains(response, 'simple-task-item')
+        self.assertContains(response, 'status-dot')
+
+    def test_view_mode_full_renders_card_list(self):
+        """Check that view_mode=full (default) renders card list"""
+        response = self.c.get(reverse('tasks:tasks-list') + '?view_mode=full')
+        self.assertEqual(response.status_code, 200)
+        # Full view should show task-card class
+        self.assertContains(response, 'task-card')
+
+    def test_default_view_mode_shows_cards(self):
+        """Check that default view (no view_mode) shows cards"""
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
+        # Default view should show task-card class
+        self.assertContains(response, 'task-card')
