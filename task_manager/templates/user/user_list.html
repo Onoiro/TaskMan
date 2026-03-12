@@ -45,39 +45,10 @@
     </a>
     {% endif %}
 
-    <!-- 1. Upper level: Spacer (no create button) -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <span></span>
-        <span></span>
-    </div>
-
-    <!-- 2. Toolbar: Reference books + Counter -->
+    <!-- Toolbar: Empty (no buttons needed) -->
     <div class="toolbar-row mb-3">
-        <!-- Left side: Links to reference books -->
-        <div class="toolbar-left">
-            <div class="btn-group" role="group">
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'tasks:tasks-list' %}">
-                    <i class="bi bi-card-checklist"></i> <span class="d-none d-sm-inline ms-1">{% trans "Tasks" %}</span>
-                </a>
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'statuses:statuses-list' %}">
-                    <i class="bi bi-flag"></i> <span class="d-none d-sm-inline ms-1">{% trans "Statuses" %}</span>
-                </a>
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'labels:labels-list' %}">
-                    <i class="bi bi-tags"></i> <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Right side: User counter -->
-        <div class="toolbar-right">
-            {% if user_list %}
-            <span class="task-counter text-muted">
-                <span class="fw-bold">{{ user_list|length }}</span>
-                <span class="d-none d-sm-inline">user{{ user_list|length|pluralize }}</span>
-                <span class="d-sm-none">👤</span>
-            </span>
-            {% endif %}
-        </div>
+        <div class="toolbar-left"></div>
+        <div class="toolbar-right"></div>
     </div>
 
     <!-- Pending Users Section (visible only to admins) -->

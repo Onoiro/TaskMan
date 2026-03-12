@@ -6,38 +6,22 @@
 {% block content %}
 <div class="container wrapper flex-grow-1 py-3 py-lg-4">
     
-    <!-- 1. Верхний уровень: Главная кнопка (Create) -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <span></span>
-        <a class="btn btn-primary shadow-sm w-100-mobile text-center-mobile" href="{% url 'statuses:statuses-create' %}">
-            <span class="fw-bold">＋ {% trans "New status" %}</span>
-        </a>
-    </div>
-
-    <!-- 2. Тулбар: Справочники + Счетчик -->
+    <!-- Тулбар: Кнопка создания + Счетчик -->
     <div class="toolbar-row mb-3">
-        <!-- Левая часть: Ссылки на справочники -->
+        <!-- Левая часть: Кнопка создания статуса -->
         <div class="toolbar-left">
-            <div class="btn-group" role="group">
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'tasks:tasks-list' %}">
-                    <i class="bi bi-card-checklist"></i> <span class="d-none d-sm-inline ms-1">{% trans "Tasks" %}</span>
-                </a>
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'labels:labels-list' %}">
-                    <i class="bi bi-tags"></i> <span class="d-none d-sm-inline ms-1">{% trans "Labels" %}</span>
-                </a>
-                <a class="btn btn-sm btn-light text-secondary border-0" href="{% url 'user:user-list' %}">
-                    <span class="text-primary"><i class="bi bi-people"></i></span> <span class="d-none d-sm-inline ms-1">{% trans "Users" %}</span>
-                </a>
-            </div>
+            <a class="btn btn-sm btn-primary" href="{% url 'statuses:statuses-create' %}">
+                <i class="bi bi-plus-lg"></i><span class="ms-1">{% trans "New status" %}</span>
+            </a>
         </div>
 
         <!-- Правая часть: Счётчик статусов -->
         <div class="toolbar-right">
             {% if status_list %}
             <span class="task-counter text-muted">
+                <i class="bi bi-flag"></i>
                 <span class="fw-bold">{{ status_list|length }}</span>
                 <span class="d-none d-sm-inline">status{{ status_list|length|pluralize }}</span>
-                <span class="d-sm-none">🚦</span>
             </span>
             {% endif %}
         </div>
