@@ -20,4 +20,4 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             make deploy
-            make d-clean
+            docker system prune -f

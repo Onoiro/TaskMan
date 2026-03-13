@@ -175,17 +175,43 @@ d-reset-db:
 # Development commands
 # ========================================
 
-# full cycle: stop, build, start, migrate
+# full cycle: build, start, migrate, static, clean up, check
 deploy:
-	$(DC) down
+	mkdir -p staticfiles
 	$(DC) build
+	$(DC) up -d
+	sleep 5
+	$(DC) exec django-web python manage.py migrate
+	$(DC) exec django-web python manage.py collectstatic --no-input --clear
+	
+	@echo "=== Make rights on static files for Nginx ==="
+	chmod -R o+rX staticfiles/
+	
+	@echo "=== Clear Docker-cache ==="
+	docker system prune -f
+	
+	@echo "=== Проверка ==="
+	$(DC) ps
+	@echo ""
+	@curl -sf -o /dev/null -w "HTTP Status: %{http_code}\n" http://127.0.0.1:8001/ || echo "WARNING: App not responding!"
+	@echo ""
+	@echo "=== Deploy complete at $$(date) ==="
+
+# full redeploy use when: docker-compose.yml changes, DB image updates, or container state issues
+# stops all containers, rebuilds images without cache, recreates from scratch 
+redeploy:
+	mkdir -p staticfiles
+	$(DC) down
+	$(DC) build --no-cache
 	$(DC) up -d
 	sleep 15
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py collectstatic --no-input --clear
-	@echo "=== Проверка staticfiles ==="
-	@ls -la staticfiles/icons/ | head -20
-	@echo "=== Deploy complete ==="
+	chmod -R o+rX staticfiles/
+	docker image prune -f
+	docker builder prune -f
+	$(DC) ps
+	@echo "=== Full redeploy complete ==="
 
 # quick start for development
 d-dev:
@@ -194,10 +220,9 @@ d-dev:
 	$(DC) exec django-web python manage.py migrate
 
 # clean unused Docker objects
-d-clean:
+d-clean:																																																																																																																																												
 	docker system prune -f
 	docker volume prune -f
-	docker image prune -f
 
 # full cleanup (CAUTION - removes ALL unused Docker objects)
 d-clean-all:
@@ -251,6 +276,7 @@ help:
 	@echo "  d-migrate       - Apply migrations"
 	@echo "  d-backup        - Create database backup"
 	@echo "  deploy          - Full deployment"
+	@echo "  redeploy        - Full redeployment"
 	@echo "  d-clean         - Clean Docker objects"
 	@echo ""
 	@echo "Additional Docker commands:"
