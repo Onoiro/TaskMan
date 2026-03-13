@@ -7,7 +7,11 @@ from unittest.mock import patch
 
 class CreateSuperUserTestCase(TestCase):
 
-    def test_create_new_superuser(self):
+    @patch('os.getenv')
+    def test_create_new_superuser(self, mock_getenv):
+        # emulating an environment variable
+        mock_getenv.return_value = 'admin'
+
         # test case: user does not exist yet
         out = StringIO()
         call_command('createsu', stdout=out)
@@ -21,7 +25,11 @@ class CreateSuperUserTestCase(TestCase):
         # check specific output message
         self.assertIn('Superuser has been created.', out.getvalue())
 
-    def test_update_existing_superuser(self):
+    @patch('os.getenv')
+    def test_update_existing_superuser(self, mock_getenv):
+        # emulating an environment variable
+        mock_getenv.return_value = 'new_password'
+
         # test case: user already exists
         User.objects.create_superuser(
             username='admin',
@@ -40,7 +48,7 @@ class CreateSuperUserTestCase(TestCase):
     @patch('os.getenv')
     def test_missing_password_variable(self, mock_getenv):
         # test case: password env var is empty
-        mock_getenv.return_value = ''
+        mock_getenv.return_value = None
 
         err = StringIO()
         # capture stderr separately
