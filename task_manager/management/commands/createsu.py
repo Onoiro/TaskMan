@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Creates or updates a superuser.'
 
     def handle(self, *args, **options):
-        admin_password = os.getenv('ADMIN_PASSWORD', 'admin')
+        admin_password = os.getenv('ADMIN_PASSWORD')
 
         if not admin_password:
             # use stderr for errors to capture them properly
