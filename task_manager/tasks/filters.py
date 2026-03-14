@@ -10,9 +10,27 @@ from django.utils.translation import gettext_lazy as _
 
 class TaskFilter(django_filters.FilterSet):
 
+    search = django_filters.CharFilter(
+        method='filter_search',
+        label=_('Search'),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': _('Task name...'),
+            'autocomplete': 'off',
+        }),
+        label_suffix="",
+    )
+
     status = django_filters.ModelChoiceFilter(
         queryset=Status.objects.all(),
         label=_('Status'),
+        widget=forms.Select(attrs={'class': 'form-select'}),
+        label_suffix="",
+    )
+
+    author = django_filters.ModelChoiceFilter(
+        queryset=User.objects.all(),
+        label=_('Author'),
         widget=forms.Select(attrs={'class': 'form-select'}),
         label_suffix="",
     )
@@ -31,17 +49,16 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
-    self_tasks = django_filters.BooleanFilter(
-        field_name='author',
-        label=_('Just my tasks'),
+    my_tasks = django_filters.BooleanFilter(
+        label=_('My tasks'),
+        method='filter_my_tasks',
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        method='filter_own_tasks',
         label_suffix="",
     )
 
     created_after = django_filters.DateFilter(
         field_name='created_at',
-        label=_('After'),
+        label=_('From'),
         lookup_expr='gte',
         widget=forms.DateInput(
             attrs={'type': 'date', 'class': 'form-control'}
@@ -51,7 +68,7 @@ class TaskFilter(django_filters.FilterSet):
 
     created_before = django_filters.DateFilter(
         field_name='created_at',
-        label=_('Before'),
+        label=_('To'),
         lookup_expr='lte',
         widget=forms.DateInput(
             attrs={'type': 'date', 'class': 'form-control'}
@@ -59,11 +76,18 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
+    has_checklist = django_filters.BooleanFilter(
+        label=_('Has checklist'),
+        method='filter_has_checklist',
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label_suffix="",
+    )
+
     class Meta:
         model = Task
         fields = [
-            'status', 'executors', 'labels', 'self_tasks',
-            'created_after', 'created_before'
+            'search', 'status', 'author', 'executors', 'labels',
+            'my_tasks', 'created_after', 'created_before', 'has_checklist',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -75,17 +99,19 @@ class TaskFilter(django_filters.FilterSet):
         team = getattr(request, 'active_team', None)
 
         if team:
-            # Only active team members can be executors
             team_users = User.objects.filter(
                 team_memberships__team=team,
                 team_memberships__status='active'
             ).distinct()
 
             self.filters['executors'].queryset = team_users
+            self.filters['author'].queryset = team_users
             self.filters['status'].queryset = Status.objects.filter(team=team)
             self.filters['labels'].queryset = Label.objects.filter(team=team)
         else:
-            self.filters['executors'].queryset = User.objects.filter(pk=user.pk)
+            self.filters['executors'].queryset = User.objects.filter(
+                pk=user.pk)
+            self.filters['author'].queryset = User.objects.filter(pk=user.pk)
             self.filters['status'].queryset = Status.objects.filter(
                 creator=user,
                 team__isnull=True
@@ -95,10 +121,25 @@ class TaskFilter(django_filters.FilterSet):
                 team__isnull=True
             )
 
-    def filter_own_tasks(self, queryset, name, value):
+    def filter_search(self, queryset, name, value):
+        if not value:
+            return queryset
+        return queryset.filter(
+            Q(name__icontains=value) | Q(description__icontains=value)
+        )
+
+    def filter_my_tasks(self, queryset, name, value):
+        """Filter tasks where user is author OR executor."""
         user = self.request.user
         if value:
-            return queryset.filter(author=user)
+            return queryset.filter(
+                Q(author=user) | Q(executors=user)
+            ).distinct()
+        return queryset
+
+    def filter_has_checklist(self, queryset, name, value):
+        if value:
+            return queryset.filter(checklist_items__isnull=False).distinct()
         return queryset
 
     def _is_excluded(self, param_name):
@@ -112,7 +153,6 @@ class TaskFilter(django_filters.FilterSet):
         if self.form.is_valid():
             value = self.form.cleaned_data.get(field_name)
             if value is not None:
-                # Handle single model object
                 if hasattr(value, 'pk'):
                     return value.pk
                 return value
@@ -138,7 +178,6 @@ class TaskFilter(django_filters.FilterSet):
         lookup_field = lookup_field or field_name
         exclude_mode = self._is_excluded(f'{field_name}_exclude')
 
-        # Handle list of IDs for ManyToMany fields
         if isinstance(value, (list, tuple)):
             condition = Q(**{f'{lookup_field}__in': value})
         else:
@@ -157,29 +196,52 @@ class TaskFilter(django_filters.FilterSet):
 
         return qs
 
-    def _apply_self_tasks_filter(self, qs):
-        """Apply self_tasks filter with exclude support."""
-        self_tasks = self._get_filter_value('self_tasks')
-        if not self_tasks:
+    def _apply_my_tasks_filter(self, qs):
+        """Apply my_tasks filter — author OR executor."""
+        my_tasks = self._get_filter_value('my_tasks')
+        if not my_tasks:
             return qs
 
         user = self.request.user
-        exclude_mode = self._is_excluded('self_tasks_exclude')
+        exclude_mode = self._is_excluded('my_tasks_exclude')
 
-        condition = Q(author=user)
-        return qs.filter(~condition if exclude_mode else condition)
+        condition = Q(author=user) | Q(executors=user)
+        if exclude_mode:
+            return qs.exclude(condition).distinct()
+        return qs.filter(condition).distinct()
+
+    def _apply_search_filter(self, qs):
+        """Apply text search filter."""
+        search = self._get_filter_value('search')
+        if not search:
+            return qs
+        return qs.filter(
+            Q(name__icontains=search) | Q(description__icontains=search)
+        )
+
+    def _apply_has_checklist_filter(self, qs):
+        """Apply checklist presence filter."""
+        has_checklist = self._get_filter_value('has_checklist')
+        if not has_checklist:
+            return qs
+        return qs.filter(checklist_items__isnull=False).distinct()
 
     def filter_queryset(self, queryset):
         """Override to handle exclude logic properly."""
         qs = self._get_base_queryset()
 
-        # Apply model choice filters
+        # Text search
+        qs = self._apply_search_filter(qs)
+
+        # Model choice filters
         qs = self._apply_model_filter(qs, 'status')
+        qs = self._apply_model_filter(qs, 'author')
         qs = self._apply_model_filter(qs, 'executors')
         qs = self._apply_model_filter(qs, 'labels')
 
-        # Apply special filters
-        qs = self._apply_self_tasks_filter(qs)
+        # Special filters
+        qs = self._apply_my_tasks_filter(qs)
         qs = self._apply_date_filters(qs)
+        qs = self._apply_has_checklist_filter(qs)
 
         return qs
