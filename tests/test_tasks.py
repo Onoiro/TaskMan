@@ -196,7 +196,8 @@ class TaskTestCase(TestCase):
     def test_tasks_list_has_hide_filter_button(self):
         """Check that 'Hide filter' button is visible when filter is shown"""
         response = self.c.get(reverse('tasks:tasks-list') + '?show_filter=1')
-        self.assertContains(response, _('Hide'))
+        # Now shows as an icon button with bi-x-lg
+        self.assertContains(response, 'bi-x-lg')
 
     def test_tasks_list_filter_form_visible(self):
         """Check that filter form is visible when show_filter=1"""
@@ -416,9 +417,11 @@ class TaskTestCase(TestCase):
         """Check that 'Filters active' badge is shown
         when filter is hidden but has params"""
         # Apply filter, then hide filter panel
+        # New UI shows a badge with count number instead of "Active" text
         response = self.c.get(
             reverse('tasks:tasks-list') + '?status=1')
-        self.assertContains(response, _('Active'))
+        self.assertContains(response, 'filter-badge')
+        self.assertContains(response, '1')  # count
 
     def test_tasks_list_filter_active_indicator_not_shown_when_no_params(self):
         """Check that 'Filters active' badge

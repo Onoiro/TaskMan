@@ -795,8 +795,8 @@ class TaskTestCase(TestCase):
         # Should exclude tasks with the specified status
         self.assertFalse(result.filter(status=self.status).exists())
 
-    def test_filter_own_tasks_with_false_value(self):
-        """Test filter_own_tasks when value is False"""
+    def test_filter_my_tasks_with_false_value(self):
+        """Test filter_my_tasks when value is False"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
 
@@ -809,13 +809,13 @@ class TaskTestCase(TestCase):
 
         # Test with False value
         queryset = Task.objects.all()
-        result = filter_instance.filter_own_tasks(queryset, 'author', False)
+        result = filter_instance.filter_my_tasks(queryset, 'my_tasks', False)
 
         # Should return original queryset when value is False
         self.assertEqual(result, queryset)
 
-    def test_filter_own_tasks_with_none_value(self):
-        """Test filter_own_tasks when value is None"""
+    def test_filter_my_tasks_with_none_value(self):
+        """Test filter_my_tasks when value is None"""
         from task_manager.tasks.filters import TaskFilter
         from django.test import RequestFactory
 
@@ -828,7 +828,7 @@ class TaskTestCase(TestCase):
 
         # Test with None value
         queryset = Task.objects.all()
-        result = filter_instance.filter_own_tasks(queryset, 'author', None)
+        result = filter_instance.filter_my_tasks(queryset, 'my_tasks', None)
 
         # Should return original queryset when value is None
         self.assertEqual(result, queryset)
@@ -852,3 +852,266 @@ class TaskTestCase(TestCase):
     #     # Should return tasks filtered by author and no team
     #     self.assertTrue(queryset.filter(
     #         author=self.user, team__isnull=True).exists())
+
+    # Tests for filter_search method
+    def test_filter_search_with_empty_value(self):
+        """Test filter_search returns original queryset when value is empty"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance.filter_search(queryset, 'search', '')
+
+        # Should return original queryset unchanged
+        self.assertEqual(result, queryset)
+
+    def test_filter_search_with_valid_value(self):
+        """Test filter_search filters by name and description"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # Search for task name that exists in fixtures
+        queryset = Task.objects.all()
+        result = filter_instance.filter_search(queryset, 'search', 'first')
+
+        # Should find tasks containing 'first' in name or description
+        self.assertTrue(result.exists())
+        for task in result:
+            self.assertTrue(
+                'first' in task.name.lower()
+                or (task.description and 'first' in task.description.lower())
+            )
+
+    def test_filter_search_case_insensitive(self):
+        """Test filter_search is case insensitive"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance.filter_search(queryset, 'search', 'FIRST')
+
+        # Should find tasks regardless of case
+        self.assertTrue(result.exists())
+
+    # Tests for filter_has_checklist method
+    def test_filter_has_checklist_with_true(self):
+        """Test filter_has_checklist returns tasks with checklist when True"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance.filter_has_checklist(
+            queryset, 'has_checklist', True
+        )
+
+        # Should return only tasks with checklist items
+        for task in result:
+            self.assertTrue(task.checklist_items.exists())
+
+    def test_filter_has_checklist_with_false(self):
+        """Test filter_has_checklist returns all when value is False"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance.filter_has_checklist(
+            queryset, 'has_checklist', False
+        )
+
+        # Should return original queryset unchanged
+        self.assertEqual(result, queryset)
+
+    # Tests for _apply_search_filter
+    def test_apply_search_filter_with_value(self):
+        """Test _apply_search_filter applies search to queryset"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/', {'search': 'task'})
+        request.user = self.user
+
+        filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_search_filter(queryset)
+
+        # Should filter by search term
+        self.assertTrue(result.exists())
+
+    def test_apply_search_filter_empty_value(self):
+        """Test _apply_search_filter returns queryset when no search value"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_search_filter(queryset)
+
+        # Should return original queryset
+        self.assertEqual(result, queryset)
+
+    # Tests for _apply_has_checklist_filter
+    def test_apply_has_checklist_filter_with_true(self):
+        """Test _apply_has_checklist_filter filters by checklist presence"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/', {'has_checklist': 'on'})
+        request.user = self.user
+
+        filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_has_checklist_filter(queryset)
+
+        # Should return only tasks with checklist
+        for task in result:
+            self.assertTrue(task.checklist_items.exists())
+
+    def test_apply_has_checklist_filter_empty(self):
+        """Test _apply_has_checklist_filter returns qs when no value"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_has_checklist_filter(queryset)
+
+        # Should return original queryset
+        self.assertEqual(result, queryset)
+
+    # Test for _apply_model_filter with list value
+    def test_apply_model_filter_with_list_value(self):
+        """Test _apply_model_filter handles list of values"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        # Simulate multiple values
+        request = factory.get('/', {'status': '1,2'})
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # Mock to return list value
+        filter_instance._get_filter_value = lambda x: [1, 2]
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_model_filter(queryset, 'status')
+
+        # Should filter with __in lookup
+        self.assertIsNotNone(result)
+
+    # Tests for _apply_my_tasks_filter with exclude mode
+    def test_apply_my_tasks_filter_exclude_mode(self):
+        """Test _apply_my_tasks_filter in exclude mode"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/', {'my_tasks': 'on', 'my_tasks_exclude': 'on'})
+        request.user = self.user
+
+        filter_instance = TaskFilter(request.GET, queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_my_tasks_filter(queryset)
+
+        # Should exclude tasks where user is author or executor
+        self.assertFalse(result.filter(author=self.user).exists())
+        for task in result:
+            self.assertNotIn(self.user, task.executors.all())
+
+    def test_apply_my_tasks_filter_no_value(self):
+        """Test _apply_my_tasks_filter returns qs when no my_tasks value"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        queryset = Task.objects.all()
+        result = filter_instance._apply_my_tasks_filter(queryset)
+
+        # Should return original queryset unchanged
+        self.assertEqual(result, queryset)
+
+    # Test for _get_base_queryset without team (uncommented)
+    def test_get_base_queryset_without_team(self):
+        """Test _get_base_queryset when no team is available"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+        # No active_team set
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # Test getting base queryset without team
+        queryset = filter_instance._get_base_queryset()
+
+        # Should filter by author and team__isnull=True
+        # Check that all results match the expected pattern
+        for task in queryset:
+            self.assertEqual(task.author, self.user)
+            self.assertIsNone(task.team)
