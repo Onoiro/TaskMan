@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 01:46+0300\n"
-"PO-Revision-Date: 2026-03-01 02:03+0300\n"
+"POT-Creation-Date: 2026-03-15 19:25+0300\n"
+"PO-Revision-Date: 2026-03-15 19:25+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
 "Language: az\n"
@@ -95,23 +95,23 @@ msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
 msgid "Team membership not found."
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: settings.py:166 templates/index.html:67
+#: settings.py:175 templates/index.html:67
 msgid "English"
 msgstr "İngilis"
 
-#: settings.py:167 templates/index.html:76
+#: settings.py:176 templates/index.html:76
 msgid "Russian"
 msgstr "Rus"
 
-#: settings.py:168 templates/index.html:85
+#: settings.py:177 templates/index.html:85
 msgid "Tajik"
 msgstr "Tacik"
 
-#: settings.py:169 templates/index.html:94
+#: settings.py:178 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Azərbaycan dili"
 
-#: settings.py:170 templates/index.html:103
+#: settings.py:179 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Qırğız"
 
@@ -207,33 +207,52 @@ msgstr "Status uğurla silindi"
 msgid "Cannot delete status because it is in use"
 msgstr "Statusu silmək mümkün deyil, çünki o istifadə olunur"
 
-#: tasks/filters.py:15 tasks/models.py:51
+#: tasks/filters.py:15
+msgid "Search"
+msgstr "Axtarış"
+
+#: tasks/filters.py:18
+msgid "Task name..."
+msgstr "Tapşırığın adı..."
+
+#: tasks/filters.py:26 tasks/models.py:51
 #: templates/statuses/statuses_update.html:51
 #: templates/teams/team_member_role_update.html:38
 msgid "Status"
 msgstr "Status"
 
-#: tasks/filters.py:22 templates/tasks/task_filter.html:283
-#: templates/tasks/task_update.html:42 templates/user/user_detail.html:83
+#: tasks/filters.py:33 templates/tasks/task_filter.html:379
+#: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
+#: templates/user/user_detail.html:102
+msgid "Author"
+msgstr "Müəllif"
+
+#: tasks/filters.py:40 templates/tasks/task_filter.html:383
+#: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:105
 msgid "Executor"
 msgstr "İcraçı"
 
-#: tasks/filters.py:29 templates/labels/labels_update.html:49
+#: tasks/filters.py:47 templates/labels/labels_update.html:49
 msgid "Label"
 msgstr "Etiket"
 
-#: tasks/filters.py:36
-msgid "Just my tasks"
-msgstr "Yalnız mənim tapşırıqlarım"
+#: tasks/filters.py:53 templates/tasks/task_filter.html:118
+#: templates/tasks/task_filter.html:177
+msgid "My tasks"
+msgstr "Mənim tapşırıqlarım"
 
-#: tasks/filters.py:44
-msgid "After"
-msgstr "Sonra"
+#: tasks/filters.py:61
+msgid "From"
+msgstr "Tarixdən"
 
-#: tasks/filters.py:54
-msgid "Before"
-msgstr "Əvvəl"
+#: tasks/filters.py:71
+msgid "To"
+msgstr "Tarixədək"
+
+#: tasks/filters.py:80 templates/tasks/task_filter.html:229
+msgid "Has checklist"
+msgstr "Yoxlama siyahısı var"
 
 #: tasks/models.py:46 templates/labels/labels_update.html:28
 msgid "Team"
@@ -244,59 +263,90 @@ msgid "Executors"
 msgstr "İcraçılar"
 
 #: tasks/models.py:68 templates/base.html:99 templates/base.html:121
-#: templates/index.html:49 templates/statuses/statuses_list.html:26
-#: templates/tasks/task_filter.html:25 templates/user/user_list.html:66
+#: templates/index.html:49
 msgid "Labels"
 msgstr "Etiketlər"
 
-#: tasks/models.py:102
+#: tasks/models.py:77
+msgid "Updated at"
+msgstr "Yenilənmə tarixi"
+
+#: tasks/models.py:85
+msgid "Updated by"
+msgstr "Yeniləyən"
+
+#: tasks/models.py:121
 msgid "Task"
 msgstr "Tapşırıq"
 
-#: tasks/models.py:106
+#: tasks/models.py:125
 msgid "Text"
 msgstr "Mətn"
 
-#: tasks/models.py:110
+#: tasks/models.py:129
 msgid "Done"
-msgstr "Hazır"
+msgstr "Tamamlandı"
 
-#: tasks/models.py:114
+#: tasks/models.py:133
 msgid "Position"
 msgstr "Mövqe"
 
+#: tasks/views.py:35
+msgid "Last updated"
+msgstr "Son yenilənənlər"
+
+#: tasks/views.py:36
+msgid "First updated"
+msgstr "Əvvəl yenilənənlər"
+
+#: tasks/views.py:37
+msgid "Newest first"
+msgstr "Əvvəl yenilər"
+
+#: tasks/views.py:38
+msgid "Oldest first"
+msgstr "Əvvəl köhnələr"
+
 #: tasks/views.py:39
+msgid "Name A→Z"
+msgstr "Ad A→Z"
+
+#: tasks/views.py:40
+msgid "Name Z→A"
+msgstr "Ad Z→A"
+
+#: tasks/views.py:56
 msgid "Task can only be deleted by its author or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: tasks/views.py:57 tasks/views.py:259
+#: tasks/views.py:74 tasks/views.py:302
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
-"Tapşırığı yalnız onun müəllifi, icraçılar və ya komanda administratoru "
+"Tapşırığı yalnız onun müəllifi, icraçıları və ya komanda administratoru "
 "dəyişə bilər."
 
-#: tasks/views.py:102
+#: tasks/views.py:126
 msgid "Filter saved as default"
 msgstr "Filtr standart olaraq yadda saxlanıldı"
 
-#: tasks/views.py:165
+#: tasks/views.py:207
 msgid "Task created successfully"
 msgstr "Tapşırıq uğurla yaradıldı"
 
-#: tasks/views.py:214
+#: tasks/views.py:256
 msgid "Task updated successfully"
 msgstr "Tapşırıq uğurla yeniləndi"
 
-#: tasks/views.py:246
+#: tasks/views.py:289
 msgid "Task deleted successfully"
 msgstr "Tapşırıq uğurla silindi"
 
-#: tasks/views.py:282
+#: tasks/views.py:325
 msgid "Text is required"
 msgstr "Mətn tələb olunur"
 
-#: tasks/views.py:286
+#: tasks/views.py:329
 msgid "Text must be 300 characters or less"
 msgstr "Mətn 300 simvoldan çox olmamalıdır"
 
@@ -356,11 +406,11 @@ msgstr "Administrator"
 msgid "Member"
 msgstr "Üzv"
 
-#: teams/models.py:80 templates/user/user_list.html:104
+#: teams/models.py:80 templates/user/user_list.html:75
 msgid "Pending"
 msgstr "Gözləmədə"
 
-#: teams/models.py:81 templates/tasks/task_filter.html:67
+#: teams/models.py:81
 msgid "Active"
 msgstr "Aktiv"
 
@@ -472,21 +522,15 @@ msgid "Navigation"
 msgstr "Naviqasiya"
 
 #: templates/base.html:84 templates/base.html:112
-#: templates/labels/labels_list.html:29
-#: templates/statuses/statuses_list.html:29 templates/tasks/task_filter.html:28
 msgid "Users"
 msgstr "İstifadəçilər"
 
 #: templates/base.html:89 templates/base.html:115
-#: templates/labels/labels_list.html:23
-#: templates/statuses/statuses_list.html:23 templates/user/user_detail.html:76
-#: templates/user/user_detail.html:98 templates/user/user_list.html:60
+#: templates/user/user_detail.html:76 templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Tapşırıqlar"
 
 #: templates/base.html:94 templates/base.html:118
-#: templates/labels/labels_list.html:26 templates/tasks/task_filter.html:22
-#: templates/user/user_list.html:63
 msgid "Statuses"
 msgstr "Statuslar"
 
@@ -498,11 +542,11 @@ msgstr "Konteksti dəyiş"
 msgid "Individual"
 msgstr "Fərdi rejim"
 
-#: templates/base.html:188 templates/labels/labels_list.html:77
+#: templates/base.html:188 templates/labels/labels_list.html:61
 #: templates/labels/labels_update.html:65
-#: templates/statuses/statuses_list.html:84
+#: templates/statuses/statuses_list.html:68
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_update.html:159 templates/teams/team_update.html:26
+#: templates/tasks/task_update.html:167 templates/teams/team_update.html:26
 #: templates/user/user_detail.html:132 templates/user/user_update.html:13
 msgid "Edit"
 msgstr "Redaktə et"
@@ -559,7 +603,7 @@ msgstr ""
 
 #: templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
-msgstr "Telegram açıldı. Mesajınızı orada göndərin."
+msgstr "Telegram açıldı! Mesajınızı orada göndərin."
 
 #: templates/index.html:7
 msgid "Task Manager"
@@ -591,7 +635,7 @@ msgstr "Sürətli tapşırıq yaratma"
 
 #: templates/index.html:41
 msgid "Title, description, assignee - done in seconds"
-msgstr "Başlıq, təsvir, icraçı — saniyələr içində hazır"
+msgstr "Başlıq, təsvir, icraçı — tapşırıq saniyələr içində hazırdır"
 
 #: templates/index.html:45
 msgid "Custom Statuses"
@@ -599,7 +643,7 @@ msgstr "Fərdi statuslar"
 
 #: templates/index.html:45
 msgid "To Do, In Progress, Done - or your own"
-msgstr "Ediləcək, İcradadır, Hazır — və ya öz statuslarınız"
+msgstr "Ediləcək, İcradadır, Tamamlandı — və ya öz statuslarınız"
 
 #: templates/index.html:49
 msgid "Tag and filter tasks instantly"
@@ -611,7 +655,7 @@ msgstr "İstənilən cihaz"
 
 #: templates/index.html:53
 msgid "Works on desktop, tablet, and mobile"
-msgstr "Kompüterdə, planşetdə və telefonda işləyir"
+msgstr "Kompüterdə, planşetdə və smartfonda işləyir"
 
 #: templates/index.html:58
 msgid "Language Support"
@@ -619,7 +663,7 @@ msgstr "Dil dəstəyi"
 
 #: templates/labels/labels_create.html:9
 #: templates/tasks/task_create_form.html:39
-#: templates/tasks/task_update.html:145
+#: templates/tasks/task_update.html:153
 msgid "Create label"
 msgstr "Etiket yarat"
 
@@ -636,7 +680,7 @@ msgstr "Yarat"
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
 #: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:162 templates/teams/team_delete.html:22
+#: templates/tasks/task_update.html:170 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:71 templates/teams/team_exit.html:28
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_delete.html:22
@@ -646,7 +690,7 @@ msgstr "Ləğv et"
 
 #: templates/labels/labels_delete.html:8
 msgid "Delete labels"
-msgstr "Etiketin silinməsi"
+msgstr "Etiketlərin silinməsi"
 
 #: templates/labels/labels_delete.html:14
 msgid "Delete label"
@@ -666,33 +710,34 @@ msgstr "Silmək istədiyinizə əminsiniz"
 msgid "Yes, delete"
 msgstr "Bəli, sil"
 
-#: templates/labels/labels_list.html:13
+#: templates/labels/labels_list.html:14
 msgid "New label"
 msgstr "Yeni etiket"
 
-#: templates/labels/labels_list.html:80 templates/labels/labels_update.html:73
-#: templates/statuses/statuses_list.html:87
+#: templates/labels/labels_list.html:64 templates/labels/labels_update.html:73
+#: templates/statuses/statuses_list.html:71
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:104 templates/tasks/task_update.html:167
-#: templates/tasks/task_update.html:249 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:112 templates/tasks/task_update.html:175
+#: templates/tasks/task_update.html:270 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:149
 msgid "Delete"
 msgstr "Sil"
 
-#: templates/labels/labels_list.html:94
+#: templates/labels/labels_list.html:78
 msgid "No labels found"
 msgstr "Etiket yoxdur"
 
-#: templates/labels/labels_list.html:95
+#: templates/labels/labels_list.html:79
 msgid "Create your first label to organize tasks"
 msgstr "Tapşırıqları təşkil etmək üçün ilk etiketinizi yaradın"
 
-#: templates/labels/labels_list.html:96
+#: templates/labels/labels_list.html:80
 msgid "Create Label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_update.html:20
 #: templates/statuses/statuses_update.html:20
+#: templates/tasks/task_filter.html:314 templates/tasks/task_filter.html:349
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Yaradılıb"
@@ -719,19 +764,19 @@ msgstr "Status yarat"
 msgid "Delete status"
 msgstr "Statusu sil"
 
-#: templates/statuses/statuses_list.html:13
+#: templates/statuses/statuses_list.html:14
 msgid "New status"
 msgstr "Yeni status"
 
-#: templates/statuses/statuses_list.html:101
+#: templates/statuses/statuses_list.html:85
 msgid "No statuses found"
 msgstr "Status yoxdur"
 
-#: templates/statuses/statuses_list.html:102
+#: templates/statuses/statuses_list.html:86
 msgid "Create your first status to organize tasks"
 msgstr "Tapşırıqları təşkil etmək üçün ilk statusunuzu yaradın"
 
-#: templates/statuses/statuses_list.html:103
+#: templates/statuses/statuses_list.html:87
 msgid "Create Status"
 msgstr "Status yarat"
 
@@ -739,12 +784,28 @@ msgstr "Status yarat"
 msgid "Has description"
 msgstr "Təsviri var"
 
+#: templates/tasks/partials/empty_state.html:8
+msgid "No tasks found"
+msgstr "Tapşırıq yoxdur"
+
+#: templates/tasks/partials/empty_state.html:9
+msgid "Try adjusting filters or create a new task"
+msgstr "Filtrləri tənzimləyin və ya yeni tapşırıq yaradın"
+
+#: templates/tasks/partials/empty_state.html:12
+msgid "Reset filters"
+msgstr "Filtrləri sıfırla"
+
+#: templates/tasks/partials/empty_state.html:16
+msgid "Create Task"
+msgstr "Tapşırıq yarat"
+
 #: templates/tasks/task_create_form.html:11
 msgid "Create task"
 msgstr "Tapşırıq yarat"
 
 #: templates/tasks/task_create_form.html:25
-#: templates/tasks/task_update.html:130
+#: templates/tasks/task_update.html:138
 msgid "Add checklist"
 msgstr "Yoxlama siyahısı əlavə et"
 
@@ -752,84 +813,98 @@ msgstr "Yoxlama siyahısı əlavə et"
 msgid "Delete task"
 msgstr "Tapşırığı sil"
 
-#: templates/tasks/task_filter.html:12
+#: templates/tasks/task_filter.html:13
 msgid "New task"
 msgstr "Yeni tapşırıq"
 
-#: templates/tasks/task_filter.html:49
-msgid "Hide"
-msgstr "Gizlət"
+#: templates/tasks/task_filter.html:32
+msgid "Sort"
+msgstr "Sıralama"
 
-#: templates/tasks/task_filter.html:58
+#: templates/tasks/task_filter.html:37
+msgid "Sort by"
+msgstr "Sırala"
+
+#: templates/tasks/task_filter.html:57
+msgid "Full view"
+msgstr "Tam görünüş"
+
+#: templates/tasks/task_filter.html:62
+msgid "Simple view"
+msgstr "Sadə görünüş"
+
+#: templates/tasks/task_filter.html:76
 msgid "Default filter is active"
 msgstr "Standart filtr aktivdir"
 
-#: templates/tasks/task_filter.html:59
+#: templates/tasks/task_filter.html:78
 msgid "Default"
 msgstr "Standart"
 
-#: templates/tasks/task_filter.html:65 templates/tasks/task_filter.html:302
-msgid "Reset filters"
-msgstr "Filtrləri sıfırla"
+#: templates/tasks/task_filter.html:122
+msgid "Assigned to me"
+msgstr "Mənə təyin edilib"
 
-#: templates/tasks/task_filter.html:73
-msgid "Filter"
-msgstr "Filtr"
+#: templates/tasks/task_filter.html:134
+msgid "Who"
+msgstr "Kim"
 
-#: templates/tasks/task_filter.html:93 templates/tasks/task_filter.html:102
-#: templates/tasks/task_filter.html:116 templates/tasks/task_filter.html:125
-#: templates/tasks/task_filter.html:139 templates/tasks/task_filter.html:148
-#: templates/tasks/task_filter.html:162 templates/tasks/task_filter.html:171
+#: templates/tasks/task_filter.html:146 templates/tasks/task_filter.html:163
+#: templates/tasks/task_filter.html:199 templates/tasks/task_filter.html:215
 msgid "Exclude"
 msgstr "İstisna et"
 
-#: templates/tasks/task_filter.html:207
+#: templates/tasks/task_filter.html:178
+msgid "author or executor"
+msgstr "müəllif və ya icraçı"
+
+#: templates/tasks/task_filter.html:188
+msgid "What"
+msgstr "Nə"
+
+#: templates/tasks/task_filter.html:239
+msgid "When"
+msgstr "Nə vaxt"
+
+#: templates/tasks/task_filter.html:274
 msgid "Save as default"
 msgstr "Standart kimi yadda saxla"
 
-#: templates/tasks/task_filter.html:208
+#: templates/tasks/task_filter.html:275
 msgid "Save"
 msgstr "Yadda saxla"
 
-#: templates/tasks/task_filter.html:219
+#: templates/tasks/task_filter.html:283
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: templates/tasks/task_filter.html:222
+#: templates/tasks/task_filter.html:287
 msgid "Apply"
 msgstr "Tətbiq et"
 
-#: templates/tasks/task_filter.html:246 templates/tasks/task_update.html:69
+#: templates/tasks/task_filter.html:314 templates/tasks/task_filter.html:356
+#: templates/tasks/task_update.html:34
+msgid "Updated"
+msgstr "Yenilənib"
+
+#: templates/tasks/task_filter.html:342 templates/tasks/task_update.html:77
 msgid "Checklist"
 msgstr "Yoxlama siyahısı"
 
-#: templates/tasks/task_filter.html:279 templates/tasks/task_update.html:36
-#: templates/user/user_detail.html:80 templates/user/user_detail.html:102
-msgid "Author"
-msgstr "Müəllif"
-
-#: templates/tasks/task_filter.html:280 templates/tasks/task_update.html:37
-#: user/models.py:20
+#: templates/tasks/task_filter.html:380 templates/tasks/task_update.html:25
+#: templates/tasks/task_update.html:39 user/models.py:20
 msgid "Deleted user"
 msgstr "Silinmiş istifadəçi"
 
-#: templates/tasks/task_filter.html:299
-msgid "No tasks found"
-msgstr "Tapşırıq yoxdur"
+#: templates/tasks/task_update.html:37
+msgid "ago"
+msgstr "əvvəl"
 
-#: templates/tasks/task_filter.html:300
-msgid "Try adjusting filters or create a new task"
-msgstr "Filtrləri tənzimləyin və ya yeni tapşırıq yaradın"
-
-#: templates/tasks/task_filter.html:304
-msgid "Create Task"
-msgstr "Tapşırıq yarat"
-
-#: templates/tasks/task_update.html:117
+#: templates/tasks/task_update.html:125
 msgid "Add item..."
 msgstr "Bənd əlavə et..."
 
-#: templates/tasks/task_update.html:337
+#: templates/tasks/task_update.html:358
 msgid "Delete this item?"
 msgstr "Bu bənd silinsin?"
 
@@ -868,7 +943,7 @@ msgstr "Komandanı redaktə et"
 
 #: templates/teams/team_exit.html:8 templates/teams/team_exit.html:15
 msgid "Remove team member"
-msgstr "Komanda üzvünü sil"
+msgstr "Komanda üzvünü çıxar"
 
 #: templates/teams/team_exit.html:20
 msgid "Are you sure you want to exit the team"
@@ -880,7 +955,7 @@ msgid ""
 "Are you sure you want to remove user %(username)s from the team "
 "%(team_name)s?"
 msgstr ""
-"İstifadəçi %(username)s-i %(team_name)s komandasından silmək istədiyinizə "
+"İstifadəçi %(username)s-i %(team_name)s komandasından çıxarmaq istədiyinizə "
 "əminsiniz?"
 
 #: templates/teams/team_exit.html:25
@@ -893,7 +968,7 @@ msgstr "Komanda üzvünü idarə et"
 
 #: templates/teams/team_member_role_update.html:14
 msgid "You are managing membership for"
-msgstr "Siz üzvlüyünü idarə edirsiniz:"
+msgstr "Aşağıdakı istifadəçinin üzvlüyünü idarə edirsiniz"
 
 #: templates/teams/team_member_role_update.html:15
 msgid "in team"
@@ -909,11 +984,11 @@ msgstr "Dəyişiklikləri yadda saxla"
 
 #: templates/teams/team_member_role_update.html:67
 msgid "Are you sure you want to remove this user from the team?"
-msgstr "Bu istifadəçini komandadan silmək istədiyinizə əminsiniz?"
+msgstr "Bu istifadəçini komandadan çıxarmaq istədiyinizə əminsiniz?"
 
 #: templates/teams/team_member_role_update.html:70
 msgid "Remove from team"
-msgstr "Komandadan sil"
+msgstr "Komandadan çıxar"
 
 #: templates/user/user_create_form.html:13
 msgid "Sign up"
@@ -929,7 +1004,7 @@ msgstr "Tam ad"
 
 #: templates/user/user_detail.html:39 templates/user/user_detail.html:123
 msgid "Date joined"
-msgstr "Qoşulma tarixi"
+msgstr "Qeydiyyat tarixi"
 
 #: templates/user/user_detail.html:48 templates/user/user_detail.html:124
 msgid "Last login"
@@ -955,23 +1030,23 @@ msgstr "İstifadəçi adı"
 msgid "Change Role"
 msgstr "Rolu dəyiş"
 
-#: templates/user/user_list.html:88
+#: templates/user/user_list.html:59
 msgid "Pending approval"
 msgstr "Təsdiq gözləyir"
 
-#: templates/user/user_list.html:114
+#: templates/user/user_list.html:85
 msgid "Review"
 msgstr "Nəzərdən keçir"
 
-#: templates/user/user_list.html:172
+#: templates/user/user_list.html:143
 msgid "Not in team"
 msgstr "Komandada deyil"
 
-#: templates/user/user_list.html:187
+#: templates/user/user_list.html:158
 msgid "No users found"
 msgstr "İstifadəçi yoxdur"
 
-#: templates/user/user_list.html:188
+#: templates/user/user_list.html:159
 msgid "No users available"
 msgstr "İstifadəçi yoxdur"
 
@@ -1078,32 +1153,3 @@ msgstr "Siz uğurla daxil oldunuz"
 #: views.py:53
 msgid "You are logged out"
 msgstr "Siz sistemdən çıxdınız"
-
-#~ msgid "Individual & Team Use"
-#~ msgstr "Fərdi və komanda istifadəsi"
-
-#~ msgid "For solo work or team projects"
-#~ msgstr "Fərdi iş və ya komanda layihələri üçün"
-
-#~ msgid "User deleted successfully"
-#~ msgstr "İstifadəçi uğurla silindi"
-
-#~ msgid "Cannot delete user because they are admin of team(s): "
-#~ msgstr ""
-#~ "İstifadəçini silmək mümkün deyil, çünki o komanda(lar)ın "
-#~ "administratorudur: "
-
-#~ msgid "Cannot delete a user because it is in use"
-#~ msgstr "İstifadəçini silmək mümkün deyil, çünki o istifadə olunur"
-
-#~ msgid "Manage Tasks Your Way"
-#~ msgstr "Tapşırıqları öz üsulunuzla idarə edin"
-
-#~ msgid ""
-#~ "Whether you're working solo or with multiple independent teams, TaskMan "
-#~ "simplifies task management.<br>Create, assign, and track tasks "
-#~ "effortlessly across projects."
-#~ msgstr ""
-#~ "Tək işləsəniz də, bir neçə müstəqil komanda ilə işləsəniz də, TaskMan "
-#~ "tapşırıqların idarə edilməsini sadələşdirir.<br>Tapşırıqları layihələr "
-#~ "üzrə asanlıqla yaradın, təyin edin və izləyin."

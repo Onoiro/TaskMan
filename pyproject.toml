@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "TaskMan"
-version = "2.12.0"
+version = "2.12.1"
 
 description = "Web task management system"
 authors = ["Andrey Bogatyrev <donoriono@gmail.com>"]
 readme = "README.md"
-homepage = "https://taskman.2-way.ru"
-repository = "https://github.com/Onoiro/taskman"
+homepage = "https://taskman.tech"
+repository = "https://github.com/Onoiro/TaskMan"
 packages = [{include = "task_manager"}]
 classifiers = [
     "License :: OSI Approved :: MIT License",
