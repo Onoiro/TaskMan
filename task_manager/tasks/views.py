@@ -26,8 +26,20 @@ SERVICE_PARAMS = (
     'show_filter',
     'save_as_default',
     'reset_default',
-    'view_mode'
+    'view_mode',
+    'sort',
 )
+
+# Sort options for task list
+SORT_OPTIONS = {
+    '-updated_at': _('Last updated'),
+    'updated_at': _('First updated'),
+    '-created_at': _('Newest first'),
+    'created_at': _('Oldest first'),
+    'name': _('Name A→Z'),
+    '-name': _('Name Z→A'),
+}
+DEFAULT_SORT = '-updated_at'
 
 
 class TaskDeletePermissionMixin():
@@ -93,11 +105,18 @@ class TaskFilterView(FilterView):
         return super().get(request, *args, **kwargs)
 
     def _get_filter_params(self, request):
-        """Extract filter parameters from GET (without service parameters)."""
+        """Extract filter parameters from GET (without service params)."""
         return {
             k: v for k, v in request.GET.items()
             if k not in SERVICE_PARAMS and v
         }
+
+    def _get_sort_param(self):
+        """Get validated sort parameter."""
+        sort = self.request.GET.get('sort', DEFAULT_SORT)
+        if sort not in SORT_OPTIONS:
+            sort = DEFAULT_SORT
+        return sort
 
     def _save_filter_to_session(self, request):
         """Save current filter parameters to session."""
@@ -123,6 +142,11 @@ class TaskFilterView(FilterView):
         if 'view_mode' in request.GET:
             return False
 
+        # If sort parameter exists
+        #  - user changed sort, do not redirect
+        if 'sort' in request.GET:
+            return False
+
         # Check if saved filter exists
         filter_enabled = request.session.get(SESSION_FILTER_ENABLED_KEY, False)
         saved_params = request.session.get(SESSION_FILTER_KEY, {})
@@ -138,14 +162,15 @@ class TaskFilterView(FilterView):
     def get_queryset(self):
         user = self.request.user
         team = getattr(self.request, 'active_team', None)
+        sort = self._get_sort_param()
 
         if team:
-            return Task.objects.filter(team=team).order_by('-created_at')
+            return Task.objects.filter(team=team).order_by(sort)
         else:
             return Task.objects.filter(
                 author=user,
                 team__isnull=True
-            ).order_by('-created_at')
+            ).order_by(sort)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -165,6 +190,13 @@ class TaskFilterView(FilterView):
             if value and key not in SERVICE_PARAMS
         )
         context['active_filter_count'] = active_filter_count
+
+        # Sort options for template
+        current_sort = self._get_sort_param()
+        context['current_sort'] = current_sort
+        context['current_sort_label'] = SORT_OPTIONS.get(
+            current_sort, SORT_OPTIONS[DEFAULT_SORT])
+        context['sort_options'] = SORT_OPTIONS
 
         return context
 

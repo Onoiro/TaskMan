@@ -23,6 +23,34 @@
             </span>
             {% endif %}
 
+            <!-- Sort dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle sort-btn"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        title="{% trans 'Sort' %}">
+                    <i class="bi bi-arrow-down-up"></i>
+                    <span class="d-none d-md-inline">{{ current_sort_label }}</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                    <li><h6 class="dropdown-header">{% trans "Sort by" %}</h6></li>
+                    {% for sort_key, sort_label in sort_options.items %}
+                    <li>
+                        <a class="dropdown-item small{% if current_sort == sort_key %} active{% endif %}"
+                           href="?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}sort={{ sort_key }}">
+                            {% if '-' in sort_key %}
+                                <i class="bi bi-sort-down me-2"></i>
+                            {% else %}
+                                <i class="bi bi-sort-up me-2"></i>
+                            {% endif %}
+                            {{ sort_label }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
             <!-- View mode toggle -->
             {% if request.GET.view_mode == 'simple' %}
                 <a href="?{% for key, value in request.GET.items %}{% if key != 'view_mode' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
@@ -413,6 +441,25 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Sort dropdown */
+.sort-btn {
+    min-width: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+.sort-btn .bi-arrow-down-up {
+    font-size: 0.85rem;
+}
+.dropdown-item.active {
+    background-color: #0d6efd;
+}
+.dropdown-item .bi {
+    width: 1rem;
+    text-align: center;
 }
 
 /* ===== FILTER PANEL ===== */

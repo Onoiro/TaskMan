@@ -163,11 +163,20 @@ class TaskFilter(django_filters.FilterSet):
         user = self.request.user
         team = getattr(self.request, 'active_team', None)
 
+        sort = self.request.GET.get('sort', '-updated_at')
+        valid_sorts = {
+            '-updated_at', 'updated_at',
+            '-created_at', 'created_at',
+            'name', '-name',
+        }
+        if sort not in valid_sorts:
+            sort = '-updated_at'
+
         if team:
-            return Task.objects.filter(team=team).order_by('-created_at')
+            return Task.objects.filter(team=team).order_by(sort)
         return Task.objects.filter(
             author=user, team__isnull=True
-        ).order_by('-created_at')
+        ).order_by(sort)
 
     def _apply_model_filter(self, qs, field_name, lookup_field=None):
         """Apply filter with optional exclude mode."""
