@@ -35,7 +35,7 @@ class TaskSortTestCase(TestCase):
     def test_sort_context_default(self):
         """Default sort is -updated_at."""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertEqual(response.context['current_sort'], '-created_at')
+        self.assertEqual(response.context['current_sort'], '-updated_at')
 
     def test_sort_context_valid_param(self):
         """Valid sort param is passed to context."""
