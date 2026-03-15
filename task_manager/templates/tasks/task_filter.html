@@ -276,11 +276,22 @@
                     <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark d-flex align-items-center gap-2">
                         <span class="status-dot flex-shrink-0" style="background-color: {{ obj.status.color|default:'#dee2e6' }};"></span>
                         <span class="text-truncate">{{ obj.name }}</span>
-                        {% if obj.checklist_total > 0 %}
-                        <span class="text-muted small ms-auto flex-shrink-0">
-                            <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
+                        <span class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+                            {% if obj.checklist_total > 0 %}
+                            <span class="text-muted small">
+                                <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
+                            </span>
+                            {% endif %}
+                            <span class="text-muted small d-none d-sm-inline"
+                                  title="{% if obj.was_edited %}{% trans 'Updated' %}: {{ obj.updated_at|date:'d.m.Y H:i' }}{% if obj.updated_by %} ← {{ obj.updated_by.display_name }}{% endif %}{% else %}{% trans 'Created' %}: {{ obj.created_at|date:'d.m.Y H:i' }}{% endif %}">
+                                {% if obj.was_edited %}
+                                    <i class="bi bi-pencil-square"></i>
+                                {% else %}
+                                    <i class="bi bi-plus-circle"></i>
+                                {% endif %}
+                                {{ obj.updated_at|date:"d.m" }}
+                            </span>
                         </span>
-                        {% endif %}
                     </a>
                 </div>
                 {% endfor %}
@@ -306,9 +317,19 @@
                                     {% endif %}
                                 </a>
                             </div>
-                            <div class="text-muted small text-nowrap mt-1">
-                                {{ obj.created_at|date:"d.m.y" }}
-                                <span class="d-none d-sm-inline">{{ obj.created_at|date:"H:i" }}</span>
+                            <div class="text-muted small text-nowrap mt-1 text-end">
+                                <span title="{% trans 'Created' %}: {{ obj.created_at|date:'d.m.Y H:i' }}">
+                                    <i class="bi bi-plus-circle"></i>
+                                    {{ obj.created_at|date:"d.m.y" }}
+                                </span>
+                                {% if obj.was_edited %}
+                                <br>
+                                <span class="text-info-emphasis"
+                                      title="{% trans 'Updated' %}: {{ obj.updated_at|date:'d.m.Y H:i' }}{% if obj.updated_by %} ← {{ obj.updated_by.display_name }}{% endif %}">
+                                    <i class="bi bi-pencil-square"></i>
+                                    {{ obj.updated_at|date:"d.m.y" }}
+                                </span>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -544,6 +565,10 @@
     width: 4px;
     background-color: var(--status-color, #dee2e6);
     border-radius: 4px 0 0 4px;
+}
+
+.text-info-emphasis {
+    color: #087990 !important;
 }
 
 /* Simple view */

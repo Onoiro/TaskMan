@@ -14,12 +14,35 @@
                 <!-- Блок мета-информации (Контекст) -->
                 <div class="card border-0 shadow-sm mb-3 bg-light">
                     <div class="card-body py-2 px-3">
-                        <!-- Верхняя строка: дата/время -->
-                        <div class="d-flex justify-content-between small mb-2">
-                            <span class="text-muted" title="{% trans 'Created' %}">📅 {{ object.created_at|date:"d.m H:i" }}</span>
+                        <!-- Верхняя строка: дата создания, автор, исполнитель -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center text-muted small">
+                            <span title="{% trans 'Created' %}">
+                                <i class="bi bi-plus-circle"></i>
+                                {{ object.created_at|date:"d.m H:i" }}
+                            </span>
+                            <span class="user-badge" title="{% trans 'Author' %}">
+                                <i class="bi bi-person"></i>
+                                {{ object.author.display_name|default:_("Deleted user") }}
+                            </span>
+                            {% for executor in object.executors.all %}
+                            <span class="user-badge" title="{% trans 'Executor' %}">
+                                <i class="bi bi-arrow-right-short"></i>
+                                {{ executor.username }}
+                            </span>
+                            {% endfor %}
+                            {% if object.was_edited %}
+                            <span class="text-info-emphasis" title="{% trans 'Updated' %}">
+                                <i class="bi bi-pencil-square"></i>
+                                {{ object.updated_at|date:"d.m H:i" }}
+                                <span class="text-muted">({{ object.updated_at|timesince }} {% trans "ago" %})</span>
+                                {% if object.updated_by %}
+                                <span class="text-dark">← {{ object.updated_by.display_name|default:_("Deleted user") }}</span>
+                                {% endif %}
+                            </span>
+                            {% endif %}
                         </div>
                         <!-- Средняя строка: статус (слева), метки (справа) -->
-                        <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex justify-content-between align-items-start mt-2">
                             <span class="badge border bg-white" style="color: {{ object.status.color|default:'#6c757d' }}; border-color: {{ object.status.color|default:'#dee2e6' }} !important;">
                                 {{ object.status.name }}
                             </span>
@@ -27,21 +50,6 @@
                             <div class="d-flex flex-wrap gap-1 justify-content-end">
                                 {% for label in object.labels.all %}
                                 <span class="badge bg-light text-secondary border fw-normal" title="{{ label.name }}">{{ label.name }}</span>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <!-- Нижняя строка: автор (слева), исполнители (справа) -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Author' %}">
-                                <span class="me-1">👤</span> {{ object.author.display_name|default:_("Deleted user") }}
-                            </div>
-                            {% if object.executors.all %}
-                            <div class="d-flex align-items-center gap-1">
-                                {% for executor in object.executors.all %}
-                                <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Executor' %}">
-                                    <span class="me-1">👉</span> {{ executor.username }}
-                                </div>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -200,6 +208,19 @@
 
     .checklist-delete {
         opacity: 1 !important;
+    }
+
+    .text-info-emphasis {
+        color: #087990 !important;
+    }
+
+    .user-badge {
+        padding: 0.25rem 0.5rem;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
     }
 </style>
 

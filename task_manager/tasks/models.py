@@ -71,6 +71,25 @@ class Task(models.Model):
         auto_now_add=True,
         verbose_name=_('Created at')
     )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        null=True,
+        verbose_name=_('Updated at')
+    )
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='updated_tasks',
+        verbose_name=_('Updated by')
+    )
+
+    @property
+    def was_edited(self):
+        if not self.updated_at or not self.created_at:
+            return False
+        return (self.updated_at - self.created_at).total_seconds() > 2
 
     @property
     def checklist_total(self):
