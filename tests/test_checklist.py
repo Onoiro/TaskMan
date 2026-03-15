@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from task_manager.tasks.models import Task, ChecklistItem
 from task_manager.user.models import User
+from task_manager.teams.models import TeamMembership
 import json
 
 
@@ -345,3 +346,88 @@ class ChecklistViewTestCase(TestCase):
         self.assertEqual(self.task.checklist_total, 3)
         self.assertEqual(self.task.checklist_done, 2)
         self.assertEqual(self.task.checklist_progress, 66)
+
+
+class ChecklistEdgeCaseTestCase(TestCase):
+    """Tests for checklist edge cases"""
+    fixtures = [
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_tasks.json",
+        "tests/fixtures/test_labels.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.task = Task.objects.get(name="first task")
+        self.c = Client()
+        self.c.force_login(self.user)
+
+        membership = TeamMembership.objects.filter(user=self.user).first()
+        self.team = membership.team if membership else None
+
+        if self.team:
+            session = self.c.session
+            session['active_team_uuid'] = str(self.team.uuid)
+            session.save()
+
+    def test_checklist_add_invalid_json_body(self):
+        """Sending invalid JSON falls back to empty text → 400."""
+        url = reverse('tasks:checklist-add', args=[self.task.uuid])
+        response = self.c.post(
+            url,
+            data=b'NOT VALID JSON',
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('error', data)
+
+    def test_checklist_add_empty_body(self):
+        """Sending empty body falls back to empty text → 400."""
+        url = reverse('tasks:checklist-add', args=[self.task.uuid])
+        response = self.c.post(
+            url,
+            data=b'',
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_checklist_add_non_json_content_type(self):
+        """Sending form data instead of JSON triggers except branch."""
+        url = reverse('tasks:checklist-add', args=[self.task.uuid])
+        response = self.c.post(
+            url,
+            data='text=hello',
+            content_type='application/x-www-form-urlencoded',
+        )
+        # Should hit except branch, text becomes empty → 400
+        self.assertEqual(response.status_code, 400)
+
+    def test_checklist_add_text_too_long(self):
+        """Text longer than 300 chars returns 400."""
+        url = reverse('tasks:checklist-add', args=[self.task.uuid])
+        long_text = 'A' * 301
+        response = self.c.post(
+            url,
+            data=json.dumps({'text': long_text}),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 400)
+        data = response.json()
+        self.assertIn('error', data)
+
+    def test_checklist_add_text_exactly_300_chars(self):
+        """Text exactly 300 chars is accepted."""
+        url = reverse('tasks:checklist-add', args=[self.task.uuid])
+        text_300 = 'B' * 300
+        response = self.c.post(
+            url,
+            data=json.dumps({'text': text_300}),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['text'], text_300)
