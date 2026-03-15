@@ -30,7 +30,9 @@
                                 {{ executor.username }}
                             </span>
                             {% endfor %}
-                            {% if object.was_edited %}
+                        </div>
+                        {% if object.was_edited %}
+                        <div class="d-flex flex-wrap gap-2 align-items-center text-muted small mt-1">
                             <span class="text-info-emphasis" title="{% trans 'Updated' %}">
                                 <i class="bi bi-pencil-square"></i>
                                 {{ object.updated_at|date:"d.m H:i" }}
@@ -39,8 +41,8 @@
                                 <span class="text-dark">← {{ object.updated_by.display_name|default:_("Deleted user") }}</span>
                                 {% endif %}
                             </span>
-                            {% endif %}
                         </div>
+                        {% endif %}
                         <!-- Средняя строка: статус (слева), метки (справа) -->
                         <div class="d-flex justify-content-between align-items-start mt-2">
                             <span class="badge border bg-white" style="color: {{ object.status.color|default:'#6c757d' }}; border-color: {{ object.status.color|default:'#dee2e6' }} !important;">

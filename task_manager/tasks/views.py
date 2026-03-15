@@ -39,7 +39,7 @@ SORT_OPTIONS = {
     'name': _('Name A→Z'),
     '-name': _('Name Z→A'),
 }
-DEFAULT_SORT = '-updated_at'
+DEFAULT_SORT = '-created_at'
 
 
 class TaskDeletePermissionMixin():
