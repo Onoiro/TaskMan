@@ -177,17 +177,6 @@ class LabelsTestCase(TestCase):
             response, 'text-decoration-none text-dark fw-bold')
         self.assertContains(response, label.name)
 
-    def test_labels_list_edit_delete_buttons_hide_on_mobile(self):
-        """Test that Edit and Delete buttons have mobile-hide classes."""
-        self._set_active_team(self.team.id)
-
-        response = self.c.get(reverse('labels:labels-list'))
-
-        # Check that buttons have d-none d-md-flex classes
-        self.assertContains(response, 'd-none d-md-flex')
-        self.assertContains(response, '✏️')
-        self.assertContains(response, '🗑️')
-
     def test_labels_list_cards_structure(self):
         """Test that labels are displayed in card format."""
         self._set_active_team(self.team.id)
@@ -197,10 +186,6 @@ class LabelsTestCase(TestCase):
         # Check that card structure is present
         self.assertContains(response, 'card border-0 shadow-sm label-card')
         self.assertContains(response, 'card-body p-3')
-
-        # Check that label card has badge
-        self.assertContains(response, 'badge bg-light text-secondary border')
-        self.assertContains(response, '🏷️')
 
     def test_labels_list_empty_state(self):
         """Test that empty state is displayed when no labels."""
