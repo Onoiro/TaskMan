@@ -48,22 +48,14 @@
                                 </div>
                             </div>
 
-                            <!-- Нижняя строка: Бейдж + Действия -->
-                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-light text-secondary border">
-                                        🏷️ {{ label.name }}
-                                    </span>
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2 small d-none d-md-flex">
-                                    <a href="{% url 'labels:labels-update' label.uuid %}" class="text-decoration-none text-primary">
-                                        ✏️ {% trans "Edit" %}
-                                    </a>
-                                    <a href="{% url 'labels:labels-delete' label.uuid %}" class="text-decoration-none text-danger">
-                                        🗑️ {% trans "Delete" %}
-                                    </a>
-                                </div>
+                            <!-- Нижняя строка: Бейдж + Автор -->
+                            <div class="d-flex flex-wrap align-items-center gap-2 mt-auto pt-1">
+                                <span class="badge bg-light text-secondary border fw-normal" title="{{ label.name }}">
+                                    <i class="bi bi-tag"></i> {{ label.name }}
+                                </span>
+                                <span class="text-muted small">
+                                    <i class="bi bi-person"></i> {{ label.creator.display_name|default:_("Deleted user") }}
+                                </span>
                             </div>
                         </div>
                     </div>
