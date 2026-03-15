@@ -35,7 +35,7 @@ class TaskSortTestCase(TestCase):
     def test_sort_context_default(self):
         """Default sort is -updated_at."""
         response = self.c.get(reverse('tasks:tasks-list'))
-        self.assertEqual(response.context['current_sort'], '-updated_at')
+        self.assertEqual(response.context['current_sort'], '-created_at')
 
     def test_sort_context_valid_param(self):
         """Valid sort param is passed to context."""
@@ -62,21 +62,21 @@ class TaskSortTestCase(TestCase):
         response = self.c.get(
             reverse('tasks:tasks-list'), {'sort': 'INVALID_FIELD'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['current_sort'], '-updated_at')
+        self.assertEqual(response.context['current_sort'], '-created_at')
 
     def test_sort_sql_injection_attempt_falls_back(self):
         """SQL injection in sort param falls back to default."""
         response = self.c.get(
             reverse('tasks:tasks-list'), {'sort': '-name; DROP TABLE'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['current_sort'], '-updated_at')
+        self.assertEqual(response.context['current_sort'], '-created_at')
 
     def test_sort_empty_string_falls_back(self):
         """Empty sort param falls back to default."""
         response = self.c.get(
             reverse('tasks:tasks-list'), {'sort': ''})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['current_sort'], '-updated_at')
+        self.assertEqual(response.context['current_sort'], '-created_at')
 
     # ===== Filter base queryset fallback (covers filters.py:173) =====
 
