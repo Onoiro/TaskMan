@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Checklist functionality
     const section = document.getElementById('checklist-section');
-    const taskUuid = section.dataset.taskUuid;
+    const taskUuid = section?.dataset?.taskUuid;
     const addUrlBase = section.dataset.addUrl;
     const toggleUrlTemplate = section.dataset.toggleUrl;
     const deleteUrlTemplate = section.dataset.deleteUrl;
