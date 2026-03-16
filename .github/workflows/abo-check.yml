@@ -1,4 +1,4 @@
-name: CI-check
+name: CI and Deploy on staging
 
 on:
   push:
@@ -83,3 +83,21 @@ jobs:
         if: matrix.python-version == '3.11'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  
+  deploy:  # on staging
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: Deploying to Staging via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/abo/taskman
+            git fetch --all
+            git reset --hard origin/main
+            make deploy
+            docker system prune -f
