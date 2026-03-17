@@ -1,12 +1,11 @@
-[![CI-check](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions/workflows/abo-check.yml)
-[![Actions Status](https://github.com/Onoiro/TaskMan/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions)
+[![CI and Deploy on staging](https://github.com/Onoiro/TaskMan/actions/workflows/ci-check-deploy.yml/badge.svg)](https://github.com/Onoiro/TaskMan/actions/workflows/ci-check-deploy.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 
-# [TaskMan](https://taskman.2-way.ru)
-TaskMan is a web application designed to manage tasks individually or in teams (or families). It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.2-way.ru
+# [TaskMan](https://taskman.tech)
+TaskMan is a web application designed to manage tasks individually or in teams (or families). It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.tech
 
 ## Features
 
@@ -199,21 +198,15 @@ Ensure your .env.docker file contains production values (DEBUG=False, strong SEC
 - **Use the deploy command**:
 ```bash
 make deploy
-# docker compose down
-# docker compose build
-# docker compose up -d
-# sleep 15
-# docker compose exec django-web python manage.py migrate
-# docker compose exec django-web python manage.py collectstatic --no-input
-# docker compose exec django-web python manage.py compilemessages
 ```
 This command will:
-- Stop existing containers
+- Create dir /staticfiles
 - Rebuild images
 - Start services
 - Run migrations
 - Collect static files
-- Compile translations
+- Clear Docker cache
+- Check services
 
 ### Database Backup and Restore
 ```bash
@@ -256,6 +249,6 @@ make d-space
 This project is licensed under the MIT License.
 
 ### Links
-- Live Application: https://taskman.2-way.ru
+- Live Application: https://taskman.tech
 - Repository: https://github.com/Onoiro/taskman
 - Author: Andrey Bogatyrev <mailto:donoriono@gmail.com>

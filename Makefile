@@ -183,14 +183,14 @@ deploy:
 	sleep 5
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py collectstatic --no-input --clear
-	
+
 	@echo "=== Make rights on static files for Nginx ==="
 	chmod -R o+rX staticfiles/
 	
 	@echo "=== Clear Docker-cache ==="
 	docker system prune -f
 	
-	@echo "=== Проверка ==="
+	@echo "=== Check ==="
 	$(DC) ps
 	@echo ""
 	@curl -sf -o /dev/null -w "HTTP Status: %{http_code}\n" http://127.0.0.1:8001/ || echo "WARNING: App not responding!"
