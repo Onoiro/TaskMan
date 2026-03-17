@@ -243,16 +243,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Checklist functionality
     const section = document.getElementById('checklist-section');
-    const taskUuid = section?.dataset?.taskUuid;
-    const addUrlBase = section.dataset.addUrl;
-    const toggleUrlTemplate = section.dataset.toggleUrl;
-    const deleteUrlTemplate = section.dataset.deleteUrl;
-    const counter = document.getElementById('checklist-counter');
-    const progress = document.getElementById('checklist-progress');
-    const itemsContainer = document.getElementById('checklist-items');
-    const input = document.getElementById('checklist-input');
-    const addBtn = document.getElementById('checklist-add-btn');
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    if (section) {
+        const taskUuid = section.dataset.taskUuid;
+        const addUrlBase = section.dataset.addUrl;
+        const toggleUrlTemplate = section.dataset.toggleUrl;
+        const deleteUrlTemplate = section.dataset.deleteUrl;
+        const counter = document.getElementById('checklist-counter');
+        const progress = document.getElementById('checklist-progress');
+        const itemsContainer = document.getElementById('checklist-items');
+        const input = document.getElementById('checklist-input');
+        const addBtn = document.getElementById('checklist-add-btn');
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     function updateProgress(data) {
         counter.textContent = `(${data.done}/${data.total})`;
@@ -387,6 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+    } // end if (section)
 });
 </script>
 {% endblock %}
