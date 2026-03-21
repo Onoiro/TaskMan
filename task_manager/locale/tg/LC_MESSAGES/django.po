@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-15 19:25+0300\n"
+"POT-Creation-Date: 2026-03-21 16:49+0300\n"
 "PO-Revision-Date: 2026-03-15 19:25+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -137,7 +137,7 @@ msgid "Choose status color"
 msgstr "Ранги ҳолатро интихоб кунед"
 
 #: statuses/models.py:57 tasks/models.py:72 teams/models.py:42
-#: templates/labels/labels_update.html:56
+#: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
 #: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
 msgid "Created at"
@@ -233,7 +233,7 @@ msgstr "Муаллиф"
 msgid "Executor"
 msgstr "Иҷрокунанда"
 
-#: tasks/filters.py:47 templates/labels/labels_update.html:49
+#: tasks/filters.py:47 templates/labels/labels_update.html:47
 msgid "Label"
 msgstr "Барчасп"
 
@@ -254,7 +254,7 @@ msgstr "То"
 msgid "Has checklist"
 msgstr "Рӯйхати санҷиш дорад"
 
-#: tasks/models.py:46 templates/labels/labels_update.html:28
+#: tasks/models.py:46 templates/labels/labels_update.html:29
 msgid "Team"
 msgstr "Даста"
 
@@ -365,7 +365,7 @@ msgstr "Тасдиқи рамз"
 msgid "Please enter your password one more time"
 msgstr "Лутфан, рамзро бори дигар ворид кунед."
 
-#: teams/forms.py:40 teams/forms.py:43 user/forms.py:86 user/forms.py:89
+#: teams/forms.py:40 teams/forms.py:43 user/forms.py:100 user/forms.py:103
 msgid "Leave blank if you don't want to change password"
 msgstr "Агар нахоҳед рамзро иваз кунед, майдонро холӣ гузоред"
 
@@ -378,7 +378,7 @@ msgstr ""
 msgid "The entered passwords do not match."
 msgstr "Рамзҳои воридшуда мувофиқат намекунанд."
 
-#: teams/forms.py:78 user/forms.py:139
+#: teams/forms.py:78 user/forms.py:153
 msgid "Both password fields must be filled or both left blank"
 msgstr "Ҳар ду майдони рамз бояд пур карда шаванд ё ҳар ду холӣ монанд"
 
@@ -398,11 +398,11 @@ msgstr "Рамзи даста"
 msgid "Minimum length is 3 characters"
 msgstr "Дарозии ҳадди ақал — 3 аломат"
 
-#: teams/models.py:76 user/forms.py:101
+#: teams/models.py:76 user/forms.py:115
 msgid "Admin"
 msgstr "Мудир"
 
-#: teams/models.py:77 user/forms.py:102
+#: teams/models.py:77 user/forms.py:116
 msgid "Member"
 msgstr "Иштирокчӣ"
 
@@ -487,7 +487,8 @@ msgstr "Дастаро ҳазф кардан мумкин нест, зеро д�
 
 #: teams/views.py:367
 msgid "Cannot delete a team because it has other members."
-msgstr "Дастаро ҳазф кардан мумкин нест, зеро дар он иштирокчиёни дигар мавҷуданд."
+msgstr ""
+"Дастаро ҳазф кардан мумкин нест, зеро дар он иштирокчиёни дигар мавҷуданд."
 
 #: teams/views.py:371
 msgid "Team deleted successfully"
@@ -538,15 +539,14 @@ msgstr "Ҳолатҳо"
 msgid "Switch context"
 msgstr "Иваз кардани контекст"
 
-#: templates/base.html:161 templates/labels/labels_update.html:33
+#: templates/base.html:161 templates/labels/labels_update.html:34
 msgid "Individual"
 msgstr "Реҷаи инфиродӣ"
 
-#: templates/base.html:188 templates/labels/labels_list.html:61
-#: templates/labels/labels_update.html:65
+#: templates/base.html:188 templates/labels/labels_update.html:63
 #: templates/statuses/statuses_list.html:68
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_update.html:167 templates/teams/team_update.html:26
+#: templates/tasks/task_update.html:169 templates/teams/team_update.html:26
 #: templates/user/user_detail.html:132 templates/user/user_update.html:13
 msgid "Edit"
 msgstr "Таҳрир"
@@ -572,7 +572,7 @@ msgstr "Баромад"
 msgid "Login"
 msgstr "Вуруд"
 
-#: templates/base.html:242 templates/user/user_create_form.html:8
+#: templates/base.html:242 templates/user/user_create_form.html:11
 msgid "Signup"
 msgstr "Бақайдгирӣ"
 
@@ -663,28 +663,30 @@ msgstr "Дастгирии забонҳо"
 
 #: templates/labels/labels_create.html:9
 #: templates/tasks/task_create_form.html:39
-#: templates/tasks/task_update.html:153
+#: templates/tasks/task_update.html:155
 msgid "Create label"
 msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_create.html:15
 #: templates/statuses/statuses_create_form.html:13
 #: templates/tasks/task_create_form.html:52
-#: templates/teams/team_create_form.html:13
+#: templates/teams/team_create_form.html:28
 msgid "Create"
 msgstr "Эҷод кардан"
 
 #: templates/labels/labels_create.html:18
 #: templates/labels/labels_delete.html:23
-#: templates/labels/labels_update.html:68
+#: templates/labels/labels_update.html:66
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
 #: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:170 templates/teams/team_delete.html:22
+#: templates/tasks/task_update.html:172
+#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:71 templates/teams/team_exit.html:28
 #: templates/teams/team_member_role_update.html:55
-#: templates/teams/team_update.html:29 templates/user/user_delete.html:22
-#: templates/user/user_detail.html:143 templates/user/user_update.html:16
+#: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
+#: templates/user/user_delete.html:22 templates/user/user_detail.html:143
+#: templates/user/user_update.html:16
 msgid "Cancel"
 msgstr "Бекор кардан"
 
@@ -714,42 +716,48 @@ msgstr "Бале, ҳазф кардан"
 msgid "New label"
 msgstr "Барчаспи нав"
 
-#: templates/labels/labels_list.html:64 templates/labels/labels_update.html:73
-#: templates/statuses/statuses_list.html:71
-#: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:112 templates/tasks/task_update.html:175
-#: templates/tasks/task_update.html:270 templates/teams/team_update.html:34
-#: templates/user/user_detail.html:149
-msgid "Delete"
-msgstr "Ҳазф"
+#: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
+#: templates/tasks/task_filter.html:380 templates/tasks/task_update.html:25
+#: templates/tasks/task_update.html:41 user/models.py:20
+msgid "Deleted user"
+msgstr "Корбари ҳазфшуда"
 
-#: templates/labels/labels_list.html:78
+#: templates/labels/labels_list.html:70
 msgid "No labels found"
 msgstr "Барчаспҳо ёфт нашуданд"
 
-#: templates/labels/labels_list.html:79
+#: templates/labels/labels_list.html:71
 msgid "Create your first label to organize tasks"
 msgstr "Барои ташкили вазифаҳо аввалин барчаспи худро эҷод кунед"
 
-#: templates/labels/labels_list.html:80
+#: templates/labels/labels_list.html:72
 msgid "Create Label"
 msgstr "Эҷоди барчасп"
 
-#: templates/labels/labels_update.html:20
+#: templates/labels/labels_update.html:22
 #: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:314 templates/tasks/task_filter.html:349
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Эҷод шудааст"
 
-#: templates/labels/labels_update.html:32
+#: templates/labels/labels_update.html:33
 msgid "Individual mode"
 msgstr "Реҷаи инфиродӣ"
 
-#: templates/labels/labels_update.html:39
+#: templates/labels/labels_update.html:37
 #: templates/statuses/statuses_update.html:36
 msgid "Creator"
 msgstr "Эҷодкунанда"
+
+#: templates/labels/labels_update.html:71
+#: templates/statuses/statuses_list.html:71
+#: templates/statuses/statuses_update.html:75
+#: templates/tasks/task_update.html:114 templates/tasks/task_update.html:177
+#: templates/tasks/task_update.html:273 templates/teams/team_update.html:34
+#: templates/user/user_detail.html:149
+msgid "Delete"
+msgstr "Ҳазф"
 
 #: templates/login.html:13
 msgid "Log in"
@@ -805,7 +813,7 @@ msgid "Create task"
 msgstr "Эҷоди вазифа"
 
 #: templates/tasks/task_create_form.html:25
-#: templates/tasks/task_update.html:138
+#: templates/tasks/task_update.html:140
 msgid "Add checklist"
 msgstr "Илова кардани рӯйхати санҷиш"
 
@@ -883,33 +891,28 @@ msgid "Apply"
 msgstr "Татбиқ кардан"
 
 #: templates/tasks/task_filter.html:314 templates/tasks/task_filter.html:356
-#: templates/tasks/task_update.html:34
+#: templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Навсозӣ шудааст"
 
-#: templates/tasks/task_filter.html:342 templates/tasks/task_update.html:77
+#: templates/tasks/task_filter.html:342 templates/tasks/task_update.html:79
 msgid "Checklist"
 msgstr "Рӯйхати санҷиш"
 
-#: templates/tasks/task_filter.html:380 templates/tasks/task_update.html:25
-#: templates/tasks/task_update.html:39 user/models.py:20
-msgid "Deleted user"
-msgstr "Корбари ҳазфшуда"
-
-#: templates/tasks/task_update.html:37
+#: templates/tasks/task_update.html:39
 msgid "ago"
 msgstr "пеш"
 
-#: templates/tasks/task_update.html:125
+#: templates/tasks/task_update.html:127
 msgid "Add item..."
 msgstr "Илова кардани банд..."
 
-#: templates/tasks/task_update.html:358
+#: templates/tasks/task_update.html:361
 msgid "Delete this item?"
 msgstr "Ин банд ҳазф шавад?"
 
-#: templates/teams/team_create_form.html:8
-msgid "Create Team "
+#: templates/teams/team_create_form.html:11
+msgid "Create Team"
 msgstr "Эҷоди даста"
 
 #: templates/teams/team_delete.html:8 templates/user/user_delete.html:8
@@ -990,7 +993,7 @@ msgstr "Оё мутмаинед, ки мехоҳед ин корбарро аз 
 msgid "Remove from team"
 msgstr "Аз даста хориҷ кардан"
 
-#: templates/user/user_create_form.html:13
+#: templates/user/user_create_form.html:25
 msgid "Sign up"
 msgstr "Сабти ном"
 
@@ -1073,35 +1076,35 @@ msgstr ""
 msgid "Required if joining a team"
 msgstr "Ҳангоми ҳамроҳ шудан ба даста ҳатмист"
 
-#: user/forms.py:110
+#: user/forms.py:124
 msgid "Current teams"
 msgstr "Дастаҳои ҷорӣ"
 
-#: user/forms.py:126
+#: user/forms.py:140
 msgid "Join another team (optional)"
 msgstr "Ҳамроҳ шудан ба дастаи дигар (ихтиёрӣ)"
 
-#: user/forms.py:128
+#: user/forms.py:142
 msgid "Enter team name to join another team, or leave empty"
 msgstr "Номи дастаро барои ҳамроҳ шудан ворид кунед ё холӣ гузоред"
 
-#: user/forms.py:163
+#: user/forms.py:177
 msgid "Team password is required when joining a team"
 msgstr "Ҳангоми ҳамроҳ шудан ба даста рамз ҳатмист"
 
-#: user/forms.py:172
+#: user/forms.py:186
 msgid "Team with this name does not exist"
 msgstr "Даста бо чунин ном вуҷуд надорад"
 
-#: user/forms.py:179
+#: user/forms.py:193
 msgid "Invalid team password"
 msgstr "Рамзи даста нодуруст аст"
 
-#: user/forms.py:197
+#: user/forms.py:211
 msgid "You already have a pending request to join this team"
 msgstr "Шумо аллакай дархости интизорӣ барои ҳамроҳшавӣ ба ин даста доред"
 
-#: user/forms.py:200
+#: user/forms.py:214
 msgid "You are already a member of this team"
 msgstr "Шумо аллакай узви ин даста ҳастед"
 
