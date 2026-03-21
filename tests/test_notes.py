@@ -1,12 +1,14 @@
 from task_manager.notes.models import Note
+from task_manager.notes.forms import NoteForm
 from task_manager.tasks.models import Task
 from task_manager.user.models import User
 from task_manager.teams.models import Team
 from task_manager.statuses.models import Status
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+import uuid as uuid_module
 
 
 class NoteModelTestCase(TestCase):
@@ -825,3 +827,269 @@ class NoteIntegrationTestCase(TestCase):
 
         response = self.c.get(reverse('notes:note-list'))
         self.assertContains(response, "Standalone Note")
+
+
+class NoteFormTestCase(TestCase):
+    """Tests for NoteForm validation."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_tasks.json",
+        "tests/fixtures/test_labels.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.other_user = User.objects.get(username='he')
+        self.team = Team.objects.get(pk=1)
+        self.other_team = Team.objects.get(pk=2)
+        self.status = Status.objects.get(pk=12)
+        self.task = Task.objects.get(name="first task")
+        self.factory = RequestFactory()
+
+    def test_form_without_request(self):
+        """Test that form works without request parameter."""
+        form = NoteForm()
+        self.assertIn('title', form.fields)
+        self.assertIn('content', form.fields)
+        self.assertIn('task', form.fields)
+
+    def test_clean_task_team_context_wrong_team(self):
+        """Test validation error when task from different team in team mode."""
+        other_team_task = Task.objects.create(
+            name="Other Team Task",
+            status=self.status,
+            author=self.user,
+            team=self.other_team
+        )
+
+        request = self.factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        form = NoteForm(request=request)
+        form.cleaned_data = {'task': other_team_task}
+
+        with self.assertRaises(Exception) as context:
+            form.clean_task()
+
+        self.assertIn('same team', str(context.exception))
+
+    def test_clean_task_individual_context_team_task(self):
+        """Test validation error when team task in individual mode."""
+        team_task = Task.objects.create(
+            name="Team Task",
+            status=self.status,
+            author=self.user,
+            team=self.team
+        )
+
+        request = self.factory.get('/')
+        request.user = self.user
+        request.active_team = None
+
+        form = NoteForm(request=request)
+        form.cleaned_data = {'task': team_task}
+
+        with self.assertRaises(Exception) as context:
+            form.clean_task()
+
+        self.assertIn('individual mode', str(context.exception))
+
+    def test_clean_task_individual_context_other_user_task(self):
+        """Test validation error when other user's task in individual mode."""
+        other_user_task = Task.objects.create(
+            name="Other User Task",
+            status=self.status,
+            author=self.other_user,
+            team=None
+        )
+
+        request = self.factory.get('/')
+        request.user = self.user
+        request.active_team = None
+
+        form = NoteForm(request=request)
+        form.cleaned_data = {'task': other_user_task}
+
+        with self.assertRaises(Exception) as context:
+            form.clean_task()
+
+        self.assertIn('own tasks', str(context.exception))
+
+    def test_clean_task_returns_task_when_valid(self):
+        """Test that clean_task returns task when valid."""
+        request = self.factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        form = NoteForm(request=request)
+        form.cleaned_data = {'task': self.task}
+
+        result = form.clean_task()
+        self.assertEqual(result, self.task)
+
+    def test_clean_task_returns_none_when_no_task(self):
+        """Test that clean_task returns None when no task."""
+        request = self.factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        form = NoteForm(request=request)
+        form.cleaned_data = {'task': None}
+
+        result = form.clean_task()
+        self.assertIsNone(result)
+
+
+class NoteViewsEdgeCasesTestCase(TestCase):
+    """Tests for edge cases in Note views."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_tasks.json",
+        "tests/fixtures/test_labels.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.other_user = User.objects.get(username='he')
+        self.team = Team.objects.get(pk=1)
+        self.status = Status.objects.get(pk=12)
+        self.task = Task.objects.get(name="first task")
+
+        self.c = Client()
+        self.c.force_login(self.user)
+
+    def test_create_note_with_nonexistent_task_uuid(self):
+        """Test that non-existent task UUID is handled gracefully."""
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        fake_uuid = uuid_module.uuid4()
+        response = self.c.get(
+            reverse('notes:note-create') + f'?task={fake_uuid}'
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_non_admin_member_cannot_delete_others_note(self):
+        """Test that non-admin team member cannot delete another's note."""
+        note = Note.objects.create(
+            title="Author's Note",
+            content="Content",
+            author=self.user,
+            team=self.team
+        )
+
+        # other_user is a member but not admin
+        self.c.force_login(self.other_user)
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-delete', args=[note.uuid]),
+            follow=True
+        )
+
+        # Note should still exist
+        self.assertTrue(Note.objects.filter(pk=note.pk).exists())
+        # Should redirect to note list
+        self.assertRedirects(response, reverse('notes:note-list'))
+
+    def test_non_admin_member_cannot_update_others_note(self):
+        """Test that non-admin team member cannot update another's note."""
+        note = Note.objects.create(
+            title="Author's Note",
+            content="Content",
+            author=self.user,
+            team=self.team
+        )
+
+        # other_user is a member but not admin
+        self.c.force_login(self.other_user)
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-update', args=[note.uuid]),
+            {'title': 'Hacked', 'content': 'Hacked'},
+            follow=True
+        )
+
+        note.refresh_from_db()
+        self.assertEqual(note.title, "Author's Note")
+        self.assertRedirects(response, reverse('notes:note-list'))
+
+    def test_delete_note_redirects_to_task_page(self):
+        """Test that deleting note with task param redirects to task."""
+        note = Note.objects.create(
+            title="Note to delete",
+            content="Content",
+            author=self.user,
+            team=self.team,
+            task=self.task
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-delete', args=[note.uuid])
+            + f'?task={self.task.uuid}',
+            follow=False
+        )
+
+        expected_url = reverse('tasks:task-update', args=[self.task.uuid])
+        self.assertRedirects(response, expected_url)
+
+    def test_delete_note_redirects_to_list_without_task_param(self):
+        """Test that deleting note without task param redirects to list."""
+        note = Note.objects.create(
+            title="Note to delete",
+            content="Content",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-delete', args=[note.uuid]),
+            follow=False
+        )
+
+        self.assertRedirects(response, reverse('notes:note-list'))
+
+    def test_delete_individual_note_in_individual_mode(self):
+        """Test deleting individual note without active team."""
+        note = Note.objects.create(
+            title="Individual Note",
+            content="Content",
+            author=self.user,
+            team=None
+        )
+
+        # No active team in session
+        session = self.c.session
+        session['active_team_uuid'] = None
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-delete', args=[note.uuid]),
+            follow=False
+        )
+
+        self.assertFalse(Note.objects.filter(pk=note.pk).exists())
+        self.assertRedirects(response, reverse('notes:note-list'))
