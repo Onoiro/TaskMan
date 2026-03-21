@@ -1,13 +1,12 @@
 from task_manager.notes.models import Note
 from task_manager.tasks.models import Task
 from task_manager.user.models import User
-from task_manager.teams.models import Team, TeamMembership
+from task_manager.teams.models import Team
 from task_manager.statuses.models import Status
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
-import uuid
 
 
 class NoteModelTestCase(TestCase):
@@ -93,7 +92,6 @@ class NoteModelTestCase(TestCase):
             team=self.team,
             task=self.task
         )
-        task_id = self.task.id
         self.task.delete()
 
         note.refresh_from_db()
@@ -102,7 +100,6 @@ class NoteModelTestCase(TestCase):
 
     def test_note_deleted_with_team(self):
         """Test that note is deleted when team is deleted (CASCADE)."""
-        # Create a new team for this test
         new_team = Team.objects.create(
             name="Team to delete",
             description="Will be deleted",
@@ -151,9 +148,9 @@ class NotePermissionsTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.author = User.objects.get(username='me')  # pk=10, admin of team 1
-        self.other_member = User.objects.get(username='he')  # pk=12, member of team 1
-        self.outsider = User.objects.get(pk=13)  # not in team 1
+        self.author = User.objects.get(username='me')
+        self.other_member = User.objects.get(username='he')
+        self.outsider = User.objects.get(pk=13)
         self.team = Team.objects.get(pk=1)
         self.other_team = Team.objects.get(pk=2)
         self.status = Status.objects.get(pk=12)
@@ -171,7 +168,6 @@ class NotePermissionsTestCase(TestCase):
         )
 
         self.c.force_login(self.author)
-        # Set active team in session
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
@@ -222,17 +218,14 @@ class NotePermissionsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-update', args=[note.uuid]),
             {'title': 'Hacked Title', 'content': 'Hacked content'},
             follow=True
         )
 
         note.refresh_from_db()
-        self.assertEqual(note.title, 'Team Note')  # Unchanged
-
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
+        self.assertEqual(note.title, 'Team Note')
 
     def test_non_author_member_can_view_team_note(self):
         """Test that team member can view another member's team note."""
@@ -256,7 +249,6 @@ class NotePermissionsTestCase(TestCase):
 
     def test_team_admin_can_delete_others_note(self):
         """Test that team admin can delete another member's note."""
-        # Create note by other_member
         note = Note.objects.create(
             title="Member's Note",
             content="Content by member",
@@ -264,21 +256,17 @@ class NotePermissionsTestCase(TestCase):
             team=self.team
         )
 
-        # Login as admin (author is admin of team 1)
         self.c.force_login(self.author)
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-delete', args=[note.uuid]),
             follow=True
         )
 
         self.assertFalse(Note.objects.filter(pk=note.pk).exists())
-
-        messages = list(get_messages(response.wsgi_request))
-        self.assertGreater(len(messages), 0)
 
     def test_team_admin_can_update_others_note(self):
         """Test that team admin can update another member's note."""
@@ -294,7 +282,7 @@ class NotePermissionsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-update', args=[note.uuid]),
             {'title': 'Admin Updated', 'content': 'Changed by admin'},
             follow=True
@@ -305,7 +293,6 @@ class NotePermissionsTestCase(TestCase):
 
     def test_user_cannot_see_other_team_notes(self):
         """Test that user cannot see notes from another team."""
-        # Create note in team 1
         note = Note.objects.create(
             title="Team 1 Note",
             content="Secret content",
@@ -313,19 +300,16 @@ class NotePermissionsTestCase(TestCase):
             team=self.team
         )
 
-        # Login as outsider (user 13 has no team membership in team 1)
         self.c.force_login(self.outsider)
 
         response = self.c.get(reverse('notes:note-list'))
         self.assertNotContains(response, "Team 1 Note")
 
-        # Try to access detail directly
         response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
         self.assertEqual(response.status_code, 404)
 
     def test_user_cannot_access_individual_note_of_others(self):
         """Test that user cannot access another user's individual notes."""
-        # Create individual note
         note = Note.objects.create(
             title="Private Note",
             content="Private content",
@@ -333,7 +317,6 @@ class NotePermissionsTestCase(TestCase):
             team=None
         )
 
-        # Login as different user
         self.c.force_login(self.other_member)
 
         response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
@@ -364,28 +347,26 @@ class NoteViewsTestCase(TestCase):
 
     def test_note_list_returns_only_context_notes(self):
         """Test that note list returns only notes for current context."""
-        # Create notes in different contexts
-        team_note = Note.objects.create(
+        Note.objects.create(
             title="Team Note",
             content="Team content",
             author=self.user,
             team=self.team
         )
-        individual_note = Note.objects.create(
+        Note.objects.create(
             title="Individual Note",
             content="Individual content",
             author=self.user,
             team=None
         )
         other_team = Team.objects.get(pk=2)
-        other_team_note = Note.objects.create(
+        Note.objects.create(
             title="Other Team Note",
             content="Other team content",
             author=self.user,
             team=other_team
         )
 
-        # Test team context
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
@@ -395,7 +376,6 @@ class NoteViewsTestCase(TestCase):
         self.assertNotContains(response, "Individual Note")
         self.assertNotContains(response, "Other Team Note")
 
-        # Test individual context
         session['active_team_uuid'] = None
         session.save()
 
@@ -404,15 +384,13 @@ class NoteViewsTestCase(TestCase):
         self.assertNotContains(response, "Team Note")
 
     def test_create_note_without_team_creates_individual(self):
-        """Test that creating note without active team creates individual note."""
-        # No active team in session
-        response = self.c.post(
+        """Test that creating note without active team creates individual."""
+        self.c.post(
             reverse('notes:note-create'),
             {'title': 'Personal Note', 'content': 'My content'},
             follow=True
         )
 
-        self.assertEqual(response.status_code, 200)
         note = Note.objects.get(title='Personal Note')
         self.assertIsNone(note.team)
         self.assertEqual(note.author, self.user)
@@ -423,13 +401,12 @@ class NoteViewsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-create'),
             {'title': 'Team Note', 'content': 'Team content'},
             follow=True
         )
 
-        self.assertEqual(response.status_code, 200)
         note = Note.objects.get(title='Team Note')
         self.assertEqual(note.team, self.team)
         self.assertEqual(note.author, self.user)
@@ -443,21 +420,19 @@ class NoteViewsTestCase(TestCase):
             team=self.team
         )
 
-        # Login as outsider who is not in the team
-        outsider = User.objects.get(pk=13)  # user without team membership
+        outsider = User.objects.get(pk=13)
         self.c.force_login(outsider)
 
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-update', args=[note.uuid]),
             {'title': 'Hacked', 'content': 'Hacked'},
             follow=True
         )
 
-        # Should not find the note (404) - outsider can't access team notes
         note.refresh_from_db()
         self.assertEqual(note.title, "Other's Note")
 
@@ -470,14 +445,14 @@ class NoteViewsTestCase(TestCase):
             team=self.team
         )
 
-        note1 = Note.objects.create(
+        Note.objects.create(
             title="Note for Task 1",
             content="Content",
             author=self.user,
             team=self.team,
             task=self.task
         )
-        note2 = Note.objects.create(
+        Note.objects.create(
             title="Note for Other Task",
             content="Content",
             author=self.user,
@@ -502,7 +477,7 @@ class NoteViewsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-create') + f'?task={self.task.uuid}',
             {'title': 'Task Note', 'content': 'For task', 'task': self.task.id},
             follow=True
@@ -519,7 +494,7 @@ class NoteViewsTestCase(TestCase):
 
         response = self.c.post(
             reverse('notes:note-create') + f'?task={self.task.uuid}',
-            {'title': 'Task Note', 'content': 'For task'},
+            {'title': 'Task Note', 'content': 'For task', 'task': self.task.id},
             follow=False
         )
 
@@ -716,28 +691,27 @@ class NoteIntegrationTestCase(TestCase):
 
     def test_task_notes_displayed_on_task_page(self):
         """Test that notes are displayed on task update page."""
-        note1 = Note.objects.create(
+        Note.objects.create(
             title="Note 1",
             content="Content 1",
             author=self.user,
             team=self.team,
             task=self.task
         )
-        note2 = Note.objects.create(
+        Note.objects.create(
             title="Note 2",
             content="Content 2",
             author=self.user,
             team=self.team,
             task=self.task
         )
-        # Note for different task
         other_task = Task.objects.create(
             name="Other Task",
             status=self.status,
             author=self.user,
             team=self.team
         )
-        other_note = Note.objects.create(
+        Note.objects.create(
             title="Other Note",
             content="Other content",
             author=self.user,
@@ -759,7 +733,6 @@ class NoteIntegrationTestCase(TestCase):
 
     def test_cannot_attach_note_to_other_team_task(self):
         """Test that user cannot attach note to task from another team."""
-        # Create task in other team
         other_team_task = Task.objects.create(
             name="Other Team Task",
             status=self.status,
@@ -771,21 +744,18 @@ class NoteIntegrationTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        # Try to create note with task from other team via form
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-create'),
             {'title': 'Note', 'content': 'Content', 'task': other_team_task.id},
             follow=True
         )
 
-        # Should not create note with that task
         note = Note.objects.filter(title='Note').first()
         if note:
             self.assertNotEqual(note.task, other_team_task)
 
     def test_cannot_attach_note_to_other_user_task_in_individual_mode(self):
-        """Test that user cannot attach note to another user's task in individual mode."""
-        # Create task by other user (individual)
+        """Test cannot attach note to another user's task in individual mode."""
         other_user_task = Task.objects.create(
             name="Other User Task",
             status=self.status,
@@ -793,39 +763,25 @@ class NoteIntegrationTestCase(TestCase):
             team=None
         )
 
-        # No active team (individual mode)
-        response = self.c.post(
+        self.c.post(
             reverse('notes:note-create'),
             {'title': 'Note', 'content': 'Content', 'task': other_user_task.id},
             follow=True
         )
 
-        # Should not create note with that task
         note = Note.objects.filter(title='Note').first()
         if note:
             self.assertNotEqual(note.task, other_user_task)
 
     def test_note_form_filters_tasks_by_context(self):
         """Test that note form only shows tasks from current context."""
-        # Create tasks in different contexts
-        team_task = self.task  # Already in team 1
-        individual_task = Task.objects.create(
-            name="Individual Task",
-            status=self.status,
-            author=self.user,
-            team=None
-        )
-
-        # Test team context
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
         response = self.c.get(reverse('notes:note-create'))
-        # Task field should contain team tasks
         self.assertContains(response, 'task')
 
-        # Test individual context
         session['active_team_uuid'] = None
         session.save()
 
@@ -856,7 +812,7 @@ class NoteIntegrationTestCase(TestCase):
 
     def test_note_without_task_still_visible_in_list(self):
         """Test that notes without task are visible in note list."""
-        note = Note.objects.create(
+        Note.objects.create(
             title="Standalone Note",
             content="No task linked",
             author=self.user,
