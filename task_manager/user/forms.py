@@ -78,6 +78,20 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # set field order for new users
+        is_update = self.instance and self.instance.pk
+        if not is_update:
+            self.order_fields([
+                'username',
+                'password1',
+                'password2',
+                'first_name',
+                'last_name',
+                'description',
+                'join_team_name',
+                'join_team_password',
+            ])
+
         # if updating exist user
         if self.instance and self.instance.pk:
             self.fields['password1'].required = False
