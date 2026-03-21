@@ -272,7 +272,32 @@
     {% endblock %}
     
     <div class="container wrapper flex-grow-1 px-3 px-sm-0">
-      <div>{% bootstrap_messages %}</div>
+      {% if messages %}
+      <div class="custom-messages" id="customMessages">
+        {% for message in messages %}
+        <div class="custom-message {{ message.tags }}">
+          <i class="message-icon bi {% if message.tags == 'success' %}bi-check-circle-fill{% elif message.tags == 'error' %}bi-x-circle-fill{% elif message.tags == 'warning' %}bi-exclamation-triangle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+          <span class="message-text">{{ message }}</span>
+          <button type="button" class="btn-close" onclick="this.parentElement.remove();" aria-label="Close">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+            var messages = document.querySelectorAll('.custom-message');
+            messages.forEach(function(msg) {
+              msg.classList.add('fade-out');
+              setTimeout(function() {
+                msg.remove();
+              }, 300);
+            });
+          }, 4000);
+        });
+      </script>
+      {% endif %}
       <div id="content">
         <!-- button "back" for mobile -->
         <button onclick="window.history.back();" 

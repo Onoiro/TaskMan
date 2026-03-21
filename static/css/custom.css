@@ -76,3 +76,137 @@
 .toolbar-left .btn-group .btn i {
     font-size: 1.2rem;
 }
+
+/* === Кастомные сообщения === */
+.custom-messages {
+    position: fixed;
+    top: 80px;
+    right: 16px;
+    z-index: 1050;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.custom-message {
+    padding: 14px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    pointer-events: auto;
+    animation: slideIn 0.3s ease-out;
+    border-left: 4px solid;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.custom-message.fade-out {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+/* Типы сообщений */
+.custom-message.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+    border-left-color: #28a745 !important;
+    color: #155724 !important;
+}
+
+.custom-message.success .message-icon {
+    color: #28a745 !important;
+}
+
+.custom-message.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%) !important;
+    border-left-color: #dc3545 !important;
+    color: #721c24 !important;
+}
+
+.custom-message.error .message-icon {
+    color: #dc3545 !important;
+}
+
+.custom-message.warning {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%) !important;
+    border-left-color: #ffc107 !important;
+    color: #856404 !important;
+}
+
+.custom-message.warning .message-icon {
+    color: #ffc107 !important;
+}
+
+.custom-message.info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%) !important;
+    border-left-color: #17a2b8 !important;
+    color: #0c5460 !important;
+}
+
+.custom-message.info .message-icon {
+    color: #17a2b8 !important;
+}
+
+.custom-message .message-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.custom-message .message-text {
+    flex: 1;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.custom-message .btn-close {
+    opacity: 0.6;
+    flex-shrink: 0;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: -2px;
+    transition: all 0.2s ease;
+}
+
+.custom-message .btn-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 575.98px) {
+    .custom-messages {
+        top: 70px;
+        right: 8px;
+        left: 8px;
+        max-width: none;
+    }
+}
