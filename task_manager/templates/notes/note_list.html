@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1 py-3 py-lg-4">
+
+    <!-- Toolbar: Create button + Counter -->
+    <div class="toolbar-row mb-3">
+        <div class="toolbar-left">
+            <a class="btn btn-sm btn-primary" href="{% url 'notes:note-create' %}{% if task_uuid %}?task={{ task_uuid }}{% endif %}">
+                <i class="bi bi-plus-lg"></i><span class="ms-1">{% trans "New note" %}</span>
+            </a>
+        </div>
+
+        <div class="toolbar-right">
+            {% if notes %}
+            <span class="task-counter text-muted">
+                <i class="bi bi-sticky"></i>
+                <span class="fw-bold">{{ notes|length }}</span>
+                <span class="d-none d-sm-inline">note{{ notes|length|pluralize }}</span>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Note List (Cards) -->
+    <div class="d-flex flex-column gap-3">
+        {% if notes %}
+            {% for note in notes %}
+            <div class="card border-0 shadow-sm note-card">
+                <div class="card-body p-3">
+                    <div class="d-flex w-100 justify-content-between align-items-start mb-1">
+                        <div class="me-2">
+                            <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                {% if note.title %}
+                                    {{ note.title }}
+                                {% else %}
+                                    {{ note.content|truncatechars:50 }}
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="text-muted small text-nowrap mt-1">
+                            {{ note.created_at|date:"d.m.y" }}
+                            <span class="d-none d-sm-inline">{{ note.created_at|date:"H:i" }}</span>
+                        </div>
+                    </div>
+
+                    {% if note.title and note.content %}
+                    <p class="text-muted small mb-2 text-truncate-2">{{ note.content|truncatechars:100 }}</p>
+                    {% endif %}
+
+                    <!-- Bottom row: Task link + Author -->
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            {% if note.task %}
+                            <a href="{% url 'tasks:task-update' note.task.uuid %}" class="badge bg-light text-primary text-decoration-none border fw-normal" style="z-index: 2;">
+                                <i class="bi bi-card-checklist"></i> {{ note.task.name|truncatechars:20 }}
+                            </a>
+                            {% endif %}
+                            {% if note.team %}
+                            <span class="badge bg-light text-secondary border fw-normal">
+                                <i class="bi bi-building"></i> {{ note.team.name|truncatechars:15 }}
+                            </span>
+                            {% else %}
+                            <span class="badge bg-light text-secondary border fw-normal">
+                                <i class="bi bi-person"></i> {% trans "Personal" %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <span class="text-muted small">
+                            <i class="bi bi-person"></i> {{ note.author.display_name|default:_("Deleted user") }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Empty State -->
+            <div class="card border-0 bg-light py-5 text-center">
+                <div class="card-body">
+                    <div class="display-1 text-muted opacity-25 mb-3">📝</div>
+                    <h4 class="text-muted">{% trans "No notes found" %}</h4>
+                    <p class="text-muted small">{% trans "Create your first note to save important information" %}</p>
+                    <a href="{% url 'notes:note-create' %}{% if task_uuid %}?task={{ task_uuid }}{% endif %}" class="btn btn-primary mt-2">{% trans "Create Note" %}</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    /* ===== TOOLBAR STYLES ===== */
+    .toolbar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .task-counter {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+        background: #f8f9fa;
+        border-radius: 0.375rem;
+    }
+
+    /* ===== CARD STYLES ===== */
+    .note-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .note-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.1)!important;
+    }
+
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 767.98px) {
+        .note-card .card-body {
+            padding: 0.75rem !important;
+        }
+
+        .note-card .fs-5 {
+            font-size: 1rem !important;
+        }
+    }
+</style>
+{% endblock %}

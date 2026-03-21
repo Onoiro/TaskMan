@@ -165,12 +165,14 @@ class TaskFilterView(FilterView):
         sort = self._get_sort_param()
 
         if team:
-            return Task.objects.filter(team=team).order_by(sort)
+            return Task.objects.filter(team=team).order_by(
+                sort
+            ).prefetch_related('notes__author')
         else:
             return Task.objects.filter(
                 author=user,
                 team__isnull=True
-            ).order_by(sort)
+            ).order_by(sort).prefetch_related('notes__author')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -279,6 +281,12 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add notes related to this task
+        context['notes'] = self.object.notes.all().select_related('author')
+        return context
 
 
 class TaskDeleteView(TaskDeletePermissionMixin,

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Delete note" %}
+{% endblock %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4">{% trans "Delete note" %}</h1>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <p class="mb-3">
+                {% trans "Are you sure you want to delete this note?" %}
+            </p>
+
+            {% if object.title %}
+            <h5 class="fw-bold">{{ object.title }}</h5>
+            {% endif %}
+
+            <p class="text-muted small mb-0">
+                {{ object.content|truncatechars:150 }}
+            </p>
+        </div>
+    </div>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-trash me-1"></i> {% trans "Yes, delete" %}
+            </button>
+            <a href="{% url 'notes:note-detail' object.uuid %}" class="btn btn-secondary">
+                {% trans "Cancel" %}
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -73,6 +73,8 @@
                     <i class="bi bi-flag fs-2"></i>
                   {% elif request.resolver_match.url_name == 'labels-list' %}
                     <i class="bi bi-tags fs-2"></i>
+                  {% elif request.resolver_match.url_name == 'note-list' %}
+                    <i class="bi bi-sticky fs-2"></i>
                   {% else %}
                     <i class="bi bi-list fs-2"></i>
                   {% endif %}
@@ -99,6 +101,11 @@
                           <i class="bi bi-tags me-2"></i>{% trans "Labels" %}
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item {% if request.resolver_match.url_name == 'note-list' %}active{% endif %}" href="{% url 'notes:note-list' %}">
+                          <i class="bi bi-sticky me-2"></i>{% trans "Notes" %}
+                        </a>
+                    </li>
                 </ul>
               </div>
             </div>
@@ -119,6 +126,9 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'labels-list' %}active{% endif %}" href="{% url 'labels:labels-list' %}">{% trans "Labels" %}</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'note-list' %}active{% endif %}" href="{% url 'notes:note-list' %}">{% trans "Notes" %}</a>
                   </li>
               </ul>
               {% endif %}
