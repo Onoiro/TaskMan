@@ -38,6 +38,10 @@ migrations:
 migrate:
 	$(MANAGE) migrate
 
+# collect static files (local development)
+collectstatic:
+	$(MANAGE) collectstatic --noinput
+
 # when you want to operate with local DB
 shell:
 	$(MANAGE) shell
@@ -266,6 +270,7 @@ help:
 	@echo "  test-cov        - Show test coverage in %"
 	@echo "  migrations      - Create migrations"
 	@echo "  migrate         - Apply migrations"
+	@echo "  collectstatic   - Collect static files"
 	@echo "  shell           - Enter Django shell"
 	@echo "  messages        - Create translation files"
 	@echo "  compile         - Compile translations"

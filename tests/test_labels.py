@@ -174,7 +174,7 @@ class LabelsTestCase(TestCase):
         # Check for the new structure with additional classes
         self.assertContains(response, f'href="{expected_url}"')
         self.assertContains(
-            response, 'text-decoration-none text-dark fw-bold')
+            response, 'text-decoration-none text-body fw-bold')
         self.assertContains(response, label.name)
 
     def test_labels_list_cards_structure(self):
