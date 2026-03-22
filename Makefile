@@ -186,6 +186,10 @@ deploy:
 
 	@echo "=== Make rights on static files for Nginx ==="
 	chmod -R o+rX staticfiles/
+
+	@echo "=== Restart Django to reload staticfiles manifest ==="
+	$(DC) restart django-web
+	sleep 5
 	
 	@echo "=== Clear Docker-cache ==="
 	docker system prune -f
@@ -208,6 +212,8 @@ redeploy:
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py collectstatic --no-input --clear
 	chmod -R o+rX staticfiles/
+	$(DC) restart django-web
+	sleep 5
 	docker image prune -f
 	docker builder prune -f
 	$(DC) ps
