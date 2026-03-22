@@ -43,7 +43,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <div class="text-muted small py-3 text-center bg-light rounded">
+    <div class="text-muted small py-3 text-center bg-body-tertiary rounded">
         <i class="bi bi-sticky me-1"></i>
         {% trans "No notes for this task" %}
     </div>
@@ -55,6 +55,6 @@
         transition: background-color 0.15s ease;
     }
     .note-card-sm:hover {
-        background-color: #f8f9fa;
+        background-color: var(--tm-bg-secondary);
     }
 </style>

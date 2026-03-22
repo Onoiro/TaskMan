@@ -102,7 +102,7 @@
                 <!-- Search -->
                 <div class="filter-search mb-3">
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0">
+                        <span class="input-group-text bg-body border-end-0">
                             <i class="bi bi-search text-muted"></i>
                         </span>
                         {{ filter.form.search }}
@@ -301,7 +301,7 @@
             {% if filter.qs %}
                 {% for obj in filter.qs %}
                 <div class="simple-task-item py-2 px-2{% if forloop.last %} rounded-bottom{% else %} border-bottom{% endif %}{% if forloop.first %} rounded-top{% endif %}">
-                    <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark d-flex align-items-center gap-2">
+                    <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-body d-flex align-items-center gap-2">
                         <span class="status-dot flex-shrink-0" style="background-color: {{ obj.status.color|default:'#dee2e6' }};"></span>
                         <span class="text-truncate">{{ obj.name }}</span>
                         <span class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
@@ -336,7 +336,7 @@
                     <div class="card-body p-3">
                         <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                             <div class="me-2">
-                                <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
                                     {{ obj.name }}
                                     {% if obj.checklist_total > 0 %}
                                     <span class="text-muted small ms-1" title="{% trans 'Checklist' %}">
@@ -367,11 +367,11 @@
 
                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-1">
                             <div class="d-flex flex-wrap align-items-center gap-1 position-relative" style="z-index: 2;">
-                                <span class="badge border bg-white" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
+                                <span class="badge border bg-body" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
                                     {{ obj.status.name }}
                                 </span>
                                 {% for label in obj.labels.all %}
-                                <span class="badge bg-light text-secondary border fw-normal">{{ label.name }}</span>
+                                <span class="badge bg-body-tertiary text-body border fw-normal">{{ label.name }}</span>
                                 {% endfor %}
                             </div>
 
@@ -414,7 +414,7 @@
 .task-counter {
     font-size: 0.85rem;
     padding: 0.25rem 0.5rem;
-    background: #f8f9fa;
+    background: var(--tm-bg-secondary);
     border-radius: 0.375rem;
 }
 .filter-btn {
@@ -464,7 +464,7 @@
 
 /* ===== FILTER PANEL ===== */
 .filter-panel {
-    background: #fafbfc;
+    background: var(--tm-filter-bg);
 }
 .filter-search .input-group .form-control {
     border-left: 0;
@@ -493,7 +493,7 @@
 }
 .filter-group {
     padding: 0.75rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--tm-filter-border);
 }
 .filter-group:last-child {
     border-bottom: none;
@@ -502,7 +502,7 @@
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #adb5bd;
+    color: var(--tm-text-muted-light);
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
@@ -518,7 +518,7 @@
 .filter-label {
     display: block;
     font-size: 0.75rem;
-    color: #6c757d;
+    color: var(--tm-text-muted);
     margin-bottom: 0.2rem;
     font-weight: 600;
 }
@@ -543,11 +543,11 @@
 
 /* Exclude toggle button */
 .exclude-toggle {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--tm-border-color);
     border-left: 0;
     border-radius: 0 0.375rem 0.375rem 0;
-    background: #fff;
-    color: #adb5bd;
+    background: var(--tm-task-bg);
+    color: var(--tm-text-muted-light);
     padding: 0 0.5rem;
     display: flex;
     align-items: center;
@@ -593,8 +593,8 @@
 }
 .user-badge {
     padding: 0.15rem 0.4rem;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background: var(--tm-bg-secondary);
+    border: 1px solid var(--tm-border-color);
     border-radius: 0.25rem;
     font-size: 0.75rem;
     white-space: nowrap;
@@ -620,11 +620,11 @@
 
 /* Simple view */
 .simple-task-item {
-    background-color: #fff;
+    background-color: var(--tm-task-bg);
     transition: background-color 0.15s ease;
 }
 .simple-task-item:hover {
-    background-color: #f8f9fa;
+    background-color: var(--tm-bg-secondary);
 }
 .status-dot {
     width: 12px;

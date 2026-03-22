@@ -12,7 +12,7 @@
                 {% csrf_token %}
 
                 <!-- meta information block (context) -->
-                <div class="card border-0 shadow-sm mb-3 bg-light">
+                <div class="card border-0 shadow-sm mb-3 bg-body-tertiary">
                     <div class="card-body py-2 px-3">
                         <!-- top row: id (left), date/time (right) -->
                         <div class="d-flex justify-content-between small mb-2">
@@ -21,23 +21,23 @@
                         </div>
                         <!-- middle row: name (left), color (right) -->
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge border bg-white" style="color: {{ object.color|default:'#6c757d' }}; border-color: {{ object.color|default:'#dee2e6' }} !important;">
+                            <span class="badge border bg-body" style="color: {{ object.color|default:'#6c757d' }}; border-color: {{ object.color|default:'#dee2e6' }} !important;">
                                 {{ object.name }}
                             </span>
                             {% if object.color %}
                             <div class="d-flex align-items-center gap-2" title="{% trans 'Color' %}">
-                                <div style="width: 20px; height: 20px; background-color: {{ object.color }}; border-radius: 3px; border: 1px solid #ddd;"></div>
+                                <div style="width: 20px; height: 20px; background-color: {{ object.color }}; border-radius: 3px; border: 1px solid var(--tm-border-color);"></div>
                                 <span class="small text-muted">{{ object.color }}</span>
                             </div>
                             {% endif %}
                         </div>
                         <!-- bottom row: creator (left), description (right) -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Creator' %}">
+                            <div class="d-flex align-items-center fw-bold text-body border rounded px-2 py-1 bg-body-tertiary" title="{% trans 'Creator' %}">
                                 <span class="me-1">👤</span> {{ object.creator.username }}
                             </div>
                             {% if object.description %}
-                            <div class="d-flex align-items-center fw-bold text-dark border rounded px-2 py-1 bg-white" title="{% trans 'Description' %}">
+                            <div class="d-flex align-items-center fw-bold text-body border rounded px-2 py-1 bg-body-tertiary" title="{% trans 'Description' %}">
                                 <span class="me-1">📝</span> {% trans "Has description" %}
                             </div>
                             {% endif %}
@@ -84,7 +84,7 @@
 <style>
     textarea.form-control {
         min-height: 200px;
-        background-color: #fcfcfc;
+        background-color: var(--tm-bg-tertiary);
         line-height: 1.6;
     }
 
@@ -95,7 +95,7 @@
     }
 
     label.form-label {
-        color: #6c757d;
+        color: var(--tm-text-muted);
         font-size: 0.85rem;
         margin-bottom: 0.2rem;
         text-transform: uppercase;

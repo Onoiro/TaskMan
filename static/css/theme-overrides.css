@@ -1,0 +1,293 @@
+/**
+ * Theme-specific CSS overrides for TaskMan
+ * These handle elements that Bootstrap doesn't automatically theme
+ */
+
+/* Light theme (default) */
+[data-bs-theme="light"] {
+    /* Custom background colors */
+    --tm-bg-secondary: #f8f9fa;
+    --tm-bg-tertiary: #fafbfc;
+    --tm-border-color: #dee2e6;
+    --tm-text-muted: #6c757d;
+    --tm-text-muted-light: #adb5bd;
+    
+    /* Task card specific */
+    --tm-task-bg: #ffffff;
+    --tm-simple-task-bg: #ffffff;
+    --tm-simple-task-hover: #f8f9fa;
+    
+    /* Filter panel */
+    --tm-filter-bg: #fafbfc;
+    --tm-filter-border: #f0f0f0;
+    
+    /* User badge */
+    --tm-user-badge-bg: #f8f9fa;
+    --tm-user-badge-border: #dee2e6;
+    
+    /* Pending user card */
+    --tm-pending-bg: #fffbf0;
+    
+    /* Messages - light theme colors */
+    --tm-msg-success-bg: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    --tm-msg-success-border: #28a745;
+    --tm-msg-success-text: #155724;
+    --tm-msg-error-bg: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    --tm-msg-error-border: #dc3545;
+    --tm-msg-error-text: #721c24;
+    --tm-msg-warning-bg: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+    --tm-msg-warning-border: #ffc107;
+    --tm-msg-warning-text: #856404;
+    --tm-msg-info-bg: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    --tm-msg-info-border: #17a2b8;
+    --tm-msg-info-text: #0c5460;
+}
+
+/* Dark theme */
+[data-bs-theme="dark"] {
+    /* Custom background colors */
+    --tm-bg-secondary: #2b3035;
+    --tm-bg-tertiary: #212529;
+    --tm-border-color: #495057;
+    --tm-text-muted: #adb5bd;
+    --tm-text-muted-light: #6c757d;
+    
+    /* Task card specific */
+    --tm-task-bg: #212529;
+    --tm-simple-task-bg: #212529;
+    --tm-simple-task-hover: #2b3035;
+    
+    /* Filter panel */
+    --tm-filter-bg: #2b3035;
+    --tm-filter-border: #495057;
+    
+    /* User badge */
+    --tm-user-badge-bg: #2b3035;
+    --tm-user-badge-border: #495057;
+    
+    /* Pending user card */
+    --tm-pending-bg: #3d3520;
+    
+    /* Messages - dark theme colors */
+    --tm-msg-success-bg: linear-gradient(135deg, #1e3a2f 0%, #1a332a 100%);
+    --tm-msg-success-border: #198754;
+    --tm-msg-success-text: #a3d9b8;
+    --tm-msg-error-bg: linear-gradient(135deg, #3d2226 0%, #2d1a1d 100%);
+    --tm-msg-error-border: #dc3545;
+    --tm-msg-error-text: #f0a8af;
+    --tm-msg-warning-bg: linear-gradient(135deg, #3d3520 0%, #332c1a 100%);
+    --tm-msg-warning-border: #ffc107;
+    --tm-msg-warning-text: #ffeeba;
+    --tm-msg-info-bg: linear-gradient(135deg, #1d353a 0%, #162a2f 100%);
+    --tm-msg-info-border: #0dcaf0;
+    --tm-msg-info-text: #a6dbe5;
+}
+
+/* Task counter in toolbar */
+.toolbar-row .task-counter {
+    background-color: var(--tm-bg-secondary);
+}
+
+/* Filter panel */
+.filter-panel {
+    background-color: var(--tm-filter-bg) !important;
+}
+.filter-group {
+    border-bottom-color: var(--tm-filter-border);
+}
+.filter-group-label {
+    color: var(--tm-text-muted-light);
+}
+.filter-label {
+    color: var(--tm-text-muted);
+}
+.exclude-toggle {
+    background-color: var(--tm-task-bg);
+    border-color: var(--tm-border-color);
+    color: var(--tm-text-muted-light);
+}
+.exclude-toggle:hover {
+    background-color: var(--tm-bg-secondary);
+    color: #dc3545;
+}
+.exclude-toggle.active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+/* Simple task view */
+.simple-task-item {
+    background-color: var(--tm-simple-task-bg);
+    border-color: var(--tm-border-color) !important;
+}
+.simple-task-item:hover {
+    background-color: var(--tm-simple-task-hover);
+}
+
+/* Full task card */
+.task-card {
+    background-color: var(--tm-task-bg);
+}
+
+/* User badge */
+.user-badge {
+    background-color: var(--tm-user-badge-bg);
+    border-color: var(--tm-user-badge-border) !important;
+}
+
+/* Custom messages - override for dark theme */
+.custom-message.success {
+    background: var(--tm-msg-success-bg) !important;
+    border-left-color: var(--tm-msg-success-border) !important;
+    color: var(--tm-msg-success-text) !important;
+}
+.custom-message.success .message-icon {
+    color: var(--tm-msg-success-border) !important;
+}
+
+.custom-message.error {
+    background: var(--tm-msg-error-bg) !important;
+    border-left-color: var(--tm-msg-error-border) !important;
+    color: var(--tm-msg-error-text) !important;
+}
+.custom-message.error .message-icon {
+    color: var(--tm-msg-error-border) !important;
+}
+
+.custom-message.warning {
+    background: var(--tm-msg-warning-bg) !important;
+    border-left-color: var(--tm-msg-warning-border) !important;
+    color: var(--tm-msg-warning-text) !important;
+}
+.custom-message.warning .message-icon {
+    color: var(--tm-msg-warning-border) !important;
+}
+
+.custom-message.info {
+    background: var(--tm-msg-info-bg) !important;
+    border-left-color: var(--tm-msg-info-border) !important;
+    color: var(--tm-msg-info-text) !important;
+}
+.custom-message.info .message-icon {
+    color: var(--tm-msg-info-border) !important;
+}
+
+/* Mobile back button - use outline style that adapts to theme */
+.btn-back-mobile {
+    background-color: var(--tm-bg-secondary) !important;
+    border: 1px solid var(--tm-border-color) !important;
+}
+.btn-back-mobile span {
+    color: var(--bs-body-color) !important;
+}
+
+/* Sort dropdown active item */
+.dropdown-item.active {
+    background-color: var(--bs-primary);
+}
+
+/* Filter exclude toggle - ensure proper styling in dark mode */
+[data-bs-theme="dark"] .filter-search .input-group-text {
+    background-color: var(--tm-bg-secondary);
+    border-color: var(--tm-border-color);
+}
+
+[data-bs-theme="dark"] .filter-search .form-control {
+    background-color: var(--tm-task-bg);
+    border-color: var(--tm-border-color);
+    color: var(--bs-body-color);
+}
+
+/* Form inputs in filter panel */
+[data-bs-theme="dark"] .filter-field .form-select,
+[data-bs-theme="dark"] .filter-field .form-control {
+    background-color: var(--tm-task-bg);
+    border-color: var(--tm-border-color);
+    color: var(--bs-body-color);
+}
+
+/* Labels in task cards - ensure they work in dark mode */
+[data-bs-theme="dark"] .badge.border {
+    border-color: var(--tm-border-color) !important;
+}
+
+/* Task filter panel - additional dark mode fixes */
+[data-bs-theme="dark"] .filter-panel .card-body {
+    background-color: var(--tm-filter-bg);
+}
+
+[data-bs-theme="dark"] .filter-search .input-group-text {
+    background-color: var(--tm-bg-secondary);
+    border-color: var(--tm-border-color);
+    color: var(--tm-text-muted);
+}
+
+[data-bs-theme="dark"] .filter-search .form-control {
+    background-color: var(--tm-task-bg);
+    border-color: var(--tm-border-color);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .exclude-toggle:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Dropdown active item */
+[data-bs-theme="dark"] .dropdown-item.active {
+    background-color: var(--bs-primary);
+}
+
+/* Card backgrounds in dark mode */
+[data-bs-theme="dark"] .card {
+    background-color: var(--tm-task-bg);
+}
+
+[data-bs-theme="dark"] .card-body {
+    background-color: var(--tm-task-bg);
+}
+
+/* Empty state cards */
+[data-bs-theme="dark"] .bg-body-tertiary {
+    background-color: var(--tm-bg-tertiary) !important;
+}
+
+/* Ensure proper text contrast */
+[data-bs-theme="dark"] .text-body {
+    color: var(--bs-body-color) !important;
+}
+
+/* Fix for info emphasis in dark mode */
+[data-bs-theme="dark"] .text-info-emphasis {
+    color: #6ec6ca !important;
+}
+
+/* Form controls - ensure consistent styling in dark mode */
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    background-color: var(--tm-task-bg);
+    border-color: var(--tm-border-color);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .form-control:focus,
+[data-bs-theme="dark"] .form-select:focus {
+    background-color: var(--tm-task-bg);
+    border-color: var(--bs-primary);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+    color: var(--tm-text-muted-light);
+}
+
+/* Textarea specific - ensure dark background always */
+[data-bs-theme="dark"] textarea.form-control {
+    background-color: var(--tm-bg-tertiary) !important;
+    color: var(--bs-body-color) !important;
+}
+
+[data-bs-theme="dark"] textarea.form-control:focus {
+    background-color: var(--tm-bg-tertiary) !important;
+    color: var(--bs-body-color) !important;
+}

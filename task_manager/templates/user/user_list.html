@@ -21,7 +21,7 @@
                                     {{ request.active_team.name }}
                                 {% endif %}
                             </h2>
-                            <span class="badge bg-light text-muted border">
+                            <span class="badge bg-body-tertiary text-body border">
                                 👥 {{ user_list|length }}
                             </span>
                         </div>
@@ -57,7 +57,7 @@
         <h5 class="text-warning mb-3">
             <i class="bi bi-hourglass-split"></i>
             {% trans "Pending approval" %}
-            <span class="badge bg-warning text-dark">{{ pending_memberships|length }}</span>
+            <span class="badge bg-warning text-body">{{ pending_memberships|length }}</span>
         </h5>
         <div class="d-flex flex-column gap-3">
             {% for membership in pending_memberships %}
@@ -67,16 +67,16 @@
                         <div class="col">
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
-                                    <a href="{% url 'user:user-detail' membership.user.username %}" class="text-decoration-none text-dark fw-bold fs-5">
+                                    <a href="{% url 'user:user-detail' membership.user.username %}" class="text-decoration-none text-body fw-bold fs-5">
                                         {{ membership.user.username }}
                                     </a>
                                 </div>
-                                <span class="badge bg-warning text-dark">
+                                <span class="badge bg-warning text-body">
                                     {% trans "Pending" %}
                                 </span>
                             </div>
                             <div class="mb-2">
-                                <span class="text-dark fw-medium">
+                                <span class="text-body fw-medium">
                                     {{ membership.user.first_name|default:"" }} {{ membership.user.last_name|default:"" }}
                                 </span>
                             </div>
@@ -105,7 +105,7 @@
                             <!-- Top row: Username + ID + Date -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
-                                    <a href="{% url 'user:user-detail' user.username %}" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">
+                                    <a href="{% url 'user:user-detail' user.username %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
                                         {{ user.username }}
                                     </a>
                                 </div>
@@ -117,7 +117,7 @@
 
                             <!-- Full name and description -->
                             <div class="mb-2">
-                                <span class="text-dark fw-medium">
+                                <span class="text-body fw-medium">
                                     {{ user.first_name|default:"" }} {{ user.last_name|default:"" }}
                                 </span>
                                 {% if user.description %}
@@ -152,7 +152,7 @@
             {% endfor %}
         {% else %}
             <!-- Empty State -->
-            <div class="card border-0 bg-light py-5 text-center">
+            <div class="card border-0 bg-body-tertiary py-5 text-center">
                 <div class="card-body">
                     <div class="display-1 text-muted opacity-25 mb-3">👤</div>
                     <h4 class="text-muted">{% trans "No users found" %}</h4>
@@ -166,31 +166,27 @@
 <style>
     /* ===== TEAM INFO CARD STYLES ===== */
     .team-info-card {
-        background: #f8f9fa;
+        background: var(--tm-bg-secondary);
         transition: all 0.2s ease;
         cursor: pointer;
     }
     
     .team-info-card:hover {
-        background: #e9ecef;
+        background: var(--tm-bg-tertiary);
         transform: translateY(-1px);
         box-shadow: 0 .25rem .5rem rgba(0,0,0,.075)!important;
     }
     
     .team-info-card h2 {
-        color: #495057 !important;
+        color: var(--bs-body-color) !important;
         font-weight: 600;
-    }
-    
-    .team-info-card .text-muted {
-        color: #6c757d !important;
     }
     
     .team-info-card .badge {
         font-size: 0.75rem;
-        background: #e9ecef !important;
-        color: #6c757d !important;
-        border: 1px solid #dee2e6 !important;
+        background: var(--tm-bg-secondary) !important;
+        color: var(--tm-text-muted) !important;
+        border: 1px solid var(--tm-border-color) !important;
     }
 
     /* ===== TOOLBAR STYLES ===== */
@@ -212,7 +208,7 @@
     .task-counter {
         font-size: 0.85rem;
         padding: 0.25rem 0.5rem;
-        background: #f8f9fa;
+        background: var(--tm-bg-secondary);
         border-radius: 0.375rem;
     }
     
@@ -237,8 +233,8 @@
     }
     
     .current-user-card {
-        background-color: #f8f9fa !important;
-        border: 2px solid #e9ecef !important;
+        background-color: var(--tm-bg-secondary) !important;
+        border: 2px solid var(--tm-border-color) !important;
     }
 
     /* ===== MOBILE STYLES ===== */
@@ -269,8 +265,8 @@
 
     /* ===== PENDING USER CARD STYLES ===== */
     .pending-user-card {
-        border-left: 4px solid #ffc107 !important;
-        background: #fffbf0;
+        border-left: 4px solid var(--bs-warning) !important;
+        background: var(--tm-pending-bg);
     }
 
     .pending-user-card:hover {
