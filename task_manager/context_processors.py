@@ -28,7 +28,8 @@ def static_version(request):
     manifest_path = os.path.join(settings.STATIC_ROOT, 'staticfiles.json')
     try:
         mtime = os.path.getmtime(manifest_path)
-        version = hashlib.md5(str(mtime).encode()).hexdigest()[:8]
+        version = hashlib.md5(str(mtime).encode(),
+                              usedforsecurity=False).hexdigest()[:8]
     except OSError:
         version = 'dev'
 
