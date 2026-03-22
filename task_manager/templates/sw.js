@@ -1,21 +1,19 @@
-// ВАЖНО: менять версию при КАЖДОМ деплое!
-const CACHE_NAME = 'taskman-v12';
+{% load static %}
+const CACHE_NAME = 'taskman-{{ STATIC_VERSION }}';
 
 const CRITICAL_ASSETS = [
-  '/static/css/vendor/bootstrap.min.css',
-  '/static/css/vendor/bootstrap-icons.min.css',
-  '/static/js/bootstrap.bundle.min.js',
-  '/static/css/vendor/fonts/bootstrap-icons.woff2',
-  '/static/css/custom.css',
-  '/static/icons/emodji.png',
-  '/static/icons/icon-192x192.png',
-  '/static/icons/icon-180x180.png',
-  '/static/icons/icon-512x512.png',
-  '/static/images/favicon.ico',
-  '/static/offline.html'
+  '{% static "css/vendor/bootstrap.min.css" %}',
+  '{% static "css/vendor/bootstrap-icons.min.css" %}',
+  '{% static "js/bootstrap.bundle.min.js" %}',
+  '{% static "css/vendor/fonts/bootstrap-icons.woff2" %}',
+  '{% static "css/custom.css" %}',
+  '{% static "icons/emodji.png" %}',
+  '{% static "icons/icon-192x192.png" %}',
+  '{% static "icons/icon-180x180.png" %}',
+  '{% static "icons/icon-512x512.png" %}',
+  '{% static "images/favicon.ico" %}',
+  '{% static "offline.html" %}'
 ];
-
-// Больше никаких EXTERNAL — всё локально!
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -55,7 +53,7 @@ self.addEventListener('fetch', (e) => {
         })
         .catch(() =>
           caches.match(e.request)
-            .then(cached => cached || caches.match('/static/offline.html'))
+            .then(cached => cached || caches.match('{% static "offline.html" %}'))
         )
     );
     return;

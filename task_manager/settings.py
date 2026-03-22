@@ -117,6 +117,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'task_manager.context_processors.team_context',
+                'task_manager.context_processors.static_version',
             ],
         },
     },
@@ -205,10 +206,11 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+# Better to change later
 WHITENOISE_MANIFEST_STRICT = False
 
 # Default primary key field type
