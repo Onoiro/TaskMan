@@ -54,19 +54,18 @@
                         </h1>
                         <div class="mb-3">
                             <label class="form-label small text-muted mb-1" for="id_title">
-                                {% trans "Title" %}
+                                {% trans "Title" %} ({% trans "Optional" %})
                             </label>
                             <input type="text"
                                    class="form-control"
                                    name="title"
                                    id="id_title"
                                    value="{{ form.title.value|default:'' }}"
-                                   placeholder="{% trans 'Optional title' %}"
                                    maxlength="150">
                         </div>
                         <div class="mb-3">
                             <label class="form-label required-mark" for="id_content">
-                                {% trans "Content" %} <span class="text-danger">*</span>
+                                {% trans "Content" %}
                             </label>
                             <textarea class="form-control"
                                       name="content"
@@ -88,9 +87,15 @@
                                 {% trans "Create" %}
                             {% endif %}
                         </button>
+                        {% if request.GET.task %}
+                        <a href="{% url 'tasks:task-update' request.GET.task %}" class="btn btn-outline-secondary px-md-4 py-2">
+                            {% trans "Cancel" %}
+                        </a>
+                        {% else %}
                         <a href="{% url 'notes:note-list' %}" class="btn btn-outline-secondary px-md-4 py-2">
                             {% trans "Cancel" %}
                         </a>
+                        {% endif %}
                     </div>
 
                     {% if object.pk %}

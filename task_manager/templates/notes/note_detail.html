@@ -74,9 +74,15 @@
                     <a href="{% url 'notes:note-update' note.uuid %}" class="btn btn-primary px-md-4 py-2 fw-bold">
                         <i class="bi bi-pencil me-1"></i> {% trans "Edit" %}
                     </a>
-                    <a href="{% url 'notes:note-list' %}" class="btn btn-outline-secondary px-md-4 py-2">
-                        {% trans "Back to list" %}
+                    {% if request.GET.task %}
+                    <a href="{% url 'tasks:task-update' request.GET.task %}" class="btn btn-outline-secondary px-md-4 py-2">
+                        {% trans "Cancel" %}
                     </a>
+                    {% else %}
+                    <a href="{% url 'notes:note-list' %}" class="btn btn-outline-secondary px-md-4 py-2">
+                        {% trans "Cancel" %}
+                    </a>
+                    {% endif %}
                 </div>
 
                 <a href="{% url 'notes:note-delete' note.uuid %}" class="btn btn-link text-danger text-decoration-none mt-2 mt-md-0">

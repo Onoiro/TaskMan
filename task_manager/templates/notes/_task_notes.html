@@ -27,7 +27,8 @@
                             {% if note.title %}
                             <strong class="d-block mb-1 text-body">{{ note.title }}</strong>
                             {% endif %}
-                            <span class="text-muted small">{{ note.content|truncatechars:100 }}</span>
+                            <span class="text-muted small d-none d-md-inline">{{ note.content|truncatechars:100 }}</span>
+                            <span class="text-muted small d-md-none">{{ note.content|truncatechars:50 }}</span>
                         </div>
                     </div>
                 </div>
