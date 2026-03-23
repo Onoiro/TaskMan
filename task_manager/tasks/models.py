@@ -105,6 +105,10 @@ class Task(models.Model):
             return 0
         return int((self.checklist_done / self.checklist_total) * 100)
 
+    @property
+    def notes_count(self):
+        return self.notes.count()
+
     def save(self, *args, **kwargs):
         # Auto-detect team if not specified
         if not self.team and self.author:

@@ -305,6 +305,11 @@
                         <span class="status-dot flex-shrink-0" style="background-color: {{ obj.status.color|default:'#dee2e6' }};"></span>
                         <span class="text-truncate">{{ obj.name }}</span>
                         <span class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+                            {% if obj.notes_count > 0 %}
+                            <span class="text-muted small">
+                                <i class="bi bi-sticky"></i> {{ obj.notes_count }}
+                            </span>
+                            {% endif %}
                             {% if obj.checklist_total > 0 %}
                             <span class="text-muted small">
                                 <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}
@@ -338,6 +343,11 @@
                             <div class="me-2">
                                 <a href="{% url 'tasks:task-update' obj.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
                                     {{ obj.name }}
+                                    {% if obj.notes_count > 0 %}
+                                    <span class="text-muted small ms-1" title="{% trans 'Notes' %}">
+                                        <i class="bi bi-sticky"></i> {{ obj.notes_count }}
+                                    </span>
+                                    {% endif %}
                                     {% if obj.checklist_total > 0 %}
                                     <span class="text-muted small ms-1" title="{% trans 'Checklist' %}">
                                         <i class="bi bi-check2-square"></i> {{ obj.checklist_done }}/{{ obj.checklist_total }}

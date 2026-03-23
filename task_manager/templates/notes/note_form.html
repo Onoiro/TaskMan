@@ -52,8 +52,28 @@
                                 {% trans "Create note" %}
                             {% endif %}
                         </h1>
-                        {% bootstrap_field form.title %}
-                        {% bootstrap_field form.content %}
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-1" for="id_title">
+                                {% trans "Title" %}
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="title"
+                                   id="id_title"
+                                   value="{{ form.title.value|default:'' }}"
+                                   placeholder="{% trans 'Optional title' %}"
+                                   maxlength="150">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required-mark" for="id_content">
+                                {% trans "Content" %} <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control"
+                                      name="content"
+                                      id="id_content"
+                                      required
+                                      placeholder="{% trans 'Enter note content...' %}">{{ form.content.value|default:'' }}</textarea>
+                        </div>
                         {% bootstrap_field form.task %}
                     </div>
                 </div>
@@ -93,9 +113,9 @@
     }
 
     input[name="title"] {
-        font-weight: 700;
-        font-size: 1.25rem;
-        padding: 0.75rem;
+        font-weight: 400;
+        font-size: 1rem;
+        padding: 0.5rem;
     }
 
     label.form-label {
@@ -104,6 +124,11 @@
         margin-bottom: 0.2rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+    }
+
+    .required-mark::after {
+        content: " *";
+        color: var(--bs-danger, #dc3545);
     }
 </style>
 {% endblock %}

@@ -117,7 +117,7 @@ msgstr "Дата обновления"
 #: notes/models.py:62 templates/feedback.html:28
 #: templates/notes/note_form.html:20
 msgid "Note"
-msgstr "Примечание"
+msgstr "Заметка"
 
 #: notes/models.py:63 templates/base.html:106 templates/base.html:131
 #: templates/notes/_task_notes.html:7
