@@ -3,22 +3,24 @@
 {% load i18n %}
 
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" data-bs-theme="light">
+<html lang="{{ LANGUAGE_CODE }}">
+
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+      }
+    })();
+  </script>
 
   <head>
     <meta charset="utf-8">
     <!-- Inline script to prevent FOUC (Flash of Unstyled Content) -->
-    <script>
-      (function() {
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-          document.documentElement.setAttribute('data-bs-theme', 'dark');
-        } else {
-          document.documentElement.setAttribute('data-bs-theme', 'light');
-        }
-      })();
-    </script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
     <meta name="theme-color" content="#007bff">
     
@@ -52,12 +54,13 @@
     <link href="{% static 'css/vendor/bootstrap-icons.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/theme-overrides.css' %}" rel="stylesheet">
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    
     <style>
-        /* Smooth transition for theme switching */
-        html, body {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      html.theme-transition, html.theme-transition body {
+          transition: background-color 0.3s ease, color 0.3s ease;
+      }
     </style>
+    
   </head>
 
   <body class="d-flex flex-column min-vh-100">

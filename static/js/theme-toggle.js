@@ -36,10 +36,21 @@
      */
     function setTheme(theme) {
         const effectiveTheme = getEffectiveTheme(theme);
+
+        if (animate) {
+            document.documentElement.classList.add('theme-transition');
+        }
+
         document.documentElement.setAttribute('data-bs-theme', effectiveTheme);
         localStorage.setItem('theme', theme);
         updateToggleIcon(theme);
         updateActiveButtons(theme);
+
+        if (animate) {
+            setTimeout(function() {
+                document.documentElement.classList.remove('theme-transition');
+            }, 350);
+        }
     }
 
     /**
@@ -100,18 +111,18 @@
         const preferredTheme = getPreferredTheme();
         
         // Apply the theme
-        setTheme(preferredTheme);
+        setTheme(preferredTheme, false);
 
         // Add click handlers to all theme toggle buttons
-        document.querySelectorAll('[data-theme-value]').forEach(button => {
+        document.querySelectorAll('[data-theme-value]').forEach(function(button) {
             button.addEventListener('click', function() {
-                const theme = this.getAttribute('data-theme-value');
-                setTheme(theme);
+                var theme = this.getAttribute('data-theme-value');
+                setTheme(theme, true);
             });
         });
 
         // Listen for system theme changes
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
         mediaQuery.addEventListener('change', handleSystemThemeChange);
     });
 
