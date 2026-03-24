@@ -18,7 +18,7 @@
     {% if notes %}
     <div class="d-flex flex-column gap-2">
         {% for note in notes %}
-        <a href="{% url 'notes:note-detail' note.uuid %}?task={{ task.uuid }}"
+        <a href="{% url 'notes:note-update' note.uuid %}?task={{ task.uuid }}"
            class="text-decoration-none">
             <div class="card border-0 shadow-sm note-card-sm">
                 <div class="card-body p-2 p-md-3">

@@ -243,7 +243,7 @@ class NotePermissionsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        response = self.c.get(reverse('notes:note-update', args=[note.uuid]))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Team Note")
@@ -307,7 +307,7 @@ class NotePermissionsTestCase(TestCase):
         response = self.c.get(reverse('notes:note-list'))
         self.assertNotContains(response, "Team 1 Note")
 
-        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        response = self.c.get(reverse('notes:note-update', args=[note.uuid]))
         self.assertEqual(response.status_code, 404)
 
     def test_user_cannot_access_individual_note_of_others(self):
@@ -321,7 +321,7 @@ class NotePermissionsTestCase(TestCase):
 
         self.c.force_login(self.other_member)
 
-        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        response = self.c.get(reverse('notes:note-update', args=[note.uuid]))
         self.assertEqual(response.status_code, 404)
 
 
@@ -556,7 +556,7 @@ class NoteViewsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        response = self.c.get(reverse('notes:note-update', args=[note.uuid]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Detail Note")
         self.assertContains(response, "Detail content here")

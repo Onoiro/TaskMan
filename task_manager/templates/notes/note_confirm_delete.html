@@ -33,7 +33,7 @@
             <button type="submit" class="btn btn-danger">
                 <i class="bi bi-trash me-1"></i> {% trans "Yes, delete" %}
             </button>
-            <a href="{% url 'notes:note-detail' object.uuid %}" class="btn btn-secondary">
+            <a href="{% url 'notes:note-update' object.uuid %}" class="btn btn-secondary">
                 {% trans "Cancel" %}
             </a>
         </div>

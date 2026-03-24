@@ -68,6 +68,9 @@ class SwitchTeamView(View):
         if ('/tasks/' in referer
                 and ('/update/' in referer or '/delete/' in referer)):
             return 'tasks:tasks-list'
+        if ('/notes/' in referer
+                and ('/update/' in referer or '/delete/' in referer)):
+            return 'notes:note-list'
         # Redirect to tasks list if no referer provided
         return referer or 'tasks:tasks-list'
 

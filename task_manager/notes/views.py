@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.notes.models import Note
@@ -40,28 +40,6 @@ class NoteListView(CustomPermissions, ListView):
         context = super().get_context_data(**kwargs)
         context['task_uuid'] = self.request.GET.get('task')
         return context
-
-
-class NoteDetailView(CustomPermissions, DetailView):
-    model = Note
-    template_name = 'notes/note_detail.html'
-    context_object_name = 'note'
-    slug_field = 'uuid'
-    slug_url_kwarg = 'uuid'
-
-    def get_queryset(self):
-        user = self.request.user
-        team = getattr(self.request, 'active_team', None)
-
-        if team:
-            return Note.objects.filter(team=team).select_related(
-                'author', 'task', 'team'
-            )
-        else:
-            return Note.objects.filter(
-                author=user,
-                team__isnull=True
-            ).select_related('author', 'task')
 
 
 class NoteCreateView(SuccessMessageMixin, CreateView):
@@ -108,6 +86,11 @@ class NoteUpdatePermissionMixin:
     """Mixin to check update permissions for notes."""
 
     def dispatch(self, request, *args, **kwargs):
+        # Allow GET requests (viewing) for team members
+        if request.method == 'GET':
+            return super().dispatch(request, *args, **kwargs)
+
+        # Only allow POST/PUT/PATCH for author or team admin
         note = self.get_object()
         is_author = note.author == request.user
         is_team_admin = (
