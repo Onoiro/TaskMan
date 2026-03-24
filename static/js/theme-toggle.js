@@ -33,8 +33,9 @@
     /**
      * Set the theme on the document
      * @param {string} theme - 'light', 'dark', or 'auto'
+     * @param {boolean} animate - whether to animate the transition
      */
-    function setTheme(theme) {
+    function setTheme(theme, animate) {
         const effectiveTheme = getEffectiveTheme(theme);
 
         if (animate) {
