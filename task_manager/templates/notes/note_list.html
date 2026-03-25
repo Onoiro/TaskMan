@@ -32,13 +32,15 @@
                 <div class="card-body p-3">
                     <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                         <div class="me-2">
+                            {% if note.title %}
                             <a href="{% url 'notes:note-update' note.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
-                                {% if note.title %}
-                                    {{ note.title }}
-                                {% else %}
-                                    {{ note.content|truncatechars:50 }}
-                                {% endif %}
+                                {{ note.title }}
                             </a>
+                            {% else %}
+                            <a href="{% url 'notes:note-update' note.uuid %}" class="text-decoration-none text-muted small stretched-link">
+                                {{ note.content|truncatechars:80 }}
+                            </a>
+                            {% endif %}
                         </div>
                         <div class="text-muted small text-nowrap mt-1">
                             {{ note.created_at|date:"d.m.y" }}

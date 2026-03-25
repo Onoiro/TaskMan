@@ -54,14 +54,15 @@
                         </h1>
                         <div class="mb-3">
                             <label class="form-label small text-muted mb-1" for="id_title">
-                                {% trans "Title" %} ({% trans "Optional" %})
+                                {% trans "Title" %}
                             </label>
                             <input type="text"
                                    class="form-control"
                                    name="title"
                                    id="id_title"
                                    value="{{ form.title.value|default:'' }}"
-                                   maxlength="150">
+                                   maxlength="150"
+                                   placeholder="{% trans 'Optional' %}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label required-mark" for="id_content">
