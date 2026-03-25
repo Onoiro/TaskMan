@@ -156,10 +156,11 @@
               {% endif %}
             </div>
 
-            <!-- RIGHT SIDE: User Menu (Combined with Language) -->
-            <div class="d-flex align-items-center ms-auto">
+            <!-- RIGHT SIDE: User/Team Menu (Left) and Settings Menu (Right) -->
+            <div class="d-flex align-items-center ms-auto gap-2">
 
               {% if user.is_authenticated %}
+                <!-- Left Dropdown: User/Team Actions -->
                 <div class="dropdown">
                   <button class="btn btn-link nav-link text-white d-flex align-items-center gap-2 border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <!-- Show icon + name on both mobile and desktop with truncation -->
@@ -216,51 +217,14 @@
                     
                     <!-- User Actions -->
                     <li>
-                        <a class="dropdown-item" href="{% url 'user:user-update' user.username %}">
-                            <i class="bi bi-pencil-square me-2"></i>{% trans "Edit" %}
+                        <a class="dropdown-item" href="{% url 'user:user-detail' user.username %}">
+                            <i class="bi bi-person-circle me-2"></i>{% trans "Profile" %}
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" href="{% url 'teams:team-create' %}">
                             <i class="bi bi-plus-circle me-2"></i>{% trans "New Team" %}
                         </a>
-                    </li>
-
-                    <!-- Theme Switcher -->
-                    <li><hr class="dropdown-divider"></li>
-                    <li class="dropdown-header">{% trans "Theme" %}</li>
-                    <li>
-                        <div class="d-flex px-3 py-1 gap-2">
-                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="light" title="{% trans 'Light' %}">
-                                <i class="bi bi-sun-fill"></i>
-                            </button>
-                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="dark" title="{% trans 'Dark' %}">
-                                <i class="bi bi-moon-fill"></i>
-                            </button>
-                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="auto" title="{% trans 'Auto' %}">
-                                <i class="bi bi-circle-half"></i>
-                            </button>
-                        </div>
-                    </li>
-
-                    <!-- Language Switcher INSIDE User Menu -->
-                    <li><hr class="dropdown-divider"></li>
-                    <li class="dropdown-header">{% trans "Language" %}</li>
-                    {% get_current_language as CURRENT_LANGUAGE %}
-                    {% get_available_languages as LANGUAGES %}
-                    
-                    <li>
-                        <div class="d-flex px-3 py-1 gap-2">
-                            {% for lang_code, lang_name in LANGUAGES %}
-                            <form method="post" action="{% url 'set_language' %}" class="flex-fill">
-                                {% csrf_token %}
-                                <input type="hidden" name="language" value="{{ lang_code }}" />
-                                <button type="submit" class="btn btn-sm w-100 {% if lang_code == CURRENT_LANGUAGE %}btn-primary{% else %}btn-outline-secondary{% endif %}">
-                                    {{ lang_code|upper }}
-                                </button>
-                            </form>
-                            {% endfor %}
-                        </div>
                     </li>
 
                     {% if active_team %}
@@ -284,6 +248,52 @@
                   </ul>
                 </div>
 
+                <!-- Right Dropdown: Settings (Language + Theme) -->
+                <div class="dropdown">
+                  <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Mobile: gear icon, Desktop: text "Settings" -->
+                    <i class="bi bi-gear-fill d-md-none fs-5"></i>
+                    <span class="d-none d-md-inline">{% trans "Settings" %}</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <!-- Theme Switcher -->
+                    <li class="dropdown-header">{% trans "Theme" %}</li>
+                    <li>
+                        <div class="d-flex px-3 py-1 gap-2">
+                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="light" title="{% trans 'Light' %}">
+                                <i class="bi bi-sun-fill"></i>
+                            </button>
+                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="dark" title="{% trans 'Dark' %}">
+                                <i class="bi bi-moon-fill"></i>
+                            </button>
+                            <button class="btn btn-sm flex-fill btn-outline-secondary" data-theme-value="auto" title="{% trans 'Auto' %}">
+                                <i class="bi bi-circle-half"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <!-- Language Switcher -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-header">{% trans "Language" %}</li>
+                    {% get_current_language as CURRENT_LANGUAGE %}
+                    {% get_available_languages as LANGUAGES %}
+                    
+                    <li>
+                        <div class="d-flex px-3 py-1 gap-2">
+                            {% for lang_code, lang_name in LANGUAGES %}
+                            <form method="post" action="{% url 'set_language' %}" class="flex-fill">
+                                {% csrf_token %}
+                                <input type="hidden" name="language" value="{{ lang_code }}" />
+                                <button type="submit" class="btn btn-sm w-100 {% if lang_code == CURRENT_LANGUAGE %}btn-primary{% else %}btn-outline-secondary{% endif %}">
+                                    {{ lang_code|upper }}
+                                </button>
+                            </form>
+                            {% endfor %}
+                        </div>
+                    </li>
+                  </ul>
+                </div>
+
               {% else %}
                 <!-- Login/Signup for Guests -->
                 <div class="d-flex gap-2">
@@ -291,50 +301,48 @@
                     <a href="{% url 'user:user-create' %}" class="btn btn-primary btn-sm">{% trans "Signup" %}</a>
                 </div>
 
-                <!-- Theme Switcher for Guests -->
+                <!-- Right Dropdown: Settings for Guests -->
                 <div class="dropdown">
-                    <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-circle-half"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                        <li>
-                            <button class="dropdown-item" data-theme-value="light">
-                                <i class="bi bi-sun-fill me-2"></i>{% trans "Light" %}
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item" data-theme-value="dark">
-                                <i class="bi bi-moon-fill me-2"></i>{% trans "Dark" %}
-                            </button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item" data-theme-value="auto">
-                                <i class="bi bi-circle-half me-2"></i>{% trans "Auto" %}
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                  <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-gear-fill d-md-none fs-5"></i>
+                    <span class="d-none d-md-inline">{% trans "Settings" %}</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <!-- Theme Switcher for Guests -->
+                    <li class="dropdown-header">{% trans "Theme" %}</li>
+                    <li>
+                        <button class="dropdown-item" data-theme-value="light">
+                            <i class="bi bi-sun-fill me-2"></i>{% trans "Light" %}
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" data-theme-value="dark">
+                            <i class="bi bi-moon-fill me-2"></i>{% trans "Dark" %}
+                        </button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" data-theme-value="auto">
+                            <i class="bi bi-circle-half me-2"></i>{% trans "Auto" %}
+                        </button>
+                    </li>
 
-                <!-- Language Switcher for Guests (separate dropdown) -->
-                <div class="dropdown">
-                    <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-globe"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                        {% get_current_language as CURRENT_LANGUAGE %}
-                        {% get_available_languages as LANGUAGES %}
-                        {% for lang_code, lang_name in LANGUAGES %}
-                        <li>
-                            <form method="post" action="{% url 'set_language' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="language" value="{{ lang_code }}" />
-                                <button type="submit" class="dropdown-item {% if lang_code == CURRENT_LANGUAGE %}active{% endif %}">
-                                    {{ lang_name }} ({{ lang_code|upper }})
-                                </button>
-                            </form>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    <!-- Language Switcher for Guests -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-header">{% trans "Language" %}</li>
+                    {% get_current_language as CURRENT_LANGUAGE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% for lang_code, lang_name in LANGUAGES %}
+                    <li>
+                        <form method="post" action="{% url 'set_language' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="language" value="{{ lang_code }}" />
+                            <button type="submit" class="dropdown-item {% if lang_code == CURRENT_LANGUAGE %}active{% endif %}">
+                                {{ lang_name }} ({{ lang_code|upper }})
+                            </button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                  </ul>
                 </div>
               {% endif %}
             </div>
