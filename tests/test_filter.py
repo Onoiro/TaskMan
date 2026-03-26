@@ -9,6 +9,18 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 
+def _get_filter_session_keys(session, team):
+    """Helper to get context-aware session keys for filter settings."""
+    if team:
+        suffix = str(team.uuid)
+    else:
+        suffix = 'individual'
+    return (
+        f'task_filter_params_{suffix}',
+        f'task_filter_enabled_{suffix}',
+    )
+
+
 class TaskTestCase(TestCase):
     fixtures = ["tests/fixtures/test_teams.json",
                 "tests/fixtures/test_users.json",
@@ -517,10 +529,13 @@ class TaskTestCase(TestCase):
     # Tests for default filter mode display
     def test_saved_filter_enabled_context(self):
         """Test that saved filter enabled state is passed to context"""
-        # First save a filter as default
+        # First save a filter as default (using context-aware keys)
         session = self.c.session
-        session['task_filter_params'] = {'status': self.status.id}
-        session['task_filter_enabled'] = True
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session[filter_key] = {'status': self.status.id}
+        session[enabled_key] = True
+        # Mark as explicitly saved by user
+        session[f'{filter_key}_explicit'] = True
         session.save()
 
         response = self.c.get(reverse('tasks:tasks-list'), follow=True)
@@ -534,8 +549,9 @@ class TaskTestCase(TestCase):
         saved_params = {'status': self.status.id, 'executors': self.user.id}
 
         session = self.c.session
-        session['task_filter_params'] = saved_params
-        session['task_filter_enabled'] = True
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session[filter_key] = saved_params
+        session[enabled_key] = True
         session.save()
 
         response = self.c.get(reverse('tasks:tasks-list'), follow=True)
@@ -546,10 +562,11 @@ class TaskTestCase(TestCase):
 
     def test_has_saved_filter_false_when_no_saved_params(self):
         """Test that has_saved_filter is False when no saved parameters exist"""
-        # Clear any existing saved filters
+        # Clear any existing saved filters (using context-aware keys)
         session = self.c.session
-        session.pop('task_filter_params', None)
-        session.pop('task_filter_enabled', None)
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session.pop(filter_key, None)
+        session.pop(enabled_key, None)
         session.save()
 
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -561,8 +578,9 @@ class TaskTestCase(TestCase):
     def test_has_saved_filter_true_with_saved_params(self):
         """Test that has_saved_filter is True when saved parameters exist"""
         session = self.c.session
-        session['task_filter_params'] = {'status': self.status.id}
-        session['task_filter_enabled'] = True
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session[filter_key] = {'status': self.status.id}
+        session[enabled_key] = True
         session.save()
 
         response = self.c.get(reverse('tasks:tasks-list'), follow=True)
@@ -574,8 +592,11 @@ class TaskTestCase(TestCase):
     def test_saved_filter_enabled_false_when_not_enabled(self):
         """Test saved_filter_enabled is False when filter is not enabled"""
         session = self.c.session
-        session['task_filter_params'] = {'status': self.status.id}
-        session['task_filter_enabled'] = False
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session[filter_key] = {'status': self.status.id}
+        session[enabled_key] = False
+        # Not explicitly saved by user
+        session[f'{filter_key}_explicit'] = False
         session.save()
 
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -586,10 +607,11 @@ class TaskTestCase(TestCase):
 
     def test_saved_filter_with_active_params_count(self):
         """Test active_filter_count when saved filter is active"""
-        # Save filter parameters and enable it
+        # Save filter parameters and enable it (using context-aware keys)
         session = self.c.session
-        session['task_filter_params'] = {'status': self.status.id}
-        session['task_filter_enabled'] = True
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        session[filter_key] = {'status': self.status.id}
+        session[enabled_key] = True
         session.save()
 
         # Request without new filter params (should apply saved filter)

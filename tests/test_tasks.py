@@ -10,6 +10,18 @@ from django.contrib.messages import get_messages
 import uuid
 
 
+def _get_filter_session_keys(session, team):
+    """Helper to get context-aware session keys for filter settings."""
+    if team:
+        suffix = str(team.uuid)
+    else:
+        suffix = 'individual'
+    return (
+        f'task_filter_params_{suffix}',
+        f'task_filter_enabled_{suffix}',
+    )
+
+
 class TaskTestCase(TestCase):
     fixtures = ["tests/fixtures/test_users.json",
                 "tests/fixtures/test_teams.json",
@@ -1062,7 +1074,7 @@ class TaskTestCase(TestCase):
 
     # ========== SAVED FILTER TESTS ==========
 
-    def test_save_filter_as_default(self):
+    def test_save_filter_to_session(self):
         """Check that filter is saved to session when checkbox is checked"""
         response = self.c.get(
             reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
@@ -1070,12 +1082,13 @@ class TaskTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Check session contains saved filter
+        # Check session contains saved filter (using context-aware keys)
         session = self.c.session
-        self.assertIn('task_filter_params', session)
-        self.assertIn('task_filter_enabled', session)
-        self.assertTrue(session['task_filter_enabled'])
-        self.assertIn('status', session['task_filter_params'])
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        self.assertIn(filter_key, session)
+        self.assertIn(enabled_key, session)
+        self.assertTrue(session[enabled_key])
+        self.assertIn('status', session[filter_key])
 
     def test_save_filter_shows_success_message(self):
         """Check that success message is shown when filter is saved"""
@@ -1118,8 +1131,8 @@ class TaskTestCase(TestCase):
         # Should NOT redirect, user params take priority
         self.assertEqual(response.status_code, 200)
 
-    def test_saved_filter_not_applied_when_show_filter_open(self):
-        """Check that saved filter is NOT applied when filter panel is open"""
+    def test_saved_filter_applied_when_show_filter_open(self):
+        """Check that saved filter IS applied when filter panel is open"""
         # Save a filter
         self.c.get(
             reverse('tasks:tasks-list') + '?status=1&save_as_default=1',
@@ -1131,8 +1144,9 @@ class TaskTestCase(TestCase):
             reverse('tasks:tasks-list') + '?show_filter=1'
         )
 
-        # Should NOT redirect
-        self.assertEqual(response.status_code, 200)
+        # Should redirect to apply saved filter
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('status=1', response.url)
 
     def test_reset_default_clears_saved_filter(self):
         """Check that reset_default parameter clears saved filter"""
@@ -1142,8 +1156,10 @@ class TaskTestCase(TestCase):
             follow=True
         )
 
-        # Verify it's saved
-        self.assertIn('task_filter_params', self.c.session)
+        # Verify it's saved (using context-aware keys)
+        session = self.c.session
+        filter_key, enabled_key = _get_filter_session_keys(session, self.team)
+        self.assertIn(filter_key, session)
 
         # Reset the filter
         self.c.get(
@@ -1153,8 +1169,8 @@ class TaskTestCase(TestCase):
 
         # Check session is cleared
         session = self.c.session
-        self.assertNotIn('task_filter_params', session)
-        self.assertNotIn('task_filter_enabled', session)
+        self.assertNotIn(filter_key, session)
+        self.assertNotIn(enabled_key, session)
 
     def test_reset_default_with_show_filter_keeps_panel_open(self):
         # Save a filter
@@ -1198,11 +1214,13 @@ class TaskTestCase(TestCase):
             follow=True
         )
 
-        # Get page with filter panel
+        # Get page with filter panel - will redirect to apply saved filter
         response = self.c.get(
-            reverse('tasks:tasks-list') + '?show_filter=1'
+            reverse('tasks:tasks-list') + '?show_filter=1',
+            follow=True
         )
 
+        # After redirect, check context
         self.assertIn('saved_filter_params', response.context)
         self.assertIn('saved_filter_enabled', response.context)
         self.assertIn('has_saved_filter', response.context)
@@ -1229,7 +1247,8 @@ class TaskTestCase(TestCase):
         self.c.get(url + query_params, follow=True)
 
         session = self.c.session
-        saved_params = session.get('task_filter_params', {})
+        filter_key, _ = _get_filter_session_keys(session, self.team)
+        saved_params = session.get(filter_key, {})
 
         # Service params should NOT be in saved filter
         self.assertNotIn('show_filter', saved_params)
@@ -1245,7 +1264,8 @@ class TaskTestCase(TestCase):
         self.c.get(url + query_params, follow=True)
 
         session = self.c.session
-        saved_params = session.get('task_filter_params', {})
+        filter_key, _ = _get_filter_session_keys(session, self.team)
+        saved_params = session.get(filter_key, {})
 
         # Non-empty param should be saved
         self.assertIn('status', saved_params)
@@ -1275,9 +1295,11 @@ class TaskTestCase(TestCase):
             follow=True
         )
 
-        # Open filter panel
+        # Open filter panel with saved filter applied
+        # After save, it redirects to saved filter, then we open panel
         response = self.c.get(
-            reverse('tasks:tasks-list') + '?show_filter=1'
+            reverse('tasks:tasks-list') + '?status=1&show_filter=1',
+            follow=True
         )
 
         # Checkbox should be checked
@@ -1291,7 +1313,8 @@ class TaskTestCase(TestCase):
         self.c.get(url + params, follow=True)
 
         session = self.c.session
-        saved_params = session.get('task_filter_params', {})
+        filter_key, _ = _get_filter_session_keys(session, self.team)
+        saved_params = session.get(filter_key, {})
 
         self.assertIn('status', saved_params)
         self.assertIn('executors', saved_params)
@@ -1354,9 +1377,10 @@ class TaskTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Check session contains saved filter
+        # Check session contains saved filter (using context-aware keys)
         session = self.c.session
-        saved_params = session.get('task_filter_params', {})
+        filter_key, _ = _get_filter_session_keys(session, self.team)
+        saved_params = session.get(filter_key, {})
 
         # view_mode should NOT be in saved filter params
         self.assertNotIn('view_mode', saved_params)

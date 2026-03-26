@@ -17,9 +17,23 @@ from django.contrib.auth.decorators import login_required
 import json
 
 
-# Session keys for storing filter settings
-SESSION_FILTER_KEY = 'task_filter_params'
-SESSION_FILTER_ENABLED_KEY = 'task_filter_enabled'
+# Session keys for storing filter settings (context-aware)
+SESSION_FILTER_KEY_PREFIX = 'task_filter_params'
+SESSION_FILTER_ENABLED_KEY_PREFIX = 'task_filter_enabled'
+
+
+def _get_filter_session_keys(request):
+    """Get context-aware session keys for filter settings."""
+    team = getattr(request, 'active_team', None)
+    if team:
+        suffix = str(team.uuid)
+    else:
+        suffix = 'individual'
+    return (
+        f"{SESSION_FILTER_KEY_PREFIX}_{suffix}",
+        f"{SESSION_FILTER_ENABLED_KEY_PREFIX}_{suffix}",
+    )
+
 
 # Service parameters that we do not save
 SERVICE_PARAMS = (
@@ -86,8 +100,10 @@ class TaskFilterView(FilterView):
     def get(self, request, *args, **kwargs):
         # Handle reset filter button (removes saved default filter)
         if 'reset_default' in request.GET:
-            request.session.pop(SESSION_FILTER_KEY, None)
-            request.session.pop(SESSION_FILTER_ENABLED_KEY, None)
+            filter_key, enabled_key = _get_filter_session_keys(request)
+            request.session.pop(filter_key, None)
+            request.session.pop(enabled_key, None)
+            request.session.pop(f'{filter_key}_explicit', None)
             # Redirect to clean list with open filter panel
             show_filter = request.GET.get('show_filter', '')
             if show_filter:
@@ -121,8 +137,16 @@ class TaskFilterView(FilterView):
     def _save_filter_to_session(self, request):
         """Save current filter parameters to session."""
         filter_params = self._get_filter_params(request)
-        request.session[SESSION_FILTER_KEY] = filter_params
-        request.session[SESSION_FILTER_ENABLED_KEY] = True
+
+        # Don't save empty filter (user cleared all fields)
+        if not filter_params:
+            return
+
+        filter_key, enabled_key = _get_filter_session_keys(request)
+
+        request.session[filter_key] = filter_params
+        request.session[enabled_key] = True
+        request.session[f'{filter_key}_explicit'] = True
         messages.success(request, _('Filter saved as default'))
 
     def _should_apply_saved_filter(self, request):
@@ -132,30 +156,25 @@ class TaskFilterView(FilterView):
         if user_params:
             return False
 
-        # If show_filter parameter exists
-        #  - user opened the filter panel, do not redirect
-        if 'show_filter' in request.GET:
-            return False
-
         # If view_mode parameter exists
-        #  - user changed view mode, do not redirect
         if 'view_mode' in request.GET:
             return False
 
         # If sort parameter exists
-        #  - user changed sort, do not redirect
         if 'sort' in request.GET:
             return False
 
-        # Check if saved filter exists
-        filter_enabled = request.session.get(SESSION_FILTER_ENABLED_KEY, False)
-        saved_params = request.session.get(SESSION_FILTER_KEY, {})
+        # Check if saved filter exists (context-aware)
+        filter_key, enabled_key = _get_filter_session_keys(request)
+        filter_enabled = request.session.get(enabled_key, False)
+        saved_params = request.session.get(filter_key, {})
 
         return filter_enabled and saved_params
 
     def _redirect_with_saved_filter(self, request):
         """Redirect with saved filter parameters applied."""
-        saved_params = request.session.get(SESSION_FILTER_KEY, {})
+        filter_key, _ = _get_filter_session_keys(request)
+        saved_params = request.session.get(filter_key, {})
         query_string = urlencode(saved_params)
         return redirect(f"{request.path}?{query_string}")
 
@@ -177,13 +196,18 @@ class TaskFilterView(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Information about saved filter for template rendering
-        saved_params = self.request.session.get(SESSION_FILTER_KEY, {})
-        filter_enabled = self.request.session.get(
-            SESSION_FILTER_ENABLED_KEY, False)
+        # Information about saved filter for template rendering (context-aware)
+        filter_key, enabled_key = _get_filter_session_keys(self.request)
+        saved_params = self.request.session.get(filter_key, {})
+
+        # Check if user explicitly saved this filter (not auto-applied)
+        user_explicitly_saved = self.request.session.get(
+            f'{filter_key}_explicit', False
+        )
 
         context['saved_filter_params'] = saved_params
-        context['saved_filter_enabled'] = filter_enabled
+        # Checkbox is checked only when user explicitly saved filter
+        context['saved_filter_enabled'] = user_explicitly_saved
         context['has_saved_filter'] = bool(saved_params)
 
         # Count of active filter params (not empty)
