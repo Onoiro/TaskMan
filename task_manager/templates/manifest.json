@@ -40,7 +40,7 @@
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Редактирование задачи"
-        },
+        }
     ],
     "icons": [
         {
