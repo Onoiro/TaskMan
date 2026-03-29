@@ -1424,3 +1424,38 @@ class TaskTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         # Default view should show task-card class
         self.assertContains(response, 'task-card')
+
+
+class TaskFilterSaveEmptyTestCase(TestCase):
+    """Test cases for empty filter saving scenarios"""
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_labels.json",
+        "tests/fixtures/test_tasks.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(pk=10)
+        self.c = Client()
+        self.c.force_login(self.user)
+        self.team = Team.objects.get(pk=1)
+
+    def test_save_filter_with_empty_params_no_message(self):
+        """Test that saving empty filter doesn't show success message"""
+        # Request with empty filter params and save_as_default
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?save_as_default=1',
+            follow=True
+        )
+
+        # Should not redirect (filter not saved)
+        # No success message should be shown
+        messages_list = list(get_messages(response.wsgi_request))
+        success_messages = [
+            m for m in messages_list
+            if _('Filter saved as default') in str(m)
+        ]
+        self.assertEqual(len(success_messages), 0)

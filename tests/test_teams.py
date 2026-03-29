@@ -2216,3 +2216,99 @@ class TeamMemberRoleFormTestCase(TestCase):
 
         # form should be valid
         self.assertTrue(form.is_valid())
+
+
+class SwitchTeamViewTestCase(TestCase):
+    """Test cases for SwitchTeamView methods"""
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(pk=10)
+        self.team = Team.objects.get(pk=1)
+        self.c = Client()
+        self.c.force_login(self.user)
+
+    def test_switch_to_individual_clears_session(self):
+        """Test _switch_to_individual clears active_team_uuid from session"""
+        # Set active team in session
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        # Switch to individual
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': 'individual'}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        session = self.c.session
+        self.assertNotIn('active_team_uuid', session)
+
+    def test_switch_to_team_sets_session(self):
+        """Test _switch_to_team sets active_team_uuid in session"""
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(self.team.uuid)}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        session = self.c.session
+        self.assertEqual(
+            session['active_team_uuid'],
+            str(self.team.uuid)
+        )
+
+    def test_switch_to_invalid_team_shows_error(self):
+        """Test _switch_to_team shows error for non-existent team"""
+        fake_uuid = str(uuid.uuid4())
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': fake_uuid}
+        )
+
+        self.assertEqual(response.status_code, 302)
+        messages_list = list(get_messages(response.wsgi_request))
+        self.assertTrue(any(
+            _('Team not found') in str(m)
+            for m in messages_list
+        ))
+
+    def test_clean_filter_params_removes_task_params(self):
+        """Test _clean_filter_params_from_url removes filter params"""
+        from task_manager.teams.views import SwitchTeamView
+        view = SwitchTeamView()
+
+        url = '/tasks/?status=1&save_as_default=on&search=test&show_filter=1'
+        result = view._clean_filter_params_from_url(url)
+
+        self.assertIn('/tasks/', result)
+        self.assertNotIn('status=1', result)
+        self.assertNotIn('save_as_default', result)
+        self.assertNotIn('search=test', result)
+
+    def test_clean_filter_params_keeps_non_task_url(self):
+        """Test _clean_filter_params_from_url doesn't affect non-task URLs"""
+        from task_manager.teams.views import SwitchTeamView
+        view = SwitchTeamView()
+
+        url = '/users/?page=2'
+        result = view._clean_filter_params_from_url(url)
+
+        self.assertEqual(result, url)
+
+    def test_clean_filter_params_keeps_view_params(self):
+        """Test _clean_filter_params_from_url keeps non-filter params"""
+        from task_manager.teams.views import SwitchTeamView
+        view = SwitchTeamView()
+
+        url = '/tasks/?status=1&page=2&view_mode=simple'
+        result = view._clean_filter_params_from_url(url)
+
+        self.assertIn('page=2', result)
+        self.assertIn('view_mode=simple', result)
+        self.assertNotIn('status=1', result)

@@ -817,6 +817,32 @@ class TaskTestCase(TestCase):
         # Should exclude tasks with the specified status
         self.assertFalse(result.filter(status=self.status).exists())
 
+    def test_filter_my_tasks_with_true_value(self):
+        """Test filter_my_tasks when value is True"""
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # Create a task where user is author
+        task = Task.objects.create(
+            name='My Task',
+            author=self.user,
+            status=self.status
+        )
+
+        # Test with True value
+        queryset = Task.objects.all()
+        result = filter_instance.filter_my_tasks(queryset, 'my_tasks', True)
+
+        # Should return only tasks where user is author or executor
+        self.assertIn(task, result)
+
     def test_filter_my_tasks_with_false_value(self):
         """Test filter_my_tasks when value is False"""
         from task_manager.tasks.filters import TaskFilter

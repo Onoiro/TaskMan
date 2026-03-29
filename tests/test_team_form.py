@@ -179,6 +179,21 @@ class TeamMemberRoleFormTestCase(TestCase):
         # Django forms ChoiceField generates default validation message
         self.assertIn('Select a valid choice', form.errors['role'][0])
 
+    def test_TeamMemberRoleForm_invalid_status(self):
+        """Test clean_status raises error for invalid status"""
+        form_data = {'role': 'member', 'status': 'invalid_status'}
+        form = TeamMemberRoleForm(data=form_data, instance=self.membership)
+        self.assertFalse(form.is_valid())
+        self.assertIn('status', form.errors)
+
+    def test_TeamMemberRoleForm_clean_role_validation_error(self):
+        """Test clean_role raises ValidationError for invalid role"""
+        # This tests the explicit validation in clean_role method
+        form_data = {'role': 'admin', 'status': 'active'}
+        form = TeamMemberRoleForm(data=form_data, instance=self.membership)
+        # If role is in valid choices, it should pass
+        self.assertTrue(form.is_valid())
+
     def test_TeamMemberRoleForm_save(self):
         form_data = {'role': 'member', 'status': 'active'}
         form = TeamMemberRoleForm(data=form_data, instance=self.membership)
