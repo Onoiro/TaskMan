@@ -2324,8 +2324,10 @@ class TeamJoinFormTestCase(TestCase):
 
     def setUp(self):
         from task_manager.user.models import User
-        self.admin_user = User.objects.get(pk=10)
-        self.team = Team.objects.get(pk=1)
+        # Use user pk=11 which is not in team memberships from fixtures
+        self.user = User.objects.get(pk=11)
+        # Use team pk=2 (Another Test Team) which doesn't have this user
+        self.team = Team.objects.get(pk=2)
         self.team.password = 'testpass123'
         self.team.save(update_fields=['password'])
 
@@ -2334,7 +2336,7 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data['team'], self.team)
@@ -2344,7 +2346,7 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': 'NonExistentTeam', 'password': 'pass'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
         self.assertIn('name', form.errors)
@@ -2354,7 +2356,7 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'wrongpassword'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
         self.assertIn('password', form.errors)
@@ -2364,16 +2366,30 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': '', 'password': 'pass'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
+
+    def test_join_form_name_not_in_cleaned_data(self):
+        """Test clean_name when name not in cleaned_data yet"""
+        from task_manager.teams.forms import TeamJoinForm
+        # Create form without calling is_valid() first
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.user}
+        )
+        # Access clean_name before cleaned_data is populated
+        # This is a rare edge case
+        form.cleaned_data = {}
+        result = form.clean_name()
+        self.assertIsNone(result)
 
     def test_join_form_empty_password(self):
         """Test form fails with empty password when name is provided"""
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': ''},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
 
@@ -2382,14 +2398,14 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         # Make user a member of the team
         TeamMembership.objects.create(
-            user=self.admin_user,
+            user=self.user,
             team=self.team,
             role='member',
             status='active'
         )
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
         self.assertIn('__all__', form.errors)
@@ -2399,14 +2415,14 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         # Create pending membership
         TeamMembership.objects.create(
-            user=self.admin_user,
+            user=self.user,
             team=self.team,
             role='member',
             status='pending'
         )
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         self.assertFalse(form.is_valid())
         self.assertIn('__all__', form.errors)
@@ -2416,7 +2432,7 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
         # Call clean to populate cleaned_data
         form.is_valid()
@@ -2432,21 +2448,21 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
 
         # No membership - should return None
-        result = form._check_membership(self.admin_user, self.team)
+        result = form._check_membership(self.user, self.team)
         self.assertIsNone(result)
 
         # Add active membership
         TeamMembership.objects.create(
-            user=self.admin_user,
+            user=self.user,
             team=self.team,
             role='member',
             status='active'
         )
-        result = form._check_membership(self.admin_user, self.team)
+        result = form._check_membership(self.user, self.team)
         self.assertIn('already a member', result)
 
     def test_join_form_check_membership_pending(self):
@@ -2454,17 +2470,17 @@ class TeamJoinFormTestCase(TestCase):
         from task_manager.teams.forms import TeamJoinForm
         form = TeamJoinForm(
             data={'name': self.team.name, 'password': 'testpass123'},
-            initial={'user': self.admin_user}
+            initial={'user': self.user}
         )
 
         # Add pending membership
         TeamMembership.objects.create(
-            user=self.admin_user,
+            user=self.user,
             team=self.team,
             role='member',
             status='pending'
         )
-        result = form._check_membership(self.admin_user, self.team)
+        result = form._check_membership(self.user, self.team)
         self.assertIn('pending request', result)
 
 
@@ -2476,10 +2492,12 @@ class TeamJoinViewTestCase(TestCase):
 
     def setUp(self):
         from task_manager.user.models import User
-        self.user = User.objects.get(pk=10)
+        # Use user pk=11 which is not in team memberships from fixtures
+        self.user = User.objects.get(pk=11)
         self.c = Client()
         self.c.force_login(self.user)
-        self.team = Team.objects.get(pk=1)
+        # Use team pk=2 (Another Test Team) which doesn't have this user
+        self.team = Team.objects.get(pk=2)
         self.team.password = 'testpass123'
         self.team.save(update_fields=['password'])
 
