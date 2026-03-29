@@ -74,7 +74,7 @@
                                       required
                                       placeholder="{% trans 'Enter note content...' %}">{{ form.content.value|default:'' }}</textarea>
                         </div>
-                        {% bootstrap_field form.task %}
+                        {% bootstrap_field form.task show_help_text=True %}
                     </div>
                 </div>
 

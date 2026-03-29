@@ -31,6 +31,7 @@ class NoteForm(forms.ModelForm):
 
         # Make task field not required
         self.fields['task'].required = False
+        self.fields['task'].help_text = _("Optional")
 
     def clean_task(self):
         task = self.cleaned_data.get('task')
