@@ -34,60 +34,70 @@ class SwitchTeamView(View):
 
         if team_uuid:
             if team_uuid == 'individual':
-                # switch to individual mode
-                if 'active_team_uuid' in request.session:
-                    del request.session['active_team_uuid']
-                messages.success(request, _('Switched to individual mode'))
+                self._switch_to_individual(request)
             else:
-                # switch to team
-                try:
-                    team = Team.objects.get(
-                        uuid=team_uuid,
-                        memberships__user=request.user
-                    )
-                    request.session['active_team_uuid'] = str(team.uuid)
-                    messages.success(
-                        request,
-                        _("Switched to team: {team}").format(team=team.name)
-                    )
-                except Team.DoesNotExist:
-                    messages.error(request, TEAM_NOT_FOUND_MESSAGE)
+                self._switch_to_team(request, team_uuid)
 
         # Determine redirect URL based on referer
         redirect_url = self._get_redirect_url(referer)
 
-        # If redirecting to tasks list, remove any filter params from URL
-        # to prevent filter from being saved in new context
-        if 'tasks' in redirect_url:
-            from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-
-            parsed = urlparse(redirect_url)
-            query_params = parse_qs(parsed.query)
-
-            # Remove filter-related params that could cause issues
-            filter_params_to_remove = [
-                'save_as_default', 'status', 'author',
-                'executors', 'labels', 'search',
-                'my_tasks', 'has_checklist',
-                'created_after', 'created_before',
-                'status_exclude', 'author_exclude',
-                'executors_exclude', 'labels_exclude',
-                'my_tasks_exclude'
-            ]
-
-            filtered_params = {
-                k: v for k, v in query_params.items()
-                if k not in filter_params_to_remove
-            }
-
-            new_query = urlencode(filtered_params, doseq=True)
-            redirect_url = urlunparse((
-                parsed.scheme, parsed.netloc,
-                parsed.path, parsed.params,
-                new_query, parsed.fragment
-            ))
+        # If redirecting to tasks list, remove any filter params
+        redirect_url = self._clean_filter_params_from_url(redirect_url)
 
         return redirect(redirect_url)
+
+    def _switch_to_individual(self, request):
+        """Switch to individual mode."""
+        if 'active_team_uuid' in request.session:
+            del request.session['active_team_uuid']
+        messages.success(request, _('Switched to individual mode'))
+
+    def _switch_to_team(self, request, team_uuid):
+        """Switch to specified team."""
+        try:
+            team = Team.objects.get(
+                uuid=team_uuid,
+                memberships__user=request.user
+            )
+            request.session['active_team_uuid'] = str(team.uuid)
+            messages.success(
+                request,
+                _("Switched to team: {team}").format(team=team.name)
+            )
+        except Team.DoesNotExist:
+            messages.error(request, TEAM_NOT_FOUND_MESSAGE)
+
+    def _clean_filter_params_from_url(self, redirect_url):
+        """Remove filter params from URL to prevent cross-context save."""
+        if 'tasks' not in redirect_url:
+            return redirect_url
+
+        from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+
+        parsed = urlparse(redirect_url)
+        query_params = parse_qs(parsed.query)
+
+        filter_params_to_remove = [
+            'save_as_default', 'status', 'author',
+            'executors', 'labels', 'search',
+            'my_tasks', 'has_checklist',
+            'created_after', 'created_before',
+            'status_exclude', 'author_exclude',
+            'executors_exclude', 'labels_exclude',
+            'my_tasks_exclude'
+        ]
+
+        filtered_params = {
+            k: v for k, v in query_params.items()
+            if k not in filter_params_to_remove
+        }
+
+        new_query = urlencode(filtered_params, doseq=True)
+        return urlunparse((
+            parsed.scheme, parsed.netloc,
+            parsed.path, parsed.params,
+            new_query, parsed.fragment
+        ))
 
     def _get_redirect_url(self, referer):
         """Determine where to redirect after team switch"""
