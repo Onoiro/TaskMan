@@ -2312,3 +2312,281 @@ class SwitchTeamViewTestCase(TestCase):
         self.assertIn('page=2', result)
         self.assertIn('view_mode=simple', result)
         self.assertNotIn('status=1', result)
+
+
+# Team Join Tests
+
+class TeamJoinFormTestCase(TestCase):
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json"]
+
+    def setUp(self):
+        from task_manager.user.models import User
+        self.admin_user = User.objects.get(pk=10)
+        self.team = Team.objects.get(pk=1)
+        self.team.password = 'testpass123'
+        self.team.save(update_fields=['password'])
+
+    def test_join_form_valid_data(self):
+        """Test form is valid with correct team name and password"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data['team'], self.team)
+
+    def test_join_form_invalid_team_name(self):
+        """Test form fails with non-existent team name"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': 'NonExistentTeam', 'password': 'pass'},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+
+    def test_join_form_invalid_password(self):
+        """Test form fails with wrong password"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'wrongpassword'},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_join_form_empty_name(self):
+        """Test form fails with empty name"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': '', 'password': 'pass'},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_join_form_empty_password(self):
+        """Test form fails with empty password when name is provided"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': ''},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_join_form_already_member(self):
+        """Test form fails when user is already a member"""
+        from task_manager.teams.forms import TeamJoinForm
+        # Make user a member of the team
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)
+
+    def test_join_form_pending_request(self):
+        """Test form fails when user already has pending request"""
+        from task_manager.teams.forms import TeamJoinForm
+        # Create pending membership
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=self.team,
+            role='member',
+            status='pending'
+        )
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)
+
+    def test_join_form_get_team_method(self):
+        """Test _get_team method returns team or None"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+        # Call clean to populate cleaned_data
+        form.is_valid()
+
+        team = form._get_team(self.team.name)
+        self.assertEqual(team, self.team)
+
+        none_team = form._get_team('NonExistent')
+        self.assertIsNone(none_team)
+
+    def test_join_form_check_membership(self):
+        """Test _check_membership method"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+
+        # No membership - should return None
+        result = form._check_membership(self.admin_user, self.team)
+        self.assertIsNone(result)
+
+        # Add active membership
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+        result = form._check_membership(self.admin_user, self.team)
+        self.assertIn('already a member', result)
+
+    def test_join_form_check_membership_pending(self):
+        """Test _check_membership with pending status"""
+        from task_manager.teams.forms import TeamJoinForm
+        form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.admin_user}
+        )
+
+        # Add pending membership
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=self.team,
+            role='member',
+            status='pending'
+        )
+        result = form._check_membership(self.admin_user, self.team)
+        self.assertIn('pending request', result)
+
+
+class TeamJoinViewTestCase(TestCase):
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json"]
+
+    def setUp(self):
+        from task_manager.user.models import User
+        self.user = User.objects.get(pk=10)
+        self.c = Client()
+        self.c.force_login(self.user)
+        self.team = Team.objects.get(pk=1)
+        self.team.password = 'testpass123'
+        self.team.save(update_fields=['password'])
+
+    def test_join_page_requires_login(self):
+        """Test join page requires authentication"""
+        self.c.logout()
+        response = self.c.get(reverse('teams:team-join'))
+        self.assertEqual(response.status_code, 302)
+        # Redirect to login
+        self.assertIn('/login/', response.url)
+
+    def test_join_page_get_returns_form(self):
+        """Test GET request returns form"""
+        response = self.c.get(reverse('teams:team-join'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+        self.assertContains(response, _('Join Team'))
+
+    def test_join_page_post_success(self):
+        """Test successful team join creates pending membership"""
+        initial_count = TeamMembership.objects.filter(
+            user=self.user, team=self.team
+        ).count()
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'name': self.team.name, 'password': 'testpass123'},
+            follow=True
+        )
+
+        # Check membership was created
+        new_count = TeamMembership.objects.filter(
+            user=self.user, team=self.team
+        ).count()
+        self.assertEqual(initial_count + 1, new_count)
+
+        # Check membership is pending
+        membership = TeamMembership.objects.get(
+            user=self.user, team=self.team
+        )
+        self.assertEqual(membership.status, 'pending')
+        self.assertEqual(membership.role, 'member')
+
+        # Check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+        # Check message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn('request to join team', str(messages[0]))
+
+    def test_join_page_post_invalid_form(self):
+        """Test POST with invalid data shows errors"""
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'name': 'WrongTeam', 'password': 'wrong'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('form', response.context)
+        self.assertFalse(response.context['form'].is_valid())
+
+    def test_join_page_post_wrong_password(self):
+        """Test POST with wrong password shows error"""
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'name': self.team.name, 'password': 'wrongpassword'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertIn('password', response.context['form'].errors)
+
+    def test_join_page_already_member(self):
+        """Test joining when already a member shows error"""
+        # Make user a member
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'name': self.team.name, 'password': 'testpass123'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertIn('__all__', response.context['form'].errors)
+
+    def test_join_page_button_text(self):
+        """Test join page has correct button text"""
+        response = self.c.get(reverse('teams:team-join'))
+        self.assertContains(response, _('Join'))
+
+    def test_join_page_cancel_button(self):
+        """Test join page has cancel button"""
+        response = self.c.get(reverse('teams:team-join'))
+        self.assertContains(response, _('Cancel'))
+
+    def test_join_page_placeholder_name(self):
+        """Test join page has correct placeholder for name field"""
+        response = self.c.get(reverse('teams:team-join'))
+        content = response.content.decode('utf-8')
+        self.assertIn('placeholder', content.lower())

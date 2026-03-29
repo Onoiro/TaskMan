@@ -226,6 +226,11 @@
                             <i class="bi bi-plus-circle me-2"></i>{% trans "New Team" %}
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'teams:team-join' %}">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>{% trans "Join Team" %}
+                        </a>
+                    </li>
 
                     {% if active_team %}
                     <li><hr class="dropdown-divider"></li>

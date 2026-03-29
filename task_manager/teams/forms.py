@@ -90,6 +90,99 @@ class TeamForm(forms.ModelForm):
         return team
 
 
+class TeamJoinForm(forms.Form):
+    """Form for joining an existing team."""
+
+    name = forms.CharField(
+        required=True,
+        label=_('Team name'),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Enter team name')
+            }
+        ),
+    )
+
+    password = forms.CharField(
+        required=True,
+        label=_('Team password'),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Enter team password')
+            }
+        ),
+    )
+
+    def _get_team(self, name):
+        """Get team by name or return None."""
+        try:
+            return Team.objects.get(name=name)
+        except Team.DoesNotExist:
+            return None
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            return name
+        if not self._get_team(name):
+            raise forms.ValidationError(
+                _("Team with this name does not exist"))
+        return name
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        name = self.cleaned_data.get('name')
+        if not name or not password:
+            return password
+        team = self._get_team(name)
+        if team and team.password != password:
+            raise forms.ValidationError(_("Invalid team password"))
+        return password
+
+    def _check_membership(self, user, team):
+        """Check if user is already a member or has pending request."""
+        from task_manager.teams.models import TeamMembership
+
+        existing = TeamMembership.objects.filter(
+            user=user,
+            team=team
+        ).exists()
+        if not existing:
+            return None
+
+        pending = TeamMembership.objects.filter(
+            user=user,
+            team=team,
+            status='pending'
+        ).exists()
+        if pending:
+            return _("You already have a pending request to join this team")
+        return _("You are already a member of this team")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get('name')
+        password = cleaned_data.get('password')
+
+        if name and password:
+            team = self._get_team(name)
+            if team:
+                if team.password != password:
+                    raise forms.ValidationError(_("Invalid team password"))
+
+                user = self.initial.get('user')
+                if user:
+                    error = self._check_membership(user, team)
+                    if error:
+                        raise forms.ValidationError(error)
+
+                cleaned_data['team'] = team
+
+        return cleaned_data
+
+
 class TeamMemberRoleForm(forms.ModelForm):
 
     class Meta:

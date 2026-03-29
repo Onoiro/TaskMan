@@ -16,7 +16,7 @@ from django.views.generic import (
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-from task_manager.teams.forms import TeamForm, TeamMemberRoleForm
+from task_manager.teams.forms import TeamForm, TeamMemberRoleForm, TeamJoinForm
 from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
@@ -352,6 +352,40 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
 
         messages.success(self.request, _('Team created successfully'))
         return HttpResponseRedirect(self.get_success_url())
+
+
+class TeamJoinView(LoginRequiredMixin, View):
+    """View for joining an existing team."""
+
+    template_name = 'teams/team_join_form.html'
+
+    def get(self, request):
+        form = TeamJoinForm(initial={'user': request.user})
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = TeamJoinForm(request.POST, initial={'user': request.user})
+        if form.is_valid():
+            team = form.cleaned_data['team']
+
+            # Create membership as pending (like in user form)
+            TeamMembership.objects.create(
+                user=request.user,
+                team=team,
+                role='member',
+                status='pending'
+            )
+
+            messages.info(
+                request,
+                _(
+                    "Your request to join team {team} has been sent. "
+                    "Waiting for admin approval."
+                ).format(team=team.name)
+            )
+            return redirect('tasks:tasks-list')
+
+        return render(request, self.template_name, {'form': form})
 
 
 class TeamDetailView(LoginRequiredMixin, DetailView):
