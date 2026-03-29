@@ -321,7 +321,7 @@ class StatusesTestCase(TestCase):
                               args=[status.uuid]), follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Edit'))
+        self.assertContains(response, _('Save'))
         self.assertContains(response, 'new')
         self.assertRegex(
             response.content.decode('utf-8'),

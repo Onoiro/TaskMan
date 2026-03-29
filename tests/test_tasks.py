@@ -729,7 +729,7 @@ class TaskTestCase(TestCase):
         self.assertContains(response, _('Status'))
         self.assertContains(response, _('Executor'))
         self.assertContains(response, _('Labels'))
-        self.assertContains(response, _("Edit"))
+        self.assertContains(response, _("Save"))
         self.assertContains(response, ("Delete"))
         self.assertContains(response, _("Cancel"))
 

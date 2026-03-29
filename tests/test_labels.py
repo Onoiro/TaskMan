@@ -304,7 +304,7 @@ class LabelsTestCase(TestCase):
             reverse('labels:labels-update', args=[label.uuid]),
             self.labels_data, follow=True)
         self.assertContains(response, _('Name'))
-        self.assertContains(response, _('Edit'))
+        self.assertContains(response, _('Save'))
         self.assertContains(response, 'bug')
         self.assertRegex(
             response.content.decode('utf-8'),
