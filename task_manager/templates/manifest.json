@@ -14,19 +14,33 @@
     "categories": ["productivity", "business"],
     "screenshots": [
         {
-            "src": "{% static 'screenshots/desktop-1.png' %}",
-            "sizes": "1280x720",
+            "src": "{% static 'screenshots/mobile-index.png' %}",
+            "sizes": "390x844",
             "type": "image/png",
-            "form_factor": "wide",
+            "form_factor": "narrow",
             "label": "Главный экран TaskMan"
         },
         {
-            "src": "{% static 'screenshots/mobile-1.png' %}",
+            "src": "{% static 'screenshots/mobile-task-list.png' %}",
             "sizes": "390x844",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Список задач"
-        }
+        },
+        {
+            "src": "{% static 'screenshots/mobile-statuses-list.png' %}",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Список статусов"
+        },
+        {
+            "src": "{% static 'screenshots/mobile-task-update.png' %}",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Редактирование задачи"
+        },
     ],
     "icons": [
         {
