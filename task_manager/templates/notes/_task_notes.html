@@ -10,8 +10,8 @@
             {% endif %}
         </h5>
         <a href="{% url 'notes:note-create' %}?task={{ task.uuid }}"
-           class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-plus-lg"></i> {% trans "Add note" %}
+           class="btn btn-outline-secondary">
+            <i class="bi bi-plus-lg"></i><span class="d-none d-md-inline"> {% trans "Add note" %}</span>
         </a>
     </div>
 
