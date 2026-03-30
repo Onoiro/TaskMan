@@ -220,7 +220,7 @@ msgstr "Выберите цвет статуса"
 
 #: statuses/models.py:66
 msgid "To Do"
-msgstr "К выполнению"
+msgstr "Сделать"
 
 #: statuses/models.py:67
 msgid "Task has been created but not yet started"
