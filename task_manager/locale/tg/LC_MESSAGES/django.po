@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-29 19:54+0300\n"
+"POT-Creation-Date: 2026-03-31 00:00+0300\n"
 "PO-Revision-Date: 2026-03-29 19:54+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -688,7 +688,7 @@ msgstr "Вуруд"
 msgid "Signup"
 msgstr "Бақайдгирӣ"
 
-#: templates/base.html:403 templates/feedback.html:7 templates/feedback.html:12
+#: templates/base.html:406 templates/feedback.html:7 templates/feedback.html:12
 #: views.py:64
 msgid "Feedback"
 msgstr "Бозхӯрд"
