@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Privacy Policy" %} | TaskMan{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1>{% trans "Privacy Policy" %}</h1>
+    <p class="text-muted">{% trans "Last updated" %}: 2026-04-01</p>
+    
+    <h2>1. {% trans "Data We Collect" %}</h2>
+    <p>{% trans "When you register, we collect:" %}</p>
+    <ul>
+        <li>{% trans "Username" %}</li>
+        <li>{% trans "First and last name" %}</li>
+        <li>{% trans "Email address (optional)" %}</li>
+        <li>{% trans "Password (stored in encrypted form)" %}</li>
+    </ul>
+    
+    <p>{% trans "When you use the service, we store:" %}</p>
+    <ul>
+        <li>{% trans "Tasks, notes, labels and statuses you create" %}</li>
+        <li>{% trans "Team membership information" %}</li>
+    </ul>
+    
+    <h2>2. {% trans "How We Use Your Data" %}</h2>
+    <ul>
+        <li>{% trans "To provide the task management service" %}</li>
+        <li>{% trans "To authenticate you and protect your account" %}</li>
+        <li>{% trans "To enable team collaboration features" %}</li>
+    </ul>
+    
+    <h2>3. {% trans "Data Sharing" %}</h2>
+    <p>{% trans "We do not sell, trade, or share your personal data with third parties, except:" %}</p>
+    <ul>
+        <li>{% trans "Within your teams - other team members can see tasks assigned to them" %}</li>
+        <li>{% trans "When required by law" %}</li>
+    </ul>
+    
+    <h2>4. {% trans "Data Storage and Security" %}</h2>
+    <p>{% trans "Your data is stored on secure servers. We use HTTPS encryption for all connections. Passwords are hashed and never stored in plain text." %}</p>
+    
+    <h2>5. {% trans "Your Rights" %}</h2>
+    <p>{% trans "You can:" %}</p>
+    <ul>
+        <li>{% trans "View and edit your profile information at any time" %}</li>
+        <li>{% trans "Delete your account and all associated data" %}</li>
+        <li>{% trans "Export your data by contacting us" %}</li>
+    </ul>
+    
+    <h2>6. {% trans "Cookies" %}</h2>
+    <p>{% trans "We use essential cookies for:" %}</p>
+    <ul>
+        <li>{% trans "Session management (keeping you logged in)" %}</li>
+        <li>{% trans "CSRF protection (security)" %}</li>
+        <li>{% trans "Language preference" %}</li>
+    </ul>
+    
+    <h2>7. {% trans "Children's Privacy" %}</h2>
+    <p>{% trans "Our service is not intended for children under 13. We do not knowingly collect data from children." %}</p>
+    
+    <h2>8. {% trans "Contact" %}</h2>
+    <p>{% trans "If you have questions about this privacy policy, contact us via the feedback form or at:" %}</p>
+    <p><a href="mailto:donoriono@gmail.com">donoriono@gmail.com</a></p>
+    
+    <h2>9. {% trans "Changes" %}</h2>
+    <p>{% trans "We may update this policy. Changes will be posted on this page with an updated date." %}</p>
+</div>
+{% endblock %}

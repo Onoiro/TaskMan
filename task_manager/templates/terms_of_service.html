@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Terms of Service" %} | TaskMan{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1>{% trans "Terms of Service" %}</h1>
+    <p class="text-muted">{% trans "Last updated" %}: 2026-04-01</p>
+    
+    <h2>1. {% trans "Acceptance of Terms" %}</h2>
+    <p>{% trans "By using TaskMan, you agree to these terms. If you disagree, please do not use the service." %}</p>
+    
+    <h2>2. {% trans "Description of Service" %}</h2>
+    <p>{% trans "TaskMan is a web application for task management, available for individual use and team collaboration." %}</p>
+    
+    <h2>3. {% trans "User Account" %}</h2>
+    <ul>
+        <li>{% trans "You are responsible for maintaining the security of your account" %}</li>
+        <li>{% trans "You must provide accurate information during registration" %}</li>
+        <li>{% trans "You must not create accounts for automated use without permission" %}</li>
+    </ul>
+    
+    <h2>4. {% trans "Acceptable Use" %}</h2>
+    <p>{% trans "You agree not to:" %}</p>
+    <ul>
+        <li>{% trans "Use the service for any illegal purpose" %}</li>
+        <li>{% trans "Attempt to gain unauthorized access to the service" %}</li>
+        <li>{% trans "Interfere with the proper operation of the service" %}</li>
+        <li>{% trans "Upload malicious content" %}</li>
+    </ul>
+    
+    <h2>5. {% trans "Content" %}</h2>
+    <p>{% trans "You retain ownership of the content you create. We do not claim any rights to your tasks, notes, or other data." %}</p>
+    
+    <h2>6. {% trans "Service Availability" %}</h2>
+    <p>{% trans "We strive to maintain high availability but do not guarantee uninterrupted service. We may perform maintenance that temporarily affects availability." %}</p>
+    
+    <h2>7. {% trans "Termination" %}</h2>
+    <p>{% trans "We reserve the right to suspend or terminate accounts that violate these terms." %}</p>
+    
+    <h2>8. {% trans "Limitation of Liability" %}</h2>
+    <p>{% trans "TaskMan is provided 'as is'. We are not liable for any data loss or damages arising from the use of the service." %}</p>
+    
+    <h2>9. {% trans "Contact" %}</h2>
+    <p><a href="mailto:donoriono@gmail.com">donoriono@gmail.com</a></p>
+</div>
+{% endblock %}

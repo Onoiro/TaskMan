@@ -64,4 +64,10 @@ urlpatterns = [
         content_type='application/manifest+json'
     ), name='manifest.json'),
     path('.well-known/assetlinks.json', AssetLinksView.as_view()),
+    path('privacy/', TemplateView.as_view(
+        template_name='privacy_policy.html'
+    ), name='privacy_policy'),
+    path('terms/', TemplateView.as_view(
+        template_name='terms_of_service.html'
+    ), name='terms_of_service'),
 ]
