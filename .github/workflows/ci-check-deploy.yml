@@ -73,6 +73,8 @@ jobs:
         run: poetry run python manage.py collectstatic --no-input
       
       - name: Run tests
+        env:
+          TESTING: 'true'
         run: make test
       
       - name: Generate coverage report
