@@ -15,31 +15,45 @@
     "screenshots": [
         {
             "src": "{% static 'screenshots/mobile-index.png' %}",
-            "sizes": "390x844",
+            "sizes": "540x1194",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Главный экран TaskMan"
         },
         {
             "src": "{% static 'screenshots/mobile-task-list.png' %}",
-            "sizes": "390x844",
+            "sizes": "540x1194",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Список задач"
         },
         {
             "src": "{% static 'screenshots/mobile-statuses-list.png' %}",
-            "sizes": "390x844",
+            "sizes": "540x1194",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Список статусов"
         },
         {
             "src": "{% static 'screenshots/mobile-task-update.png' %}",
-            "sizes": "390x844",
+            "sizes": "540x1194",
             "type": "image/png",
             "form_factor": "narrow",
             "label": "Редактирование задачи"
+        },
+        {
+            "src": "{% static 'screenshots/mobile-wide-task-filter.png' %}",
+            "sizes": "1194x540",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Фильтр задач и настройки"
+        },
+        {
+            "src": "{% static 'screenshots/mobile-wide-task-list-simple.png' %}",
+            "sizes": "1194x540",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Простой список задач"
         }
     ],
     "icons": [
