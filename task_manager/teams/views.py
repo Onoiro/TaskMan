@@ -330,19 +330,17 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            service = LimitService(request.user)
-            result = service.can_create_team()
-            if not result.allowed:
-                messages.warning(request, result.message)
-                return redirect('tasks:tasks-list')
-        return super().dispatch(request, *args, **kwargs)
-
     def get_success_url(self):
         return reverse_lazy('tasks:tasks-list')
 
     def form_valid(self, form):
+        # Check team limit after form validation (not before)
+        service = LimitService(self.request.user)
+        result = service.can_create_team()
+        if not result.allowed:
+            messages.warning(self.request, result.message)
+            return redirect('tasks:tasks-list')
+
         form.instance = form.save()
         self.object = form.instance
 

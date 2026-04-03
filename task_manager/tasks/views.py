@@ -348,47 +348,55 @@ def _check_task_edit_permission(request, task):
     return None
 
 
-@login_required
-@require_POST
-def checklist_add(request, uuid):
-    """Add a new checklist item to a task."""
-    task = get_object_or_404(Task, uuid=uuid)
-    error = _check_task_edit_permission(request, task)
-    if error:
-        return error
-
-    # Check checklist items limit
-    service = LimitService(request.user)
-    result = service.can_add_checklist_item(task)
-    if not result.allowed:
-        return JsonResponse({'error': str(result.message)}, status=429)
-
+def _parse_checklist_text_from_request(request):
+    """
+    Extract checklist text from JSON request body.
+    Returns empty string if JSON parsing fails or if text is missing.
+    """
     try:
         data = json.loads(request.body)
-        text = data.get('text', '').strip()
+        return data.get('text', '')
     except (json.JSONDecodeError, TypeError):
-        text = ''.strip()
+        return ''
 
+
+def _validate_checklist_text(text):
+    """
+    Validate checklist item text.
+
+    Returns tuple: (cleaned_text, error_message)
+    - If text is valid: returns (cleaned_text, None)
+    - If text is invalid: returns (None, error_message)
+    """
+    text = text.strip()
+
+    # Check if text is empty
     if not text:
-        return JsonResponse({'error': _('Text is required')}, status=400)
+        return None, _('Text is required')
 
+    # Check if text is too long
     if len(text) > 300:
-        return JsonResponse(
-            {'error': _('Text must be 300 characters or less')},
-            status=400
-        )
+        return None, _('Text must be 300 characters or less')
 
-    # Get next position
+    # Text is valid
+    return text, None
+
+
+def _get_next_checklist_position(task):
+    """
+    Get the next available position number for a checklist item.
+    Finds the maximum position and adds 1. Returns 1 if no items exist.
+    """
     max_position = task.checklist_items.aggregate(
         models.Max('position')
     )['position__max'] or 0
+    return max_position + 1
 
-    item = ChecklistItem.objects.create(
-        task=task,
-        text=text,
-        position=max_position + 1
-    )
 
+def _create_checklist_response(item, task):
+    """
+    Create a JSON response with checklist item data and task progress.
+    """
     return JsonResponse({
         'id': item.id,
         'text': item.text,
@@ -400,17 +408,76 @@ def checklist_add(request, uuid):
     })
 
 
+def _create_checklist_progress_response(task):
+    """
+    Create a JSON response with task checklist progress data.
+    Used after toggling or deleting checklist items.
+    """
+    return JsonResponse({
+        'total': task.checklist_total,
+        'done': task.checklist_done,
+        'progress': task.checklist_progress,
+    })
+
+
+@login_required
+@require_POST
+def checklist_add(request, uuid):
+    """
+    Add a new checklist item to a task.
+
+    Permissions: author, executor, or team admin can add items.
+    Limits: user cannot exceed checklist item quota.
+    """
+    task = get_object_or_404(Task, uuid=uuid)
+
+    # Check if user has permission to edit this task
+    error = _check_task_edit_permission(request, task)
+    if error:
+        return error
+
+    # Check if user can add more checklist items (limit service)
+    service = LimitService(request.user)
+    result = service.can_add_checklist_item(task)
+    if not result.allowed:
+        return JsonResponse({'error': str(result.message)}, status=429)
+
+    # Extract and validate text from request
+    text = _parse_checklist_text_from_request(request)
+    text, error_message = _validate_checklist_text(text)
+
+    if error_message:
+        return JsonResponse({'error': error_message}, status=400)
+
+    # Create new checklist item
+    position = _get_next_checklist_position(task)
+    item = ChecklistItem.objects.create(
+        task=task,
+        text=text,
+        position=position
+    )
+
+    return _create_checklist_response(item, task)
+
+
 @login_required
 @require_POST
 def checklist_toggle(request, uuid, item_id):
-    """Toggle is_done status of a checklist item."""
+    """
+    Toggle the done status of a checklist item (done/not done).
+
+    Permissions: author, executor, or team admin can toggle items.
+    """
     task = get_object_or_404(Task, uuid=uuid)
+
+    # Check if user has permission to edit this task
     error = _check_task_edit_permission(request, task)
     if error:
         return error
 
     item = get_object_or_404(ChecklistItem, id=item_id, task=task)
 
+    # Toggle the done status
     item.is_done = not item.is_done
     item.save()
 
@@ -426,14 +493,21 @@ def checklist_toggle(request, uuid, item_id):
 @login_required
 @require_POST
 def checklist_delete(request, uuid, item_id):
-    """Delete a checklist item."""
+    """
+    Delete a checklist item from a task.
+
+    Permissions: author, executor, or team admin can delete items.
+    """
     task = get_object_or_404(Task, uuid=uuid)
+
+    # Check if user has permission to edit this task
     error = _check_task_edit_permission(request, task)
     if error:
         return error
 
     item = get_object_or_404(ChecklistItem, id=item_id, task=task)
 
+    # Delete the checklist item
     item.delete()
 
     return JsonResponse({
