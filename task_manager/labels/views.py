@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Label
 from task_manager.labels.forms import LabelForm
 from django.shortcuts import redirect
+from task_manager.limit_service import LimitService
 
 
 class LabelsListView(CustomPermissions, ListView):
@@ -34,6 +35,19 @@ class LabelsCreateView(SuccessMessageMixin, CreateView):
     form_class = LabelForm
     template_name = 'labels/labels_create.html'
     success_message = _('Label created successfully')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            service = LimitService(request.user)
+            team = getattr(request, 'active_team', None)
+            if team:
+                result = service.can_create_team_label(team)
+            else:
+                result = service.can_create_personal_label()
+            if not result.allowed:
+                messages.warning(request, result.message)
+                return redirect('labels:labels-list')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         next_url = self.request.GET.get('next')

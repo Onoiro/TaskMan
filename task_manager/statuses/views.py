@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Status
 from task_manager.statuses.forms import StatusForm
 from django.shortcuts import redirect
+from task_manager.limit_service import LimitService
 
 
 class StatusesListView(CustomPermissions, ListView):
@@ -35,6 +36,19 @@ class StatusesCreateView(SuccessMessageMixin, CreateView):
     template_name = 'statuses/statuses_create_form.html'
     success_url = reverse_lazy('statuses:statuses-list')
     success_message = _('Status created successfully')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            service = LimitService(request.user)
+            team = getattr(request, 'active_team', None)
+            if team:
+                result = service.can_create_team_status(team)
+            else:
+                result = service.can_create_personal_status()
+            if not result.allowed:
+                messages.warning(request, result.message)
+                return redirect('statuses:statuses-list')
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         status = form.save(commit=False)

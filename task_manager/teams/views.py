@@ -20,6 +20,7 @@ from task_manager.teams.forms import TeamForm, TeamMemberRoleForm, TeamJoinForm
 from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
+from task_manager.limit_service import LimitService
 
 
 # Constants
@@ -329,6 +330,15 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
     form_class = TeamForm
     template_name = 'teams/team_create_form.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            service = LimitService(request.user)
+            result = service.can_create_team()
+            if not result.allowed:
+                messages.warning(request, result.message)
+                return redirect('tasks:tasks-list')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('tasks:tasks-list')
 
@@ -358,6 +368,22 @@ class TeamJoinView(LoginRequiredMixin, View):
     """View for joining an existing team."""
 
     template_name = 'teams/team_join_form.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            # Check team member limit when user tries to join
+            if request.method == 'POST':
+                form = TeamJoinForm(
+                    request.POST, initial={'user': request.user}
+                )
+                if form.is_valid():
+                    team = form.cleaned_data['team']
+                    service = LimitService(request.user)
+                    result = service.can_add_team_member(team)
+                    if not result.allowed:
+                        messages.warning(request, result.message)
+                        return redirect('teams:team-join')
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
         form = TeamJoinForm(initial={'user': request.user})

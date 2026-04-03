@@ -1,0 +1,96 @@
+{% load i18n %}
+{% if usage %}
+<div class="limits-usage small">
+    {% for key, data in usage.items %}
+    {% if key == 'tasks' %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-card-checklist"></i> {% trans 'Tasks' %}</span>
+            <span>{{ data.current }} / {{ data.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if data.percent >= 100 %}bg-danger{% elif data.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ data.percent }}%"
+                 aria-valuenow="{{ data.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% elif key == 'teams' %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-building"></i> {% trans 'Teams' %}</span>
+            <span>{{ data.current }} / {{ data.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if data.percent >= 100 %}bg-danger{% elif data.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ data.percent }}%"
+                 aria-valuenow="{{ data.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% elif key == 'statuses' %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-flag"></i> {% trans 'Statuses' %}</span>
+            <span>{{ data.current }} / {{ data.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if data.percent >= 100 %}bg-danger{% elif data.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ data.percent }}%"
+                 aria-valuenow="{{ data.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% elif key == 'labels' %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-tags"></i> {% trans 'Labels' %}</span>
+            <span>{{ data.current }} / {{ data.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if data.percent >= 100 %}bg-danger{% elif data.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ data.percent }}%"
+                 aria-valuenow="{{ data.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% elif key == 'notes' %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-sticky"></i> {% trans 'Notes' %}</span>
+            <span>{{ data.current }} / {{ data.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if data.percent >= 100 %}bg-danger{% elif data.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ data.percent }}%"
+                 aria-valuenow="{{ data.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    {% if show_upgrade_hint %}
+    <div class="alert alert-info py-2 px-3 mb-0 mt-3 small">
+        {% trans 'Extended plan is already in development — more features coming soon!' %}
+    </div>
+    {% endif %}
+
+    {# TODO: storage limit for media files #}
+</div>
+{% endif %}

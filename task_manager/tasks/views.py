@@ -14,6 +14,7 @@ from urllib.parse import urlencode
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from task_manager.limit_service import LimitService
 import json
 
 
@@ -232,6 +233,15 @@ class TaskCreateView(SuccessMessageMixin, CreateView):
     template_name = 'tasks/task_create_form.html'
     success_message = _('Task created successfully')
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            service = LimitService(request.user)
+            result = service.can_create_task()
+            if not result.allowed:
+                messages.warning(request, result.message)
+                return redirect('tasks:tasks-list')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         if 'add_checklist' in self.request.POST:
             return reverse_lazy(
@@ -346,6 +356,12 @@ def checklist_add(request, uuid):
     error = _check_task_edit_permission(request, task)
     if error:
         return error
+
+    # Check checklist items limit
+    service = LimitService(request.user)
+    result = service.can_add_checklist_item(task)
+    if not result.allowed:
+        return JsonResponse({'error': str(result.message)}, status=429)
 
     try:
         data = json.loads(request.body)

@@ -356,7 +356,21 @@
         </nav>
       </div>
     {% endblock %}
-    
+
+    {% if user.is_authenticated and show_upgrade_hint %}
+    <div class="container-fluid px-3 px-md-4 py-1 bg-warning bg-opacity-10 border-bottom">
+      <div class="d-flex align-items-center justify-content-between small">
+        <span>
+          <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+          {% trans "You are approaching the free plan limits." %}
+        </span>
+        <a href="{% url 'limits-info' %}" class="text-decoration-none small">
+          {% trans "Details" %} →
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
     <div class="container wrapper flex-grow-1 px-3 px-sm-0">
       {% if messages %}
       <div class="custom-messages" id="customMessages">

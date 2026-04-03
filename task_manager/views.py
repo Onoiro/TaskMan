@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponse
 from . import forms
@@ -62,5 +63,29 @@ class FeedbackView(CustomPermissions, View):
         context = {
             'form': form,
             'title': _("Feedback"),
+        }
+        return render(request, self.template_name, context)
+
+
+class LimitsInfoView(LoginRequiredMixin, View):
+    template_name = 'limits/limits_info.html'
+
+    def get(self, request):
+        from task_manager.limit_service import LimitService
+        service = LimitService(request.user)
+        usage = service.get_usage_summary()
+
+        # Calculate percentages for each resource
+        for key in usage:
+            current = usage[key]['current']
+            maximum = usage[key]['max']
+            if maximum > 0:
+                usage[key]['percent'] = min(100, int(current / maximum * 100))
+            else:
+                usage[key]['percent'] = 0
+
+        context = {
+            'usage': usage,
+            'limits': service.limits,
         }
         return render(request, self.template_name, context)

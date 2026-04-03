@@ -9,6 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from task_manager.notes.models import Note
 from task_manager.notes.forms import NoteForm
 from task_manager.permissions import CustomPermissions
+from task_manager.limit_service import LimitService
 
 
 class NoteListView(CustomPermissions, ListView):
@@ -47,6 +48,19 @@ class NoteCreateView(SuccessMessageMixin, CreateView):
     form_class = NoteForm
     template_name = 'notes/note_form.html'
     success_message = _('Note created successfully')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            service = LimitService(request.user)
+            team = getattr(request, 'active_team', None)
+            if team:
+                result = service.can_create_team_note(team)
+            else:
+                result = service.can_create_personal_note()
+            if not result.allowed:
+                messages.warning(request, result.message)
+                return redirect('notes:note-list')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         task_uuid = self.request.GET.get('task')
