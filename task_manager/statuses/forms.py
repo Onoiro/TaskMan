@@ -1,6 +1,7 @@
 from django import forms
 from .models import Status
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxLengthValidator
 
 
 class StatusForm(forms.ModelForm):
@@ -21,7 +22,8 @@ class StatusForm(forms.ModelForm):
             'placeholder': _('Description'),
             'rows': 3
         }),
-        help_text=_('Optional')
+        help_text=_('Optional'),
+        validators=[MaxLengthValidator(20000)]
     )
 
     color = forms.CharField(

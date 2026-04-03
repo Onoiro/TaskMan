@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 from task_manager.user.models import User
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 
@@ -45,7 +45,8 @@ class Status(models.Model):
     )
     description = models.TextField(
         blank=True,
-        verbose_name=_('Description')
+        verbose_name=_('Description'),
+        validators=[MaxLengthValidator(20000)]
     )
     color = models.CharField(
         max_length=7,

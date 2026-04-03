@@ -1,6 +1,7 @@
 from django import forms
 from task_manager.teams.models import Team
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxLengthValidator
 from .models import TeamMembership
 
 
@@ -17,6 +18,17 @@ class TeamForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'rows': 3}
             ),
         }
+
+    description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+            'placeholder': _('Description')
+        }),
+        help_text=_('Optional'),
+        validators=[MaxLengthValidator(20000)]
+    )
 
     password1 = forms.CharField(
         required=True,

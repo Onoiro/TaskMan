@@ -3,13 +3,15 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxLengthValidator
 
 
 class User(AbstractUser):
     description = models.TextField(
         verbose_name=_('Description'),
         blank=True,
-        default=''
+        default='',
+        validators=[MaxLengthValidator(20000)]
     )
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)

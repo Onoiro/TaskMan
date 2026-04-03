@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from task_manager.user.models import User
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
 class Team(models.Model):
@@ -29,7 +29,8 @@ class Team(models.Model):
     )
     description = models.TextField(
         blank=True,
-        verbose_name=_('Description')
+        verbose_name=_('Description'),
+        validators=[MaxLengthValidator(20000)]
     )
     members = models.ManyToManyField(
         'user.User',

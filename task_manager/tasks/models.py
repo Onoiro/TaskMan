@@ -5,7 +5,7 @@ from task_manager.user.models import User
 from task_manager.teams.models import Team
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 
@@ -35,7 +35,8 @@ class Task(models.Model):
     )
     description = models.TextField(
         blank=True,
-        verbose_name=_('Description')
+        verbose_name=_('Description'),
+        validators=[MaxLengthValidator(20000)]
     )
     team = models.ForeignKey(
         Team,

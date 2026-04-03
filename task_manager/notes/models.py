@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.core.validators import RegexValidator, MaxLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 from task_manager.user.models import User
@@ -19,11 +20,22 @@ class Note(models.Model):
     title = models.CharField(
         max_length=150,
         blank=True,
-        verbose_name=_('Title')
+        verbose_name=_('Title'),
+        validators=[
+            RegexValidator(
+                r'^[\w \-:,.!?]+$',
+                message=_(
+                    "Only letters, numbers, spaces, "
+                    "and -_.,!? symbols are allowed. "
+                    "Symbols <, >, #, & are not allowed."
+                )
+            ),
+        ],
     )
     content = models.TextField(
         blank=False,
-        verbose_name=_('Content')
+        verbose_name=_('Content'),
+        validators=[MaxLengthValidator(20000)]
     )
     author = models.ForeignKey(
         User,

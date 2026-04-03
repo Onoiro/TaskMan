@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxLengthValidator
 
 
 class FeedbackForm(forms.Form):
@@ -22,5 +23,6 @@ class FeedbackForm(forms.Form):
         widget=forms.Textarea(attrs={
             'rows': 5,
             'placeholder': _('Describe your issue or suggestion...')
-        })
+        }),
+        validators=[MaxLengthValidator(20000)]
     )
