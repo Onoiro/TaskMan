@@ -318,6 +318,236 @@ class LimitServiceChecklistTest(TestCase):
         self.assertEqual(result.current, 19)
 
 
+class LimitServiceUnusedMethodsTest(TestCase):
+    """Tests for limit methods defined for future use."""
+
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json"]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.service = LimitService(self.user)
+        # Create personal status
+        self.personal_status = Status.objects.create(
+            name='Personal Status',
+            creator=self.user,
+            team=None,
+            color='#ffffff'
+        )
+        # Create team and team status
+        self.team = Team.objects.create(
+            name='Test Team Unused',
+            password='test'
+        )
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='admin',
+            status='active'
+        )
+        self.team_status = Status.objects.create(
+            name='Team Status',
+            creator=self.user,
+            team=self.team,
+            color='#000000'
+        )
+
+    def test_can_add_team_member(self):
+        """Can add team member when under limit."""
+        result = self.service.can_add_team_member(self.team)
+        # Current team has 1 member (the admin)
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, 1)
+
+    def test_cannot_exceed_team_member_limit(self):
+        """Cannot add more than 10 team members."""
+        # Add 9 more members (total 10)
+        for i in range(9):
+            other_user = User.objects.create_user(
+                username=f'member_{i}',
+                password='test'
+            )
+            TeamMembership.objects.create(
+                user=other_user,
+                team=self.team,
+                role='member',
+                status='active'
+            )
+
+        result = self.service.can_add_team_member(self.team)
+        self.assertFalse(result.allowed)
+        self.assertEqual(result.current, 10)
+
+    def test_can_create_personal_status(self):
+        """Can create personal status when under limit."""
+        # Count existing personal statuses
+        existing = Status.objects.filter(
+            creator=self.user,
+            team__isnull=True
+        ).count()
+
+        result = self.service.can_create_personal_status()
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_personal_status_limit(self):
+        """Cannot create personal status when at limit."""
+        # Create 10 personal statuses (limit is 10)
+        for i in range(10):
+            Status.objects.create(
+                name=f'Status {i}',
+                creator=self.user,
+                team=None,
+                color='#ffffff'
+            )
+
+        result = self.service.can_create_personal_status()
+        self.assertFalse(result.allowed)
+        self.assertIn('10', result.message)
+
+    def test_can_create_team_status(self):
+        """Can create team status when under limit."""
+        # Count existing team statuses
+        existing = Status.objects.filter(team=self.team).count()
+
+        result = self.service.can_create_team_status(self.team)
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_team_status_limit(self):
+        """Cannot create team status when at limit."""
+        # Create 15 team statuses (limit is 15)
+        for i in range(15):
+            Status.objects.create(
+                name=f'Team Status {i}',
+                creator=self.user,
+                team=self.team,
+                color='#ffffff'
+            )
+
+        result = self.service.can_create_team_status(self.team)
+        self.assertFalse(result.allowed)
+        self.assertIn('15', result.message)
+
+    def test_can_create_personal_label(self):
+        """Can create personal label when under limit."""
+        from task_manager.labels.models import Label
+
+        # Count existing personal labels
+        existing = Label.objects.filter(
+            creator=self.user,
+            team__isnull=True
+        ).count()
+
+        result = self.service.can_create_personal_label()
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_personal_label_limit(self):
+        """Cannot create personal label when at limit."""
+        from task_manager.labels.models import Label
+
+        # Create 20 personal labels (limit is 20)
+        for i in range(20):
+            Label.objects.create(
+                name=f'Label {i}',
+                creator=self.user,
+                team=None
+            )
+
+        result = self.service.can_create_personal_label()
+        self.assertFalse(result.allowed)
+        self.assertIn('20', result.message)
+
+    def test_can_create_team_label(self):
+        """Can create team label when under limit."""
+        from task_manager.labels.models import Label
+
+        # Count existing team labels
+        existing = Label.objects.filter(team=self.team).count()
+
+        result = self.service.can_create_team_label(self.team)
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_team_label_limit(self):
+        """Cannot create team label when at limit."""
+        from task_manager.labels.models import Label
+
+        # Create 30 team labels (limit is 30)
+        for i in range(30):
+            Label.objects.create(
+                name=f'Team Label {i}',
+                creator=self.user,
+                team=self.team
+            )
+
+        result = self.service.can_create_team_label(self.team)
+        self.assertFalse(result.allowed)
+        self.assertIn('30', result.message)
+
+    def test_can_create_personal_note(self):
+        """Can create personal note when under limit."""
+        from task_manager.notes.models import Note
+
+        # Count existing personal notes
+        existing = Note.objects.filter(
+            author=self.user,
+            team__isnull=True
+        ).count()
+
+        result = self.service.can_create_personal_note()
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_personal_note_limit(self):
+        """Cannot create personal note when at limit."""
+        from task_manager.notes.models import Note
+
+        # Create 50 personal notes (limit is 50)
+        for i in range(50):
+            Note.objects.create(
+                title=f'Note {i}',
+                content='Test',
+                author=self.user,
+                team=None
+            )
+
+        result = self.service.can_create_personal_note()
+        self.assertFalse(result.allowed)
+        self.assertIn('50', result.message)
+
+    def test_can_create_team_note(self):
+        """Can create team note when under limit."""
+        from task_manager.notes.models import Note
+
+        # Count existing team notes
+        existing = Note.objects.filter(team=self.team).count()
+
+        result = self.service.can_create_team_note(self.team)
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, existing)
+
+    def test_cannot_exceed_team_note_limit(self):
+        """Cannot create team note when at limit."""
+        from task_manager.notes.models import Note
+
+        # Create 100 team notes (limit is 100)
+        for i in range(100):
+            Note.objects.create(
+                title=f'Team Note {i}',
+                content='Test',
+                author=self.user,
+                team=self.team
+            )
+
+        result = self.service.can_create_team_note(self.team)
+        self.assertFalse(result.allowed)
+        self.assertIn('100', result.message)
+
+
 class LimitCheckInViewsTest(TestCase):
     """Tests for limit checking in views."""
 
@@ -369,9 +599,9 @@ class LimitCheckInViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         # Check messages for warning
         messages_list = list(get_messages(response.wsgi_request))
-        warning_messages = [m for m in messages_list if m.level == 30]  # WARNING
-        self.assertTrue(len(warning_messages) > 0)
-        self.assertIn('500', str(warning_messages[0]))
+        warning_msgs = [m for m in messages_list if m.level == 30]
+        self.assertTrue(len(warning_msgs) > 0)
+        self.assertIn('500', str(warning_msgs[0]))
 
     def test_task_create_allowed_below_limit(self):
         """Task creation allowed when below limit."""
@@ -413,7 +643,8 @@ class LimitCheckInViewsTest(TestCase):
         # Should not be blocked (task created)
         self.assertEqual(response.status_code, 200)
         # Task should be created
-        self.assertTrue(Task.objects.filter(name='New Task Below Limit').exists())
+        task_exists = Task.objects.filter(name='New Task Below Limit').exists()
+        self.assertTrue(task_exists)
 
     def test_checklist_add_blocked_at_limit(self):
         """Checklist add returns 429 when limit reached."""
