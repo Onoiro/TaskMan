@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-31 00:00+0300\n"
-"PO-Revision-Date: 2026-03-29 19:54+0300\n"
+"POT-Creation-Date: 2026-04-04 23:17+0300\n"
+"PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
 "Language: az\n"
@@ -15,33 +15,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:7
+#: forms.py:8
 msgid "Specify the subject:"
 msgstr "Mövzunu göstərin:"
 
-#: forms.py:10
+#: forms.py:11
 msgid "Bug, suggestion, etc."
 msgstr "Xəta, təklif və s."
 
-#: forms.py:14
+#: forms.py:15
 msgid "* Your email or Telegram (@username):"
 msgstr "* E-poçtunuz və ya Telegram hesabınız (@username):"
 
-#: forms.py:21
+#: forms.py:22
 msgid "* Message:"
 msgstr "* Mesaj:"
 
-#: forms.py:24
+#: forms.py:25
 msgid "Describe your issue or suggestion..."
 msgstr "Probleminizi və ya təklifinizi təsvir edin..."
 
-#: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:13
-#: statuses/forms.py:14 statuses/models.py:21 tasks/models.py:34
+#: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:14
+#: statuses/forms.py:15 statuses/models.py:21 tasks/models.py:34
 #: teams/models.py:22 templates/statuses/statuses_create_form.html:20
 msgid "Name"
 msgstr "Ad"
 
-#: labels/models.py:24 statuses/models.py:26 tasks/models.py:28
+#: labels/models.py:24 notes/models.py:28 statuses/models.py:26
+#: tasks/models.py:28
 msgid ""
 "Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
 "#, & are not allowed."
@@ -49,23 +50,75 @@ msgstr ""
 "Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <, "
 ">, #, & simvollarına icazə verilmir."
 
-#: labels/views.py:36
+#: labels/views.py:37
 msgid "Label created successfully"
 msgstr "Etiket uğurla yaradıldı"
 
-#: labels/views.py:62
+#: labels/views.py:76
 msgid "Label updated successfully"
 msgstr "Etiket uğurla yeniləndi"
 
-#: labels/views.py:86
+#: labels/views.py:100
 msgid "Label deleted successfully"
 msgstr "Etiket uğurla silindi"
 
-#: labels/views.py:109
+#: labels/views.py:123
 msgid "Cannot delete label because it is in use"
 msgstr "Etiketi silmək mümkün deyil, çünki o istifadə olunur"
 
-#: notes/forms.py:34 statuses/forms.py:24 templates/notes/note_form.html:65
+#: limit_service.py:16
+#, python-format
+msgid ""
+"You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
+"removing ones you no longer need. TaskMan Pro without limits is on its way — "
+"we're working on it!"
+msgstr ""
+"Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. Artıq "
+"lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır — biz "
+"bunun üzərində işləyirik!"
+
+#: limit_service.py:36
+msgid "teams"
+msgstr "komandalar"
+
+#: limit_service.py:37
+msgid "team members"
+msgstr "komanda üzvləri"
+
+#: limit_service.py:38
+msgid "tasks"
+msgstr "tapşırıqlar"
+
+#: limit_service.py:39
+msgid "personal statuses"
+msgstr "şəxsi statuslar"
+
+#: limit_service.py:40
+msgid "team statuses"
+msgstr "komanda statusları"
+
+#: limit_service.py:41
+msgid "personal labels"
+msgstr "şəxsi etiketlər"
+
+#: limit_service.py:42
+msgid "team labels"
+msgstr "komanda etiketləri"
+
+#: limit_service.py:43
+msgid "personal notes"
+msgstr "şəxsi qeydlər"
+
+#: limit_service.py:44
+msgid "team notes"
+msgstr "komanda qeydləri"
+
+#: limit_service.py:45
+msgid "checklist items"
+msgstr "yoxlama siyahısı bəndləri"
+
+#: notes/forms.py:34 statuses/forms.py:25 teams/forms.py:29
+#: templates/notes/note_form.html:65
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
@@ -83,68 +136,70 @@ msgstr "Fərdi rejimdə qeydi komanda tapşırığına əlavə etmək olmaz."
 msgid "You can only attach notes to your own tasks."
 msgstr "Qeydləri yalnız öz tapşırıqlarınıza əlavə edə bilərsiniz."
 
-#: notes/models.py:22 templates/notes/note_form.html:57
+#: notes/models.py:23 templates/notes/note_form.html:57
 msgid "Title"
 msgstr "Başlıq"
 
-#: notes/models.py:26 templates/notes/note_form.html:69
+#: notes/models.py:37 templates/notes/note_form.html:69
+#: templates/terms_of_service.html:33
 msgid "Content"
 msgstr "Məzmun"
 
-#: notes/models.py:33 tasks/filters.py:33 templates/notes/note_form.html:37
+#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_form.html:37
 #: templates/tasks/task_filter.html:389 templates/tasks/task_update.html:23
 #: templates/user/user_detail.html:80 templates/user/user_detail.html:102
 msgid "Author"
 msgstr "Müəllif"
 
-#: notes/models.py:41 tasks/models.py:46 templates/labels/labels_update.html:29
+#: notes/models.py:53 tasks/models.py:47 templates/labels/labels_update.html:29
 #: templates/notes/note_form.html:29
 msgid "Team"
 msgstr "Komanda"
 
-#: notes/models.py:49 tasks/models.py:128
+#: notes/models.py:61 tasks/models.py:129
 msgid "Task"
 msgstr "Tapşırıq"
 
-#: notes/models.py:53 statuses/models.py:57 tasks/models.py:72
-#: teams/models.py:42 templates/labels/labels_update.html:54
+#: notes/models.py:65 statuses/models.py:58 tasks/models.py:73
+#: teams/models.py:43 templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
 #: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
 msgid "Created at"
 msgstr "Yaradılma tarixi"
 
-#: notes/models.py:57 tasks/models.py:77
+#: notes/models.py:69 tasks/models.py:78
 msgid "Updated at"
 msgstr "Yenilənmə tarixi"
 
-#: notes/models.py:62 templates/feedback.html:28
+#: notes/models.py:74 templates/feedback.html:28
 #: templates/notes/note_form.html:20
 msgid "Note"
 msgstr "Qeyd"
 
-#: notes/models.py:63 templates/base.html:128 templates/base.html:153
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:347
+#: notes/models.py:75 templates/base.html:128 templates/base.html:153
+#: templates/includes/limits_usage.html:72 templates/notes/_task_notes.html:7
+#: templates/tasks/task_filter.html:347
 msgid "Notes"
 msgstr "Qeydlər"
 
-#: notes/views.py:49
+#: notes/views.py:50
 msgid "Note created successfully"
 msgstr "Qeyd uğurla yaradıldı"
 
-#: notes/views.py:105
+#: notes/views.py:119
 msgid "Note can only be edited by its author or team admin."
 msgstr ""
 "Qeydi yalnız onun müəllifi və ya komanda administratoru redaktə edə bilər."
 
-#: notes/views.py:127
+#: notes/views.py:141
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Qeydi yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: notes/views.py:143
+#: notes/views.py:157
 msgid "Note updated successfully"
 msgstr "Qeyd uğurla yeniləndi"
 
-#: notes/views.py:181
+#: notes/views.py:195
 msgid "Note deleted successfully"
 msgstr "Qeyd uğurla silindi"
 
@@ -178,106 +233,106 @@ msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
 msgid "Team membership not found."
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: settings.py:177 templates/index.html:67
+#: settings.py:178 templates/index.html:67
 msgid "English"
 msgstr "İngilis"
 
-#: settings.py:178 templates/index.html:76
+#: settings.py:179 templates/index.html:76
 msgid "Russian"
 msgstr "Rus"
 
-#: settings.py:179 templates/index.html:85
+#: settings.py:180 templates/index.html:85
 msgid "Tajik"
 msgstr "Tacik"
 
-#: settings.py:180 templates/index.html:94
+#: settings.py:181 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Azərbaycan dili"
 
-#: settings.py:181 templates/index.html:103
+#: settings.py:182 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Qırğız"
 
-#: statuses/forms.py:18 statuses/forms.py:21 statuses/models.py:48
-#: tasks/models.py:38 teams/models.py:32
+#: statuses/forms.py:19 statuses/forms.py:22 statuses/models.py:48
+#: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
 #: templates/statuses/statuses_create_form.html:54
 #: templates/statuses/statuses_update.html:40
 #: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
-#: templates/user/user_detail.html:30 user/models.py:10
+#: templates/user/user_detail.html:30 user/models.py:11
 msgid "Description"
 msgstr "Təsvir"
 
-#: statuses/forms.py:28 templates/statuses/statuses_create_form.html:40
+#: statuses/forms.py:30 templates/statuses/statuses_create_form.html:40
 #: templates/statuses/statuses_update.html:28
 #: templates/statuses/statuses_update.html:59
 msgid "Color"
 msgstr "Rəng"
 
-#: statuses/forms.py:33 templates/statuses/statuses_create_form.html:49
+#: statuses/forms.py:35 templates/statuses/statuses_create_form.html:49
 msgid "Choose status color"
 msgstr "Status rəngini seçin"
 
-#: statuses/models.py:66
+#: statuses/models.py:67
 msgid "To Do"
 msgstr "Ediləcək"
 
-#: statuses/models.py:67
+#: statuses/models.py:68
 msgid "Task has been created but not yet started"
 msgstr "Tapşırıq yaradılıb, lakin hələ başlanmayıb"
 
-#: statuses/models.py:72
+#: statuses/models.py:73
 msgid "In Progress"
 msgstr "İcradadır"
 
-#: statuses/models.py:73
+#: statuses/models.py:74
 msgid "Task is currently being worked on"
 msgstr "Hazırda tapşırıq üzərində iş gedir"
 
-#: statuses/models.py:77
+#: statuses/models.py:78
 msgid "On Hold"
 msgstr "Gözləmədə"
 
-#: statuses/models.py:78
+#: statuses/models.py:79
 msgid "Task is temporarily paused"
 msgstr "Tapşırıq müvəqqəti dayandırılıb"
 
-#: statuses/models.py:82
+#: statuses/models.py:83
 msgid "Completed"
 msgstr "Tamamlandı"
 
-#: statuses/models.py:83
+#: statuses/models.py:84
 msgid "Task has been finished successfully"
 msgstr "Tapşırıq uğurla tamamlandı"
 
-#: statuses/models.py:87
+#: statuses/models.py:88
 msgid "Cancelled"
 msgstr "Ləğv edildi"
 
-#: statuses/models.py:88
+#: statuses/models.py:89
 msgid "Task was abandoned or deemed unnecessary"
 msgstr "Tapşırıq dayandırılıb və ya artıq lazım deyil"
 
-#: statuses/models.py:92
+#: statuses/models.py:93
 msgid "Blocked"
 msgstr "Bloklandı"
 
-#: statuses/models.py:94
+#: statuses/models.py:95
 msgid "Task cannot proceed due to external dependencies"
 msgstr "Xarici asılılıqlar səbəbindən tapşırıq davam etdirilə bilmir"
 
-#: statuses/views.py:37
+#: statuses/views.py:38
 msgid "Status created successfully"
 msgstr "Status uğurla yaradıldı"
 
-#: statuses/views.py:57
+#: statuses/views.py:71
 msgid "Status updated successfully"
 msgstr "Status uğurla yeniləndi"
 
-#: statuses/views.py:66
+#: statuses/views.py:80
 msgid "Status deleted successfully"
 msgstr "Status uğurla silindi"
 
-#: statuses/views.py:76
+#: statuses/views.py:90
 msgid "Cannot delete status because it is in use"
 msgstr "Statusu silmək mümkün deyil, çünki o istifadə olunur"
 
@@ -289,7 +344,7 @@ msgstr "Axtarış"
 msgid "Task name..."
 msgstr "Tapşırığın adı..."
 
-#: tasks/filters.py:26 tasks/models.py:51
+#: tasks/filters.py:26 tasks/models.py:52
 #: templates/statuses/statuses_update.html:51
 #: templates/teams/team_member_role_update.html:38
 msgid "Status"
@@ -322,159 +377,160 @@ msgstr "Tarixədək"
 msgid "Has checklist"
 msgstr "Yoxlama siyahısı var"
 
-#: tasks/models.py:57
+#: tasks/models.py:58
 msgid "Executors"
 msgstr "İcraçılar"
 
-#: tasks/models.py:68 templates/base.html:123 templates/base.html:150
-#: templates/index.html:49
+#: tasks/models.py:69 templates/base.html:123 templates/base.html:150
+#: templates/includes/limits_usage.html:56 templates/index.html:49
 msgid "Labels"
 msgstr "Etiketlər"
 
-#: tasks/models.py:85
+#: tasks/models.py:86
 msgid "Updated by"
 msgstr "Yeniləyən"
 
-#: tasks/models.py:132
+#: tasks/models.py:133
 msgid "Text"
 msgstr "Mətn"
 
-#: tasks/models.py:136
+#: tasks/models.py:137
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: tasks/models.py:140
+#: tasks/models.py:141
 msgid "Position"
 msgstr "Mövqe"
 
-#: tasks/views.py:49
+#: tasks/views.py:50 templates/privacy_policy.html:9
+#: templates/terms_of_service.html:9
 msgid "Last updated"
-msgstr "Son yenilənənlər"
-
-#: tasks/views.py:50
-msgid "First updated"
-msgstr "Əvvəl yenilənənlər"
+msgstr "Son yenilənmə"
 
 #: tasks/views.py:51
+msgid "First updated"
+msgstr "Ən əvvəl yenilənənlər"
+
+#: tasks/views.py:52
 msgid "Newest first"
 msgstr "Əvvəl yenilər"
 
-#: tasks/views.py:52
+#: tasks/views.py:53
 msgid "Oldest first"
 msgstr "Əvvəl köhnələr"
 
-#: tasks/views.py:53
+#: tasks/views.py:54
 msgid "Name A→Z"
 msgstr "Ad A→Z"
 
-#: tasks/views.py:54
+#: tasks/views.py:55
 msgid "Name Z→A"
 msgstr "Ad Z→A"
 
-#: tasks/views.py:70
+#: tasks/views.py:71
 msgid "Task can only be deleted by its author or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: tasks/views.py:88 tasks/views.py:334
+#: tasks/views.py:89 tasks/views.py:344
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi, icraçıları və ya komanda administratoru "
 "dəyişə bilər."
 
-#: tasks/views.py:150
+#: tasks/views.py:151
 msgid "Filter saved as default"
 msgstr "Filtr standart olaraq yadda saxlanıldı"
 
-#: tasks/views.py:233
+#: tasks/views.py:234
 msgid "Task created successfully"
 msgstr "Tapşırıq uğurla yaradıldı"
 
-#: tasks/views.py:282
+#: tasks/views.py:292
 msgid "Task updated successfully"
 msgstr "Tapşırıq uğurla yeniləndi"
 
-#: tasks/views.py:321
+#: tasks/views.py:331
 msgid "Task deleted successfully"
 msgstr "Tapşırıq uğurla silindi"
 
-#: tasks/views.py:357
+#: tasks/views.py:375
 msgid "Text is required"
 msgstr "Mətn tələb olunur"
 
-#: tasks/views.py:361
+#: tasks/views.py:379
 msgid "Text must be 300 characters or less"
 msgstr "Mətn 300 simvoldan çox olmamalıdır"
 
-#: teams/forms.py:23 user/forms.py:22
+#: teams/forms.py:35 user/forms.py:22
 msgid "Password"
 msgstr "Şifrə"
 
-#: teams/forms.py:25 user/forms.py:24
+#: teams/forms.py:37 user/forms.py:24
 msgid "Your password must contain at least 3 characters."
 msgstr "Şifrəniz ən azı 3 simvoldan ibarət olmalıdır."
 
-#: teams/forms.py:29 user/forms.py:29
+#: teams/forms.py:41 user/forms.py:29
 msgid "Confirm password"
 msgstr "Şifrənin təsdiqi"
 
-#: teams/forms.py:31 user/forms.py:31
+#: teams/forms.py:43 user/forms.py:31
 msgid "Please enter your password one more time"
 msgstr "Zəhmət olmasa şifrənizi bir daha daxil edin."
 
-#: teams/forms.py:40 teams/forms.py:43 user/forms.py:100 user/forms.py:103
+#: teams/forms.py:52 teams/forms.py:55 user/forms.py:100 user/forms.py:103
 msgid "Leave blank if you don't want to change password"
 msgstr "Şifrəni dəyişmək istəmirsinizsə, boş saxlayın"
 
-#: teams/forms.py:53 user/forms.py:58
+#: teams/forms.py:65 user/forms.py:58
 msgid "Your password is too short. It must contain at least 3 characters."
 msgstr "Şifrəniz çox qısadır. O, ən azı 3 simvoldan ibarət olmalıdır."
 
-#: teams/forms.py:67 user/forms.py:74
+#: teams/forms.py:79 user/forms.py:74
 msgid "The entered passwords do not match."
 msgstr "Daxil edilmiş şifrələr uyğun gəlmir."
 
-#: teams/forms.py:78 user/forms.py:153
+#: teams/forms.py:90 user/forms.py:153
 msgid "Both password fields must be filled or both left blank"
 msgstr "Hər iki şifrə sahəsi doldurulmalı və ya hər ikisi boş saxlanmalıdır"
 
-#: teams/forms.py:98 templates/teams/team_detail.html:57
+#: teams/forms.py:110 templates/teams/team_detail.html:57
 msgid "Team name"
 msgstr "Komanda adı"
 
-#: teams/forms.py:102
+#: teams/forms.py:114
 msgid "Enter team name"
 msgstr "Komanda adını daxil edin"
 
-#: teams/forms.py:109 teams/models.py:27 user/forms.py:44
+#: teams/forms.py:121 teams/models.py:27 user/forms.py:44
 msgid "Team password"
 msgstr "Komanda şifrəsi"
 
-#: teams/forms.py:113
+#: teams/forms.py:125
 msgid "Enter team password"
 msgstr "Komanda şifrəsini daxil edin"
 
-#: teams/forms.py:131 user/forms.py:186
+#: teams/forms.py:143 user/forms.py:186
 msgid "Team with this name does not exist"
 msgstr "Bu adla komanda mövcud deyil"
 
-#: teams/forms.py:141 teams/forms.py:173 user/forms.py:193
+#: teams/forms.py:153 teams/forms.py:185 user/forms.py:193
 msgid "Invalid team password"
 msgstr "Yanlış komanda şifrəsi"
 
-#: teams/forms.py:161 user/forms.py:211
+#: teams/forms.py:173 user/forms.py:211
 msgid "You already have a pending request to join this team"
 msgstr "Bu komandaya qoşulmaq üçün artıq gözləmədə olan sorğunuz var"
 
-#: teams/forms.py:162 user/forms.py:214
+#: teams/forms.py:174 user/forms.py:214
 msgid "You are already a member of this team"
 msgstr "Siz artıq bu komandanın üzvüsünüz"
 
-#: teams/forms.py:201
+#: teams/forms.py:213
 msgid "Invalid role selected."
 msgstr "Yanlış rol seçildi."
 
-#: teams/forms.py:210
+#: teams/forms.py:222
 msgid "Invalid status selected."
 msgstr "Yanlış status seçildi."
 
@@ -482,40 +538,40 @@ msgstr "Yanlış status seçildi."
 msgid "Minimum length is 3 characters"
 msgstr "Minimum uzunluq — 3 simvol"
 
-#: teams/models.py:76 user/forms.py:115
+#: teams/models.py:77 user/forms.py:115
 msgid "Admin"
 msgstr "Administrator"
 
-#: teams/models.py:77 user/forms.py:116
+#: teams/models.py:78 user/forms.py:116
 msgid "Member"
 msgstr "Üzv"
 
-#: teams/models.py:80 templates/user/user_list.html:75
+#: teams/models.py:81 templates/user/user_list.html:75
 msgid "Pending"
 msgstr "Gözləmədə"
 
-#: teams/models.py:81
+#: teams/models.py:82
 msgid "Active"
 msgstr "Aktiv"
 
-#: teams/views.py:26
+#: teams/views.py:27
 msgid "Team not found"
 msgstr "Komanda tapılmadı"
 
-#: teams/views.py:53
+#: teams/views.py:54
 msgid "Switched to individual mode"
 msgstr "Fərdi rejimə keçildi"
 
-#: teams/views.py:65
+#: teams/views.py:66
 #, python-brace-format
 msgid "Switched to team: {team}"
 msgstr "Komandaya keçildi: {team}"
 
-#: teams/views.py:163
+#: teams/views.py:164
 msgid "You are not a member of this team"
 msgstr "Siz bu komandanın üzvü deyilsiniz"
 
-#: teams/views.py:169
+#: teams/views.py:170
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -523,7 +579,7 @@ msgstr ""
 "Komanda administratorları komandanı tərk edə bilməz. Zəhmət olmasa əvvəlcə "
 "administrator hüquqlarını başqa üzvə verin."
 
-#: teams/views.py:187
+#: teams/views.py:188
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -531,25 +587,25 @@ msgstr ""
 "Komanda üzvlərini idarə etmək üçün icazəniz yoxdur. Bunu yalnız komanda "
 "administratoru edə bilər."
 
-#: teams/views.py:192
+#: teams/views.py:193
 msgid "User is not a member of this team"
 msgstr "İstifadəçi bu komandanın üzvü deyil"
 
-#: teams/views.py:254
+#: teams/views.py:255
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Siz {team} komandasını uğurla tərk etdiniz"
 
-#: teams/views.py:260
+#: teams/views.py:261
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "İstifadəçi {username} {team} komandasından çıxarıldı."
 
-#: teams/views.py:274
+#: teams/views.py:275
 msgid "Team membership not found"
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: teams/views.py:310
+#: teams/views.py:311
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
@@ -557,11 +613,11 @@ msgstr ""
 "Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi "
 "və ya icraçısısınız."
 
-#: teams/views.py:353
+#: teams/views.py:361
 msgid "Team created successfully"
 msgstr "Komanda uğurla yaradıldı"
 
-#: teams/views.py:382 user/views.py:185 user/views.py:229
+#: teams/views.py:406 user/views.py:185 user/views.py:229
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -569,43 +625,43 @@ msgstr ""
 "{team} komandasına qoşulmaq üçün sorğunuz göndərildi. Administratorun "
 "təsdiqini gözləyin."
 
-#: teams/views.py:420
+#: teams/views.py:444
 msgid "Team updated successfully"
 msgstr "Komanda uğurla yeniləndi"
 
-#: teams/views.py:438
+#: teams/views.py:462
 msgid "Cannot delete a team because it has tasks."
 msgstr "Komandanı silmək mümkün deyil, çünki onun tapşırıqları var."
 
-#: teams/views.py:446
+#: teams/views.py:470
 msgid "Cannot delete a team because it has other members."
 msgstr "Komandanı silmək mümkün deyil, çünki onun başqa üzvləri var."
 
-#: teams/views.py:450
+#: teams/views.py:474
 msgid "Team deleted successfully"
 msgstr "Komanda uğurla silindi"
 
-#: teams/views.py:479
+#: teams/views.py:503
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "İstifadəçi {username} komanda administratoru təyin edildi."
 
-#: teams/views.py:486
+#: teams/views.py:510
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "İstifadəçi {username} komanda üzvü edildi."
 
-#: teams/views.py:496
+#: teams/views.py:520
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür."
 
-#: teams/views.py:504
+#: teams/views.py:528
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
 
-#: templates/base.html:50 templates/base.html:80 views.py:29
+#: templates/base.html:50 templates/base.html:80 views.py:30
 msgid "TaskMan"
 msgstr "TaskMan"
 
@@ -618,11 +674,13 @@ msgid "Users"
 msgstr "İstifadəçilər"
 
 #: templates/base.html:113 templates/base.html:144
-#: templates/user/user_detail.html:76 templates/user/user_detail.html:98
+#: templates/includes/limits_usage.html:8 templates/user/user_detail.html:76
+#: templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Tapşırıqlar"
 
 #: templates/base.html:118 templates/base.html:147
+#: templates/includes/limits_usage.html:40
 msgid "Statuses"
 msgstr "Statuslar"
 
@@ -687,10 +745,28 @@ msgstr "Giriş"
 msgid "Signup"
 msgstr "Qeydiyyat"
 
-#: templates/base.html:406 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:64
+#: templates/base.html:365
+msgid "You are approaching the free plan limits."
+msgstr "Siz pulsuz planın limitlərinə yaxınlaşırsınız."
+
+#: templates/base.html:368
+msgid "Details"
+msgstr "Ətraflı"
+
+#: templates/base.html:420 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:65
 msgid "Feedback"
 msgstr "Əks əlaqə"
+
+#: templates/base.html:422 templates/privacy_policy.html:4
+#: templates/privacy_policy.html:8
+msgid "Privacy Policy"
+msgstr "Məxfilik siyasəti"
+
+#: templates/base.html:424 templates/terms_of_service.html:4
+#: templates/terms_of_service.html:8
+msgid "Terms of Service"
+msgstr "İstifadə şərtləri"
 
 #: templates/feedback.html:13
 msgid "Found a bug or have a suggestion? Let us know!"
@@ -711,6 +787,14 @@ msgstr ""
 #: templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
 msgstr "Telegram açıldı! Mesajınızı orada göndərin."
+
+#: templates/includes/limits_usage.html:24 templates/user/user_detail.html:61
+msgid "Teams"
+msgstr "Komandalar"
+
+#: templates/includes/limits_usage.html:90
+msgid "Extended plan is already in development — more features coming soon!"
+msgstr "Genişləndirilmiş plan artıq hazırlanır — tezliklə daha çox imkan gələcək!"
 
 #: templates/index.html:7
 msgid "Task Manager"
@@ -796,7 +880,7 @@ msgstr "Yarat"
 #: templates/teams/team_join_form.html:29
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
-#: templates/user/user_delete.html:22 templates/user/user_detail.html:143
+#: templates/user/user_delete.html:22 templates/user/user_detail.html:145
 #: templates/user/user_update.html:16
 msgid "Cancel"
 msgstr "Ləğv et"
@@ -831,7 +915,7 @@ msgstr "Yeni etiket"
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_form.html:38 templates/notes/note_list.html:74
 #: templates/tasks/task_filter.html:390 templates/tasks/task_update.html:25
-#: templates/tasks/task_update.html:41 user/models.py:20
+#: templates/tasks/task_update.html:41 user/models.py:22
 msgid "Deleted user"
 msgstr "Silinmiş istifadəçi"
 
@@ -875,9 +959,61 @@ msgstr "Yadda saxla"
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:115 templates/tasks/task_update.html:180
 #: templates/tasks/task_update.html:276 templates/teams/team_update.html:34
-#: templates/user/user_detail.html:149
+#: templates/user/user_detail.html:151
 msgid "Delete"
 msgstr "Sil"
+
+#: templates/limits/limits_info.html:14
+msgid "Plans & Limits"
+msgstr "Planlar və limitlər"
+
+#: templates/limits/limits_info.html:19
+msgid "Current Plan"
+msgstr "Cari plan"
+
+#: templates/limits/limits_info.html:21
+msgid "Free"
+msgstr "Pulsuz"
+
+#: templates/limits/limits_info.html:27
+msgid "Current Usage"
+msgstr "Cari istifadə"
+
+#: templates/limits/limits_info.html:35
+msgid "Extended Plan"
+msgstr "Genişləndirilmiş plan"
+
+#: templates/limits/limits_info.html:37
+msgid "In Development"
+msgstr "Hazırlanır"
+
+#: templates/limits/limits_info.html:43
+msgid "More teams"
+msgstr "Daha çox komanda"
+
+#: templates/limits/limits_info.html:47
+msgid "More team members"
+msgstr "Daha çox komanda üzvü"
+
+#: templates/limits/limits_info.html:51
+msgid "Increased task limits"
+msgstr "Artırılmış tapşırıq limitləri"
+
+#: templates/limits/limits_info.html:55
+msgid "Priority support"
+msgstr "Prioritet dəstək"
+
+#: templates/limits/limits_info.html:66
+msgid "Stay tuned for updates!"
+msgstr "Yenilikləri izləyin!"
+
+#: templates/limits/limits_info.html:70
+msgid "Send Feedback"
+msgstr "Əks əlaqə göndər"
+
+#: templates/limits/limits_info.html:79
+msgid "Back"
+msgstr "Geri"
 
 #: templates/login.html:13
 msgid "Log in"
@@ -936,6 +1072,169 @@ msgstr "Vacib məlumatı saxlamaq üçün ilk qeydinizi yaradın"
 msgid "Create Note"
 msgstr "Qeyd yarat"
 
+#: templates/privacy_policy.html:11
+msgid "Data We Collect"
+msgstr "Topladığımız məlumatlar"
+
+#: templates/privacy_policy.html:12
+msgid "When you register, we collect:"
+msgstr "Qeydiyyat zamanı biz bunları toplayırıq:"
+
+#: templates/privacy_policy.html:14 templates/user/user_detail.html:123
+msgid "Username"
+msgstr "İstifadəçi adı"
+
+#: templates/privacy_policy.html:15
+msgid "First and last name"
+msgstr "Ad və soyad"
+
+#: templates/privacy_policy.html:16
+msgid "Email address (optional)"
+msgstr "E-poçt ünvanı (istəyə bağlı)"
+
+#: templates/privacy_policy.html:17
+msgid "Password (stored in encrypted form)"
+msgstr "Şifrə (şifrələnmiş formada saxlanılır)"
+
+#: templates/privacy_policy.html:20
+msgid "When you use the service, we store:"
+msgstr "Xidmətdən istifadə etdiyiniz zaman biz bunları saxlayırıq:"
+
+#: templates/privacy_policy.html:22
+msgid "Tasks, notes, labels and statuses you create"
+msgstr "Yaratdığınız tapşırıqlar, qeydlər, etiketlər və statuslar"
+
+#: templates/privacy_policy.html:23
+msgid "Team membership information"
+msgstr "Komanda üzvlüyü haqqında məlumat"
+
+#: templates/privacy_policy.html:26
+msgid "How We Use Your Data"
+msgstr "Məlumatlarınızdan necə istifadə edirik"
+
+#: templates/privacy_policy.html:28
+msgid "To provide the task management service"
+msgstr "Tapşırıq idarəetmə xidmətini təqdim etmək üçün"
+
+#: templates/privacy_policy.html:29
+msgid "To authenticate you and protect your account"
+msgstr "Sizi təsdiqləmək və hesabınızı qorumaq üçün"
+
+#: templates/privacy_policy.html:30
+msgid "To enable team collaboration features"
+msgstr "Komanda əməkdaşlığı funksiyalarını təmin etmək üçün"
+
+#: templates/privacy_policy.html:33
+msgid "Data Sharing"
+msgstr "Məlumatların paylaşılması"
+
+#: templates/privacy_policy.html:34
+msgid ""
+"We do not sell, trade, or share your personal data with third parties, "
+"except:"
+msgstr ""
+"Biz şəxsi məlumatlarınızı üçüncü tərəflərə satmır, dəyişmir və paylaşmırıq, "
+"yalnız bu hallar istisnadır:"
+
+#: templates/privacy_policy.html:36
+msgid "Within your teams - other team members can see tasks assigned to them"
+msgstr ""
+"Komandalarınız daxilində — digər komanda üzvləri onlara təyin edilmiş "
+"tapşırıqları görə bilər"
+
+#: templates/privacy_policy.html:37
+msgid "When required by law"
+msgstr "Qanunla tələb olunduqda"
+
+#: templates/privacy_policy.html:40
+msgid "Data Storage and Security"
+msgstr "Məlumatların saxlanması və təhlükəsizlik"
+
+#: templates/privacy_policy.html:41
+msgid ""
+"Your data is stored on secure servers. We use HTTPS encryption for all "
+"connections. Passwords are hashed and never stored in plain text."
+msgstr ""
+"Məlumatlarınız təhlükəsiz serverlərdə saxlanılır. Bütün bağlantılar üçün "
+"HTTPS şifrələməsindən istifadə edirik. Şifrələr heşlənir və heç vaxt açıq "
+"mətn şəklində saxlanılmır."
+
+#: templates/privacy_policy.html:43
+msgid "Your Rights"
+msgstr "Sizin hüquqlarınız"
+
+#: templates/privacy_policy.html:44
+msgid "You can:"
+msgstr "Siz bunları edə bilərsiniz:"
+
+#: templates/privacy_policy.html:46
+msgid "View and edit your profile information at any time"
+msgstr "Profil məlumatlarınızı istənilən vaxt görüntüləmək və redaktə etmək"
+
+#: templates/privacy_policy.html:47
+msgid "Delete your account and all associated data"
+msgstr "Hesabınızı və onunla əlaqəli bütün məlumatları silmək"
+
+#: templates/privacy_policy.html:48
+msgid "Export your data by contacting us"
+msgstr "Bizimlə əlaqə saxlayaraq məlumatlarınızı ixrac etmək"
+
+#: templates/privacy_policy.html:51
+msgid "Cookies"
+msgstr "Kukilər"
+
+#: templates/privacy_policy.html:52
+msgid "We use essential cookies for:"
+msgstr "Biz zəruri kukilərdən bunlar üçün istifadə edirik:"
+
+#: templates/privacy_policy.html:54
+msgid "Session management (keeping you logged in)"
+msgstr "Sessiyanın idarə olunması (sizi sistemdə saxlaymaq)"
+
+#: templates/privacy_policy.html:55
+msgid "CSRF protection (security)"
+msgstr "CSRF qorunması (təhlükəsizlik)"
+
+#: templates/privacy_policy.html:56
+msgid "Language preference"
+msgstr "Dil seçimi"
+
+#: templates/privacy_policy.html:59
+msgid "Children's Privacy"
+msgstr "Uşaqların məxfiliyi"
+
+#: templates/privacy_policy.html:60
+msgid ""
+"Our service is not intended for children under 13. We do not knowingly "
+"collect data from children."
+msgstr ""
+"Xidmətimiz 13 yaşdan kiçik uşaqlar üçün nəzərdə tutulmayıb. Biz bilərəkdən "
+"uşaqlardan məlumat toplamırıq."
+
+#: templates/privacy_policy.html:62 templates/terms_of_service.html:45
+msgid "Contact"
+msgstr "Əlaqə"
+
+#: templates/privacy_policy.html:63
+msgid ""
+"If you have questions about this privacy policy, contact us via the feedback "
+"form or at:"
+msgstr ""
+"Bu məxfilik siyasəti ilə bağlı sualınız varsa, bizimlə əks əlaqə forması və "
+"ya aşağıdakı vasitə ilə əlaqə saxlayın:"
+
+#: templates/privacy_policy.html:66
+msgid "Changes"
+msgstr "Dəyişikliklər"
+
+#: templates/privacy_policy.html:67
+msgid ""
+"We may update this policy. Changes will be posted on this page with an "
+"updated date."
+msgstr ""
+"Biz bu siyasəti yeniləyə bilərik. Dəyişikliklər yenilənmiş tarixlə bu "
+"səhifədə dərc olunacaq."
+
 #: templates/statuses/statuses_create_form.html:16
 msgid "Create status"
 msgstr "Status yarat"
@@ -954,7 +1253,7 @@ msgid "New status"
 msgstr "Yeni status"
 
 #: templates/statuses/statuses_list.html:68 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:132
+#: templates/user/user_detail.html:134
 msgid "Edit"
 msgstr "Redaktə et"
 
@@ -1171,6 +1470,116 @@ msgstr "Bu istifadəçini komandadan çıxarmaq istədiyinizə əminsiniz?"
 msgid "Remove from team"
 msgstr "Komandadan çıxar"
 
+#: templates/terms_of_service.html:11
+msgid "Acceptance of Terms"
+msgstr "Şərtlərin qəbul edilməsi"
+
+#: templates/terms_of_service.html:12
+msgid ""
+"By using TaskMan, you agree to these terms. If you disagree, please do not "
+"use the service."
+msgstr ""
+"TaskMan-dan istifadə etməklə siz bu şərtlərlə razılaşırsınız. Əgər razı "
+"deyilsinizsə, zəhmət olmasa xidmətdən istifadə etməyin."
+
+#: templates/terms_of_service.html:14
+msgid "Description of Service"
+msgstr "Xidmətin təsviri"
+
+#: templates/terms_of_service.html:15
+msgid ""
+"TaskMan is a web application for task management, available for individual "
+"use and team collaboration."
+msgstr ""
+"TaskMan tapşırıqların idarə olunması üçün nəzərdə tutulmuş veb tətbiqdir və "
+"həm fərdi istifadə, həm də komanda əməkdaşlığı üçün əlçatandır."
+
+#: templates/terms_of_service.html:17
+msgid "User Account"
+msgstr "İstifadəçi hesabı"
+
+#: templates/terms_of_service.html:19
+msgid "You are responsible for maintaining the security of your account"
+msgstr "Hesabınızın təhlükəsizliyinə görə siz məsuliyyət daşıyırsınız"
+
+#: templates/terms_of_service.html:20
+msgid "You must provide accurate information during registration"
+msgstr "Qeydiyyat zamanı düzgün məlumat təqdim etməlisiniz"
+
+#: templates/terms_of_service.html:21
+msgid "You must not create accounts for automated use without permission"
+msgstr ""
+"İcazə olmadan avtomatlaşdırılmış istifadə üçün hesablar yaratmamalısınız"
+
+#: templates/terms_of_service.html:24
+msgid "Acceptable Use"
+msgstr "Məqbul istifadə"
+
+#: templates/terms_of_service.html:25
+msgid "You agree not to:"
+msgstr "Siz bunları etməməyə razılaşırsınız:"
+
+#: templates/terms_of_service.html:27
+msgid "Use the service for any illegal purpose"
+msgstr "Xidmətdən hər hansı qanunsuz məqsəd üçün istifadə etmək"
+
+#: templates/terms_of_service.html:28
+msgid "Attempt to gain unauthorized access to the service"
+msgstr "Xidmətə icazəsiz giriş əldə etməyə cəhd göstərmək"
+
+#: templates/terms_of_service.html:29
+msgid "Interfere with the proper operation of the service"
+msgstr "Xidmətin normal işləməsinə mane olmaq"
+
+#: templates/terms_of_service.html:30
+msgid "Upload malicious content"
+msgstr "Zərərli məzmun yükləmək"
+
+#: templates/terms_of_service.html:34
+msgid ""
+"You retain ownership of the content you create. We do not claim any rights "
+"to your tasks, notes, or other data."
+msgstr ""
+"Yaratdığınız məzmunun mülkiyyət hüququ sizdə qalır. Biz sizin tapşırıqlarınız, "
+"qeydləriniz və ya digər məlumatlarınız üzərində heç bir hüquq iddia etmirik."
+
+#: templates/terms_of_service.html:36
+msgid "Service Availability"
+msgstr "Xidmətin əlçatanlığı"
+
+#: templates/terms_of_service.html:37
+msgid ""
+"We strive to maintain high availability but do not guarantee uninterrupted "
+"service. We may perform maintenance that temporarily affects availability."
+msgstr ""
+"Biz yüksək əlçatanlığı qorumağa çalışırıq, lakin fasiləsiz xidmətə zəmanət "
+"vermirik. Bəzən əlçatanlığa müvəqqəti təsir göstərə bilən texniki işlər apara "
+"bilərik."
+
+#: templates/terms_of_service.html:39
+msgid "Termination"
+msgstr "Xitam"
+
+#: templates/terms_of_service.html:40
+msgid ""
+"We reserve the right to suspend or terminate accounts that violate these "
+"terms."
+msgstr ""
+"Bu şərtləri pozan hesabları dayandırmaq və ya ləğv etmək hüququnu özümüzdə "
+"saxlayırıq."
+
+#: templates/terms_of_service.html:42
+msgid "Limitation of Liability"
+msgstr "Məsuliyyətin məhdudlaşdırılması"
+
+#: templates/terms_of_service.html:43
+msgid ""
+"TaskMan is provided 'as is'. We are not liable for any data loss or damages "
+"arising from the use of the service."
+msgstr ""
+"TaskMan “olduğu kimi” təqdim olunur. Xidmətdən istifadə nəticəsində yaranan "
+"məlumat itkisinə və ya hər hansı zərərə görə məsuliyyət daşımırıq."
+
 #: templates/user/user_create_form.html:25
 msgid "Sign up"
 msgstr "Qeydiyyatdan keç"
@@ -1179,15 +1588,15 @@ msgstr "Qeydiyyatdan keç"
 msgid "User details"
 msgstr "İstifadəçi məlumatları"
 
-#: templates/user/user_detail.html:25 templates/user/user_detail.html:122
+#: templates/user/user_detail.html:25 templates/user/user_detail.html:124
 msgid "Full name"
 msgstr "Tam ad"
 
-#: templates/user/user_detail.html:39 templates/user/user_detail.html:123
+#: templates/user/user_detail.html:39 templates/user/user_detail.html:125
 msgid "Date joined"
 msgstr "Qeydiyyat tarixi"
 
-#: templates/user/user_detail.html:48 templates/user/user_detail.html:124
+#: templates/user/user_detail.html:48 templates/user/user_detail.html:126
 msgid "Last login"
 msgstr "Son giriş"
 
@@ -1195,19 +1604,11 @@ msgstr "Son giriş"
 msgid "Never"
 msgstr "Heç vaxt"
 
-#: templates/user/user_detail.html:61
-msgid "Teams"
-msgstr "Komandalar"
-
 #: templates/user/user_detail.html:111
 msgid "No teams"
 msgstr "Komanda yoxdur"
 
-#: templates/user/user_detail.html:121
-msgid "Username"
-msgstr "İstifadəçi adı"
-
-#: templates/user/user_detail.html:138
+#: templates/user/user_detail.html:140
 msgid "Change Role"
 msgstr "Rolu dəyiş"
 
@@ -1287,11 +1688,11 @@ msgstr "İstifadəçi uğurla yeniləndi"
 msgid "User account has been deleted"
 msgstr "İstifadəçi hesabı silindi"
 
-#: views.py:30
+#: views.py:31
 msgid "Personal. Family. Work."
 msgstr "Şəxsi. Ailə. İş."
 
-#: views.py:31
+#: views.py:32
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -1299,14 +1700,14 @@ msgstr ""
 "Hər şey üçün bir planlayıcı: qeydlərdən və şəxsi məqsədlərdən ailə "
 "tapşırıqlarına və komanda layihələrinə qədər."
 
-#: views.py:34
+#: views.py:35
 msgid "Read more"
 msgstr "Daha ətraflı"
 
-#: views.py:43
+#: views.py:44
 msgid "You successfully logged in"
 msgstr "Siz uğurla daxil oldunuz"
 
-#: views.py:53
+#: views.py:54
 msgid "You are logged out"
 msgstr "Siz sistemdən çıxdınız"
