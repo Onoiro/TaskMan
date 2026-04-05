@@ -157,13 +157,15 @@ d-compile:
 # Database commands
 # ========================================
 
-# create database backup
+# create local database backup (compressed)
 d-backup:
-	$(DC) exec db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) > backups/backup_$(shell date +%Y%m%d_%H%M%S).sql
+	@mkdir -p backups
+	$(DC) exec -T db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) | gzip > backups/backup_$$(date +%Y%m%d_%H%M%S).sql.gz
 
-# restore database from backup (use: make docker-restore BACKUP_FILE=backup_name.sql)
+# restore database from compressed backup (use: make d-restore BACKUP_FILE=backup_name.sql.gz)
 d-restore:
-	$(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) < backups/$(BACKUP_FILE)
+	@echo "Restoring from backups/$(BACKUP_FILE)..."
+	gzip -dc backups/$(BACKUP_FILE) | $(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
 
 # reset database and reapply migrations
 d-reset-db:
@@ -174,6 +176,17 @@ d-reset-db:
 	$(DC) up -d django-web
 	$(DC) exec django-web python manage.py migrate
 	$(DC) exec django-web python manage.py createsuperuser
+
+# ========================================
+# Backup synchronization (Server -> Local)
+# ========================================
+
+# Download the latest backup from the production server
+d-pull-backup:
+	@echo "Looking for fresh backup on the server..."
+	@mkdir -p backups
+	scp taskman-prod:$$(ssh taskman-prod "ls -t /home/abo/taskman/backups/backup_*.sql.gz | head -n 1") ./backups/latest_prod.sql.gz
+	@echo "✅ Backup successfully downloaded to backups/latest_prod.sql.gz"
 
 # ========================================
 # Development commands
