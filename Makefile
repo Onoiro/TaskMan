@@ -1,5 +1,4 @@
 MANAGE := poetry run python manage.py
-DC := docker compose --env-file .env.docker
 
 # install dependenciess, collect static, run migrations, create superuser
 build:
@@ -58,8 +57,14 @@ compile:
 # Docker commands (use .env.docker)
 # ========================================
 
+DC := docker compose --env-file .env.docker
+
 POSTGRES_USER := $(shell $(DC) exec db printenv POSTGRES_USER)
 POSTGRES_DB := $(shell $(DC) exec db printenv POSTGRES_DB)
+
+# Production server settings
+PROD_HOST := taskman-prod
+PROD_DIR := ~/taskman
 
 # start all services in background
 up:
@@ -178,15 +183,25 @@ d-reset-db:
 	$(DC) exec django-web python manage.py createsuperuser
 
 # ========================================
-# Backup synchronization (Server -> Local)
+# Backup synchronization (Server <-> Local)
 # ========================================
 
 # Download the latest backup from the production server
 d-pull-backup:
-	@echo "Looking for fresh backup on the server..."
+	@echo "Looking for the latest backup on the server..."
 	@mkdir -p backups
-	scp taskman-prod:$$(ssh taskman-prod "ls -t /home/abo/taskman/backups/backup_*.sql.gz | head -n 1") ./backups/latest_prod.sql.gz
+	scp $(PROD_HOST):$$(ssh $(PROD_HOST) "ls -t $(PROD_DIR)/backups/backup_*.sql.gz | head -n 1") ./backups/latest_prod.sql.gz
 	@echo "✅ Backup successfully downloaded to backups/latest_prod.sql.gz"
+
+# Upload a local backup to the production server (use: make d-push-backup FILE=backup_name.sql.gz)
+d-push-backup:
+	@if [ -z "$(FILE)" ]; then \
+		echo "Error: Please specify the file name (e.g., make d-push-backup FILE=backup_2024.sql.gz)"; \
+		exit 1; \
+	fi
+	@echo "Uploading backups/$(FILE) to the server..."
+	scp backups/$(FILE) $(PROD_HOST):$(PROD_DIR)/backups/uploaded_backup.sql.gz
+	@echo "✅ File successfully uploaded to the server as uploaded_backup.sql.gz"
 
 # ========================================
 # Development commands
