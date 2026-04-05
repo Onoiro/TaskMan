@@ -195,6 +195,7 @@ d-pull-backup:
 # full cycle: build, start, migrate, static, clean up, check
 deploy:
 	mkdir -p staticfiles
+	mkdir -p backups
 	$(DC) build
 	$(DC) up -d
 	sleep 5
@@ -222,6 +223,7 @@ deploy:
 # stops all containers, rebuilds images without cache, recreates from scratch 
 redeploy:
 	mkdir -p staticfiles
+	mkdir -p backups
 	$(DC) down
 	$(DC) build --no-cache
 	$(DC) up -d
