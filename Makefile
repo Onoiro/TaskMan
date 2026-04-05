@@ -167,10 +167,20 @@ d-backup:
 	@mkdir -p backups
 	$(DC) exec -T db pg_dump -U $(POSTGRES_USER) -d $(POSTGRES_DB) | gzip > backups/backup_$$(date +%Y%m%d_%H%M%S).sql.gz
 
-# restore database from compressed backup (use: make d-restore BACKUP_FILE=backup_name.sql.gz)
+# Restore database from compressed backup (WARNING: Drops current DB data!)
+# Usage: make d-restore FILE=backup_name.sql.gz
 d-restore:
-	@echo "Restoring from backups/$(BACKUP_FILE)..."
-	gzip -dc backups/$(BACKUP_FILE) | $(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	@if [ -z "$(FILE)" ]; then \
+		echo "Error: Please specify the file name (e.g., make d-restore FILE=uploaded_backup.sql.gz)"; \
+		exit 1; \
+	fi
+	@echo "⚠️ WARNING: This will DROP the current database and restore from backups/$(FILE)!"
+	@read -p "Press ENTER to continue or Ctrl+C to abort..." dummy
+	@echo "Cleaning up current database..."
+	$(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+	@echo "Restoring data..."
+	gzip -dc backups/$(FILE) | $(DC) exec -T db psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	@echo "✅ Database restored successfully!"
 
 # reset database and reapply migrations
 d-reset-db:
