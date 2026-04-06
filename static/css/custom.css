@@ -20,6 +20,24 @@
     font-size: 0.75rem;
 }
 
+/* ───── Footer ───── */
+.footer-link:hover,
+.footer-link:focus {
+  color: var(--bs-body-color) !important;
+  text-decoration: underline !important;
+}
+
+/* Safe area для PWA (home indicator на iPhone, Android gesture bar) */
+footer {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ───── Кнопка "Назад" ───── */
+/* Убираем на страницах где history.length <= 1 — нет куда возвращаться */
+.btn-back-mobile {
+  transition: opacity 0.2s ease;
+}
+
 /* === Стили для имени пользователя/команды === */
 .context-name {
     display: inline-block;

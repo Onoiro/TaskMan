@@ -400,13 +400,28 @@
       {% endif %}
       <div id="content">
           <!-- button "back" for mobile -->
-          <button onclick="window.history.back();" 
-                  class="btn btn-outline-secondary btn-back-mobile d-lg-none rounded-circle 
+          <button onclick="window.history.back();"
+                  class="btn btn-outline-secondary btn-back-mobile d-lg-none rounded-circle
                         d-flex align-items-center justify-content-center"
-                  style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; 
-                        width: 50px; height: 50px;">
-              <i class="bi bi-arrow-left fs-4"></i>
+                  aria-label="{% trans 'Go back' %}"
+                  style="position: fixed;
+                        bottom: calc(20px + env(safe-area-inset-bottom));
+                        right: 20px;
+                        z-index: 1000;
+                        width: 50px;
+                        height: 50px;">
+            <i class="bi bi-arrow-left fs-4"></i>
           </button>
+          
+          <!-- Скрываем кнопку если некуда возвращаться -->
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const backBtn = document.querySelector('.btn-back-mobile');
+              if (backBtn && window.history.length <= 1) {
+                backBtn.style.display = 'none';
+              }
+            });
+          </script>
           
           {% block content %}
           {% endblock %}
@@ -415,13 +430,13 @@
     
     <footer>
         <div class="container my-3 my-md-5 pt-3 pt-md-4 border-top text-center small tiny-text">
-            © 2023-2026, <a target="_blank" href="https://github.com/Onoiro/TaskMan" class="text-nowrap text-decoration-none">Andrews</a>
+            © 2023-2026, <a target="_blank" rel="noopener noreferrer" href="https://github.com/Onoiro/TaskMan" class="text-muted text-decoration-none footer-link">Andrews</a>
             &nbsp;|&nbsp;
-            <a href="{% url 'feedback' %}" class="text-decoration-none">{% trans "Feedback" %}</a>
+            <a href="{% url 'feedback' %}" class="text-muted text-decoration-none footer-link">{% trans "Feedback" %}</a>
             &nbsp;|&nbsp;
-            <a href="{% url 'privacy_policy' %}" class="text-muted small">{% trans "Privacy Policy" %}</a>
+            <a href="{% url 'privacy_policy' %}" class="text-muted text-decoration-none footer-link">{% trans "Privacy Policy" %}</a>
             &nbsp;|&nbsp;
-            <a href="{% url 'terms_of_service' %}" class="text-muted small">{% trans "Terms of Service" %}</a>
+            <a href="{% url 'terms_of_service' %}" class="text-muted text-decoration-none footer-link">{% trans "Terms of Service" %}</a>
             &nbsp;|&nbsp;
             <span class="text-muted">v{{ VERSION }}</span>
         </div>
