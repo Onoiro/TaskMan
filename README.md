@@ -18,6 +18,7 @@ TaskMan is a web application designed to manage tasks individually or in teams (
 - **Labels**: Organize tasks with custom labels created by team members
 - **Notes**: Create text notes with title and content, optionally linked to tasks; available in both individual and team modes
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team
+- **Free Plan Limits**: Resource limits for free plan (teams, members, tasks, statuses, labels, notes, checklist items) with usage tracking and upgrade prompts
 
 ## Language Support
 The TaskMan application is available in multiple languages:
@@ -181,7 +182,7 @@ make test-cov
 # create new migrations
 make migrations  # or make d-migrations for Docker
 # apply migrations
-nake migrate     # or make d-migrate for Docker
+make migrate     # or make d-migrate for Docker
 # access database shell
 make shell       # or make db-shell for Docker
 ```
@@ -212,13 +213,23 @@ This command will:
 
 ### Database Backup and Restore
 ```bash
-# create backup
+# create backup (compressed with gzip, automatic folder creation)
 make d-backup
-# restore from backup
-make d-restore BACKUP_FILE=backup_filename.sql
+# restore from backup (supports compressed .sql.gz files)
+make d-restore FILE=backup_filename.sql.gz
+# download latest backup from production server
+make d-pull-backup
+# upload backup to production server
+make d-push-backup
 # reset database completely
 make d-reset-db
 ```
+
+**Backup Features:**
+- Backups are compressed with gzip to save disk space
+- Backups are stored in `backups/` directory
+- Old backups are automatically deleted after 7 days (via `backup.sh`)
+- Restore command includes safety checks and confirmation prompts
 
 ## Troubleshooting
 **Docker Issues**
