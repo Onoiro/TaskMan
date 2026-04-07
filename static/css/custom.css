@@ -38,6 +38,13 @@ footer {
   transition: opacity 0.2s ease;
 }
 
+/* Отступ снизу чтобы fixed-кнопка не перекрывала контент страницы */
+@media (max-width: 991.98px) {
+  #content {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
 /* === Стили для имени пользователя/команды === */
 .context-name {
     display: inline-block;

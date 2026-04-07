@@ -413,18 +413,9 @@
             <i class="bi bi-arrow-left fs-4"></i>
           </button>
           
-          <!-- Скрываем кнопку если некуда возвращаться -->
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              const backBtn = document.querySelector('.btn-back-mobile');
-              if (backBtn && window.history.length <= 1) {
-                backBtn.style.display = 'none';
-              }
-            });
-          </script>
-          
           {% block content %}
           {% endblock %}
+          
       </div>
     </div>
     
@@ -445,6 +436,48 @@
     <!-- JavaScript -->
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/theme-toggle.js' %}"></script>
+
+    <!-- Back button logic -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const backBtn = document.querySelector('.btn-back-mobile');
+        if (!backBtn) return;
+
+        // 1. Проверяем, есть ли куда возвращаться.
+        // Если length <= 1, значит это первая страница во вкладке (или свежий запуск PWA)
+        if (window.history.length <= 1) {
+          // Скрываем кнопку надежно через классы Bootstrap
+          backBtn.classList.remove('d-flex');
+          backBtn.classList.add('d-none');
+          return; 
+        } else {
+          // Если история есть, гарантируем, что кнопка отображается
+          backBtn.classList.remove('d-none');
+          backBtn.classList.add('d-flex');
+        }
+
+        // 2. Прячем кнопку, когда доскроллили до футера (чтобы не перекрывала текст)
+        const footer = document.querySelector('footer');
+        if (footer) {
+          const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                // Футер в зоне видимости -> растворяем кнопку
+                backBtn.style.opacity = '0';
+                backBtn.style.pointerEvents = 'none';
+              } else {
+                // Ушли от футера -> возвращаем кнопку
+                backBtn.style.opacity = '1';
+                backBtn.style.pointerEvents = 'auto';
+              }
+            });
+          }, { threshold: 0.1 });
+          
+          observer.observe(footer);
+        }
+      });
+    </script>
+
     <!-- Service Worker registration -->
     <script>
       if ('serviceWorker' in navigator) {
