@@ -11,14 +11,21 @@ class Command(BaseCommand):
     help = 'Creates or updates a superuser.'
 
     def handle(self, *args, **options):
+        admin_username = os.getenv('ADMIN_USERNAME', 'admin')
         admin_password = os.getenv('ADMIN_PASSWORD')
-
+        
         if not admin_password:
             # use stderr for errors to capture them properly
             self.stderr.write(
                 'Error: ADMIN_PASSWORD environment variable is not set!'
             )
             return
+
+        if len(admin_password) < 20:
+        self.stderr.write(
+            'Error: ADMIN_PASSWORD must be at least 20 characters!'
+        )
+        return
 
         try:
             user = User.objects.get(username='admin')

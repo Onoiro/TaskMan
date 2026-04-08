@@ -138,6 +138,8 @@ DATABASES = {
     )
 }
 
+ADMIN_URL = env('ADMIN_URL', default='admin/')  # переопределить в .env
+
 AUTH_USER_MODEL = 'user.User'
 
 # Password validation

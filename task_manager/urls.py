@@ -54,7 +54,7 @@ urlpatterns = [
     path('labels/', include('task_manager.labels.urls')),
     path('teams/', include('task_manager.teams.urls')),
     path('notes/', include('task_manager.notes.urls')),
-    path('admin/', admin.site.urls),
+    path(settings.ADMIN_URL, admin.site.urls),
     path('i18n/', include("django.conf.urls.i18n")),
     # (given with Content-Type: application/javascript)
     path('sw.js', TemplateView.as_view(
