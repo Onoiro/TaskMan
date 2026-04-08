@@ -28,7 +28,7 @@ class Command(BaseCommand):
             return
 
         try:
-            user = User.objects.get(username='admin')
+            user = User.objects.get(username=admin_username)
             user.set_password(admin_password)
             user.save()
             # use stdout instead of print
@@ -39,4 +39,4 @@ class Command(BaseCommand):
                 password=admin_password
             )
             # use stdout instead of print
-            self.stdout.write('Superuser has been created.')
+            self.stdout.write(f'Superuser "{admin_username}" has been created.')
