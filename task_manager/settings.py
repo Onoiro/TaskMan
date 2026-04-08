@@ -138,7 +138,7 @@ DATABASES = {
     )
 }
 
-ADMIN_URL = env('ADMIN_URL', default='admin/')  # переопределить в .env
+ADMIN_URL = os.getenv('ADMIN_URL', default='admin/')  # переопределить в .env
 
 AUTH_USER_MODEL = 'user.User'
 

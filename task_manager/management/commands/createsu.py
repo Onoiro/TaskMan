@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         admin_username = os.getenv('ADMIN_USERNAME', 'admin')
         admin_password = os.getenv('ADMIN_PASSWORD')
-        
+
         if not admin_password:
             # use stderr for errors to capture them properly
             self.stderr.write(
@@ -22,10 +22,10 @@ class Command(BaseCommand):
             return
 
         if len(admin_password) < 20:
-        self.stderr.write(
-            'Error: ADMIN_PASSWORD must be at least 20 characters!'
-        )
-        return
+            self.stderr.write(
+                'Error: ADMIN_PASSWORD must be at least 20 characters!'
+            )
+            return
 
         try:
             user = User.objects.get(username='admin')
@@ -35,7 +35,7 @@ class Command(BaseCommand):
             self.stdout.write('Superuser password has been updated.')
         except User.DoesNotExist:
             User.objects.create_superuser(
-                username='admin',
+                username=admin_username,
                 password=admin_password
             )
             # use stdout instead of print

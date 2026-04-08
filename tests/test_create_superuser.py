@@ -9,8 +9,15 @@ class CreateSuperUserTestCase(TestCase):
 
     @patch('os.getenv')
     def test_create_new_superuser(self, mock_getenv):
-        # emulating an environment variable
-        mock_getenv.return_value = 'admin'
+        # emulating environment variables - return different values for each key
+        def get_env_side_effect(key, default=None):
+            env_values = {
+                'ADMIN_USERNAME': 'admin',
+                'ADMIN_PASSWORD': 'more_than_twenty_chars_password',
+            }
+            return env_values.get(key, default)
+
+        mock_getenv.side_effect = get_env_side_effect
 
         # test case: user does not exist yet
         out = StringIO()
@@ -27,13 +34,20 @@ class CreateSuperUserTestCase(TestCase):
 
     @patch('os.getenv')
     def test_update_existing_superuser(self, mock_getenv):
-        # emulating an environment variable
-        mock_getenv.return_value = 'new_password'
+        # emulating environment variables - return different values for each key
+        def get_env_side_effect(key, default=None):
+            env_values = {
+                'ADMIN_USERNAME': 'admin',
+                'ADMIN_PASSWORD': 'new_more_than_twenty_chars_password',
+            }
+            return env_values.get(key, default)
+
+        mock_getenv.side_effect = get_env_side_effect
 
         # test case: user already exists
         User.objects.create_superuser(
             username='admin',
-            password='old_password'
+            password='old_more_than_twenty_chars_password'
         )
 
         out = StringIO()
@@ -48,7 +62,14 @@ class CreateSuperUserTestCase(TestCase):
     @patch('os.getenv')
     def test_missing_password_variable(self, mock_getenv):
         # test case: password env var is empty
-        mock_getenv.return_value = None
+        def get_env_side_effect(key, default=None):
+            env_values = {
+                'ADMIN_USERNAME': 'admin',
+                'ADMIN_PASSWORD': None,
+            }
+            return env_values.get(key, default)
+
+        mock_getenv.side_effect = get_env_side_effect
 
         err = StringIO()
         # capture stderr separately
