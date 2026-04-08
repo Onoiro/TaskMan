@@ -33,6 +33,9 @@ services:
      SECRET_KEY: ${SECRET_KEY}
      POST_SERVER_ITEM_ACCESS_TOKEN: ${POST_SERVER_ITEM_ACCESS_TOKEN:-}
      PORT: 8001
+     ADMIN_URL: ${ADMIN_URL:-admin/}
+     ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+     ADMIN_PASSWORD: ${ADMIN_PASSWORD}
    ports:
       - "8001:8001"
    volumes:
