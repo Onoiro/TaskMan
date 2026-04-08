@@ -30,7 +30,7 @@ class CreateSuperUserTestCase(TestCase):
         admin = User.objects.get(username='admin')
         self.assertTrue(admin.is_superuser)
         # check specific output message
-        self.assertIn('Superuser has been created.', out.getvalue())
+        self.assertIn('Superuser "admin" has been created.', out.getvalue())
 
     @patch('os.getenv')
     def test_update_existing_superuser(self, mock_getenv):
