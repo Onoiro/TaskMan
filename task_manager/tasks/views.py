@@ -93,7 +93,7 @@ class TaskUpdatePermissionMixin():
         return super().dispatch(request, *args, **kwargs)
 
 
-class TaskFilterView(FilterView):
+class TaskFilterView(CustomPermissions, FilterView):
     model = Task
     template_name = 'tasks/task_filter.html'
     filterset_class = TaskFilter
