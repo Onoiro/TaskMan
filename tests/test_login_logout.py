@@ -80,9 +80,9 @@ class UserLogoutViewTestCase(TestCase):
     def test_user_logout_calls_dispatch_message(self, mock_message_info):
         """Test that dispatch adds logout message."""
         # This test ensures the dispatch method is called and adds a message
-        response = self.client.post(reverse('logout'))
+        self.client.post(reverse('logout'))
 
-        # Check that messages.info was called with "You are logged out"
+        # Check that messages.info was called
         mock_message_info.assert_called()
         call_args = mock_message_info.call_args
         self.assertIn('logged out', str(call_args[0][1]).lower())
@@ -93,18 +93,23 @@ class UserLogoutViewTestCase(TestCase):
         from django.http import HttpRequest
         from django.contrib.sessions.middleware import SessionMiddleware
         from django.contrib.messages.middleware import MessageMiddleware
-        from django.contrib.auth import get_user_model
-
-        User = get_user_model()
+        from django.middleware.csrf import get_token
 
         # Create a request with session and messages
         request = HttpRequest()
         request.method = 'POST'
+        request.META['SERVER_NAME'] = 'testserver'
+        request.META['SERVER_PORT'] = '80'
 
         # Add session
         middleware = SessionMiddleware(lambda r: None)
         middleware.process_request(request)
         request.session.save()
+
+        # Get CSRF token and set it in cookie
+        csrf_token = get_token(request)
+        request.COOKIES['csrftoken'] = csrf_token
+        request.META['HTTP_X_CSRFTOKEN'] = csrf_token
 
         # Add user
         request.user = self.user
@@ -113,14 +118,10 @@ class UserLogoutViewTestCase(TestCase):
         msg_middleware = MessageMiddleware(lambda r: None)
         msg_middleware.process_request(request)
 
-        # Call dispatch directly
+        # Call dispatch using setup() to properly initialize view
         view = UserLogoutView()
-        # Call dispatch, which should add the message and call super().dispatch()
-        # We expect 403 due to CSRF, but the message should still be added
-        try:
-            response = view.dispatch(request)
-        except Exception:
-            pass  # CSRF error is expected
+        view.setup(request)
+        view.dispatch(request)
 
         # Check message was added (this verifies dispatch ran)
         messages = list(get_messages(request))

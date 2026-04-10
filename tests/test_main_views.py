@@ -1,15 +1,13 @@
 """
 Tests for views in task_manager/views.py
 """
-from django.test import TestCase, Client, override_settings
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 
 from task_manager.user.models import User
-from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
-from task_manager.limit_service import LimitService
 
 
 class LimitsInfoViewTestCase(TestCase):
@@ -204,9 +202,17 @@ class UserLoginLogoutViewsTestCase(TestCase):
 
     def test_user_login_view_success_sets_redirect_flag(self):
         """Test successful login sets redirect_after_login flag."""
+        # Get the login page first to obtain CSRF token
+        login_page = self.c.get(reverse('login'))
+        csrf_token = login_page.context['csrf_token']
+
         response = self.c.post(
             reverse('login'),
-            {'username': 'test_auth_user', 'password': 'password123'},
+            {
+                'username': 'test_auth_user',
+                'password': 'password123',
+                'csrfmiddlewaretoken': csrf_token
+            },
             follow=True
         )
 
@@ -222,7 +228,15 @@ class UserLoginLogoutViewsTestCase(TestCase):
         """Test logout sets info message."""
         self.c.force_login(self.user)
 
-        response = self.c.post(reverse('logout'), follow=True)
+        # Get CSRF token from session
+        session = self.c.session
+        csrf_token = session.get('csrf_token')
+
+        response = self.c.post(
+            reverse('logout'),
+            {'csrfmiddlewaretoken': csrf_token} if csrf_token else {},
+            follow=True
+        )
 
         self.assertEqual(response.status_code, 200)
 
