@@ -1,9 +1,12 @@
 from task_manager.user.models import User
 from task_manager.teams.models import Team, TeamMembership
+from task_manager.teams.views import TeamExitView
+from task_manager.limit_service import LimitService
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+from unittest.mock import patch, MagicMock
 import uuid
 
 
@@ -2096,6 +2099,364 @@ class TeamTestCase(TestCase):
             str(messages[0])
         )
 
+    def test_exit_team_post_with_author_tasks_message(self):
+        """test exact error message when user has author tasks"""
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        regular_user = User.objects.create_user(
+            username='author_msg_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        status = Status.objects.first()
+        Task.objects.create(
+            name='Author Task',
+            description='Task by author',
+            status=status,
+            author=regular_user,
+            team=self.team
+        )
+
+        self.c.logout()
+        self.c.force_login(regular_user)
+
+        response = self.c.post(
+            reverse('teams:team-exit', args=[self.team.uuid]),
+            follow=True
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertEqual(
+            str(messages[0]),
+            _('You cannot exit the team because you are'
+              ' author or executor of tasks in this team.')
+        )
+
+    def test_admin_delete_team_with_tasks_via_post(self):
+        """test admin cannot delete team with tasks via POST"""
+        # create new team with only admin
+        new_team = Team.objects.create(
+            name='Delete Task Team',
+            description='Team for delete test',
+            password='123'
+        )
+        TeamMembership.objects.create(
+            user=self.admin_user,
+            team=new_team,
+            role='admin'
+        )
+
+        # add a task to the team
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+        status = Status.objects.first()
+        Task.objects.create(
+            name='Delete Test Task',
+            description='Task for delete test',
+            status=status,
+            author=self.admin_user,
+            team=new_team
+        )
+
+        # try to delete via POST
+        response = self.c.post(
+            reverse('teams:team-delete', args=[new_team.uuid]),
+            follow=True
+        )
+
+        # check team still exists
+        self.assertTrue(Team.objects.filter(pk=new_team.id).exists())
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(
+            str(messages[0]),
+            _("Cannot delete a team because it has tasks.")
+        )
+
+    def test_admin_cannot_remove_user_not_in_team(self):
+        """test admin cannot remove user who is not in team"""
+        # create a user who is not in the target team
+        outsider = User.objects.create_user(
+            username='outsider_remove',
+            password='password123'
+        )
+
+        # create another team and add outsider to it
+        other_team = Team.objects.create(
+            name='Other Team',
+            description='Other team',
+            password='123'
+        )
+        TeamMembership.objects.create(
+            user=outsider,
+            team=other_team,
+            role='member'
+        )
+
+        # ensure admin_user is admin of target team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # create membership record for outsider in target team manually
+        # with a uuid we can reference
+        membership = TeamMembership.objects.create(
+            user=outsider,
+            team=self.team,
+            role='member',
+            status='pending'
+        )
+        membership_uuid = membership.uuid
+        # delete it so _is_user_team_member returns False
+        membership.delete()
+
+        # try to remove non-member via GET
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership_uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check error message about membership not found first
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Team membership not found'),
+            str(messages[0])
+        )
+
+    def test_admin_cannot_remove_user_not_in_team_post(self):
+        """test admin cannot remove non-member via POST"""
+        # create a user who is not in the target team
+        outsider = User.objects.create_user(
+            username='outsider_post',
+            password='password123'
+        )
+
+        # create another team and add outsider to it
+        other_team = Team.objects.create(
+            name='Other Team 2',
+            description='Other team 2',
+            password='123'
+        )
+        TeamMembership.objects.create(
+            user=outsider,
+            team=other_team,
+            role='member'
+        )
+
+        # ensure admin_user is admin of target team
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # create membership record and delete it
+        membership = TeamMembership.objects.create(
+            user=outsider,
+            team=self.team,
+            role='member',
+            status='pending'
+        )
+        membership_uuid = membership.uuid
+        membership.delete()
+
+        # try to remove non-member via POST
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership_uuid]
+        )
+        response = self.c.post(url, follow=True)
+
+        # check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Team membership not found'),
+            str(messages[0])
+        )
+
+    @patch.object(TeamExitView, '_is_user_team_member')
+    def test_admin_removal_user_not_member_covered(
+        self, mock_is_member
+    ):
+        """test coverage for _is_user_team_member check in admin removal
+        (mock to force the edge case where membership exists but user
+        is not actually in team)"""
+        # create a user
+        target_user = User.objects.create_user(
+            username='edge_case_user',
+            password='password123'
+        )
+
+        # create membership for target user in team
+        membership = TeamMembership.objects.create(
+            user=target_user,
+            team=self.team,
+            role='member'
+        )
+
+        # ensure admin_user is admin
+        if not self.team.is_admin(self.admin_user):
+            TeamMembership.objects.update_or_create(
+                user=self.admin_user,
+                team=self.team,
+                defaults={'role': 'admin'}
+            )
+
+        # Mock _is_user_team_member to return False
+        # This simulates an edge case where membership record exists
+        # but user is somehow not considered a member
+        mock_is_member.return_value = False
+
+        # try to remove member as admin
+        url = reverse(
+            'teams:team-member-remove',
+            args=[self.team.uuid, membership.uuid]
+        )
+        response = self.c.get(url, follow=True)
+
+        # check error message about user not being in team
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('User is not a member of this team'),
+            str(messages[0])
+        )
+
+    def test_get_task_error_message_for_author(self):
+        """test _get_task_error_message returns correct message for author"""
+        from task_manager.teams.views import TeamExitView
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+
+        regular_user = User.objects.create_user(
+            username='msg_author_user',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=regular_user,
+            team=self.team,
+            role='member'
+        )
+
+        status = Status.objects.first()
+        Task.objects.create(
+            name='Author Task',
+            description='Task by author',
+            status=status,
+            author=regular_user,
+            team=self.team
+        )
+
+        view = TeamExitView()
+        message = view._get_task_error_message(regular_user, self.team)
+
+        self.assertEqual(
+            message,
+            _('You cannot exit the team because you are'
+              ' author or executor of tasks in this team.')
+        )
+
+    def test_clear_active_team_session_when_matches(self):
+        """test _clear_active_team_session clears when uuid matches"""
+        from task_manager.teams.views import TeamExitView
+
+        # Create a mock request with session
+        request = MagicMock()
+        request.session = {
+            'active_team_uuid': str(self.team.uuid)
+        }
+
+        view = TeamExitView()
+        view._clear_active_team_session(request, self.team)
+
+        # check session was cleared
+        self.assertNotIn('active_team_uuid', request.session)
+
+    def test_clear_active_team_session_when_not_matches(self):
+        """test _clear_active_team_session keeps when uuid does not match"""
+        from task_manager.teams.views import TeamExitView
+
+        # Create another team
+        other_team = Team.objects.create(
+            name='Other Team',
+            description='Other',
+            password='123'
+        )
+
+        # Create a mock request with session pointing to other team
+        request = MagicMock()
+        request.session = {
+            'active_team_uuid': str(other_team.uuid)
+        }
+
+        view = TeamExitView()
+        view._clear_active_team_session(request, self.team)
+
+        # check session was NOT cleared (uuids don't match)
+        self.assertEqual(
+            request.session.get('active_team_uuid'),
+            str(other_team.uuid)
+        )
+
+    def test_switch_team_redirect_from_notes_update(self):
+        """test redirect to notes list when switching from notes
+        update page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing notes update path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/notes/{self.team.uuid}/update/',
+            follow=True
+        )
+
+        # check redirect to notes list
+        self.assertRedirects(response, reverse('notes:note-list'))
+
+    def test_switch_team_redirect_from_notes_delete(self):
+        """test redirect to notes list when switching from notes
+        delete page"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team with referer containing notes delete path
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER=f'/notes/{self.team.uuid}/delete/',
+            follow=True
+        )
+
+        # check redirect to notes list
+        self.assertRedirects(response, reverse('notes:note-list'))
+
     # Switch team without referer test
 
     def test_switch_team_without_referer(self):
@@ -2120,6 +2481,60 @@ class TeamTestCase(TestCase):
             response, reverse('tasks:tasks-list'),
             status_code=302, fetch_redirect_response=False
         )
+
+
+class TeamCreateViewLimitTestCase(TestCase):
+    """Test cases for team creation limit"""
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(pk=10)
+        self.c = Client()
+        self.c.force_login(self.user)
+
+    @patch.object(LimitService, 'can_create_team')
+    def test_cannot_create_team_when_limit_reached(self, mock_can_create):
+        """test team creation blocked when limit reached"""
+        from task_manager.limit_service import LimitCheckResult
+
+        # Mock limit check to return not allowed
+        mock_can_create.return_value = LimitCheckResult(
+            allowed=False,
+            current=1,
+            maximum=1,
+            message='You have reached the maximum number of teams'
+        )
+
+        team_data = {
+            'name': 'New Test Team',
+            'description': 'Should not be created',
+            'password1': '111',
+            'password2': '111'
+        }
+
+        response = self.c.post(
+            reverse('teams:team-create'),
+            team_data,
+            follow=True
+        )
+
+        # check team was not created
+        self.assertFalse(Team.objects.filter(name='New Test Team').exists())
+
+        # check warning message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            'maximum number of teams',
+            str(messages[0])
+        )
+
+        # check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
 
 
 class TeamMemberRoleFormTestCase(TestCase):
@@ -2608,3 +3023,39 @@ class TeamJoinViewTestCase(TestCase):
         response = self.c.get(reverse('teams:team-join'))
         content = response.content.decode('utf-8')
         self.assertIn('placeholder', content.lower())
+
+    @patch.object(LimitService, 'can_add_team_member')
+    def test_join_team_blocked_when_limit_reached(
+        self, mock_can_add_member
+    ):
+        """test team join blocked when member limit reached"""
+        from task_manager.limit_service import LimitCheckResult
+
+        # Mock limit check to return not allowed
+        mock_can_add_member.return_value = LimitCheckResult(
+            allowed=False,
+            current=10,
+            maximum=10,
+            message='Maximum number of teams reached'
+        )
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'name': self.team.name, 'password': 'testpass123'},
+            follow=True
+        )
+
+        # check membership was not created
+        self.assertFalse(
+            TeamMembership.objects.filter(
+                user=self.user, team=self.team
+            ).exists()
+        )
+
+        # check warning message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            'Maximum number of teams reached',
+            str(messages[0])
+        )
