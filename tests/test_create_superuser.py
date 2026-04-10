@@ -80,3 +80,27 @@ class CreateSuperUserTestCase(TestCase):
             'Error: ADMIN_PASSWORD environment variable is not set!',
             err.getvalue()
         )
+
+    @patch('os.getenv')
+    def test_password_too_short(self, mock_getenv):
+        # test case: password is less than 20 characters
+        def get_env_side_effect(key, default=None):
+            env_values = {
+                'ADMIN_USERNAME': 'admin',
+                'ADMIN_PASSWORD': 'short',
+            }
+            return env_values.get(key, default)
+
+        mock_getenv.side_effect = get_env_side_effect
+
+        err = StringIO()
+        # capture stderr separately
+        call_command('createsu', stderr=err)
+
+        # verify error message for short password
+        self.assertIn(
+            'Error: ADMIN_PASSWORD must be at least 20 characters!',
+            err.getvalue()
+        )
+        # no user should be created
+        self.assertEqual(User.objects.filter(username='admin').count(), 0)
