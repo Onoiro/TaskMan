@@ -59,6 +59,9 @@ cp .env.example .env.docker
 DEBUG=False
 SECRET_KEY=generate_a_strong_secret_key_here
 DJANGO_LANGUAGE_CODE=en-us
+ADMIN_USERNAME=something_unexpected
+ADMIN_PASSWORD=change_me_at_least_20_chars
+ADMIN_URL=not-standart-url
 
 # Database settings (PostgreSQL)
 POSTGRES_DB=taskman_db
@@ -128,7 +131,9 @@ cp .env.example .env
 DEBUG=True
 SECRET_KEY=dev_secret_key
 DJANGO_LANGUAGE_CODE=en-us
-ADMIN_PASSWORD=admin
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=adminadminadminadmin
+ADMIN_URL=admin
 DATABASE_URL=sqlite:///db.sqlite3
 # if you use postgresql instead of sqlite, add the following
 # DATABASE_URL=postgresql://your_db_user:your_password@localhost:5432/your_db_name
