@@ -132,7 +132,7 @@ DEBUG=True
 SECRET_KEY=dev_secret_key
 DJANGO_LANGUAGE_CODE=en-us
 ADMIN_USERNAME=admin
-ADMIN_PASSWORD=adminadminadminadmin
+ADMIN_PASSWORD=admin
 ADMIN_URL=admin
 DATABASE_URL=sqlite:///db.sqlite3
 # if you use postgresql instead of sqlite, add the following
@@ -215,6 +215,20 @@ This command will:
 - Collect static files
 - Clear Docker cache
 - Check services
+```bash
+make redeploy
+```
+Used in specific cases:
+- Changes in docker-compose.yml
+- PostgreSQL image updates
+- Problems with container state
+- Full rebuild without cache is required
+Differences from deploy:
+- Stops all containers
+- Rebuilds images without cache (--no-cache)
+- Completely recreates containers
+- Waits 15 seconds before migrations
+- Clears images and builder cache
 
 ### Database Backup and Restore
 ```bash

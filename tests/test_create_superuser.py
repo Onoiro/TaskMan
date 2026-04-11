@@ -83,11 +83,12 @@ class CreateSuperUserTestCase(TestCase):
 
     @patch('os.getenv')
     def test_password_too_short(self, mock_getenv):
-        # test case: password is less than 20 characters
+        # password is less than 20 characters in production (DEBUG=False)
         def get_env_side_effect(key, default=None):
             env_values = {
                 'ADMIN_USERNAME': 'admin',
                 'ADMIN_PASSWORD': 'short',
+                'DEBUG': 'False',
             }
             return env_values.get(key, default)
 

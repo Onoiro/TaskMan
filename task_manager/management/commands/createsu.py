@@ -13,7 +13,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         admin_username = os.getenv('ADMIN_USERNAME', 'admin')
         admin_password = os.getenv('ADMIN_PASSWORD')
-        debug = os.getenv('DEBUG', True)
+        debug_value = os.getenv('DEBUG', 'True')
+        debug = debug_value.lower() in ('true', '1', 'yes')
 
         if not admin_password:
             # use stderr for errors to capture them properly
@@ -22,7 +23,7 @@ class Command(BaseCommand):
             )
             return
 
-        if debug is False:
+        if not debug:
             if len(admin_password) < 20:
                 self.stderr.write(
                     'Error: ADMIN_PASSWORD must be at least 20 characters!'
