@@ -22,7 +22,7 @@ class Command(BaseCommand):
             )
             return
 
-        if debug == False:
+        if debug is False:
             if len(admin_password) < 20:
                 self.stderr.write(
                     'Error: ADMIN_PASSWORD must be at least 20 characters!'
