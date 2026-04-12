@@ -223,6 +223,7 @@ Used in specific cases:
 - PostgreSQL image updates
 - Problems with container state
 - Full rebuild without cache is required
+
 Differences from deploy:
 - Stops all containers
 - Rebuilds images without cache (--no-cache)
