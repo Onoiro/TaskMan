@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-04 23:17+0300\n"
+"POT-Creation-Date: 2026-04-13 23:59+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Kyrgyz\n"
@@ -230,23 +230,23 @@ msgstr "Командадагы өз ролуңузду өзгөртө албай
 msgid "Team membership not found."
 msgstr "Командадагы мүчөлүк табылган жок."
 
-#: settings.py:178 templates/index.html:67
+#: settings.py:183 templates/index.html:67
 msgid "English"
 msgstr "Англисче"
 
-#: settings.py:179 templates/index.html:76
+#: settings.py:184 templates/index.html:76
 msgid "Russian"
 msgstr "Орусча"
 
-#: settings.py:180 templates/index.html:85
+#: settings.py:185 templates/index.html:85
 msgid "Tajik"
 msgstr "Тажикче"
 
-#: settings.py:181 templates/index.html:94
+#: settings.py:186 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Азербайжанча"
 
-#: settings.py:182 templates/index.html:103
+#: settings.py:187 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Кыргызча"
 
@@ -462,8 +462,8 @@ msgid "Password"
 msgstr "Сырсөз"
 
 #: teams/forms.py:37 user/forms.py:24
-msgid "Your password must contain at least 3 characters."
-msgstr "Сырсөзүңүз кеминде 3 белгиден турушу керек."
+msgid "Your password must contain at least 8 characters."
+msgstr "Сырсөзүңүз кеминде 8 белгиден турушу керек."
 
 #: teams/forms.py:41 user/forms.py:29
 msgid "Confirm password"
@@ -478,8 +478,8 @@ msgid "Leave blank if you don't want to change password"
 msgstr "Сырсөздү өзгөрткүңүз келбесе, бош калтырыңыз"
 
 #: teams/forms.py:65 user/forms.py:58
-msgid "Your password is too short. It must contain at least 3 characters."
-msgstr "Сырсөз өтө кыска. Ал кеминде 3 белгиден турушу керек."
+msgid "Your password is too short. It must contain at least 8 characters."
+msgstr "Сырсөз өтө кыска. Ал кеминде 8 белгиден турушу керек."
 
 #: teams/forms.py:79 user/forms.py:74
 msgid "The entered passwords do not match."
@@ -579,8 +579,8 @@ msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
 msgstr ""
-"Команданын мүчөлөрүн башкарууга укугуңуз жок. Бул ишти команда администратору "
-"гана жасай алат."
+"Команданын мүчөлөрүн башкарууга укугуңуз жок. Бул ишти команда "
+"администратору гана жасай алат."
 
 #: teams/views.py:193
 msgid "User is not a member of this team"
@@ -748,17 +748,21 @@ msgstr "Сиз акысыз пландын лимиттерине жакында
 msgid "Details"
 msgstr "Кененирээк"
 
-#: templates/base.html:420 templates/feedback.html:7 templates/feedback.html:12
+#: templates/base.html:406
+msgid "Go back"
+msgstr "Артка кайтуу"
+
+#: templates/base.html:426 templates/feedback.html:7 templates/feedback.html:12
 #: views.py:65
 msgid "Feedback"
 msgstr "Кайтарым байланыш"
 
-#: templates/base.html:422 templates/privacy_policy.html:4
+#: templates/base.html:428 templates/privacy_policy.html:4
 #: templates/privacy_policy.html:8
 msgid "Privacy Policy"
 msgstr "Купуялуулук саясаты"
 
-#: templates/base.html:424 templates/terms_of_service.html:4
+#: templates/base.html:430 templates/terms_of_service.html:4
 #: templates/terms_of_service.html:8
 msgid "Terms of Service"
 msgstr "Колдонуу шарттары"
@@ -1082,50 +1086,46 @@ msgid "Username"
 msgstr "Колдонуучунун аты"
 
 #: templates/privacy_policy.html:15
-msgid "First and last name"
-msgstr "Атыңызды жана фамилияңызды"
+msgid "First and last name (optional)"
+msgstr "Атыңызды жана фамилияңызды (милдеттүү эмес)"
 
 #: templates/privacy_policy.html:16
-msgid "Email address (optional)"
-msgstr "Электрондук почта дареги (милдеттүү эмес)"
-
-#: templates/privacy_policy.html:17
 msgid "Password (stored in encrypted form)"
 msgstr "Сырсөз (шифрленген түрдө сакталат)"
 
-#: templates/privacy_policy.html:20
+#: templates/privacy_policy.html:19
 msgid "When you use the service, we store:"
 msgstr "Сервисти колдонгондо биз төмөнкүлөрдү сактайбыз:"
 
-#: templates/privacy_policy.html:22
+#: templates/privacy_policy.html:21
 msgid "Tasks, notes, labels and statuses you create"
 msgstr "Сиз түзгөн тапшырмалар, эскертүүлөр, тегдер жана статустар"
 
-#: templates/privacy_policy.html:23
+#: templates/privacy_policy.html:22
 msgid "Team membership information"
 msgstr "Командага мүчөлүк тууралуу маалымат"
 
-#: templates/privacy_policy.html:26
+#: templates/privacy_policy.html:25
 msgid "How We Use Your Data"
 msgstr "Маалыматтарыңызды кантип колдонобуз"
 
-#: templates/privacy_policy.html:28
+#: templates/privacy_policy.html:27
 msgid "To provide the task management service"
 msgstr "Тапшырмаларды башкаруу кызматын көрсөтүү үчүн"
 
-#: templates/privacy_policy.html:29
+#: templates/privacy_policy.html:28
 msgid "To authenticate you and protect your account"
 msgstr "Сизди аутентификациялоо жана аккаунтуңузду коргоо үчүн"
 
-#: templates/privacy_policy.html:30
+#: templates/privacy_policy.html:29
 msgid "To enable team collaboration features"
 msgstr "Командалык иштешүү мүмкүнчүлүктөрүн камсыз кылуу үчүн"
 
-#: templates/privacy_policy.html:33
+#: templates/privacy_policy.html:32
 msgid "Data Sharing"
 msgstr "Маалыматтарды бөлүшүү"
 
-#: templates/privacy_policy.html:34
+#: templates/privacy_policy.html:33
 msgid ""
 "We do not sell, trade, or share your personal data with third parties, "
 "except:"
@@ -1133,21 +1133,21 @@ msgstr ""
 "Биз сиздин жеке маалыматтарыңызды үчүнчү жактарга сатпайбыз, алмаштырбайбыз "
 "жана бербейбиз, төмөнкү учурлардан тышкары:"
 
-#: templates/privacy_policy.html:36
+#: templates/privacy_policy.html:35
 msgid "Within your teams - other team members can see tasks assigned to them"
 msgstr ""
 "Командаларыңыздын ичинде — башка команда мүчөлөрү өздөрүнө дайындалган "
 "тапшырмаларды көрө алышат"
 
-#: templates/privacy_policy.html:37
+#: templates/privacy_policy.html:36
 msgid "When required by law"
 msgstr "Мыйзам талап кылган учурда"
 
-#: templates/privacy_policy.html:40
+#: templates/privacy_policy.html:39
 msgid "Data Storage and Security"
 msgstr "Маалыматтарды сактоо жана коопсуздук"
 
-#: templates/privacy_policy.html:41
+#: templates/privacy_policy.html:40
 msgid ""
 "Your data is stored on secure servers. We use HTTPS encryption for all "
 "connections. Passwords are hashed and never stored in plain text."
@@ -1156,51 +1156,51 @@ msgstr ""
 "биз HTTPS шифрлөөсүн колдонобуз. Сырсөздөр хэштелет жана эч качан ачык "
 "түрүндө сакталбайт."
 
-#: templates/privacy_policy.html:43
+#: templates/privacy_policy.html:42
 msgid "Your Rights"
 msgstr "Сиздин укуктарыңыз"
 
-#: templates/privacy_policy.html:44
+#: templates/privacy_policy.html:43
 msgid "You can:"
 msgstr "Сиз төмөнкүлөрдү жасай аласыз:"
 
-#: templates/privacy_policy.html:46
+#: templates/privacy_policy.html:45
 msgid "View and edit your profile information at any time"
 msgstr "Профилиңиз тууралуу маалыматты каалаган убакта көрүү жана өзгөртүү"
 
-#: templates/privacy_policy.html:47
+#: templates/privacy_policy.html:46
 msgid "Delete your account and all associated data"
 msgstr "Аккаунтуңузду жана ага байланышкан бардык маалыматтарды өчүрүү"
 
-#: templates/privacy_policy.html:48
+#: templates/privacy_policy.html:47
 msgid "Export your data by contacting us"
 msgstr "Биз менен байланышуу аркылуу маалыматтарыңызды экспорттоо"
 
-#: templates/privacy_policy.html:51
+#: templates/privacy_policy.html:50
 msgid "Cookies"
 msgstr "Cookie файлдары"
 
-#: templates/privacy_policy.html:52
+#: templates/privacy_policy.html:51
 msgid "We use essential cookies for:"
 msgstr "Биз зарыл болгон cookie файлдарын төмөнкүлөр үчүн колдонобуз:"
 
-#: templates/privacy_policy.html:54
+#: templates/privacy_policy.html:53
 msgid "Session management (keeping you logged in)"
 msgstr "Сессияны башкаруу үчүн (системада кирген бойдон калууңуз үчүн)"
 
-#: templates/privacy_policy.html:55
+#: templates/privacy_policy.html:54
 msgid "CSRF protection (security)"
 msgstr "CSRF коргоосу үчүн (коопсуздук)"
 
-#: templates/privacy_policy.html:56
+#: templates/privacy_policy.html:55
 msgid "Language preference"
 msgstr "Тил тандоосун сактоо"
 
-#: templates/privacy_policy.html:59
+#: templates/privacy_policy.html:58
 msgid "Children's Privacy"
 msgstr "Балдардын купуялуулугу"
 
-#: templates/privacy_policy.html:60
+#: templates/privacy_policy.html:59
 msgid ""
 "Our service is not intended for children under 13. We do not knowingly "
 "collect data from children."
@@ -1208,11 +1208,11 @@ msgstr ""
 "Биздин сервис 13 жашка чейинки балдар үчүн арналган эмес. Биз балдардын "
 "маалыматтарын атайылап чогултпайбыз."
 
-#: templates/privacy_policy.html:62 templates/terms_of_service.html:45
+#: templates/privacy_policy.html:61 templates/terms_of_service.html:45
 msgid "Contact"
 msgstr "Байланыш"
 
-#: templates/privacy_policy.html:63
+#: templates/privacy_policy.html:62
 msgid ""
 "If you have questions about this privacy policy, contact us via the feedback "
 "form or at:"
@@ -1220,11 +1220,11 @@ msgstr ""
 "Эгер бул купуялуулук саясаты боюнча суроолоруңуз болсо, биз менен кайтарым "
 "байланыш формасы аркылуу же төмөнкү дарек боюнча байланышыңыз:"
 
-#: templates/privacy_policy.html:66
+#: templates/privacy_policy.html:65
 msgid "Changes"
 msgstr "Өзгөртүүлөр"
 
-#: templates/privacy_policy.html:67
+#: templates/privacy_policy.html:66
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."
@@ -1487,8 +1487,8 @@ msgid ""
 "TaskMan is a web application for task management, available for individual "
 "use and team collaboration."
 msgstr ""
-"TaskMan — бул тапшырмаларды башкаруу үчүн веб-тиркеме, ал жеке колдонууга да, "
-"командалык ишке да жеткиликтүү."
+"TaskMan — бул тапшырмаларды башкаруу үчүн веб-тиркеме, ал жеке колдонууга "
+"да, командалык ишке да жеткиликтүү."
 
 #: templates/terms_of_service.html:17
 msgid "User Account"
@@ -1549,8 +1549,8 @@ msgid ""
 "service. We may perform maintenance that temporarily affects availability."
 msgstr ""
 "Биз сервистин жогорку жеткиликтүүлүгүн сактоого аракет кылабыз, бирок "
-"үзгүлтүксүз иштөөгө кепилдик бербейбиз. Биз жеткиликтүүлүккө убактылуу таасир "
-"эткен техникалык иштерди жүргүзүшүбүз мүмкүн."
+"үзгүлтүксүз иштөөгө кепилдик бербейбиз. Биз жеткиликтүүлүккө убактылуу "
+"таасир эткен техникалык иштерди жүргүзүшүбүз мүмкүн."
 
 #: templates/terms_of_service.html:39
 msgid "Termination"
@@ -1708,3 +1708,6 @@ msgstr "Сиз ийгиликтүү кирдиңиз"
 #: views.py:54
 msgid "You are logged out"
 msgstr "Сиз системадан чыктыңыз"
+
+#~ msgid "Email address (optional)"
+#~ msgstr "Электрондук почта дареги (милдеттүү эмес)"

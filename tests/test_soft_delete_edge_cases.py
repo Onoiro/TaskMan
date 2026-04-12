@@ -88,7 +88,7 @@ class SoftDeleteEdgeCasesTestCase(TestCase):
 
     def test_soft_delete_last_admin_deletes_team(self):
         """Test soft deleting the only admin deletes the team."""
-        new_team = Team.objects.create(name="Solo Team", password="123")
+        new_team = Team.objects.create(name="Solo Team", password="12345678")
         TeamMembership.objects.create(
             user=self.admin_user,
             team=new_team,

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-04 23:17+0300\n"
+"POT-Creation-Date: 2026-04-13 23:59+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -73,9 +73,9 @@ msgid ""
 "removing ones you no longer need. TaskMan Pro without limits is on its way — "
 "we're working on it!"
 msgstr ""
-"Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. Artıq "
-"lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır — biz "
-"bunun üzərində işləyirik!"
+"Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. "
+"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır "
+"— biz bunun üzərində işləyirik!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -233,23 +233,23 @@ msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
 msgid "Team membership not found."
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: settings.py:178 templates/index.html:67
+#: settings.py:183 templates/index.html:67
 msgid "English"
 msgstr "İngilis"
 
-#: settings.py:179 templates/index.html:76
+#: settings.py:184 templates/index.html:76
 msgid "Russian"
 msgstr "Rus"
 
-#: settings.py:180 templates/index.html:85
+#: settings.py:185 templates/index.html:85
 msgid "Tajik"
 msgstr "Tacik"
 
-#: settings.py:181 templates/index.html:94
+#: settings.py:186 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Azərbaycan dili"
 
-#: settings.py:182 templates/index.html:103
+#: settings.py:187 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Qırğız"
 
@@ -467,8 +467,8 @@ msgid "Password"
 msgstr "Şifrə"
 
 #: teams/forms.py:37 user/forms.py:24
-msgid "Your password must contain at least 3 characters."
-msgstr "Şifrəniz ən azı 3 simvoldan ibarət olmalıdır."
+msgid "Your password must contain at least 8 characters."
+msgstr "Şifrəniz ən azı 8 simvoldan ibarət olmalıdır."
 
 #: teams/forms.py:41 user/forms.py:29
 msgid "Confirm password"
@@ -483,8 +483,8 @@ msgid "Leave blank if you don't want to change password"
 msgstr "Şifrəni dəyişmək istəmirsinizsə, boş saxlayın"
 
 #: teams/forms.py:65 user/forms.py:58
-msgid "Your password is too short. It must contain at least 3 characters."
-msgstr "Şifrəniz çox qısadır. O, ən azı 3 simvoldan ibarət olmalıdır."
+msgid "Your password is too short. It must contain at least 8 characters."
+msgstr "Şifrəniz çox qısadır. O, ən azı 8 simvoldan ibarət olmalıdır."
 
 #: teams/forms.py:79 user/forms.py:74
 msgid "The entered passwords do not match."
@@ -753,17 +753,21 @@ msgstr "Siz pulsuz planın limitlərinə yaxınlaşırsınız."
 msgid "Details"
 msgstr "Ətraflı"
 
-#: templates/base.html:420 templates/feedback.html:7 templates/feedback.html:12
+#: templates/base.html:406
+msgid "Go back"
+msgstr "Geri qayıt"
+
+#: templates/base.html:426 templates/feedback.html:7 templates/feedback.html:12
 #: views.py:65
 msgid "Feedback"
 msgstr "Əks əlaqə"
 
-#: templates/base.html:422 templates/privacy_policy.html:4
+#: templates/base.html:428 templates/privacy_policy.html:4
 #: templates/privacy_policy.html:8
 msgid "Privacy Policy"
 msgstr "Məxfilik siyasəti"
 
-#: templates/base.html:424 templates/terms_of_service.html:4
+#: templates/base.html:430 templates/terms_of_service.html:4
 #: templates/terms_of_service.html:8
 msgid "Terms of Service"
 msgstr "İstifadə şərtləri"
@@ -794,7 +798,8 @@ msgstr "Komandalar"
 
 #: templates/includes/limits_usage.html:90
 msgid "Extended plan is already in development — more features coming soon!"
-msgstr "Genişləndirilmiş plan artıq hazırlanır — tezliklə daha çox imkan gələcək!"
+msgstr ""
+"Genişləndirilmiş plan artıq hazırlanır — tezliklə daha çox imkan gələcək!"
 
 #: templates/index.html:7
 msgid "Task Manager"
@@ -1085,50 +1090,46 @@ msgid "Username"
 msgstr "İstifadəçi adı"
 
 #: templates/privacy_policy.html:15
-msgid "First and last name"
-msgstr "Ad və soyad"
+msgid "First and last name (optional)"
+msgstr "Ad və soyad (məcburi deyil)"
 
 #: templates/privacy_policy.html:16
-msgid "Email address (optional)"
-msgstr "E-poçt ünvanı (istəyə bağlı)"
-
-#: templates/privacy_policy.html:17
 msgid "Password (stored in encrypted form)"
 msgstr "Şifrə (şifrələnmiş formada saxlanılır)"
 
-#: templates/privacy_policy.html:20
+#: templates/privacy_policy.html:19
 msgid "When you use the service, we store:"
 msgstr "Xidmətdən istifadə etdiyiniz zaman biz bunları saxlayırıq:"
 
-#: templates/privacy_policy.html:22
+#: templates/privacy_policy.html:21
 msgid "Tasks, notes, labels and statuses you create"
 msgstr "Yaratdığınız tapşırıqlar, qeydlər, etiketlər və statuslar"
 
-#: templates/privacy_policy.html:23
+#: templates/privacy_policy.html:22
 msgid "Team membership information"
 msgstr "Komanda üzvlüyü haqqında məlumat"
 
-#: templates/privacy_policy.html:26
+#: templates/privacy_policy.html:25
 msgid "How We Use Your Data"
 msgstr "Məlumatlarınızdan necə istifadə edirik"
 
-#: templates/privacy_policy.html:28
+#: templates/privacy_policy.html:27
 msgid "To provide the task management service"
 msgstr "Tapşırıq idarəetmə xidmətini təqdim etmək üçün"
 
-#: templates/privacy_policy.html:29
+#: templates/privacy_policy.html:28
 msgid "To authenticate you and protect your account"
 msgstr "Sizi təsdiqləmək və hesabınızı qorumaq üçün"
 
-#: templates/privacy_policy.html:30
+#: templates/privacy_policy.html:29
 msgid "To enable team collaboration features"
 msgstr "Komanda əməkdaşlığı funksiyalarını təmin etmək üçün"
 
-#: templates/privacy_policy.html:33
+#: templates/privacy_policy.html:32
 msgid "Data Sharing"
 msgstr "Məlumatların paylaşılması"
 
-#: templates/privacy_policy.html:34
+#: templates/privacy_policy.html:33
 msgid ""
 "We do not sell, trade, or share your personal data with third parties, "
 "except:"
@@ -1136,21 +1137,21 @@ msgstr ""
 "Biz şəxsi məlumatlarınızı üçüncü tərəflərə satmır, dəyişmir və paylaşmırıq, "
 "yalnız bu hallar istisnadır:"
 
-#: templates/privacy_policy.html:36
+#: templates/privacy_policy.html:35
 msgid "Within your teams - other team members can see tasks assigned to them"
 msgstr ""
 "Komandalarınız daxilində — digər komanda üzvləri onlara təyin edilmiş "
 "tapşırıqları görə bilər"
 
-#: templates/privacy_policy.html:37
+#: templates/privacy_policy.html:36
 msgid "When required by law"
 msgstr "Qanunla tələb olunduqda"
 
-#: templates/privacy_policy.html:40
+#: templates/privacy_policy.html:39
 msgid "Data Storage and Security"
 msgstr "Məlumatların saxlanması və təhlükəsizlik"
 
-#: templates/privacy_policy.html:41
+#: templates/privacy_policy.html:40
 msgid ""
 "Your data is stored on secure servers. We use HTTPS encryption for all "
 "connections. Passwords are hashed and never stored in plain text."
@@ -1159,51 +1160,51 @@ msgstr ""
 "HTTPS şifrələməsindən istifadə edirik. Şifrələr heşlənir və heç vaxt açıq "
 "mətn şəklində saxlanılmır."
 
-#: templates/privacy_policy.html:43
+#: templates/privacy_policy.html:42
 msgid "Your Rights"
 msgstr "Sizin hüquqlarınız"
 
-#: templates/privacy_policy.html:44
+#: templates/privacy_policy.html:43
 msgid "You can:"
 msgstr "Siz bunları edə bilərsiniz:"
 
-#: templates/privacy_policy.html:46
+#: templates/privacy_policy.html:45
 msgid "View and edit your profile information at any time"
 msgstr "Profil məlumatlarınızı istənilən vaxt görüntüləmək və redaktə etmək"
 
-#: templates/privacy_policy.html:47
+#: templates/privacy_policy.html:46
 msgid "Delete your account and all associated data"
 msgstr "Hesabınızı və onunla əlaqəli bütün məlumatları silmək"
 
-#: templates/privacy_policy.html:48
+#: templates/privacy_policy.html:47
 msgid "Export your data by contacting us"
 msgstr "Bizimlə əlaqə saxlayaraq məlumatlarınızı ixrac etmək"
 
-#: templates/privacy_policy.html:51
+#: templates/privacy_policy.html:50
 msgid "Cookies"
 msgstr "Kukilər"
 
-#: templates/privacy_policy.html:52
+#: templates/privacy_policy.html:51
 msgid "We use essential cookies for:"
 msgstr "Biz zəruri kukilərdən bunlar üçün istifadə edirik:"
 
-#: templates/privacy_policy.html:54
+#: templates/privacy_policy.html:53
 msgid "Session management (keeping you logged in)"
 msgstr "Sessiyanın idarə olunması (sizi sistemdə saxlaymaq)"
 
-#: templates/privacy_policy.html:55
+#: templates/privacy_policy.html:54
 msgid "CSRF protection (security)"
 msgstr "CSRF qorunması (təhlükəsizlik)"
 
-#: templates/privacy_policy.html:56
+#: templates/privacy_policy.html:55
 msgid "Language preference"
 msgstr "Dil seçimi"
 
-#: templates/privacy_policy.html:59
+#: templates/privacy_policy.html:58
 msgid "Children's Privacy"
 msgstr "Uşaqların məxfiliyi"
 
-#: templates/privacy_policy.html:60
+#: templates/privacy_policy.html:59
 msgid ""
 "Our service is not intended for children under 13. We do not knowingly "
 "collect data from children."
@@ -1211,11 +1212,11 @@ msgstr ""
 "Xidmətimiz 13 yaşdan kiçik uşaqlar üçün nəzərdə tutulmayıb. Biz bilərəkdən "
 "uşaqlardan məlumat toplamırıq."
 
-#: templates/privacy_policy.html:62 templates/terms_of_service.html:45
+#: templates/privacy_policy.html:61 templates/terms_of_service.html:45
 msgid "Contact"
 msgstr "Əlaqə"
 
-#: templates/privacy_policy.html:63
+#: templates/privacy_policy.html:62
 msgid ""
 "If you have questions about this privacy policy, contact us via the feedback "
 "form or at:"
@@ -1223,11 +1224,11 @@ msgstr ""
 "Bu məxfilik siyasəti ilə bağlı sualınız varsa, bizimlə əks əlaqə forması və "
 "ya aşağıdakı vasitə ilə əlaqə saxlayın:"
 
-#: templates/privacy_policy.html:66
+#: templates/privacy_policy.html:65
 msgid "Changes"
 msgstr "Dəyişikliklər"
 
-#: templates/privacy_policy.html:67
+#: templates/privacy_policy.html:66
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."
@@ -1540,8 +1541,9 @@ msgid ""
 "You retain ownership of the content you create. We do not claim any rights "
 "to your tasks, notes, or other data."
 msgstr ""
-"Yaratdığınız məzmunun mülkiyyət hüququ sizdə qalır. Biz sizin tapşırıqlarınız, "
-"qeydləriniz və ya digər məlumatlarınız üzərində heç bir hüquq iddia etmirik."
+"Yaratdığınız məzmunun mülkiyyət hüququ sizdə qalır. Biz sizin "
+"tapşırıqlarınız, qeydləriniz və ya digər məlumatlarınız üzərində heç bir "
+"hüquq iddia etmirik."
 
 #: templates/terms_of_service.html:36
 msgid "Service Availability"
@@ -1553,8 +1555,8 @@ msgid ""
 "service. We may perform maintenance that temporarily affects availability."
 msgstr ""
 "Biz yüksək əlçatanlığı qorumağa çalışırıq, lakin fasiləsiz xidmətə zəmanət "
-"vermirik. Bəzən əlçatanlığa müvəqqəti təsir göstərə bilən texniki işlər apara "
-"bilərik."
+"vermirik. Bəzən əlçatanlığa müvəqqəti təsir göstərə bilən texniki işlər "
+"apara bilərik."
 
 #: templates/terms_of_service.html:39
 msgid "Termination"
@@ -1711,3 +1713,6 @@ msgstr "Siz uğurla daxil oldunuz"
 #: views.py:54
 msgid "You are logged out"
 msgstr "Siz sistemdən çıxdınız"
+
+#~ msgid "Email address (optional)"
+#~ msgstr "E-poçt ünvanı (istəyə bağlı)"

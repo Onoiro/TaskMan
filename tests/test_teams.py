@@ -25,8 +25,8 @@ class TeamTestCase(TestCase):
         self.team_data = {
             'name': 'New Test Team',
             'description': 'This is a new test team',
-            'password1': '111',
-            'password2': '111'
+            'password1': '11111111',
+            'password2': '11111111'
         }
         self.team = Team.objects.get(pk=1)  # test team
 
@@ -178,8 +178,8 @@ class TeamTestCase(TestCase):
         updated_team_data = {
             'name': 'Updated Team Name',
             'description': 'Updated description',
-            'password1': '111',
-            'password2': '111'
+            'password1': '11111111',
+            'password2': '11111111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.uuid]),
@@ -212,8 +212,8 @@ class TeamTestCase(TestCase):
         update_data = {
             'name': second_team.name,
             'description': 'Updated description',
-            'password1': '111',
-            'password2': '111'
+            'password1': '11111111',
+            'password2': '11111111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.uuid]),
@@ -262,8 +262,8 @@ class TeamTestCase(TestCase):
         updated_data = {
             'name': 'Updated by non-admin',
             'description': 'Should not work',
-            'password1': '111',
-            'password2': '111'
+            'password1': '11111111',
+            'password2': '11111111'
         }
         response = self.c.post(
             reverse('teams:team-update', args=[self.team.uuid]),
@@ -467,7 +467,7 @@ class TeamTestCase(TestCase):
         new_team = Team.objects.create(
             name='Task Team',
             description='Team with tasks',
-            password='123'
+            password='12345678'
         )
         TeamMembership.objects.create(
             user=self.admin_user,
@@ -577,7 +577,7 @@ class TeamTestCase(TestCase):
         new_team = Team.objects.create(
             name='Admin Team',
             description='Team for admin exit test',
-            password='123'
+            password='12345678'
         )
         TeamMembership.objects.create(
             user=self.admin_user,
@@ -2145,7 +2145,7 @@ class TeamTestCase(TestCase):
         new_team = Team.objects.create(
             name='Delete Task Team',
             description='Team for delete test',
-            password='123'
+            password='12345678'
         )
         TeamMembership.objects.create(
             user=self.admin_user,
@@ -2193,7 +2193,7 @@ class TeamTestCase(TestCase):
         other_team = Team.objects.create(
             name='Other Team',
             description='Other team',
-            password='123'
+            password='12345678'
         )
         TeamMembership.objects.create(
             user=outsider,
@@ -2248,7 +2248,7 @@ class TeamTestCase(TestCase):
         other_team = Team.objects.create(
             name='Other Team 2',
             description='Other team 2',
-            password='123'
+            password='12345678'
         )
         TeamMembership.objects.create(
             user=outsider,
@@ -2395,7 +2395,7 @@ class TeamTestCase(TestCase):
         other_team = Team.objects.create(
             name='Other Team',
             description='Other',
-            password='123'
+            password='12345678'
         )
 
         # Create a mock request with session pointing to other team
@@ -2512,8 +2512,8 @@ class TeamCreateViewLimitTestCase(TestCase):
         team_data = {
             'name': 'New Test Team',
             'description': 'Should not be created',
-            'password1': '111',
-            'password2': '111'
+            'password1': '11111111',
+            'password2': '11111111'
         }
 
         response = self.c.post(
@@ -2553,7 +2553,7 @@ class TeamMemberRoleFormTestCase(TestCase):
         )
         team = Team.objects.create(
             name='Form Test Team',
-            password='123'
+            password='12345678'
         )
         membership = TeamMembership.objects.create(
             user=user,
@@ -2584,7 +2584,7 @@ class TeamMemberRoleFormTestCase(TestCase):
         )
         team = Team.objects.create(
             name='Form Test Team 2',
-            password='123'
+            password='12345678'
         )
         membership = TeamMembership.objects.create(
             user=user,
@@ -2615,7 +2615,7 @@ class TeamMemberRoleFormTestCase(TestCase):
         )
         team = Team.objects.create(
             name='Form Test Team 3',
-            password='123'
+            password='12345678'
         )
         membership = TeamMembership.objects.create(
             user=user,

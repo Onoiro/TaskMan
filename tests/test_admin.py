@@ -15,17 +15,17 @@ class UserAdminTest(TestCase):
         # create one test user
         self.user = User.objects.create_user(
             username='test_admin_user',
-            password='123'
+            password='12345678'
         )
 
         # create two teams with password
         self.team1 = Team.objects.create(
             name='Alpha Team',
-            password='123'
+            password='12345678'
         )
         self.team2 = Team.objects.create(
             name='Beta Team',
-            password='123'
+            password='12345678'
         )
 
     def test_get_teams_empty(self):

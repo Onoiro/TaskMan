@@ -34,7 +34,7 @@ class TeamForm(forms.ModelForm):
         required=True,
         label=_('Password'),
         widget=forms.PasswordInput(),
-        help_text=_("Your password must contain at least 3 characters."))
+        help_text=_("Your password must contain at least 8 characters."))
 
     password2 = forms.CharField(
         required=True,
@@ -60,10 +60,10 @@ class TeamForm(forms.ModelForm):
         # when updating - if the password is empty, skip it
         if self.instance and self.instance.pk and not password1:
             return None
-        if password1 and len(password1) < 3:
+        if password1 and len(password1) < 8:
             raise forms.ValidationError(_(
                 "Your password is too short."
-                " It must contain at least 3 characters."),
+                " It must contain at least 8 characters."),
                 code='min_length')
         return password1
 

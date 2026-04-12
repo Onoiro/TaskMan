@@ -18,8 +18,8 @@ class TeamFormTestCase(TestCase):
         self.form_data = {
             'name': 'New Team',
             'description': 'This is a new test team',
-            'password1': '111',
-            'password2': '111'
+            'password1': '12345678',
+            'password2': '12345678'
         }
         self.user = User.objects.get(pk=10)
 
@@ -29,19 +29,19 @@ class TeamFormTestCase(TestCase):
 
     def test_password_too_short(self):
         form_data = self.form_data.copy()
-        form_data['password1'] = '11'
-        form_data['password2'] = '11'
+        form_data['password1'] = '1234567'
+        form_data['password2'] = '1234567'
         form = TeamForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(_(
             'Your password is too short.'
-            ' It must contain at least 3 characters.'),
+            ' It must contain at least 8 characters.'),
             form.errors['password1'])
 
     def test_passwords_do_not_match(self):
         form_data = self.form_data.copy()
-        form_data['password1'] = '111'
-        form_data['password2'] = '222'
+        form_data['password1'] = '12345678'
+        form_data['password2'] = '87654321'
         form = TeamForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
@@ -109,8 +109,8 @@ class TeamFormTestCase(TestCase):
         form_data = {
             'name': 'Updated Team Name',
             'description': 'Updated team description',
-            'password1': '456',
-            'password2': '456'
+            'password1': '12345678',
+            'password2': '12345678'
         }
         form = TeamForm(data=form_data, instance=team)
         self.assertTrue(form.is_valid())
@@ -119,7 +119,7 @@ class TeamFormTestCase(TestCase):
         # check data was updated
         self.assertEqual(updated_team.name, 'Updated Team Name')
         self.assertEqual(updated_team.description, 'Updated team description')
-        self.assertEqual(updated_team.password, '456')
+        self.assertEqual(updated_team.password, '12345678')
 
         # check that team admin membership still exists
         if original_admin_membership:
@@ -140,7 +140,7 @@ class TeamFormTestCase(TestCase):
         form = TeamForm()
         self.assertEqual(
             form.fields['password1'].help_text,
-            _("Your password must contain at least 3 characters.")
+            _("Your password must contain at least 8 characters.")
         )
         self.assertEqual(
             form.fields['password2'].help_text,
@@ -214,10 +214,10 @@ class TeamFormEdgeCasesTestCase(TestCase):
 
     def setUp(self):
         self.form_data = {
-            'name': 'New Team',
+            'name': 'New Team 2',
             'description': 'This is a new test team',
-            'password1': '111',
-            'password2': '111'
+            'password1': '12345678',
+            'password2': '12345678'
         }
         self.user = User.objects.get(pk=10)
 
@@ -254,10 +254,10 @@ class TeamFormEdgeCasesTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_password_exact_minimum_length(self):
-        # test password with exactly 3 characters (minimum)
+        # test password with exactly 8 characters (minimum)
         form_data = self.form_data.copy()
-        form_data['password1'] = 'abc'
-        form_data['password2'] = 'abc'
+        form_data['password1'] = 'abc12345'
+        form_data['password2'] = 'abc12345'
         form = TeamForm(data=form_data)
         self.assertTrue(form.is_valid())
 
@@ -269,13 +269,13 @@ class TeamFormEdgeCasesTestCase(TestCase):
 
         # team should not be saved to database yet
         self.assertIsNone(team.id)
-        self.assertEqual(team.name, 'New Team')
-        self.assertEqual(team.password, '111')
+        self.assertEqual(team.name, 'New Team 2')
+        self.assertEqual(team.password, '12345678')
 
         # save manually
         team.save()
         self.assertIsNotNone(team.id)
-        self.assertEqual(Team.objects.filter(name='New Team').count(), 1)
+        self.assertEqual(Team.objects.filter(name='New Team 2').count(), 1)
 
     def test_description_max_length(self):
         # test description with very long content
@@ -384,14 +384,14 @@ class TeamFormEdgeCasesTestCase(TestCase):
         form_data = {
             'name': 'Updated Team Name',
             'description': 'Updated team description',
-            'password1': 'ab',
-            'password2': 'ab'
+            'password1': '1234567',
+            'password2': '1234567'
         }
         form = TeamForm(data=form_data, instance=team)
         self.assertFalse(form.is_valid())
         self.assertIn(_(
             'Your password is too short.'
-            ' It must contain at least 3 characters.'),
+            ' It must contain at least 8 characters.'),
             form.errors['password1'])
 
     def test_update_team_password_fields_not_required(self):
@@ -418,7 +418,7 @@ class TeamFormEdgeCasesTestCase(TestCase):
         self.assertTrue(form.fields['password2'].required)
         self.assertEqual(
             form.fields['password1'].help_text,
-            _("Your password must contain at least 3 characters.")
+            _("Your password must contain at least 8 characters.")
         )
         self.assertEqual(
             form.fields['password2'].help_text,

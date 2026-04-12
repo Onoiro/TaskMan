@@ -26,8 +26,8 @@ class UserTestCase(TestCase):
             'last_name': 'N',
             'username': 'new',
             'description': 'Test description',
-            'password1': '222',
-            'password2': '222',
+            'password1': '22222222',
+            'password2': '22222222',
             'join_team_name': '',
             'join_team_password': ''
         }
@@ -586,8 +586,8 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': 'me',  # username 'me' exists in test_users.json
-            'password1': '222',
-            'password2': '222',
+            'password1': '22222222',
+            'password2': '22222222',
             'join_team_name': '',
             'join_team_password': ''
         }
@@ -603,8 +603,8 @@ class UserTestCase(TestCase):
             'first_name': 'New',
             'last_name': 'N',
             'username': ' ',
-            'password1': '222',
-            'password2': '222',
+            'password1': '22222222',
+            'password2': '22222222',
             'join_team_name': '',
             'join_team_password': ''
         }
@@ -877,8 +877,8 @@ class UserTestCase(TestCase):
             'first_name': 'Team',
             'last_name': 'Member',
             'username': 'team_member',
-            'password1': '123',
-            'password2': '123',
+            'password1': '12345678',
+            'password2': '12345678',
             'join_team_name': team.name,
             'join_team_password': (
                 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'

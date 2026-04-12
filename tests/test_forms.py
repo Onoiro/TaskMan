@@ -19,8 +19,8 @@ class UserFormTestCase(TestCase):
             'last_name': 'H',
             'username': 'him',
             'description': 'Test user description',
-            'password1': '111',
-            'password2': '111',
+            'password1': '12345678',
+            'password2': '12345678',
             'join_team_name': '',
             'join_team_password': ''
         }
@@ -103,20 +103,20 @@ class UserFormTestCase(TestCase):
     def test_password_too_short(self):
         form_data = {
             'username': 'user',
-            'password1': '11',
-            'password2': '11'}
+            'password1': '1234567',
+            'password2': '1234567'}
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(_(
             'Your password is too short.'
-            ' It must contain at least 3 characters.'),
+            ' It must contain at least 8 characters.'),
             form.errors['password1'])
 
     def test_passwords_do_not_match(self):
         form_data = {
             'username': 'user',
-            'password1': '111',
-            'password2': '222'}
+            'password1': '12345678',
+            'password2': '87654321'}
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
         self.assertIn(
@@ -128,7 +128,7 @@ class UserFormTestCase(TestCase):
         self.assertTrue(form.is_valid())
         user = form.save()
         self.assertIsInstance(user, User)
-        self.assertTrue(user.check_password('111'))
+        self.assertTrue(user.check_password('12345678'))
         self.assertEqual(user.username, 'him')
         # Check user has no team memberships
         self.assertFalse(TeamMembership.objects.filter(user=user).exists())
@@ -139,8 +139,8 @@ class UserFormTestCase(TestCase):
             'first_name': 'Team',
             'last_name': 'Member',
             'username': 'new_team_member',
-            'password1': '123',
-            'password2': '123',
+            'password1': '12345678',
+            'password2': '12345678',
             'join_team_name': team.name,
             'join_team_password': (
                 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
@@ -203,8 +203,8 @@ class UserFormTestCase(TestCase):
             'first_name': 'Updated',
             'last_name': 'User',
             'username': 'alone',
-            'password1': '111',
-            'password2': '111',
+            'password1': '11111111',
+            'password2': '11111111',
             'join_team_name': new_team.name,
             'join_team_password': (
                 'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
@@ -332,7 +332,7 @@ class UserFormTestCase(TestCase):
         self.assertTrue(form.fields['password2'].required)
         self.assertEqual(
             form.fields['password1'].help_text,
-            _("Your password must contain at least 3 characters.")
+            _("Your password must contain at least 8 characters.")
         )
         self.assertEqual(
             form.fields['password2'].help_text,
@@ -346,8 +346,8 @@ class UserFormTestCase(TestCase):
             'first_name': 'Updated Me',
             'last_name': 'Updated M',
             'username': 'me',
-            'password1': '11',  # too short
-            'password2': '11',
+            'password1': '1234567',  # too short (7 chars)
+            'password2': '1234567',
             'join_team_name': '',
             'join_team_password': ''
         }
@@ -355,7 +355,7 @@ class UserFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn(_(
             'Your password is too short.'
-            ' It must contain at least 3 characters.'),
+            ' It must contain at least 8 characters.'),
             form.errors['password1'])
 
     def test_update_user_passwords_mismatch_validation_works(self):
@@ -365,8 +365,8 @@ class UserFormTestCase(TestCase):
             'first_name': 'Updated Me',
             'last_name': 'Updated M',
             'username': 'me',
-            'password1': '123',
-            'password2': '456',  # doesn't match
+            'password1': '12345678',
+            'password2': '87654321',  # doesn't match
             'join_team_name': '',
             'join_team_password': ''
         }
