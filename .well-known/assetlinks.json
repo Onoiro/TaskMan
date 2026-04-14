@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "tech.taskman.twa",
+        "sha256_cert_fingerprints": ["58:E3:18:D9:99:F6:33:3F:72:EE:07:6E:23:98:93:65:6A:1F:D0:C7:BA:53:4E:3C:A8:BF:13:BC:8F:42:3C:43"]
+      }
+    }]
