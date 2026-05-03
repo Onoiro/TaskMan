@@ -27,6 +27,11 @@ class TaskForm(forms.ModelForm):
             return
 
         user = self.request.user
+
+        # Protection against anonymous users
+        if not user.is_authenticated:
+            return
+
         team = getattr(self.request, 'active_team', None)
 
         if team:

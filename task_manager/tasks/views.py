@@ -1,6 +1,6 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from task_manager.permissions import CustomPermissions
+from task_manager.permissions import CustomPermissions, UNAUTHORIZED_MESSAGE
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -228,18 +228,21 @@ class TaskFilterView(CustomPermissions, FilterView):
         return context
 
 
-class TaskCreateView(SuccessMessageMixin, CreateView):
+class TaskCreateView(CustomPermissions, SuccessMessageMixin, CreateView):
     form_class = TaskForm
     template_name = 'tasks/task_create_form.html'
     success_message = _('Task created successfully')
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            service = LimitService(request.user)
-            result = service.can_create_task()
-            if not result.allowed:
-                messages.warning(request, result.message)
-                return redirect('tasks:tasks-list')
+        if not request.user.is_authenticated:
+            messages.error(request, UNAUTHORIZED_MESSAGE)
+            return redirect('login')
+
+        service = LimitService(request.user)
+        result = service.can_create_task()
+        if not result.allowed:
+            messages.warning(request, result.message)
+            return redirect('tasks:tasks-list')
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
