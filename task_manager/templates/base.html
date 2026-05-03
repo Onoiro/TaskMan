@@ -405,7 +405,7 @@
                         d-flex align-items-center justify-content-center"
                   aria-label="{% trans 'Go back' %}"
                   style="position: fixed;
-                        bottom: calc(20px + env(safe-area-inset-bottom));
+                        bottom: calc(80px + env(safe-area-inset-bottom));
                         right: 20px;
                         z-index: 1000;
                         width: 50px;
@@ -443,38 +443,14 @@
         const backBtn = document.querySelector('.btn-back-mobile');
         if (!backBtn) return;
 
-        // 1. Проверяем, есть ли куда возвращаться.
+        // Проверяем, есть ли куда возвращаться.
         // Если length <= 1, значит это первая страница во вкладке (или свежий запуск PWA)
         if (window.history.length <= 1) {
           // Скрываем кнопку надежно через классы Bootstrap
           backBtn.classList.remove('d-flex');
           backBtn.classList.add('d-none');
-          return; 
-        } else {
-          // Если история есть, гарантируем, что кнопка отображается
-          backBtn.classList.remove('d-none');
-          backBtn.classList.add('d-flex');
         }
-
-        // 2. Прячем кнопку, когда доскроллили до футера (чтобы не перекрывала текст)
-        const footer = document.querySelector('footer');
-        if (footer) {
-          const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                // Футер в зоне видимости -> растворяем кнопку
-                backBtn.style.opacity = '0';
-                backBtn.style.pointerEvents = 'none';
-              } else {
-                // Ушли от футера -> возвращаем кнопку
-                backBtn.style.opacity = '1';
-                backBtn.style.pointerEvents = 'auto';
-              }
-            });
-          }, { threshold: 0.1 });
-          
-          observer.observe(footer);
-        }
+        // Иначе кнопка отображается (по умолчанию d-flex)
       });
     </script>
 
