@@ -32,9 +32,11 @@ class RealIPMiddleware:
 
             if remote_addr in trusted_proxies:
                 # X-Real-IP — самый надёжный вариант.
-                # Nginx выставляет его явно: proxy_set_header X-Real-IP $remote_addr
-                # $remote_addr в nginx — это всегда IP того, кто подключился к nginx,
-                # его нельзя подделать из браузера (в отличие от X-Forwarded-For).
+                # Nginx выставляет его явно:
+                # proxy_set_header X-Real-IP $remote_addr
+                # $remote_addr в nginx — это всегда IP того,
+                # кто подключился к nginx, его нельзя подделать из браузера
+                # (в отличие от X-Forwarded-For).
                 real_ip = request.META.get('HTTP_X_REAL_IP', '').strip()
 
                 if not real_ip:

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
 from django.views.generic import TemplateView
-from django.http import FileResponse, JsonResponse
+from django.http import FileResponse, JsonResponse, HttpResponse
 from django.views import View
 import os
 from django.conf import settings
@@ -33,6 +33,10 @@ class AssetLinksView(View):
             return FileResponse(
                 open(filepath, 'rb'), content_type='application/json')
         return JsonResponse({'error': 'Not found'}, status=404)
+
+
+def health_check(request):
+    return HttpResponse('ok')
 
 
 urlpatterns = [
@@ -73,4 +77,5 @@ urlpatterns = [
     path('terms/', TemplateView.as_view(
         template_name='terms_of_service.html'
     ), name='terms_of_service'),
+    path('health/', health_check, name='health'),
 ]
