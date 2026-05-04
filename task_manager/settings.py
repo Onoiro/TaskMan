@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'task_manager.middleware.real_ip_middleware.RealIPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -236,6 +237,26 @@ if os.getenv('TESTING'):
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+
+# === Trusted Proxies ===
+_trusted_proxies_env = os.getenv('TRUSTED_PROXIES', '')
+TRUSTED_PROXIES = {
+    ip.strip()
+    for ip in _trusted_proxies_env.split(',')
+    if ip.strip()
+}
+
+# === Proxy headers ===
+# Говорим Django что он стоит за прокси.
+# Только для продакшена — когда есть доверенные прокси.
+if TRUSTED_PROXIES:
+    # Django доверяет заголовку X-Forwarded-Proto от прокси.
+    # Нужно чтобы request.is_secure() возвращал True для HTTPS запросов.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # Django использует X-Forwarded-Host как основной Host.
+    USE_X_FORWARDED_HOST = True
+    USE_X_FORWARDED_PORT = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
