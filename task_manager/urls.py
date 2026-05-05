@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import IndexView, UserLoginView, UserLogoutView
 from django.views.generic import TemplateView
+from django.views.decorators.http import require_GET
 from django.http import FileResponse, JsonResponse, HttpResponse
 from django.views import View
 import os
@@ -35,6 +36,7 @@ class AssetLinksView(View):
         return JsonResponse({'error': 'Not found'}, status=404)
 
 
+@require_GET
 def health_check(request):
     return HttpResponse('ok')
 
