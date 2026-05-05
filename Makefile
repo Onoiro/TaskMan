@@ -298,6 +298,14 @@ images:
 volumes:
 	docker volume ls
 
+# ========================================
+# Server commands
+# ========================================
+
+# show server-notes (nginx, fail2ban etc.)
+server-notes:
+	cat ~/server-notes.md
+
 # help for Docker and non-Docker commands
 help:
 	@echo "Available non-Docker commands:"
@@ -314,6 +322,7 @@ help:
 	@echo "  shell           - Enter Django shell"
 	@echo "  messages        - Create translation files"
 	@echo "  compile         - Compile translations"
+	@echo "  server-notes    - Show server-notes (nginx, fail2ban etc.)"
 	@echo ""
 	@echo "Main Docker commands:"
 	@echo "  up              - Start services"
