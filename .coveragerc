@@ -1,5 +1,7 @@
 [run]
 omit =
+    */migrations/*
+    */settings.py
     task_manager/asgi.py
     task_manager/wsgi.py
     manage.py
