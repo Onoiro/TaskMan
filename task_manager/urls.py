@@ -38,6 +38,9 @@ class AssetLinksView(View):
 
 @require_GET
 def health_check(request):
+    # Health check endpoint for Docker and external monitoring.
+    # On production, may return 301 due to nginx SSL redirect.
+    # Internal healthchecks (Docker, tests) work correctly (200 OK).
     return HttpResponse('ok')
 
 
