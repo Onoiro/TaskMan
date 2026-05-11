@@ -15,6 +15,8 @@ from django.views.generic import (
 )
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.db.models import F
+from django.utils import timezone
 
 from task_manager.teams.forms import TeamForm, TeamMemberRoleForm, TeamJoinForm
 from task_manager.teams.models import Team, TeamMembership, TeamInvite
@@ -414,36 +416,156 @@ class TeamJoinView(LoginRequiredMixin, View):
 
 class TeamInviteGenerateView(TeamAdminPermissions, View):
     """View for generating invite link for team."""
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
+
+    def get_object(self):
+        """Get the team by uuid."""
+        try:
+            return Team.objects.get(uuid=self.kwargs['uuid'])
+        except Team.DoesNotExist:
+            return None
 
     def post(self, request, uuid):
         """Generate a single-use invite link for the team."""
-        try:
-            team = Team.objects.get(uuid=uuid)
-        except Team.DoesNotExist:
+        team = self.get_object()
+        if team is None:
             messages.error(request, TEAM_NOT_FOUND_MESSAGE)
-            return redirect('user:user-list')
+            return redirect('teams:team-detail', uuid=uuid)
 
         # Delete existing unused invites to ensure single active invite
         TeamInvite.objects.filter(
             team=team, is_used=False
         ).delete()
 
-        # Create new invite
-        invite = TeamInvite.objects.create(team=team, created_by=request.user)
+        # Create new invite with 7 days expiry
+        from django.utils import timezone
+        from datetime import timedelta
+
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=request.user,
+            expires_at=timezone.now() + timedelta(days=7)
+        )
 
         invite_url = request.build_absolute_uri(
             reverse_lazy('teams:team-join-invite', args=[invite.invite_code])
         )
 
+        # Store invite URL in session for display
+        request.session['last_invite_url'] = invite_url
+
         messages.success(
             request,
-            _(
-                "Invite link generated: "
-                "<a href='{url}' target='_blank'>{url}</a>"
-            ).format(url=invite_url)
+            _('Invite link generated successfully. Scroll down to copy.')
         )
 
         return redirect('teams:team-detail', uuid=uuid)
+
+
+class TeamJoinInviteView(View):
+    """View for joining a team via invite link."""
+
+    template_name = 'teams/team_join_invite.html'
+
+    def get(self, request, invite_code):
+        """Display invite join page or auto-join if authenticated."""
+        invite = self._get_valid_invite(invite_code, request)
+        if invite is None:
+            return redirect('user:user-list')
+
+        if not request.user.is_authenticated:
+            return self._render_invite_page(request, invite)
+
+        return self._process_authenticated_join(request, invite)
+
+    def _get_valid_invite(self, invite_code, request):
+        """Get and validate invite link. Return None if invalid."""
+        try:
+            invite = TeamInvite.objects.get(
+                invite_code=invite_code,
+                is_used=False
+            )
+        except TeamInvite.DoesNotExist:
+            messages.error(request, _('Invalid or expired invite link'))
+            return None
+
+        if not invite.is_valid():
+            messages.error(request, _('Invite link has expired'))
+            return None
+
+        if invite.use_count >= invite.max_uses:
+            messages.error(request, _('Invite link has been used'))
+            return None
+
+        return invite
+
+    def _render_invite_page(self, request, invite):
+        """Render invite page for unauthenticated users."""
+        return render(request, self.template_name, {
+            'invite': invite,
+            'is_authenticated': False,
+        })
+
+    def _process_authenticated_join(self, request, invite):
+        """Process join for authenticated users."""
+        error = self._check_join_allowed(request, invite)
+        if error:
+            return error
+
+        return self._join_team(request, invite)
+
+    def _check_join_allowed(self, request, invite):
+        """Check if user can join the team. Return error response or None."""
+        if TeamMembership.objects.filter(
+            user=request.user, team=invite.team
+        ).exists():
+            messages.info(
+                request,
+                _('You are already a member of this team')
+            )
+            return redirect('tasks:tasks-list')
+
+        service = LimitService(request.user)
+        result = service.can_add_team_member(invite.team)
+        if not result.allowed:
+            messages.warning(request, result.message)
+            return redirect('tasks:tasks-list')
+
+        # Check team member limit (from FREE_PLAN)
+        from task_manager.limits import FREE_PLAN
+        if invite.team.members.count() >= FREE_PLAN.max_team_members:
+            messages.error(
+                request,
+                _('Team has reached the maximum number of members')
+            )
+            return redirect('tasks:tasks-list')
+
+        return None
+
+    def _join_team(self, request, invite):
+        """Join the team and mark invite as used."""
+        TeamMembership.objects.create(
+            user=request.user,
+            team=invite.team,
+            role='member',
+            status='active'
+        )
+
+        invite.is_used = True
+        invite.used_by = request.user
+        invite.used_at = timezone.now()
+        invite.use_count = F('use_count') + 1
+        invite.save()
+
+        messages.success(
+            request,
+            _(
+                "You have successfully joined the team {team}"
+            ).format(team=invite.team.name)
+        )
+
+        return redirect('tasks:tasks-list')
 
 
 class TeamDetailView(LoginRequiredMixin, DetailView):
@@ -462,6 +584,10 @@ class TeamDetailView(LoginRequiredMixin, DetailView):
             team=team).select_related('user')
         context['memberships'] = memberships
         context['is_admin'] = team.is_admin(self.request.user)
+
+        # Get and clear invite URL from session (one-time display)
+        invite_url = self.request.session.pop('last_invite_url', None)
+        context['invite_url'] = invite_url
 
         return context
 

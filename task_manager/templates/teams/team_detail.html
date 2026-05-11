@@ -78,6 +78,52 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Invite link display block -->
+            {% if invite_url %}
+            <div class="card shadow border-0 mb-4 border-success">
+                <div class="card-body p-3 p-md-4">
+                    <h3 class="h5 fw-bold mb-3 text-success">
+                        <i class="bi bi-link-45deg"></i> {% trans "Invite Link Generated" %}
+                    </h3>
+                    <p class="mb-2">{% trans "Click the link below to share or copy it:" %}</p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control font-monospace"
+                               id="invite-link-input"
+                               value="{{ invite_url }}"
+                               readonly>
+                        <button class="btn btn-outline-primary" type="button" onclick="copyInviteLink()">
+                            <i class="bi bi-clipboard"></i> {% trans "Copy" %}
+                        </button>
+                        <a href="{{ invite_url }}" target="_blank" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-up-right"></i> {% trans "Open" %}
+                        </a>
+                    </div>
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle"></i>
+                        {% trans "This link is single-use and expires in 7 days." %}
+                    </small>
+                </div>
+            </div>
+
+            <script>
+            function copyInviteLink() {
+                const input = document.getElementById('invite-link-input');
+                input.select();
+                input.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(input.value).then(() => {
+                    const btn = event.target;
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                });
+            }
+            </script>
+            {% endif %}
         </div>
     </div>
 </div>

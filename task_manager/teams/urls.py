@@ -8,6 +8,7 @@ from task_manager.teams.views import (
     TeamMemberRoleUpdateView,
     TeamJoinView,
     TeamInviteGenerateView,
+    TeamJoinInviteView,
 )
 from .views import SwitchTeamView
 
@@ -16,6 +17,9 @@ app_name = 'teams'
 urlpatterns = [
     path('create/', TeamCreateView.as_view(), name='team-create'),
     path('join/', TeamJoinView.as_view(), name='team-join'),
+    path('join-invite/<str:invite_code>/',
+         TeamJoinInviteView.as_view(),
+         name='team-join-invite'),
     path('<uuid:uuid>/detail/', TeamDetailView.as_view(), name='team-detail'),
     path(
         '<uuid:uuid>/invite/generate/',
