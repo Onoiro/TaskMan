@@ -18,7 +18,9 @@ from django.shortcuts import redirect, render
 from django.db.models import F
 from django.utils import timezone
 
-from task_manager.teams.forms import TeamForm, TeamMemberRoleForm, TeamJoinForm
+from task_manager.teams.forms import (
+    TeamForm, TeamMemberRoleForm, TeamJoinForm, UserJoinInviteForm
+)
 from task_manager.teams.models import Team, TeamMembership, TeamInvite
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
@@ -468,6 +470,20 @@ class TeamJoinInviteView(View):
 
     template_name = 'teams/team_join_invite.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Check team member limit for unauthenticated users
+        if not request.user.is_authenticated:
+            invite = self._get_invite_without_validation(kwargs['invite_code'])
+            if invite and invite.is_valid():
+                from task_manager.limits import FREE_PLAN
+                if invite.team.members.count() >= FREE_PLAN.max_team_members:
+                    messages.error(
+                        request,
+                        _('Team has reached the maximum number of members')
+                    )
+                    return redirect('user:user-list')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, invite_code):
         """Display invite join page or auto-join if authenticated."""
         invite = self._get_valid_invite(invite_code, request)
@@ -479,6 +495,25 @@ class TeamJoinInviteView(View):
 
         return self._process_authenticated_join(request, invite)
 
+    def post(self, request, invite_code):
+        """Handle registration of new user via invite link."""
+        invite = self._get_valid_invite(invite_code, request)
+        if invite is None:
+            return redirect('user:user-list')
+
+        form = UserJoinInviteForm(request.POST)
+        if form.is_valid():
+            return self._register_and_join_team(request, invite, form)
+
+        return self._render_invite_page(request, invite, form)
+
+    def _get_invite_without_validation(self, invite_code):
+        """Get invite without validation (for pre-check)."""
+        try:
+            return TeamInvite.objects.get(invite_code=invite_code)
+        except TeamInvite.DoesNotExist:
+            return None
+
     def _get_valid_invite(self, invite_code, request):
         """Get and validate invite link. Return None if invalid."""
         try:
@@ -487,24 +522,24 @@ class TeamJoinInviteView(View):
                 is_used=False
             )
         except TeamInvite.DoesNotExist:
-            messages.error(request, _('Invalid or expired invite link'))
             return None
 
         if not invite.is_valid():
-            messages.error(request, _('Invite link has expired'))
             return None
 
         if invite.use_count >= invite.max_uses:
-            messages.error(request, _('Invite link has been used'))
             return None
 
         return invite
 
-    def _render_invite_page(self, request, invite):
+    def _render_invite_page(self, request, invite, form=None):
         """Render invite page for unauthenticated users."""
+        if form is None:
+            form = UserJoinInviteForm()
         return render(request, self.template_name, {
             'invite': invite,
             'is_authenticated': False,
+            'form': form,
         })
 
     def _process_authenticated_join(self, request, invite):
@@ -532,16 +567,49 @@ class TeamJoinInviteView(View):
             messages.warning(request, result.message)
             return redirect('tasks:tasks-list')
 
-        # Check team member limit (from FREE_PLAN)
-        from task_manager.limits import FREE_PLAN
-        if invite.team.members.count() >= FREE_PLAN.max_team_members:
-            messages.error(
-                request,
-                _('Team has reached the maximum number of members')
-            )
-            return redirect('tasks:tasks-list')
-
         return None
+
+    def _register_and_join_team(self, request, invite, form):
+        """Register new user and automatically join the team."""
+        from django.contrib.auth import login
+        from task_manager.user.models import User
+
+        # Create new user
+        user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1']
+        )
+
+        # Join team immediately via invite (no approval needed)
+        TeamMembership.objects.create(
+            user=user,
+            team=invite.team,
+            role='member',
+            status='active'
+        )
+
+        # Mark invite as used
+        invite.is_used = True
+        invite.used_by = user
+        invite.used_at = timezone.now()
+        invite.use_count = F('use_count') + 1
+        invite.save()
+
+        # Create default statuses for new user
+        Status.create_default_statuses_for_user(user)
+
+        # Login the user automatically
+        login(request, user)
+
+        messages.success(
+            request,
+            _(
+                "Welcome! Your account has been created and you have "
+                "joined the team {team}"
+            ).format(team=invite.team.name)
+        )
+
+        return redirect('tasks:tasks-list')
 
     def _join_team(self, request, invite):
         """Join the team and mark invite as used."""

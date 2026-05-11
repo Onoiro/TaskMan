@@ -5,6 +5,48 @@ from django.core.validators import MaxLengthValidator
 from .models import TeamMembership
 
 
+class UserJoinInviteForm(forms.Form):
+    """Simple registration form for joining team via invite."""
+
+    username = forms.CharField(
+        required=True,
+        label=_('Username'),
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    password1 = forms.CharField(
+        required=True,
+        label=_('Password'),
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text=_("Your password must contain at least 8 characters.")
+    )
+
+    password2 = forms.CharField(
+        required=True,
+        label=_('Confirm password'),
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text=_("Please enter your password one more time")
+    )
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        if password1 and len(password1) < 8:
+            raise forms.ValidationError(
+                _("Your password is too short. "
+                  "It must contain at least 8 characters.")
+            )
+        return password1
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                _("The entered passwords do not match.")
+            )
+        return password2
+
+
 class TeamForm(forms.ModelForm):
 
     class Meta:
