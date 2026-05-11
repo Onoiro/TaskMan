@@ -44,7 +44,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <span class="badge bg-body-tertiary text-body border">
-                                    👥 {{ memberships|length }}
+                                    &#128104;&#128100; {{ memberships|length }}
                                 </span>
                             </div>
                         </div>
@@ -66,6 +66,12 @@
                     <a class="btn btn-primary px-md-4 py-2 fw-bold" href="{% url 'teams:team-update' team.uuid %}">
                         {% trans "Edit Team" %}
                     </a>
+                    <form action="{% url 'teams:team-invite-generate' team.uuid %}" method="post" class="d-grid">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success px-md-4 py-2 fw-bold">
+                            {% trans "Generate Invite Link" %}
+                        </button>
+                    </form>
                     {% endif %}
                     <a class="btn btn-outline-secondary px-md-4 py-2" href="{% url 'user:user-list' %}">
                         {% trans "Cancel" %}

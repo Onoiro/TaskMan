@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from task_manager.teams.forms import TeamForm, TeamMemberRoleForm, TeamJoinForm
-from task_manager.teams.models import Team, TeamMembership
+from task_manager.teams.models import Team, TeamMembership, TeamInvite
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
 from task_manager.limit_service import LimitService
@@ -410,6 +410,40 @@ class TeamJoinView(LoginRequiredMixin, View):
             return redirect('tasks:tasks-list')
 
         return render(request, self.template_name, {'form': form})
+
+
+class TeamInviteGenerateView(TeamAdminPermissions, View):
+    """View for generating invite link for team."""
+
+    def post(self, request, uuid):
+        """Generate a single-use invite link for the team."""
+        try:
+            team = Team.objects.get(uuid=uuid)
+        except Team.DoesNotExist:
+            messages.error(request, TEAM_NOT_FOUND_MESSAGE)
+            return redirect('user:user-list')
+
+        # Delete existing unused invites to ensure single active invite
+        TeamInvite.objects.filter(
+            team=team, is_used=False
+        ).delete()
+
+        # Create new invite
+        invite = TeamInvite.objects.create(team=team, created_by=request.user)
+
+        invite_url = request.build_absolute_uri(
+            reverse_lazy('teams:team-join-invite', args=[invite.invite_code])
+        )
+
+        messages.success(
+            request,
+            _(
+                "Invite link generated: "
+                "<a href='{url}' target='_blank'>{url}</a>"
+            ).format(url=invite_url)
+        )
+
+        return redirect('teams:team-detail', uuid=uuid)
 
 
 class TeamDetailView(LoginRequiredMixin, DetailView):
