@@ -109,3 +109,77 @@ class TeamMembership(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.team.name} ({self.role})"
+
+
+class TeamInvite(models.Model):
+    """Model for team join invitations via link"""
+    id = models.AutoField(primary_key=True)
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name='invites'
+    )
+    created_by = models.ForeignKey(
+        'user.User',
+        on_delete=models.CASCADE,
+        related_name='created_invites'
+    )
+    invite_code = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        db_index=True,
+        verbose_name=_('Invite code')
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Created at')
+    )
+    expires_at = models.DateTimeField(
+        verbose_name=_('Expires at')
+    )
+    is_used = models.BooleanField(
+        default=False,
+        verbose_name=_('Is used')
+    )
+    used_by = models.ForeignKey(
+        'user.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='used_invites',
+        verbose_name=_('Used by')
+    )
+    used_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_('Used at')
+    )
+    max_uses = models.IntegerField(
+        default=1,
+        verbose_name=_('Max uses'),
+        help_text=_('Number of times invite can be used')
+    )
+    use_count = models.IntegerField(
+        default=0,
+        verbose_name=_('Use count')
+    )
+
+    class Meta:
+        verbose_name = _('Team invite')
+        verbose_name_plural = _('Team invites')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        status = _('Used') if self.is_used else _('Active')
+        return f"{self.team.name} - {status} ({self.created_by.username})"
+
+    def is_valid(self):
+        """Check if invite is still valid (not expired and not max uses)"""
+        from django.utils import timezone
+        now = timezone.now()
+        return (
+            not self.is_used
+            and self.use_count < self.max_uses
+            and now <= self.expires_at
+        )
