@@ -17,9 +17,10 @@ app_name = 'teams'
 urlpatterns = [
     path('create/', TeamCreateView.as_view(), name='team-create'),
     path('join/', TeamJoinView.as_view(), name='team-join'),
-    path('join-invite/<str:invite_code>/',
+    path('join-invite/<uuid:invite_code>/',
          TeamJoinInviteView.as_view(),
          name='team-join-invite'),
+    path('switch/', SwitchTeamView.as_view(), name='switch-team'),
     path('<uuid:uuid>/detail/', TeamDetailView.as_view(), name='team-detail'),
     path(
         '<uuid:uuid>/invite/generate/',
@@ -32,7 +33,6 @@ urlpatterns = [
     path('<uuid:uuid>/remove/<uuid:membership_uuid>/',
          TeamExitView.as_view(),
          name='team-member-remove'),
-    path('switch/', SwitchTeamView.as_view(), name='switch-team'),
     path('membership/<uuid:uuid>/update-role/',
          TeamMemberRoleUpdateView.as_view(),
          name='team-member-role-update'),

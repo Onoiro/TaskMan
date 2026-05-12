@@ -517,17 +517,22 @@ class TeamJoinInviteView(View):
     def _get_valid_invite(self, invite_code, request):
         """Get and validate invite link. Return None if invalid."""
         try:
-            invite = TeamInvite.objects.get(
-                invite_code=invite_code,
-                is_used=False
-            )
+            # Get invite regardless of is_used status to check all conditions
+            invite = TeamInvite.objects.get(invite_code=invite_code)
         except TeamInvite.DoesNotExist:
+            messages.error(request, _('Invalid or expired invite link'))
+            return None
+
+        if invite.is_used:
+            messages.error(request, _('Invite link has been used'))
             return None
 
         if not invite.is_valid():
+            messages.error(request, _('Invite link has expired'))
             return None
 
         if invite.use_count >= invite.max_uses:
+            messages.error(request, _('Invite link has been used'))
             return None
 
         return invite
