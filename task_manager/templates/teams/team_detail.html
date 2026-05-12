@@ -88,7 +88,7 @@
                     <h3 class="h5 fw-bold mb-3 text-success">
                         <i class="bi bi-link-45deg"></i> {% trans "Invite Link Generated" %}
                     </h3>
-                    <p class="mb-2">{% trans "Click the link below to share or copy it:" %}</p>
+                    <p class="mb-2">{% trans "Copy the link below to share it:" %}</p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control font-monospace"
                                id="invite-link-input"
@@ -97,9 +97,6 @@
                         <button class="btn btn-outline-primary" type="button" onclick="copyInviteLink()">
                             <i class="bi bi-clipboard"></i> {% trans "Copy" %}
                         </button>
-                        <a href="{{ invite_url }}" target="_blank" class="btn btn-primary">
-                            <i class="bi bi-box-arrow-up-right"></i> {% trans "Open" %}
-                        </a>
                     </div>
                     <small class="text-muted">
                         <i class="bi bi-info-circle"></i>
