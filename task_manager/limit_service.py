@@ -330,3 +330,73 @@ class LimitService:
                 'max': self.limits.max_personal_notes
             },
         }
+
+    def get_team_usage_summary(self, team) -> dict:
+        """
+        Get usage summary for a specific team.
+
+        Returns dict with keys: members, tasks, statuses, labels, notes.
+        Each value is {'current': int, 'max': int, 'percent': int}.
+        """
+        from task_manager.tasks.models import Task
+        from task_manager.statuses.models import Status
+        from task_manager.labels.models import Label
+        from task_manager.notes.models import Note
+
+        def calc_percent(current, max_val):
+            if max_val <= 0:
+                return 0
+            return min(int((current / max_val) * 100), 100)
+
+        # Team members (active only)
+        members_count = team.memberships.filter(status='active').count()
+
+        # Tasks in team
+        tasks_count = Task.objects.filter(team=team).count()
+
+        # Team statuses
+        statuses_count = Status.objects.filter(team=team).count()
+
+        # Team labels
+        labels_count = Label.objects.filter(team=team).count()
+
+        # Team notes
+        notes_count = Note.objects.filter(team=team).count()
+
+        return {
+            'members': {
+                'current': members_count,
+                'max': self.limits.max_team_members,
+                'percent': calc_percent(
+                    members_count, self.limits.max_team_members
+                )
+            },
+            'tasks': {
+                'current': tasks_count,
+                'max': self.limits.max_tasks_total,
+                'percent': calc_percent(
+                    tasks_count, self.limits.max_tasks_total
+                )
+            },
+            'statuses': {
+                'current': statuses_count,
+                'max': self.limits.max_team_statuses,
+                'percent': calc_percent(
+                    statuses_count, self.limits.max_team_statuses
+                )
+            },
+            'labels': {
+                'current': labels_count,
+                'max': self.limits.max_team_labels,
+                'percent': calc_percent(
+                    labels_count, self.limits.max_team_labels
+                )
+            },
+            'notes': {
+                'current': notes_count,
+                'max': self.limits.max_team_notes,
+                'percent': calc_percent(
+                    notes_count, self.limits.max_team_notes
+                )
+            },
+        }

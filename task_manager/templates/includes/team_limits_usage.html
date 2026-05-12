@@ -1,0 +1,99 @@
+{% load i18n %}
+{% if team_usage %}
+<div class="limits-usage small mt-4">
+    <hr>
+    <h6 class="fw-bold mb-3">
+        <i class="bi bi-gauge"></i> {% trans 'Team Limits' %}
+    </h6>
+
+    {% if team_usage.members %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-people"></i> {% trans 'Members' %}</span>
+            <span>{{ team_usage.members.current }} / {{ team_usage.members.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if team_usage.members.percent >= 100 %}bg-danger{% elif team_usage.members.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ team_usage.members.percent }}%"
+                 aria-valuenow="{{ team_usage.members.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if team_usage.tasks %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-card-checklist"></i> {% trans 'Tasks' %}</span>
+            <span>{{ team_usage.tasks.current }} / {{ team_usage.tasks.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if team_usage.tasks.percent >= 100 %}bg-danger{% elif team_usage.tasks.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ team_usage.tasks.percent }}%"
+                 aria-valuenow="{{ team_usage.tasks.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if team_usage.statuses %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-flag"></i> {% trans 'Statuses' %}</span>
+            <span>{{ team_usage.statuses.current }} / {{ team_usage.statuses.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if team_usage.statuses.percent >= 100 %}bg-danger{% elif team_usage.statuses.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ team_usage.statuses.percent }}%"
+                 aria-valuenow="{{ team_usage.statuses.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if team_usage.labels %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-tags"></i> {% trans 'Labels' %}</span>
+            <span>{{ team_usage.labels.current }} / {{ team_usage.labels.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if team_usage.labels.percent >= 100 %}bg-danger{% elif team_usage.labels.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ team_usage.labels.percent }}%"
+                 aria-valuenow="{{ team_usage.labels.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if team_usage.notes %}
+    <div class="mb-2">
+        <div class="d-flex justify-content-between small mb-1">
+            <span><i class="bi bi-sticky"></i> {% trans 'Notes' %}</span>
+            <span>{{ team_usage.notes.current }} / {{ team_usage.notes.max }}</span>
+        </div>
+        <div class="progress" style="height: 4px;">
+            <div class="progress-bar {% if team_usage.notes.percent >= 100 %}bg-danger{% elif team_usage.notes.percent >= 80 %}bg-warning{% else %}bg-success{% endif %}"
+                 role="progressbar"
+                 style="width: {{ team_usage.notes.percent }}%"
+                 aria-valuenow="{{ team_usage.notes.percent }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}

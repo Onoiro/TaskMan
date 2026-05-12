@@ -666,6 +666,10 @@ class TeamDetailView(LoginRequiredMixin, DetailView):
         ).count()
         context['active_member_count'] = active_count
 
+        # get team usage summary for limits display
+        service = LimitService(self.request.user)
+        context['team_usage'] = service.get_team_usage_summary(team)
+
         # Get and clear invite URL from session (one-time display)
         invite_url = self.request.session.pop('last_invite_url', None)
         context['invite_url'] = invite_url
