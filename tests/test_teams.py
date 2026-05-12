@@ -1197,17 +1197,16 @@ class TeamTestCase(TestCase):
             reverse('teams:team-detail', args=[self.team.uuid])
         )
 
-        # check that memberships are in context for counting
-        self.assertIn('memberships', response.context)
-        memberships = response.context['memberships']
+        # check that active_member_count is in context
+        self.assertIn('active_member_count', response.context)
+        active_count = response.context['active_member_count']
 
         # check that member count is displayed correctly
-        expected_count = (
-            existing_memberships + 1
-        )  # +1 for the new member we added
-        self.assertEqual(len(memberships), expected_count)
+        expected_count = existing_memberships + 1
+        self.assertEqual(active_count, expected_count)
         content = response.content.decode('utf-8')
-        self.assertIn(f'👥 {expected_count}', content)
+        # check for bootstrap icon and count
+        self.assertIn(f'<i class="bi bi-people"></i> {expected_count}', content)
 
     def test_team_detail_no_member_table(self):
         """test that team detail page does not show member table anymore"""

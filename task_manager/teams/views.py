@@ -658,6 +658,14 @@ class TeamDetailView(LoginRequiredMixin, DetailView):
         context['memberships'] = memberships
         context['is_admin'] = team.is_admin(self.request.user)
 
+        # get active member count (excluding deleted users)
+        active_count = TeamMembership.objects.filter(
+            team=team,
+            status='active',
+            user__is_deleted=False
+        ).count()
+        context['active_member_count'] = active_count
+
         # Get and clear invite URL from session (one-time display)
         invite_url = self.request.session.pop('last_invite_url', None)
         context['invite_url'] = invite_url
