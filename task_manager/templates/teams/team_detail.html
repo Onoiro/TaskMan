@@ -94,7 +94,8 @@
                                id="invite-link-input"
                                value="{{ invite_url }}"
                                readonly>
-                        <button class="btn btn-outline-primary" type="button" onclick="copyInviteLink()">
+                        <button class="btn btn-outline-primary" type="button"
+                                onclick="copyInviteLink(this)">
                             <i class="bi bi-clipboard"></i> {% trans "Copy" %}
                         </button>
                     </div>
@@ -106,12 +107,11 @@
             </div>
 
             <script>
-            function copyInviteLink() {
+            function copyInviteLink(btn) {
                 const input = document.getElementById('invite-link-input');
                 input.select();
                 input.setSelectionRange(0, 99999);
                 navigator.clipboard.writeText(input.value).then(() => {
-                    const btn = event.target;
                     const originalText = btn.innerHTML;
                     btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
                     setTimeout(() => {
