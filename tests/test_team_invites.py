@@ -1,7 +1,7 @@
 """Tests for team invite link functionality."""
 from task_manager.user.models import User
 from task_manager.teams.models import Team, TeamMembership, TeamInvite
-# from task_manager.limit_service import LimitService
+from task_manager.teams.views import TeamJoinInviteView
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -646,3 +646,180 @@ class TeamInviteTestCase(TestCase):
 
         invite.refresh_from_db()
         self.assertEqual(invite.use_count, 1)
+
+    def test_team_get_admins_method(self):
+        """test Team.get_admins() returns correct admins."""
+        # Create another admin for the team
+        another_admin = User.objects.create_user(
+            username='another_admin',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=another_admin,
+            team=self.team,
+            role='admin'
+        )
+
+        # Test get_admins method
+        admins = self.team.get_admins()
+        self.assertEqual(admins.count(), 2)
+        self.assertIn(self.admin_user, admins)
+        self.assertIn(another_admin, admins)
+
+    def test_team_is_member_method(self):
+        """test Team.is_member() returns correct result."""
+        # Create a regular member
+        member_user = User.objects.create_user(
+            username='test_member',
+            password='password123'
+        )
+        TeamMembership.objects.create(
+            user=member_user,
+            team=self.team,
+            role='member'
+        )
+
+        # Test is_member for member
+        self.assertTrue(self.team.is_member(member_user))
+
+        # Test is_member for non-member
+        non_member = User.objects.create_user(
+            username='non_member_user',
+            password='password123'
+        )
+        self.assertFalse(self.team.is_member(non_member))
+
+    def test_teammembership_str_method(self):
+        """test TeamMembership.__str__ returns expected format."""
+        membership = TeamMembership.objects.get(
+            user=self.admin_user,
+            team=self.team
+        )
+
+        expected_str = f"{self.admin_user.username} - {self.team.name} (admin)"
+        self.assertEqual(str(membership), expected_str)
+
+    def test_teaminvite_str_method(self):
+        """test TeamInvite.__str__ returns expected format."""
+        invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=self.admin_user,
+            expires_at=timezone.now() + timedelta(days=7)
+        )
+
+        # Test active invite string
+        invite_str = str(invite)
+        self.assertIn(self.team.name, invite_str)
+        self.assertIn(self.admin_user.username, invite_str)
+        self.assertIn(_('Active'), invite_str)
+
+        # Test used invite string
+        invite.is_used = True
+        invite.save()
+        invite_str = str(invite)
+        self.assertIn(_('Used'), invite_str)
+
+    def test_get_invite_without_validation_returns_none(self):
+        """test _get_invite_without_validation returns None for invalid code."""
+        view = TeamJoinInviteView()
+
+        # Test with invalid UUID
+        invalid_uuid = uuid.uuid4()
+        result = view._get_invite_without_validation(invalid_uuid)
+
+        self.assertIsNone(result)
+
+    def test_get_valid_invite_handles_nonexistent_invite(self):
+        """test _get_valid_invite handles non-existent invite."""
+        # Create non-existent UUID
+        non_existent_uuid = uuid.uuid4()
+
+        # Use client to test the view which handles messages properly
+        self.c.logout()
+        response = self.c.get(
+            self._get_invite_url(non_existent_uuid),
+            follow=True
+        )
+
+        # Check redirect to user list
+        self.assertRedirects(response, reverse('user:user-list'))
+
+        # Check error message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('Invalid or expired invite link'),
+            str(messages[0])
+        )
+
+    def test_join_team_marks_invite_as_used(self):
+        """test _join_team marks invite as used correctly."""
+        # Create invite
+        invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=self.admin_user,
+            expires_at=timezone.now() + timedelta(days=7)
+        )
+
+        # Create test user
+        test_user = User.objects.create_user(
+            username='join_test_user',
+            password='password123'
+        )
+
+        # Login as test user
+        self.c.logout()
+        self.c.force_login(test_user)
+
+        # Join via invite
+        response = self.c.get(
+            self._get_invite_url(invite.invite_code),
+            follow=True
+        )
+
+        # Check invite was marked as used
+        invite.refresh_from_db()
+        self.assertTrue(invite.is_used)
+        self.assertEqual(invite.used_by, test_user)
+        self.assertIsNotNone(invite.used_at)
+        self.assertEqual(invite.use_count, 1)
+
+        # Check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+        # Check success message
+        messages = list(get_messages(response.wsgi_request))
+        self.assertGreater(len(messages), 0)
+        self.assertIn(
+            _('You have successfully joined the team'),
+            str(messages[0])
+        )
+
+    def test_team_detail_context_includes_usage(self):
+        """test TeamDetailView context includes team_usage."""
+        # Get actual active member count from database
+        active_count = TeamMembership.objects.filter(
+            team=self.team,
+            status='active',
+            user__is_deleted=False
+        ).count()
+
+        response = self.c.get(
+            reverse('teams:team-detail', args=[self.team.uuid])
+        )
+
+        # Check context includes team_usage
+        self.assertIn('team_usage', response.context)
+        self.assertIn('active_member_count', response.context)
+        self.assertEqual(
+            response.context['active_member_count'],
+            active_count
+        )
+
+        # Check team_usage has expected keys
+        team_usage = response.context['team_usage']
+        self.assertIn('members', team_usage)
+        self.assertIn('tasks', team_usage)
+        self.assertIn('statuses', team_usage)
+        self.assertIn('labels', team_usage)
+        self.assertIn('notes', team_usage)
