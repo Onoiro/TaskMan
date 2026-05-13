@@ -19,7 +19,7 @@ from django.db.models import F
 from django.utils import timezone
 
 from task_manager.teams.forms import (
-    TeamForm, TeamMemberRoleForm, TeamJoinForm, UserJoinInviteForm
+    TeamForm, TeamMemberRoleForm, TeamJoinForm
 )
 from task_manager.teams.models import Team, TeamMembership, TeamInvite
 from task_manager.tasks.models import Task
@@ -485,27 +485,32 @@ class TeamJoinInviteView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, invite_code):
-        """Display invite join page or auto-join if authenticated."""
+        """Redirect to registration page with invite code or handle join."""
         invite = self._get_valid_invite(invite_code, request)
         if invite is None:
             return redirect('user:user-list')
 
         if not request.user.is_authenticated:
-            return self._render_invite_page(request, invite)
+            # Redirect to registration page with invite code
+            redirect_url = reverse_lazy(
+                'user:user-create'
+            ) + f'?invite_code={invite_code}'
+            return redirect(redirect_url)
 
+        # For authenticated users, join the team immediately
         return self._process_authenticated_join(request, invite)
 
     def post(self, request, invite_code):
-        """Handle registration of new user via invite link."""
+        """Handle join for authenticated users only."""
         invite = self._get_valid_invite(invite_code, request)
         if invite is None:
             return redirect('user:user-list')
 
-        form = UserJoinInviteForm(request.POST)
-        if form.is_valid():
-            return self._register_and_join_team(request, invite, form)
+        # Only authenticated users can use POST to join
+        if not request.user.is_authenticated:
+            return redirect('user:user-list')
 
-        return self._render_invite_page(request, invite, form)
+        return self._process_authenticated_join(request, invite)
 
     def _get_invite_without_validation(self, invite_code):
         """Get invite without validation (for pre-check)."""
@@ -538,22 +543,13 @@ class TeamJoinInviteView(View):
         return invite
 
     def _render_invite_page(self, request, invite, form=None):
-        """Render invite page for unauthenticated users."""
-        if form is None:
-            form = UserJoinInviteForm()
-        return render(request, self.template_name, {
-            'invite': invite,
-            'is_authenticated': False,
-            'form': form,
-        })
+        """Render invite page for unauthenticated users.
 
-    def _process_authenticated_join(self, request, invite):
-        """Process join for authenticated users."""
-        error = self._check_join_allowed(request, invite)
-        if error:
-            return error
-
-        return self._join_team(request, invite)
+        This method is kept for backward compatibility but no longer used.
+        Unauthenticated users are now redirected to registration page.
+        """
+        # This method is deprecated - users are redirected to registration
+        return redirect('user:user-create')
 
     def _check_join_allowed(self, request, invite):
         """Check if user can join the team. Return error response or None."""
@@ -574,47 +570,13 @@ class TeamJoinInviteView(View):
 
         return None
 
-    def _register_and_join_team(self, request, invite, form):
-        """Register new user and automatically join the team."""
-        from django.contrib.auth import login
-        from task_manager.user.models import User
+    def _process_authenticated_join(self, request, invite):
+        """Process join for authenticated users."""
+        error = self._check_join_allowed(request, invite)
+        if error:
+            return error
 
-        # Create new user
-        user = User.objects.create_user(
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password1']
-        )
-
-        # Join team immediately via invite (no approval needed)
-        TeamMembership.objects.create(
-            user=user,
-            team=invite.team,
-            role='member',
-            status='active'
-        )
-
-        # Mark invite as used
-        invite.is_used = True
-        invite.used_by = user
-        invite.used_at = timezone.now()
-        invite.use_count = F('use_count') + 1
-        invite.save()
-
-        # Create default statuses for new user
-        Status.create_default_statuses_for_user(user)
-
-        # Login the user automatically
-        login(request, user)
-
-        messages.success(
-            request,
-            _(
-                "Welcome! Your account has been created and you have "
-                "joined the team {team}"
-            ).format(team=invite.team.name)
-        )
-
-        return redirect('tasks:tasks-list')
+        return self._join_team(request, invite)
 
     def _join_team(self, request, invite):
         """Join the team and mark invite as used."""

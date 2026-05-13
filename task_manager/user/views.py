@@ -167,6 +167,23 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('index')
     success_message = _('User created successfully')
 
+    def get_initial(self):
+        """Set initial form data from query parameters."""
+        initial = super().get_initial()
+        invite_code = self.request.GET.get('invite_code')
+        if invite_code:
+            initial['invite_code'] = invite_code
+        return initial
+
+    def get_form_kwargs(self):
+        """Add initial data to form."""
+        kwargs = super().get_form_kwargs()
+        invite_code = self.request.GET.get('invite_code')
+        if invite_code:
+            kwargs['initial'] = kwargs.get('initial', {})
+            kwargs['initial']['invite_code'] = invite_code
+        return kwargs
+
     def form_valid(self, form):
         user = form.save(commit=True, request=self.request)
         # auto login after creating user
@@ -175,22 +192,33 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         # Set flag to redirect to tasks list on first visit
         self.request.session['redirect_after_login'] = True
 
-        # if join to team
-        team = form.cleaned_data.get('team_to_join')
-        if team:
-            # User is now pending, don't set as active team
-            messages.info(
+        # Check if user joined via invite
+        invite_code = self.request.GET.get('invite_code')
+        if invite_code:
+            messages.success(
                 self.request,
                 _(
-                    "Your request to join team {team} has been sent. "
-                    "Waiting for admin approval."
-                ).format(team=team.name)
+                    "Welcome! Your account has been created and you have "
+                    "joined the team."
+                )
             )
         else:
-            messages.info(
-                self.request,
-                _("Welcome! You can create a team or work individually")
-            )
+            # if join to team via form fields
+            team = form.cleaned_data.get('team_to_join')
+            if team:
+                # User is now pending, don't set as active team
+                messages.info(
+                    self.request,
+                    _(
+                        "Your request to join team {team} has been sent. "
+                        "Waiting for admin approval."
+                    ).format(team=team.name)
+                )
+            else:
+                messages.info(
+                    self.request,
+                    _("Welcome! You can create a team or work individually")
+                )
 
         return redirect('index')
 

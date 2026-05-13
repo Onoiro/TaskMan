@@ -46,6 +46,11 @@ class UserForm(forms.ModelForm):
         help_text=_("Required if joining a team")
     )
 
+    invite_code = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         is_update = self.instance and self.instance.pk
@@ -236,15 +241,36 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
 
-            # handling join team
+            # handling join team from form fields
             team = self.cleaned_data.get('team_to_join')
+
+            # Check if joining via invite code
+            invite_code = self.cleaned_data.get('invite_code')
+            if invite_code and not team:
+                team = self._get_team_from_invite(invite_code)
+
             if team:
-                TeamMembership.objects.create(
-                    user=user,
-                    team=team,
-                    role='member',
-                    status='pending'
-                )
+                # Check if user is already a member
+                existing = TeamMembership.objects.filter(
+                    user=user, team=team
+                ).exists()
+
+                if not existing:
+                    # Determine if approval is needed
+                    status = 'pending'
+                    if invite_code:
+                        # Invite join - immediate access
+                        status = 'active'
+
+                    TeamMembership.objects.create(
+                        user=user,
+                        team=team,
+                        role='member',
+                        status=status
+                    )
+                    # Mark invite as used
+                    if invite_code:
+                        self._mark_invite_used(invite_code, user)
 
             # create default statuses for new users
             # only if they didn't join any team
@@ -252,3 +278,38 @@ class UserForm(forms.ModelForm):
                 Status.create_default_statuses_for_user(user)
 
         return user
+
+    def _get_team_from_invite(self, invite_code):
+        """Get team from invite code and validate it."""
+        from task_manager.teams.models import TeamInvite
+
+        try:
+            invite = TeamInvite.objects.get(invite_code=invite_code)
+
+            # Validate invite
+            if invite.is_used:
+                return None
+            if not invite.is_valid():
+                return None
+            if invite.use_count >= invite.max_uses:
+                return None
+
+            return invite.team
+        except TeamInvite.DoesNotExist:
+            return None
+
+    def _mark_invite_used(self, invite_code, user):
+        """Mark invite as used."""
+        from task_manager.teams.models import TeamInvite
+        from django.utils import timezone
+        from django.db.models import F
+
+        try:
+            invite = TeamInvite.objects.get(invite_code=invite_code)
+            invite.is_used = True
+            invite.used_by = user
+            invite.used_at = timezone.now()
+            invite.use_count = F('use_count') + 1
+            invite.save()
+        except TeamInvite.DoesNotExist:
+            pass
