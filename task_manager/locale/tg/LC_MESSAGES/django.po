@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 23:59+0300\n"
+"POT-Creation-Date: 2026-05-15 00:22+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -163,9 +163,10 @@ msgid "Task"
 msgstr "Вазифа"
 
 #: notes/models.py:65 statuses/models.py:58 tasks/models.py:73
-#: teams/models.py:43 templates/labels/labels_update.html:54
+#: teams/models.py:43 teams/models.py:136
+#: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
-#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
+#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:61
 msgid "Created at"
 msgstr "Санаи эҷод"
 
@@ -179,8 +180,9 @@ msgid "Note"
 msgstr "Эзоҳ"
 
 #: notes/models.py:75 templates/base.html:128 templates/base.html:153
-#: templates/includes/limits_usage.html:72 templates/notes/_task_notes.html:7
-#: templates/tasks/task_filter.html:347
+#: templates/includes/limits_usage.html:72
+#: templates/includes/team_limits_usage.html:84
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:347
 msgid "Notes"
 msgstr "Эзоҳҳо"
 
@@ -234,23 +236,23 @@ msgstr "Шумо наметавонед нақши худро дар даста 
 msgid "Team membership not found."
 msgstr "Узвият дар даста ёфт нашуд."
 
-#: settings.py:183 templates/index.html:67
+#: settings.py:184 templates/index.html:67
 msgid "English"
 msgstr "Англисӣ"
 
-#: settings.py:184 templates/index.html:76
+#: settings.py:185 templates/index.html:76
 msgid "Russian"
 msgstr "Русӣ"
 
-#: settings.py:185 templates/index.html:85
+#: settings.py:186 templates/index.html:85
 msgid "Tajik"
 msgstr "Тоҷикӣ"
 
-#: settings.py:186 templates/index.html:94
+#: settings.py:187 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Озарбойҷонӣ"
 
-#: settings.py:187 templates/index.html:103
+#: settings.py:188 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Қирғизӣ"
 
@@ -258,7 +260,7 @@ msgstr "Қирғизӣ"
 #: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
 #: templates/statuses/statuses_create_form.html:54
 #: templates/statuses/statuses_update.html:40
-#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
+#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:60
 #: templates/user/user_detail.html:30 user/models.py:11
 msgid "Description"
 msgstr "Тавсиф"
@@ -383,7 +385,8 @@ msgid "Executors"
 msgstr "Иҷрокунандагон"
 
 #: tasks/models.py:69 templates/base.html:123 templates/base.html:150
-#: templates/includes/limits_usage.html:56 templates/index.html:49
+#: templates/includes/limits_usage.html:56
+#: templates/includes/team_limits_usage.html:66 templates/index.html:49
 msgid "Labels"
 msgstr "Барчаспҳо"
 
@@ -432,7 +435,7 @@ msgstr "Ном Z→A"
 msgid "Task can only be deleted by its author or team admin."
 msgstr "Вазифаро танҳо муаллифи он ё мудири даста метавонад ҳазф кунад."
 
-#: tasks/views.py:89 tasks/views.py:344
+#: tasks/views.py:89 tasks/views.py:347
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Вазифаро танҳо муаллифи он, иҷрокунандагон ё мудири даста метавонад тағйир "
@@ -446,19 +449,19 @@ msgstr "Филтр ҳамчун пешфарз сабт шуд"
 msgid "Task created successfully"
 msgstr "Вазифа бомуваффақият эҷод шуд"
 
-#: tasks/views.py:292
+#: tasks/views.py:295
 msgid "Task updated successfully"
 msgstr "Вазифа бомуваффақият тағйир дода шуд"
 
-#: tasks/views.py:331
+#: tasks/views.py:334
 msgid "Task deleted successfully"
 msgstr "Вазифа бомуваффақият ҳазф шуд"
 
-#: tasks/views.py:375
+#: tasks/views.py:378
 msgid "Text is required"
 msgstr "Матн ҳатмист"
 
-#: tasks/views.py:379
+#: tasks/views.py:382
 msgid "Text must be 300 characters or less"
 msgstr "Матн бояд аз 300 аломат зиёд набошад"
 
@@ -478,24 +481,24 @@ msgstr "Тасдиқи рамз"
 msgid "Please enter your password one more time"
 msgstr "Лутфан, рамзро бори дигар ворид кунед."
 
-#: teams/forms.py:52 teams/forms.py:55 user/forms.py:100 user/forms.py:103
+#: teams/forms.py:52 teams/forms.py:55 user/forms.py:105 user/forms.py:108
 msgid "Leave blank if you don't want to change password"
 msgstr "Агар нахоҳед рамзро иваз кунед, майдонро холӣ гузоред"
 
-#: teams/forms.py:65 user/forms.py:58
+#: teams/forms.py:65 user/forms.py:63
 msgid "Your password is too short. It must contain at least 8 characters."
 msgstr ""
 "Рамзи воридшуда хеле кӯтоҳ аст. Он бояд ҳадди ақал 8 аломат дошта бошад."
 
-#: teams/forms.py:79 user/forms.py:74
+#: teams/forms.py:79 user/forms.py:79
 msgid "The entered passwords do not match."
 msgstr "Рамзҳои воридшуда мувофиқат намекунанд."
 
-#: teams/forms.py:90 user/forms.py:153
+#: teams/forms.py:90 user/forms.py:158
 msgid "Both password fields must be filled or both left blank"
 msgstr "Ҳар ду майдони рамз бояд пур карда шаванд ё ҳар ду холӣ монанд"
 
-#: teams/forms.py:110 templates/teams/team_detail.html:57
+#: teams/forms.py:110 templates/teams/team_detail.html:59
 msgid "Team name"
 msgstr "Номи даста"
 
@@ -511,19 +514,19 @@ msgstr "Рамзи даста"
 msgid "Enter team password"
 msgstr "Рамзи дастаро ворид кунед"
 
-#: teams/forms.py:143 user/forms.py:186
+#: teams/forms.py:143 user/forms.py:191
 msgid "Team with this name does not exist"
 msgstr "Даста бо чунин ном вуҷуд надорад"
 
-#: teams/forms.py:153 teams/forms.py:185 user/forms.py:193
+#: teams/forms.py:153 teams/forms.py:185 user/forms.py:198
 msgid "Invalid team password"
 msgstr "Рамзи даста нодуруст аст"
 
-#: teams/forms.py:173 user/forms.py:211
+#: teams/forms.py:173 user/forms.py:216
 msgid "You already have a pending request to join this team"
 msgstr "Шумо аллакай дархости интизорӣ барои ҳамроҳшавӣ ба ин даста доред"
 
-#: teams/forms.py:174 user/forms.py:214
+#: teams/forms.py:174 teams/views.py:561 user/forms.py:219
 msgid "You are already a member of this team"
 msgstr "Шумо аллакай узви ин даста ҳастед"
 
@@ -539,11 +542,11 @@ msgstr "Ҳолати нодуруст интихоб шудааст."
 msgid "Minimum length is 3 characters"
 msgstr "Дарозии ҳадди ақал — 3 аломат"
 
-#: teams/models.py:77 user/forms.py:115
+#: teams/models.py:77 user/forms.py:120
 msgid "Admin"
 msgstr "Мудир"
 
-#: teams/models.py:78 user/forms.py:116
+#: teams/models.py:78 user/forms.py:121
 msgid "Member"
 msgstr "Иштирокчӣ"
 
@@ -551,28 +554,72 @@ msgstr "Иштирокчӣ"
 msgid "Pending"
 msgstr "Дар интизорӣ"
 
-#: teams/models.py:82
+#: teams/models.py:82 teams/models.py:174
 msgid "Active"
 msgstr "Фаъол"
 
-#: teams/views.py:27
+#: teams/models.py:132
+msgid "Invite code"
+msgstr "Рамзи даъват"
+
+#: teams/models.py:139
+msgid "Expires at"
+msgstr "Эътибор дорад то"
+
+#: teams/models.py:143
+msgid "Is used"
+msgstr "Истифода шудааст"
+
+#: teams/models.py:151
+msgid "Used by"
+msgstr "Кӣ истифода бурд"
+
+#: teams/models.py:156
+msgid "Used at"
+msgstr "Санаи истифода"
+
+#: teams/models.py:160
+msgid "Max uses"
+msgstr "Шумораи ниҳоии истифода"
+
+#: teams/models.py:161
+msgid "Number of times invite can be used"
+msgstr "Даъватномаро чанд маротиба истифода бурдан мумкин аст"
+
+#: teams/models.py:165
+msgid "Use count"
+msgstr "Шумораи истифода"
+
+#: teams/models.py:169
+msgid "Team invite"
+msgstr "Даъват ба даста"
+
+#: teams/models.py:170
+msgid "Team invites"
+msgstr "Даъватҳо ба даста"
+
+#: teams/models.py:174
+msgid "Used"
+msgstr "Истифода шуд"
+
+#: teams/views.py:31
 msgid "Team not found"
 msgstr "Даста ёфт нашуд"
 
-#: teams/views.py:54
+#: teams/views.py:58
 msgid "Switched to individual mode"
 msgstr "Ба реҷаи инфиродӣ гузаронида шуд"
 
-#: teams/views.py:66
+#: teams/views.py:70
 #, python-brace-format
 msgid "Switched to team: {team}"
 msgstr "Ба даста гузаронида шуд: {team}"
 
-#: teams/views.py:164
+#: teams/views.py:168
 msgid "You are not a member of this team"
 msgstr "Шумо узви ин даста нестед"
 
-#: teams/views.py:170
+#: teams/views.py:174
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -580,7 +627,7 @@ msgstr ""
 "Мудирони даста наметавонанд дастаро тарк кунанд. Аввал ҳуқуқи мудирро ба "
 "узви дигар диҳед."
 
-#: teams/views.py:188
+#: teams/views.py:192
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -588,25 +635,25 @@ msgstr ""
 "Шумо ҳуқуқи идоракунии иштирокчиёни дастаро надоред. Ин корро танҳо мудири "
 "даста метавонад анҷом диҳад."
 
-#: teams/views.py:193
+#: teams/views.py:197
 msgid "User is not a member of this team"
 msgstr "Корбар узви ин даста нест"
 
-#: teams/views.py:255
+#: teams/views.py:259
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Шумо дастаи {team}-ро бомуваффақият тарк кардед"
 
-#: teams/views.py:261
+#: teams/views.py:265
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "Корбар {username} аз дастаи {team} хориҷ карда шуд."
 
-#: teams/views.py:275
+#: teams/views.py:279
 msgid "Team membership not found"
 msgstr "Узвият дар даста ёфт нашуд."
 
-#: teams/views.py:311
+#: teams/views.py:315
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
@@ -614,11 +661,11 @@ msgstr ""
 "Шумо наметавонед аз даста хориҷ шавед, зеро шумо муаллиф ё иҷрокунандаи "
 "вазифаҳо дар ин даста ҳастед."
 
-#: teams/views.py:361
+#: teams/views.py:365
 msgid "Team created successfully"
 msgstr "Даста бомуваффақият эҷод шуд"
 
-#: teams/views.py:406 user/views.py:185 user/views.py:229
+#: teams/views.py:410 user/views.py:218 user/views.py:262
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -626,39 +673,64 @@ msgstr ""
 "Дархости шумо барои ҳамроҳшавӣ ба дастаи {team} фиристода шуд. Интизори "
 "тасдиқи мудир бошед."
 
-#: teams/views.py:444
+#: teams/views.py:462
+msgid "Invite link generated successfully. Scroll down to copy."
+msgstr "Истиноди даъват бомуваффақият сохта шуд. Барои нусхабардорӣ ба поён лағжонед."
+
+#: teams/views.py:482
+msgid "Team has reached the maximum number of members"
+msgstr "Даста ба шумораи ниҳоии аъзоён расид"
+
+#: teams/views.py:528
+msgid "Invalid or expired invite link"
+msgstr "Истиноди даъвати беэътибор ё муҳлаташ гузашта"
+
+#: teams/views.py:532 teams/views.py:540
+msgid "Invite link has been used"
+msgstr "Истиноди даъват аллакай истифода шудааст"
+
+#: teams/views.py:536
+msgid "Invite link has expired"
+msgstr "Муҳлати истиноди даъват гузаштааст"
+
+#: teams/views.py:599
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "Шумо ба дастаи {team} бомуваффақият пайваст шудед"
+
+#: teams/views.py:651
 msgid "Team updated successfully"
 msgstr "Даста бомуваффақият тағйир дода шуд"
 
-#: teams/views.py:462
+#: teams/views.py:669
 msgid "Cannot delete a team because it has tasks."
 msgstr "Дастаро ҳазф кардан мумкин нест, зеро дар он вазифаҳо мавҷуданд."
 
-#: teams/views.py:470
+#: teams/views.py:677
 msgid "Cannot delete a team because it has other members."
 msgstr ""
 "Дастаро ҳазф кардан мумкин нест, зеро дар он иштирокчиёни дигар мавҷуданд."
 
-#: teams/views.py:474
+#: teams/views.py:681
 msgid "Team deleted successfully"
 msgstr "Даста бомуваффақият ҳазф шуд"
 
-#: teams/views.py:503
+#: teams/views.py:710
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "Корбар {username} мудири даста таъин шуд."
 
-#: teams/views.py:510
+#: teams/views.py:717
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "Корбар {username} иштирокчии даста шуд."
 
-#: teams/views.py:520
+#: teams/views.py:727
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "Корбар {username} тасдиқ шуд ва ҳоло узви даста мебошад."
 
-#: teams/views.py:528
+#: teams/views.py:735
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "Узвияти корбар {username} ба ҳолати интизорӣ гузаронида шуд."
@@ -676,13 +748,15 @@ msgid "Users"
 msgstr "Корбарон"
 
 #: templates/base.html:113 templates/base.html:144
-#: templates/includes/limits_usage.html:8 templates/user/user_detail.html:76
-#: templates/user/user_detail.html:98
+#: templates/includes/limits_usage.html:8
+#: templates/includes/team_limits_usage.html:30
+#: templates/user/user_detail.html:76 templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Вазифаҳо"
 
 #: templates/base.html:118 templates/base.html:147
 #: templates/includes/limits_usage.html:40
+#: templates/includes/team_limits_usage.html:48
 msgid "Statuses"
 msgstr "Ҳолатҳо"
 
@@ -804,11 +878,20 @@ msgstr ""
 "Нақшаи васеъшуда аллакай дар ҳоли таҳия аст — ба зудӣ имкониятҳои нав пайдо "
 "мешаванд!"
 
+#: templates/includes/team_limits_usage.html:6
+msgid "Team Limits"
+msgstr "Маҳдудиятҳои даста"
+
+#: templates/includes/team_limits_usage.html:12
+#: templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "Иштирокчиён"
+
 #: templates/index.html:7
 msgid "Task Manager"
 msgstr "Менеҷери вазифаҳо"
 
-#: templates/index.html:20
+#: templates/index.html:20 templates/teams/team_join_invite.html:24
 msgid "Go to Tasks"
 msgstr "Ба вазифаҳо гузаред"
 
@@ -884,7 +967,7 @@ msgstr "Эҷод кардан"
 #: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
 #: templates/tasks/task_update.html:175
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:71 templates/teams/team_exit.html:28
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
 #: templates/teams/team_join_form.html:29
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
@@ -1413,13 +1496,29 @@ msgstr "Маълумоти даста"
 msgid "No description"
 msgstr "Тавсиф нест"
 
-#: templates/teams/team_detail.html:43
-msgid "Members"
-msgstr "Иштирокчиён"
-
-#: templates/teams/team_detail.html:67 templates/teams/team_update.html:16
+#: templates/teams/team_detail.html:69 templates/teams/team_update.html:16
 msgid "Edit Team"
 msgstr "Таҳрири даста"
+
+#: templates/teams/team_detail.html:74
+msgid "Generate Invite Link"
+msgstr "Истиноди даъват созед"
+
+#: templates/teams/team_detail.html:89
+msgid "Invite Link Generated"
+msgstr "Истиноди даъват сохта шуд"
+
+#: templates/teams/team_detail.html:91
+msgid "Copy the link below to share it:"
+msgstr "Барои мубодила кардан истиноди зеринро нусхабардорӣ кунед:"
+
+#: templates/teams/team_detail.html:99
+msgid "Copy"
+msgstr "Нусхабардорӣ"
+
+#: templates/teams/team_detail.html:104
+msgid "This link is single-use and expires in 7 days."
+msgstr "Ин истинод яккарата аст ва пас аз 7 рӯз муҳлати он ба охир мерасад."
 
 #: templates/teams/team_exit.html:8 templates/teams/team_exit.html:15
 msgid "Remove team member"
@@ -1445,6 +1544,19 @@ msgstr "Бале, хориҷ шудан"
 #: templates/teams/team_join_form.html:26
 msgid "Join"
 msgstr "Ҳамроҳ шудан"
+
+#: templates/teams/team_join_invite.html:11
+msgid "Join Team via Invite"
+msgstr "Пайваст шудан ба даста тавассути даъват"
+
+#: templates/teams/team_join_invite.html:15
+#, python-format
+msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
+msgstr "Шумо ба дастаи <strong>%(team_name)s</strong> бомуваффақият пайваст шудед."
+
+#: templates/teams/team_join_invite.html:28
+msgid "Home"
+msgstr "Саҳифаи асосӣ"
 
 #: templates/teams/team_member_role_update.html:10
 msgid "Manage Team Member"
@@ -1659,19 +1771,19 @@ msgstr ""
 msgid "Required if joining a team"
 msgstr "Ҳангоми ҳамроҳ шудан ба даста ҳатмист"
 
-#: user/forms.py:124
+#: user/forms.py:129
 msgid "Current teams"
 msgstr "Дастаҳои ҷорӣ"
 
-#: user/forms.py:140
+#: user/forms.py:145
 msgid "Join another team (optional)"
 msgstr "Ҳамроҳ шудан ба дастаи дигар (ихтиёрӣ)"
 
-#: user/forms.py:142
+#: user/forms.py:147
 msgid "Enter team name to join another team, or leave empty"
 msgstr "Номи дастаро барои ҳамроҳ шудан ворид кунед ё холӣ гузоред"
 
-#: user/forms.py:177
+#: user/forms.py:182
 msgid "Team password is required when joining a team"
 msgstr "Ҳангоми ҳамроҳ шудан ба даста рамз ҳатмист"
 
@@ -1679,15 +1791,19 @@ msgstr "Ҳангоми ҳамроҳ шудан ба даста рамз ҳатм
 msgid "User created successfully"
 msgstr "Корбар бомуваффақият бақайд гирифта шуд"
 
-#: user/views.py:192
+#: user/views.py:206
+msgid "Welcome! Your account has been created and you have joined the team."
+msgstr ""
+
+#: user/views.py:225
 msgid "Welcome! You can create a team or work individually"
 msgstr "Хуш омадед! Шумо метавонед даста эҷод кунед ё инфиродӣ кор кунед"
 
-#: user/views.py:207
+#: user/views.py:240
 msgid "User updated successfully"
 msgstr "Корбар бомуваффақият тағйир дода шуд"
 
-#: user/views.py:253
+#: user/views.py:286
 msgid "User account has been deleted"
 msgstr "Ҳисоби корбар ҳазф шуд"
 

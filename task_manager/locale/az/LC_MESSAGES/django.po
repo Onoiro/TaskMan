@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-13 23:59+0300\n"
+"POT-Creation-Date: 2026-05-15 00:22+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -161,9 +161,10 @@ msgid "Task"
 msgstr "Tapşırıq"
 
 #: notes/models.py:65 statuses/models.py:58 tasks/models.py:73
-#: teams/models.py:43 templates/labels/labels_update.html:54
+#: teams/models.py:43 teams/models.py:136
+#: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
-#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:59
+#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:61
 msgid "Created at"
 msgstr "Yaradılma tarixi"
 
@@ -177,8 +178,9 @@ msgid "Note"
 msgstr "Qeyd"
 
 #: notes/models.py:75 templates/base.html:128 templates/base.html:153
-#: templates/includes/limits_usage.html:72 templates/notes/_task_notes.html:7
-#: templates/tasks/task_filter.html:347
+#: templates/includes/limits_usage.html:72
+#: templates/includes/team_limits_usage.html:84
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:347
 msgid "Notes"
 msgstr "Qeydlər"
 
@@ -233,23 +235,23 @@ msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
 msgid "Team membership not found."
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: settings.py:183 templates/index.html:67
+#: settings.py:184 templates/index.html:67
 msgid "English"
 msgstr "İngilis"
 
-#: settings.py:184 templates/index.html:76
+#: settings.py:185 templates/index.html:76
 msgid "Russian"
 msgstr "Rus"
 
-#: settings.py:185 templates/index.html:85
+#: settings.py:186 templates/index.html:85
 msgid "Tajik"
 msgstr "Tacik"
 
-#: settings.py:186 templates/index.html:94
+#: settings.py:187 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Azərbaycan dili"
 
-#: settings.py:187 templates/index.html:103
+#: settings.py:188 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Qırğız"
 
@@ -257,7 +259,7 @@ msgstr "Qırğız"
 #: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
 #: templates/statuses/statuses_create_form.html:54
 #: templates/statuses/statuses_update.html:40
-#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:58
+#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:60
 #: templates/user/user_detail.html:30 user/models.py:11
 msgid "Description"
 msgstr "Təsvir"
@@ -382,7 +384,8 @@ msgid "Executors"
 msgstr "İcraçılar"
 
 #: tasks/models.py:69 templates/base.html:123 templates/base.html:150
-#: templates/includes/limits_usage.html:56 templates/index.html:49
+#: templates/includes/limits_usage.html:56
+#: templates/includes/team_limits_usage.html:66 templates/index.html:49
 msgid "Labels"
 msgstr "Etiketlər"
 
@@ -432,7 +435,7 @@ msgid "Task can only be deleted by its author or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: tasks/views.py:89 tasks/views.py:344
+#: tasks/views.py:89 tasks/views.py:347
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi, icraçıları və ya komanda administratoru "
@@ -446,19 +449,19 @@ msgstr "Filtr standart olaraq yadda saxlanıldı"
 msgid "Task created successfully"
 msgstr "Tapşırıq uğurla yaradıldı"
 
-#: tasks/views.py:292
+#: tasks/views.py:295
 msgid "Task updated successfully"
 msgstr "Tapşırıq uğurla yeniləndi"
 
-#: tasks/views.py:331
+#: tasks/views.py:334
 msgid "Task deleted successfully"
 msgstr "Tapşırıq uğurla silindi"
 
-#: tasks/views.py:375
+#: tasks/views.py:378
 msgid "Text is required"
 msgstr "Mətn tələb olunur"
 
-#: tasks/views.py:379
+#: tasks/views.py:382
 msgid "Text must be 300 characters or less"
 msgstr "Mətn 300 simvoldan çox olmamalıdır"
 
@@ -478,23 +481,23 @@ msgstr "Şifrənin təsdiqi"
 msgid "Please enter your password one more time"
 msgstr "Zəhmət olmasa şifrənizi bir daha daxil edin."
 
-#: teams/forms.py:52 teams/forms.py:55 user/forms.py:100 user/forms.py:103
+#: teams/forms.py:52 teams/forms.py:55 user/forms.py:105 user/forms.py:108
 msgid "Leave blank if you don't want to change password"
 msgstr "Şifrəni dəyişmək istəmirsinizsə, boş saxlayın"
 
-#: teams/forms.py:65 user/forms.py:58
+#: teams/forms.py:65 user/forms.py:63
 msgid "Your password is too short. It must contain at least 8 characters."
 msgstr "Şifrəniz çox qısadır. O, ən azı 8 simvoldan ibarət olmalıdır."
 
-#: teams/forms.py:79 user/forms.py:74
+#: teams/forms.py:79 user/forms.py:79
 msgid "The entered passwords do not match."
 msgstr "Daxil edilmiş şifrələr uyğun gəlmir."
 
-#: teams/forms.py:90 user/forms.py:153
+#: teams/forms.py:90 user/forms.py:158
 msgid "Both password fields must be filled or both left blank"
 msgstr "Hər iki şifrə sahəsi doldurulmalı və ya hər ikisi boş saxlanmalıdır"
 
-#: teams/forms.py:110 templates/teams/team_detail.html:57
+#: teams/forms.py:110 templates/teams/team_detail.html:59
 msgid "Team name"
 msgstr "Komanda adı"
 
@@ -510,19 +513,19 @@ msgstr "Komanda şifrəsi"
 msgid "Enter team password"
 msgstr "Komanda şifrəsini daxil edin"
 
-#: teams/forms.py:143 user/forms.py:186
+#: teams/forms.py:143 user/forms.py:191
 msgid "Team with this name does not exist"
 msgstr "Bu adla komanda mövcud deyil"
 
-#: teams/forms.py:153 teams/forms.py:185 user/forms.py:193
+#: teams/forms.py:153 teams/forms.py:185 user/forms.py:198
 msgid "Invalid team password"
 msgstr "Yanlış komanda şifrəsi"
 
-#: teams/forms.py:173 user/forms.py:211
+#: teams/forms.py:173 user/forms.py:216
 msgid "You already have a pending request to join this team"
 msgstr "Bu komandaya qoşulmaq üçün artıq gözləmədə olan sorğunuz var"
 
-#: teams/forms.py:174 user/forms.py:214
+#: teams/forms.py:174 teams/views.py:561 user/forms.py:219
 msgid "You are already a member of this team"
 msgstr "Siz artıq bu komandanın üzvüsünüz"
 
@@ -538,11 +541,11 @@ msgstr "Yanlış status seçildi."
 msgid "Minimum length is 3 characters"
 msgstr "Minimum uzunluq — 3 simvol"
 
-#: teams/models.py:77 user/forms.py:115
+#: teams/models.py:77 user/forms.py:120
 msgid "Admin"
 msgstr "Administrator"
 
-#: teams/models.py:78 user/forms.py:116
+#: teams/models.py:78 user/forms.py:121
 msgid "Member"
 msgstr "Üzv"
 
@@ -550,28 +553,72 @@ msgstr "Üzv"
 msgid "Pending"
 msgstr "Gözləmədə"
 
-#: teams/models.py:82
+#: teams/models.py:82 teams/models.py:174
 msgid "Active"
 msgstr "Aktiv"
 
-#: teams/views.py:27
+#: teams/models.py:132
+msgid "Invite code"
+msgstr "Dəvət kodu"
+
+#: teams/models.py:139
+msgid "Expires at"
+msgstr "Bitmə tarixi"
+
+#: teams/models.py:143
+msgid "Is used"
+msgstr "İstifadə edilib"
+
+#: teams/models.py:151
+msgid "Used by"
+msgstr "İstifadə edən"
+
+#: teams/models.py:156
+msgid "Used at"
+msgstr "İstifadə tarixi"
+
+#: teams/models.py:160
+msgid "Max uses"
+msgstr "Maksimum istifadə sayı"
+
+#: teams/models.py:161
+msgid "Number of times invite can be used"
+msgstr "Dəvətdən neçə dəfə istifadə etmək olar"
+
+#: teams/models.py:165
+msgid "Use count"
+msgstr "İstifadə sayı"
+
+#: teams/models.py:169
+msgid "Team invite"
+msgstr "Komanda dəvəti"
+
+#: teams/models.py:170
+msgid "Team invites"
+msgstr "Komanda dəvətləri"
+
+#: teams/models.py:174
+msgid "Used"
+msgstr "İstifadə edilib"
+
+#: teams/views.py:31
 msgid "Team not found"
 msgstr "Komanda tapılmadı"
 
-#: teams/views.py:54
+#: teams/views.py:58
 msgid "Switched to individual mode"
 msgstr "Fərdi rejimə keçildi"
 
-#: teams/views.py:66
+#: teams/views.py:70
 #, python-brace-format
 msgid "Switched to team: {team}"
 msgstr "Komandaya keçildi: {team}"
 
-#: teams/views.py:164
+#: teams/views.py:168
 msgid "You are not a member of this team"
 msgstr "Siz bu komandanın üzvü deyilsiniz"
 
-#: teams/views.py:170
+#: teams/views.py:174
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -579,7 +626,7 @@ msgstr ""
 "Komanda administratorları komandanı tərk edə bilməz. Zəhmət olmasa əvvəlcə "
 "administrator hüquqlarını başqa üzvə verin."
 
-#: teams/views.py:188
+#: teams/views.py:192
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -587,25 +634,25 @@ msgstr ""
 "Komanda üzvlərini idarə etmək üçün icazəniz yoxdur. Bunu yalnız komanda "
 "administratoru edə bilər."
 
-#: teams/views.py:193
+#: teams/views.py:197
 msgid "User is not a member of this team"
 msgstr "İstifadəçi bu komandanın üzvü deyil"
 
-#: teams/views.py:255
+#: teams/views.py:259
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Siz {team} komandasını uğurla tərk etdiniz"
 
-#: teams/views.py:261
+#: teams/views.py:265
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "İstifadəçi {username} {team} komandasından çıxarıldı."
 
-#: teams/views.py:275
+#: teams/views.py:279
 msgid "Team membership not found"
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: teams/views.py:311
+#: teams/views.py:315
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
@@ -613,11 +660,11 @@ msgstr ""
 "Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi "
 "və ya icraçısısınız."
 
-#: teams/views.py:361
+#: teams/views.py:365
 msgid "Team created successfully"
 msgstr "Komanda uğurla yaradıldı"
 
-#: teams/views.py:406 user/views.py:185 user/views.py:229
+#: teams/views.py:410 user/views.py:218 user/views.py:262
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -625,38 +672,63 @@ msgstr ""
 "{team} komandasına qoşulmaq üçün sorğunuz göndərildi. Administratorun "
 "təsdiqini gözləyin."
 
-#: teams/views.py:444
+#: teams/views.py:462
+msgid "Invite link generated successfully. Scroll down to copy."
+msgstr "Dəvət linki uğurla yaradıldı. Kopyalamaq üçün aşağı sürüşdürün."
+
+#: teams/views.py:482
+msgid "Team has reached the maximum number of members"
+msgstr "Komanda maksimum üzv sayına çatıb"
+
+#: teams/views.py:528
+msgid "Invalid or expired invite link"
+msgstr "Etibarsız və ya müddəti bitmiş dəvət linki"
+
+#: teams/views.py:532 teams/views.py:540
+msgid "Invite link has been used"
+msgstr "Dəvət linki artıq istifadə edilib"
+
+#: teams/views.py:536
+msgid "Invite link has expired"
+msgstr "Dəvət linkinin müddəti bitib"
+
+#: teams/views.py:599
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "Siz {team} komandasına uğurla qoşuldunuz"
+
+#: teams/views.py:651
 msgid "Team updated successfully"
 msgstr "Komanda uğurla yeniləndi"
 
-#: teams/views.py:462
+#: teams/views.py:669
 msgid "Cannot delete a team because it has tasks."
 msgstr "Komandanı silmək mümkün deyil, çünki onun tapşırıqları var."
 
-#: teams/views.py:470
+#: teams/views.py:677
 msgid "Cannot delete a team because it has other members."
 msgstr "Komandanı silmək mümkün deyil, çünki onun başqa üzvləri var."
 
-#: teams/views.py:474
+#: teams/views.py:681
 msgid "Team deleted successfully"
 msgstr "Komanda uğurla silindi"
 
-#: teams/views.py:503
+#: teams/views.py:710
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "İstifadəçi {username} komanda administratoru təyin edildi."
 
-#: teams/views.py:510
+#: teams/views.py:717
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "İstifadəçi {username} komanda üzvü edildi."
 
-#: teams/views.py:520
+#: teams/views.py:727
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür."
 
-#: teams/views.py:528
+#: teams/views.py:735
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
@@ -674,13 +746,15 @@ msgid "Users"
 msgstr "İstifadəçilər"
 
 #: templates/base.html:113 templates/base.html:144
-#: templates/includes/limits_usage.html:8 templates/user/user_detail.html:76
-#: templates/user/user_detail.html:98
+#: templates/includes/limits_usage.html:8
+#: templates/includes/team_limits_usage.html:30
+#: templates/user/user_detail.html:76 templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Tapşırıqlar"
 
 #: templates/base.html:118 templates/base.html:147
 #: templates/includes/limits_usage.html:40
+#: templates/includes/team_limits_usage.html:48
 msgid "Statuses"
 msgstr "Statuslar"
 
@@ -801,11 +875,20 @@ msgid "Extended plan is already in development — more features coming soon!"
 msgstr ""
 "Genişləndirilmiş plan artıq hazırlanır — tezliklə daha çox imkan gələcək!"
 
+#: templates/includes/team_limits_usage.html:6
+msgid "Team Limits"
+msgstr "Komanda limitləri"
+
+#: templates/includes/team_limits_usage.html:12
+#: templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "Üzvlər"
+
 #: templates/index.html:7
 msgid "Task Manager"
 msgstr "Tapşırıq meneceri"
 
-#: templates/index.html:20
+#: templates/index.html:20 templates/teams/team_join_invite.html:24
 msgid "Go to Tasks"
 msgstr "Tapşırıqlara keç"
 
@@ -881,7 +964,7 @@ msgstr "Yarat"
 #: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
 #: templates/tasks/task_update.html:175
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:71 templates/teams/team_exit.html:28
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
 #: templates/teams/team_join_form.html:29
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
@@ -1410,13 +1493,29 @@ msgstr "Komanda məlumatları"
 msgid "No description"
 msgstr "Təsvir yoxdur"
 
-#: templates/teams/team_detail.html:43
-msgid "Members"
-msgstr "Üzvlər"
-
-#: templates/teams/team_detail.html:67 templates/teams/team_update.html:16
+#: templates/teams/team_detail.html:69 templates/teams/team_update.html:16
 msgid "Edit Team"
 msgstr "Komandanı redaktə et"
+
+#: templates/teams/team_detail.html:74
+msgid "Generate Invite Link"
+msgstr "Dəvət linki yarat"
+
+#: templates/teams/team_detail.html:89
+msgid "Invite Link Generated"
+msgstr "Dəvət linki yaradıldı"
+
+#: templates/teams/team_detail.html:91
+msgid "Copy the link below to share it:"
+msgstr "Paylaşmaq üçün aşağıdakı linki kopyalayın:"
+
+#: templates/teams/team_detail.html:99
+msgid "Copy"
+msgstr "Kopyala"
+
+#: templates/teams/team_detail.html:104
+msgid "This link is single-use and expires in 7 days."
+msgstr "Bu link birdəfəlikdir və 7 gündən sonra müddəti bitir."
 
 #: templates/teams/team_exit.html:8 templates/teams/team_exit.html:15
 msgid "Remove team member"
@@ -1442,6 +1541,19 @@ msgstr "Bəli, çıx"
 #: templates/teams/team_join_form.html:26
 msgid "Join"
 msgstr "Qoşul"
+
+#: templates/teams/team_join_invite.html:11
+msgid "Join Team via Invite"
+msgstr "Dəvət vasitəsilə komandaya qoşul"
+
+#: templates/teams/team_join_invite.html:15
+#, python-format
+msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
+msgstr "Siz <strong>%(team_name)s</strong> komandasına uğurla qoşuldunuz."
+
+#: templates/teams/team_join_invite.html:28
+msgid "Home"
+msgstr "Ana səhifə"
 
 #: templates/teams/team_member_role_update.html:10
 msgid "Manage Team Member"
@@ -1657,20 +1769,20 @@ msgstr ""
 msgid "Required if joining a team"
 msgstr "Komandaya qoşularkən tələb olunur"
 
-#: user/forms.py:124
+#: user/forms.py:129
 msgid "Current teams"
 msgstr "Cari komandalar"
 
-#: user/forms.py:140
+#: user/forms.py:145
 msgid "Join another team (optional)"
 msgstr "Başqa komandaya qoşul (istəyə bağlı)"
 
-#: user/forms.py:142
+#: user/forms.py:147
 msgid "Enter team name to join another team, or leave empty"
 msgstr ""
 "Başqa komandaya qoşulmaq üçün komanda adını daxil edin və ya boş saxlayın"
 
-#: user/forms.py:177
+#: user/forms.py:182
 msgid "Team password is required when joining a team"
 msgstr "Komandaya qoşulmaq üçün komanda şifrəsi tələb olunur"
 
@@ -1678,15 +1790,19 @@ msgstr "Komandaya qoşulmaq üçün komanda şifrəsi tələb olunur"
 msgid "User created successfully"
 msgstr "İstifadəçi uğurla yaradıldı"
 
-#: user/views.py:192
+#: user/views.py:206
+msgid "Welcome! Your account has been created and you have joined the team."
+msgstr ""
+
+#: user/views.py:225
 msgid "Welcome! You can create a team or work individually"
 msgstr "Xoş gəldiniz! Siz komanda yarada və ya fərdi işləyə bilərsiniz"
 
-#: user/views.py:207
+#: user/views.py:240
 msgid "User updated successfully"
 msgstr "İstifadəçi uğurla yeniləndi"
 
-#: user/views.py:253
+#: user/views.py:286
 msgid "User account has been deleted"
 msgstr "İstifadəçi hesabı silindi"
 
