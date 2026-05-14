@@ -230,54 +230,55 @@ class UserForm(forms.ModelForm):
 
     def save(self, commit=True, request=None):
         user = super().save(commit=False)
-
-        # set password only if it inputed
-        password1 = self.cleaned_data.get('password1')
-        if password1:
-            user.set_password(password1)
+        self._set_password(user)
 
         is_new_user = user.pk is None
 
         if commit:
             user.save()
-
-            # handling join team from form fields
-            team = self.cleaned_data.get('team_to_join')
-
-            # Check if joining via invite code
-            invite_code = self.cleaned_data.get('invite_code')
-            if invite_code and not team:
-                team = self._get_team_from_invite(invite_code)
-
-            if team:
-                # Check if user is already a member
-                existing = TeamMembership.objects.filter(
-                    user=user, team=team
-                ).exists()
-
-                if not existing:
-                    # Determine if approval is needed
-                    status = 'pending'
-                    if invite_code:
-                        # Invite join - immediate access
-                        status = 'active'
-
-                    TeamMembership.objects.create(
-                        user=user,
-                        team=team,
-                        role='member',
-                        status=status
-                    )
-                    # Mark invite as used
-                    if invite_code:
-                        self._mark_invite_used(invite_code, user)
-
-            # create default statuses for new users
-            # only if they didn't join any team
-            if is_new_user and not team:
-                Status.create_default_statuses_for_user(user)
+            self._handle_team_joining(user, is_new_user)
 
         return user
+
+    def _set_password(self, user):
+        """Set password if provided."""
+        password1 = self.cleaned_data.get('password1')
+        if password1:
+            user.set_password(password1)
+
+    def _handle_team_joining(self, user, is_new_user):
+        """Process team joining logic after user creation."""
+        team = self.cleaned_data.get('team_to_join')
+        invite_code = self.cleaned_data.get('invite_code')
+
+        if invite_code and not team:
+            team = self._get_team_from_invite(invite_code)
+
+        if team:
+            self._create_membership_if_needed(user, team, invite_code)
+        elif is_new_user:
+            Status.create_default_statuses_for_user(user)
+
+    def _create_membership_if_needed(self, user, team, invite_code):
+        """Create team membership if user is not already a member."""
+        if self._is_already_member(user, team):
+            return
+
+        status = 'active' if invite_code else 'pending'
+
+        TeamMembership.objects.create(
+            user=user,
+            team=team,
+            role='member',
+            status=status
+        )
+
+        if invite_code:
+            self._mark_invite_used(invite_code, user)
+
+    def _is_already_member(self, user, team):
+        """Check if user is already a member of the team."""
+        return TeamMembership.objects.filter(user=user, team=team).exists()
 
     def _get_team_from_invite(self, invite_code):
         """Get team from invite code and validate it."""
