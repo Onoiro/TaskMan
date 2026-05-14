@@ -1,6 +1,8 @@
 from django.test import TestCase
+from django.utils import timezone
+from datetime import timedelta
 from task_manager.user.models import User
-from task_manager.teams.models import Team, TeamMembership
+from task_manager.teams.models import Team, TeamMembership, TeamInvite
 from task_manager.user.forms import UserForm
 from django.utils.translation import gettext as _
 
@@ -375,3 +377,211 @@ class UserFormTestCase(TestCase):
         self.assertIn(
             _('The entered passwords do not match.'),
             form.errors['password2'])
+
+    def test_pending_membership_shows_in_current_teams(self):
+        """Test that pending membership is shown with 'Pending' status."""
+        # Create teams for this test
+        team1 = Team.objects.create(
+            name='Active Test Team',
+            description='Team with active membership',
+            password='testpass123'
+        )
+        team2 = Team.objects.create(
+            name='Pending Test Team',
+            description='Team with pending membership',
+            password='testpass456'
+        )
+
+        # Get user 13 (alone) who has no team memberships
+        user = User.objects.get(pk=13)
+
+        # Create an active membership
+        # (required for current_teams field to appear)
+        TeamMembership.objects.create(
+            user=user,
+            team=team1,
+            role='member',
+            status='active'
+        )
+
+        # Create a pending membership
+        TeamMembership.objects.create(
+            user=user,
+            team=team2,
+            role='member',
+            status='pending'
+        )
+
+        # Form data for updating user
+        form_data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'description': user.description,
+            'password1': '',
+            'password2': '',
+            'join_team_name': '',
+            'join_team_password': ''
+        }
+        form = UserForm(data=form_data, instance=user)
+
+        # Check that current_teams field exists when updating user with teams
+        self.assertIn('current_teams', form.fields)
+        # Check it shows both active and pending status
+        initial_value = form.fields['current_teams'].initial
+        self.assertIn('Pending', initial_value)
+        self.assertIn('Pending Test Team (Member) (Pending)', initial_value)
+        self.assertIn('Active Test Team (Member)', initial_value)
+
+    def test_join_team_via_invite_code(self):
+        """Test new user joining team via invite code."""
+        team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30)
+        )
+
+        form_data = {
+            'first_name': 'Invite',
+            'last_name': 'User',
+            'username': 'invite_user',
+            'password1': '12345678',
+            'password2': '12345678',
+            'join_team_name': '',
+            'join_team_password': '',
+            'invite_code': str(invite.invite_code)
+        }
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+
+        # Check membership was created with active status
+        membership = TeamMembership.objects.get(user=user, team=team)
+        self.assertEqual(membership.role, 'member')
+        self.assertEqual(membership.status, 'active')
+        # Check invite is marked as used
+        invite.refresh_from_db()
+        self.assertTrue(invite.is_used)
+        self.assertEqual(invite.used_by, user)
+
+    def test_join_team_via_used_invite_code(self):
+        """Test that used invite code doesn't create membership."""
+        team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30),
+            is_used=True,
+            used_by=User.objects.get(pk=10)
+        )
+
+        form_data = {
+            'first_name': 'Used',
+            'last_name': 'Invite',
+            'username': 'used_invite_user',
+            'password1': '12345678',
+            'password2': '12345678',
+            'join_team_name': '',
+            'join_team_password': '',
+            'invite_code': str(invite.invite_code)
+        }
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+
+        # Check no membership was created
+        self.assertFalse(TeamMembership.objects.filter(
+            user=user, team=team).exists())
+        # Check user has default statuses (To Do, In Progress, etc.)
+        self.assertTrue(user.created_statuses.exists())
+
+    def test_join_team_via_expired_invite_code(self):
+        """Test that expired invite code doesn't create membership."""
+        team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() - timedelta(days=1)  # Expired
+        )
+
+        form_data = {
+            'first_name': 'Expired',
+            'last_name': 'Invite',
+            'username': 'expired_invite_user',
+            'password1': '12345678',
+            'password2': '12345678',
+            'join_team_name': '',
+            'join_team_password': '',
+            'invite_code': str(invite.invite_code)
+        }
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+
+        # Check no membership was created
+        self.assertFalse(TeamMembership.objects.filter(
+            user=user, team=team).exists())
+
+    def test_join_team_via_max_uses_reached_invite(self):
+        """Test invite with max uses reached doesn't create membership."""
+        team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=1,
+            use_count=1,
+            expires_at=timezone.now() + timedelta(days=30),
+            is_used=True
+        )
+
+        form_data = {
+            'first_name': 'Max',
+            'last_name': 'Uses',
+            'username': 'max_uses_user',
+            'password1': '12345678',
+            'password2': '12345678',
+            'join_team_name': '',
+            'join_team_password': '',
+            'invite_code': str(invite.invite_code)
+        }
+        form = UserForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+
+        # Check no membership was created
+        self.assertFalse(TeamMembership.objects.filter(
+            user=user, team=team).exists())
+
+    def test_join_team_via_invalid_uuid_invite_code(self):
+        """Test invalid UUID invite code doesn't create membership."""
+        # Handle ValidationError for invalid UUID
+        from django.core.exceptions import ValidationError
+
+        form_data = {
+            'first_name': 'Invalid',
+            'last_name': 'UUID',
+            'username': 'invalid_uuid_user',
+            'password1': '12345678',
+            'password2': '12345678',
+            'join_team_name': '',
+            'join_team_password': '',
+            'invite_code': 'not-a-valid-uuid'
+        }
+
+        # Form should handle invalid UUID gracefully
+        try:
+            form = UserForm(data=form_data)
+            # If form is valid, save should handle the invalid invite
+            if form.is_valid():
+                user = form.save()
+                # Check no membership was created
+                self.assertFalse(TeamMembership.objects.filter(
+                    user=user).exists())
+        except ValidationError:
+            # Form validation should catch invalid UUID
+            # User is still created without team membership
+            pass

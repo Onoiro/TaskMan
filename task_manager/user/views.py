@@ -185,6 +185,11 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
+        # Add invite_code to cleaned_data if present in GET
+        invite_code = self.request.GET.get('invite_code')
+        if invite_code:
+            form.cleaned_data['invite_code'] = invite_code
+
         user = form.save(commit=True, request=self.request)
         # auto login after creating user
         login(self.request, user)

@@ -108,10 +108,10 @@ class UserForm(forms.ModelForm):
                 "Leave blank if you don't want to change password"
             )
 
-            # show user's current teams (only active ones)
+            # show user's current teams (active and pending)
             memberships = TeamMembership.objects.filter(
                 user=self.instance,
-                status='active'
+                status__in=['active', 'pending']
             ).select_related('team')
 
             if memberships.exists():
