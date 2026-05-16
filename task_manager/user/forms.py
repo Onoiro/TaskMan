@@ -83,69 +83,90 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # set field order for new users
-        is_update = self.instance and self.instance.pk
-        if not is_update:
-            self.order_fields([
-                'username',
-                'password1',
-                'password2',
-                'first_name',
-                'last_name',
-                'description',
-                'join_team_name',
-                'join_team_password',
-            ])
-
-        # if updating exist user
         if self.instance and self.instance.pk:
-            self.fields['password1'].required = False
-            self.fields['password2'].required = False
-            self.fields['password1'].help_text = _(
-                "Leave blank if you don't want to change password"
-            )
-            self.fields['password2'].help_text = _(
-                "Leave blank if you don't want to change password"
-            )
+            self._setup_update_mode()
+        else:
+            self._setup_create_mode()
 
-            # show user's current teams (active and pending)
-            memberships = TeamMembership.objects.filter(
-                user=self.instance,
-                status__in=['active', 'pending']
-            ).select_related('team')
+    def _setup_create_mode(self):
+        """Configure form for new user registration."""
+        for field_name in [
+            'first_name',
+            'last_name',
+            'description',
+            'join_team_name',
+            'join_team_password',
+        ]:
+            if field_name in self.fields:
+                del self.fields[field_name]
 
-            if memberships.exists():
-                teams_info = []
-                for m in memberships:
-                    role_str = (_("Admin") if m.role == 'admin'
-                                else _("Member"))
-                    status_str = ""
-                    if m.status == 'pending':
-                        status_str = f" ({_('Pending')})"
-                    teams_info.append(f"{m.team.name} ({role_str}){status_str}")
+        self.order_fields([
+            'username',
+            'password1',
+            'password2',
+        ])
 
-                # add read-only field with current teams info
-                self.fields['current_teams'] = forms.CharField(
-                    label=_('Current teams'),
-                    initial=", ".join(teams_info),
-                    required=False,
-                    widget=forms.TextInput(attrs={'readonly': 'readonly'}),
-                )
-                # set field after username
-                field_order = [
-                    'username',
-                    'current_teams',
-                    'first_name',
-                    'last_name'
-                ]
-                self.order_fields(field_order)
+    def _setup_update_mode(self):
+        """Configure form for existing user update."""
+        self._configure_password_fields_for_update()
+        self._add_current_teams_field()
+        self._configure_team_join_fields()
 
-            # set fields labels
-            self.fields['join_team_name'].label = _(
-                'Join another team (optional)')
-            self.fields['join_team_name'].help_text = _(
-                "Enter team name to join another team, or leave empty"
-            )
+    def _configure_password_fields_for_update(self):
+        """Make password fields optional for updates."""
+        self.fields['password1'].required = False
+        self.fields['password2'].required = False
+        self.fields['password1'].help_text = _(
+            "Leave blank if you don't want to change password"
+        )
+        self.fields['password2'].help_text = _(
+            "Leave blank if you don't want to change password"
+        )
+
+    def _add_current_teams_field(self):
+        """Add read-only field showing user's current teams."""
+        memberships = TeamMembership.objects.filter(
+            user=self.instance,
+            status__in=['active', 'pending']
+        ).select_related('team')
+
+        if not memberships.exists():
+            return
+
+        teams_info = self._build_teams_info(memberships)
+
+        self.fields['current_teams'] = forms.CharField(
+            label=_('Current teams'),
+            initial=", ".join(teams_info),
+            required=False,
+            widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+        )
+        self.order_fields([
+            'username',
+            'current_teams',
+            'first_name',
+            'last_name'
+        ])
+
+    def _build_teams_info(self, memberships):
+        """Build list of team info strings."""
+        teams_info = []
+        for m in memberships:
+            role_str = (_("Admin") if m.role == 'admin'
+                        else _("Member"))
+            status_str = ""
+            if m.status == 'pending':
+                status_str = f" ({_('Pending')})"
+            teams_info.append(f"{m.team.name} ({role_str}){status_str}")
+        return teams_info
+
+    def _configure_team_join_fields(self):
+        """Update labels and help texts for team joining fields."""
+        self.fields['join_team_name'].label = _(
+            'Join another team (optional)')
+        self.fields['join_team_name'].help_text = _(
+            "Enter team name to join another team, or leave empty"
+        )
 
     def _validate_passwords(self, cleaned_data, is_update):
         """Validate password fields for updates."""
