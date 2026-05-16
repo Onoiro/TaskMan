@@ -17,32 +17,23 @@ class UserFormTestCase(TestCase):
 
     def setUp(self):
         self.form_data = {
-            'first_name': 'Him',
-            'last_name': 'H',
             'username': 'him',
-            'description': 'Test user description',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': ''
         }
 
     def test_UserForm_valid(self):
         form = UserForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
-    def test_create_user_with_description(self):
-        """test that user can be created with description"""
+    def test_create_user_description_not_in_form(self):
+        """test that description field is not present on create form"""
         form = UserForm(data=self.form_data)
-        self.assertTrue(form.is_valid())
-        user = form.save()
-        self.assertEqual(user.description, 'Test user description')
+        self.assertNotIn('description', form.fields)
 
     def test_create_user_without_description(self):
         """test that user can be created without description"""
-        form_data = self.form_data.copy()
-        del form_data['description']
-        form = UserForm(data=form_data)
+        form = UserForm(data=self.form_data)
         self.assertTrue(form.is_valid())
         user = form.save()
         self.assertEqual(user.description, '')
@@ -88,13 +79,9 @@ class UserFormTestCase(TestCase):
 
     def test_create_user_without_password_fails(self):
         form_data = {
-            'first_name': 'Test',
-            'last_name': 'User',
             'username': 'testuser',
             'password1': '',
             'password2': '',
-            'join_team_name': '',
-            'join_team_password': ''
         }
         form = UserForm(data=form_data)
         self.assertFalse(form.is_valid())
@@ -135,52 +122,88 @@ class UserFormTestCase(TestCase):
         # Check user has no team memberships
         self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
-    def test_join_existing_team(self):
+    def test_join_team_via_invite_code(self):
+        """Test new user joining team via invite code."""
+        from task_manager.teams.models import TeamInvite
+        from django.utils import timezone
+        from datetime import timedelta
+
         team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30)
+        )
+
         form_data = {
-            'first_name': 'Team',
-            'last_name': 'Member',
-            'username': 'new_team_member',
+            'username': 'invite_user',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': team.name,
-            'join_team_password': (
-                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
-            )
+            'invite_code': str(invite.invite_code)
         }
         form = UserForm(data=form_data)
         self.assertTrue(form.is_valid())
         user = form.save()
 
-        # Check membership was created
+        # Check membership was created with active status
         membership = TeamMembership.objects.get(user=user, team=team)
         self.assertEqual(membership.role, 'member')
+        self.assertEqual(membership.status, 'active')
+        # Check invite is marked as used
+        invite.refresh_from_db()
+        self.assertTrue(invite.is_used)
+        self.assertEqual(invite.used_by, user)
 
-    def test_join_team_without_password_fails(self):
+    def test_join_team_without_password_fails_on_update(self):
+        """test that joining team without password fails on update"""
+        user = User.objects.get(pk=13)  # alone - no team
         team = Team.objects.get(pk=1)
-        form_data = self.form_data.copy()
-        form_data['join_team_name'] = team.name
-        form_data['join_team_password'] = ''  # No password
-        form = UserForm(data=form_data)
+        form_data = {
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'alone',
+            'password1': '',
+            'password2': '',
+            'join_team_name': team.name,
+            'join_team_password': ''  # No password
+        }
+        form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
         self.assertIn(_("Team password is required when joining a team"),
                       form.errors['__all__'])
 
-    def test_nonexistent_team_name(self):
-        form_data = self.form_data.copy()
-        form_data['join_team_name'] = 'Nonexistent Team'
-        form_data['join_team_password'] = 'somepassword'
-        form = UserForm(data=form_data)
+    def test_nonexistent_team_name_on_update(self):
+        """test that nonexistent team name fails on update"""
+        user = User.objects.get(pk=13)
+        form_data = {
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'alone',
+            'password1': '',
+            'password2': '',
+            'join_team_name': 'Nonexistent Team',
+            'join_team_password': 'somepassword'
+        }
+        form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
         self.assertIn(_("Team with this name does not exist"),
                       form.errors['__all__'])
 
-    def test_wrong_team_password(self):
+    def test_wrong_team_password_on_update(self):
+        """test that wrong team password fails on update"""
+        user = User.objects.get(pk=13)
         team = Team.objects.get(pk=1)
-        form_data = self.form_data.copy()
-        form_data['join_team_name'] = team.name
-        form_data['join_team_password'] = 'wrongpassword'
-        form = UserForm(data=form_data)
+        form_data = {
+            'first_name': 'Updated',
+            'last_name': 'User',
+            'username': 'alone',
+            'password1': '',
+            'password2': '',
+            'join_team_name': team.name,
+            'join_team_password': 'wrongpassword'
+        }
+        form = UserForm(data=form_data, instance=user)
         self.assertFalse(form.is_valid())
         self.assertIn(_("Invalid team password"), form.errors['__all__'])
 
@@ -433,39 +456,6 @@ class UserFormTestCase(TestCase):
         self.assertIn('Pending Test Team (Member) (Pending)', initial_value)
         self.assertIn('Active Test Team (Member)', initial_value)
 
-    def test_join_team_via_invite_code(self):
-        """Test new user joining team via invite code."""
-        team = Team.objects.get(pk=1)
-        invite = TeamInvite.objects.create(
-            team=team,
-            created_by=User.objects.get(pk=10),
-            max_uses=5,
-            expires_at=timezone.now() + timedelta(days=30)
-        )
-
-        form_data = {
-            'first_name': 'Invite',
-            'last_name': 'User',
-            'username': 'invite_user',
-            'password1': '12345678',
-            'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': '',
-            'invite_code': str(invite.invite_code)
-        }
-        form = UserForm(data=form_data)
-        self.assertTrue(form.is_valid())
-        user = form.save()
-
-        # Check membership was created with active status
-        membership = TeamMembership.objects.get(user=user, team=team)
-        self.assertEqual(membership.role, 'member')
-        self.assertEqual(membership.status, 'active')
-        # Check invite is marked as used
-        invite.refresh_from_db()
-        self.assertTrue(invite.is_used)
-        self.assertEqual(invite.used_by, user)
-
     def test_join_team_via_used_invite_code(self):
         """Test that used invite code doesn't create membership."""
         team = Team.objects.get(pk=1)
@@ -479,13 +469,9 @@ class UserFormTestCase(TestCase):
         )
 
         form_data = {
-            'first_name': 'Used',
-            'last_name': 'Invite',
             'username': 'used_invite_user',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': '',
             'invite_code': str(invite.invite_code)
         }
         form = UserForm(data=form_data)
@@ -509,13 +495,9 @@ class UserFormTestCase(TestCase):
         )
 
         form_data = {
-            'first_name': 'Expired',
-            'last_name': 'Invite',
             'username': 'expired_invite_user',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': '',
             'invite_code': str(invite.invite_code)
         }
         form = UserForm(data=form_data)
@@ -539,13 +521,9 @@ class UserFormTestCase(TestCase):
         )
 
         form_data = {
-            'first_name': 'Max',
-            'last_name': 'Uses',
             'username': 'max_uses_user',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': '',
             'invite_code': str(invite.invite_code)
         }
         form = UserForm(data=form_data)
@@ -562,13 +540,9 @@ class UserFormTestCase(TestCase):
         from django.core.exceptions import ValidationError
 
         form_data = {
-            'first_name': 'Invalid',
-            'last_name': 'UUID',
             'username': 'invalid_uuid_user',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': '',
-            'join_team_password': '',
             'invite_code': 'not-a-valid-uuid'
         }
 

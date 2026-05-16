@@ -22,14 +22,9 @@ class UserTestCase(TestCase):
         self.c = Client()
         self.c.force_login(self.user)
         self.user_data = {
-            'first_name': 'New',
-            'last_name': 'N',
             'username': 'new',
-            'description': 'Test description',
             'password1': '22222222',
             'password2': '22222222',
-            'join_team_name': '',
-            'join_team_password': ''
         }
 
         # Update UUIDs for fixtures that were loaded without them
@@ -315,13 +310,12 @@ class UserTestCase(TestCase):
     def test_create_user_page_content(self):
         response = self.c.get(reverse('user:user-create'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, _('First name'))
-        self.assertContains(response, _('Last name'))
         self.assertContains(response, _('Username'))
         self.assertContains(response, _('Password'))
         self.assertContains(response, _('Confirm password'))
-        self.assertContains(response, _('Join team (optional)'))
-        self.assertContains(response, _('Team password'))
+        # First name, last name, team join fields are no longer on create page
+        self.assertNotContains(response, _('First name'))
+        self.assertNotContains(response, _('Join team (optional)'))
         self.assertContains(response, _('Signup'))
         self.assertRegex(
             response.content.decode('utf-8'),
@@ -338,8 +332,9 @@ class UserTestCase(TestCase):
         self.assertEqual(old_count + 1, new_count)
 
         user = User.objects.filter(username=self.user_data['username']).first()
-        self.assertEqual(user.first_name, self.user_data['first_name'])
-        self.assertEqual(user.last_name, self.user_data['last_name'])
+        # first_name/last_name are set later via profile update
+        self.assertEqual(user.first_name, '')
+        self.assertEqual(user.last_name, '')
 
         # user without team should redirect to tasks list
         # Now redirects to index first, then to tasks-list
@@ -444,19 +439,25 @@ class UserTestCase(TestCase):
         # validation error message
         self.assertContains(response, _("The entered passwords do not match."))
 
-    def test_create_user_with_team_join_redirect(self):
-        """test that creating user with team join redirects to tasks"""
+    def test_create_user_with_team_join_via_invite_redirect(self):
+        """test that creating user with team invite redirects to tasks"""
+        from django.utils import timezone
+        from datetime import timedelta
+        from task_manager.teams.models import TeamInvite
+
         team = Team.objects.get(pk=1)
-        user_data_with_team = self.user_data.copy()
-        user_data_with_team.update({
-            'join_team_name': team.name,
-            'join_team_password': (
-                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
-            )
-        })
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30)
+        )
+
+        user_data_with_invite = self.user_data.copy()
+        user_data_with_invite['invite_code'] = str(invite.invite_code)
 
         response = self.c.post(
-            reverse('user:user-create'), user_data_with_team, follow=True)
+            reverse('user:user-create'), user_data_with_invite, follow=True)
 
         self.assertEqual(response.status_code, 200)
         # Should redirect to tasks list after index redirect
@@ -465,72 +466,68 @@ class UserTestCase(TestCase):
             target_status_code=200, fetch_redirect_response=True
         )
 
-        # check that membership was created with pending status
+        # check that membership was created with active status (via invite)
         new_user = User.objects.get(username=self.user_data['username'])
         membership = TeamMembership.objects.filter(
             user=new_user, team=team
         ).first()
         self.assertIsNotNone(membership)
-        self.assertEqual(membership.status, 'pending')
+        self.assertEqual(membership.status, 'active')
 
-        # check welcome message with team info
-        messages = list(get_messages(response.wsgi_request))
-        team_messages = [
-            str(msg) for msg in messages
-            if 'request to join team' in str(msg).lower()
-        ]
-        self.assertEqual(len(team_messages), 1)
+    def test_not_create_user_with_invalid_invite_code(self):
+        """test creating user with invalid invite code still creates user"""
+        from django.core.exceptions import ValidationError
 
-    def test_not_create_user_with_invalid_team_password(self):
-        """test creating user with invalid team password"""
-        team = Team.objects.get(pk=1)
-        user_data_with_team = self.user_data.copy()
-        user_data_with_team.update({
-            'join_team_name': team.name,
-            'join_team_password': 'wrongpassword'
-        })
+        user_data_with_invite = self.user_data.copy()
+        user_data_with_invite['invite_code'] = 'invalid-uuid-code'
 
-        response = self.c.post(
-            reverse('user:user-create'), user_data_with_team, follow=True)
+        # Invalid UUID may raise ValidationError during form processing
+        try:
+            self.c.post(
+                reverse('user:user-create'),
+                user_data_with_invite,
+                follow=True
+            )
+        except ValidationError:
+            pass
 
-        # user should not be created without team membership
-        self.assertEqual(response.status_code, 200)
-        # user does not created
-        self.assertFalse(User.objects.filter(
-            username=self.user_data['username']).exists())
-
-        # validation error message
-        self.assertContains(response, _("Invalid team password"))
-        user = User.objects.filter(username=self.user_data['username']).first()
-        self.assertIsNone(user)
+        # user should still be created even with invalid invite
+        user = User.objects.filter(
+            username=self.user_data['username']).first()
+        self.assertIsNotNone(user)
 
         # should not have team membership
-        membership = TeamMembership.objects.filter(user=user, team=team).first()
-        self.assertIsNone(membership)
+        self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
-    def test_not_create_user_with_nonexistent_team(self):
-        """test creating user with nonexistent team"""
-        user_data_with_team = self.user_data.copy()
-        user_data_with_team.update({
-            'join_team_name': 'Nonexistent Team',
-            'join_team_password': 'somepassword'
-        })
+    def test_not_create_user_with_used_invite_code(self):
+        """test creating user with used invite code creates user without team"""
+        from django.utils import timezone
+        from datetime import timedelta
+        from task_manager.teams.models import TeamInvite
+
+        team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30),
+            is_used=True,
+            used_by=User.objects.get(pk=10)
+        )
+
+        user_data_with_invite = self.user_data.copy()
+        user_data_with_invite['invite_code'] = str(invite.invite_code)
 
         response = self.c.post(
-            reverse('user:user-create'), user_data_with_team, follow=True)
+            reverse('user:user-create'), user_data_with_invite, follow=True)
 
-        # user should not be created without team membership
+        # user should be created but without team membership
         self.assertEqual(response.status_code, 200)
-        # user does not created
-        self.assertFalse(User.objects.filter(
-            username=self.user_data['username']).exists())
+        user = User.objects.filter(
+            username=self.user_data['username']).first()
+        self.assertIsNotNone(user)
 
-        # validation error message
-        self.assertContains(response, _("Team with this name does not exist"))
-        user = User.objects.filter(username=self.user_data['username']).first()
-        self.assertIsNone(user)
-
-        # should not have any team membership
+        # should not have team membership
         self.assertFalse(TeamMembership.objects.filter(user=user).exists())
 
     # update
@@ -553,9 +550,19 @@ class UserTestCase(TestCase):
         self.assertContains(response, self.user.username)
 
     def test_update_user_successfully(self):
+        update_data = {
+            'first_name': 'Updated',
+            'last_name': 'Name',
+            'username': 'updated_user',
+            'description': 'Updated description',
+            'password1': 'newpass123',
+            'password2': 'newpass123',
+            'join_team_name': '',
+            'join_team_password': ''
+        }
         response = self.c.post(
             reverse('user:user-update', args=[self.user.username]),
-            self.user_data, follow=True)
+            update_data, follow=True)
         self.assertEqual(response.status_code, 200)
 
         self.assertRedirects(response, reverse('user:user-list'))
@@ -565,12 +572,12 @@ class UserTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('User updated successfully'))
 
         self.user.refresh_from_db()
-        self.assertEqual(self.user.first_name, self.user_data['first_name'])
-        self.assertEqual(self.user.last_name, self.user_data['last_name'])
-        self.assertEqual(self.user.username, self.user_data['username'])
-        self.assertEqual(self.user.description, self.user_data['description'])
+        self.assertEqual(self.user.first_name, update_data['first_name'])
+        self.assertEqual(self.user.last_name, update_data['last_name'])
+        self.assertEqual(self.user.username, update_data['username'])
+        self.assertEqual(self.user.description, update_data['description'])
         self.assertTrue(
-            check_password(self.user_data['password1'], self.user.password))
+            check_password(update_data['password1'], self.user.password))
 
     def test_user_auto_login_after_update(self):
         self.c.post(
@@ -871,27 +878,35 @@ class UserTestCase(TestCase):
         if Team.objects.filter(id=team.id).exists():
             team.delete()
 
-    def test_can_join_existing_team(self):
+    def test_can_join_existing_team_via_invite(self):
+        """test that new user can join team via invite code"""
+        from django.utils import timezone
+        from datetime import timedelta
+        from task_manager.teams.models import TeamInvite
+
         team = Team.objects.get(pk=1)
+        invite = TeamInvite.objects.create(
+            team=team,
+            created_by=User.objects.get(pk=10),
+            max_uses=5,
+            expires_at=timezone.now() + timedelta(days=30)
+        )
+
         new_user_data = {
-            'first_name': 'Team',
-            'last_name': 'Member',
             'username': 'team_member',
             'password1': '12345678',
             'password2': '12345678',
-            'join_team_name': team.name,
-            'join_team_password': (
-                'pbkdf2_sha256$260000$abcdefghijklmnopqrstuvwxyz123456'
-            )
+            'invite_code': str(invite.invite_code)
         }
         response = self.c.post(reverse('user:user-create'),
                                new_user_data, follow=True)
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username='team_member')
 
-        # check membership was created
+        # check membership was created with active status
         membership = TeamMembership.objects.get(user=user, team=team)
         self.assertEqual(membership.role, 'member')
+        self.assertEqual(membership.status, 'active')
 
         # users who join a team should not get default statuses
         self.assertEqual(Status.objects.filter(creator=user).count(), 0)

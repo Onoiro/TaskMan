@@ -304,6 +304,7 @@ class UserForm(forms.ModelForm):
     def _get_team_from_invite(self, invite_code):
         """Get team from invite code and validate it."""
         from task_manager.teams.models import TeamInvite
+        from django.core.exceptions import ValidationError
 
         try:
             invite = TeamInvite.objects.get(invite_code=invite_code)
@@ -317,7 +318,7 @@ class UserForm(forms.ModelForm):
                 return None
 
             return invite.team
-        except TeamInvite.DoesNotExist:
+        except (TeamInvite.DoesNotExist, ValidationError):
             return None
 
     def _mark_invite_used(self, invite_code, user):
