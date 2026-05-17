@@ -25,7 +25,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "^5.1"
-gunicorn = "^23.0.0"
+gunicorn = "^26.0.0"
 python-dotenv = "^1.2.2"
 django-bootstrap5 = "^26.2"
 django-modeltranslation = "^0.20.3"

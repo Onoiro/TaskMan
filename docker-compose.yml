@@ -29,6 +29,7 @@ services:
    build: .
    container_name: taskman_web
    environment:
+     DEBUG: ${DEBUG}
      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
      SECRET_KEY: ${SECRET_KEY}
      POST_SERVER_ITEM_ACCESS_TOKEN: ${POST_SERVER_ITEM_ACCESS_TOKEN:-}
