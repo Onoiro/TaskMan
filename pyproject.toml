@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "TaskMan"
-version = "2.23.0"
+version = "2.23.1"
 
 description = "Web task management system"
 authors = ["Andrey Bogatyrev <donoriono@gmail.com>"]
@@ -27,12 +27,12 @@ python = "^3.11"
 django = "^5.1"
 gunicorn = "^23.0.0"
 python-dotenv = "^1.2.2"
-django-bootstrap5 = "^25.1"
-django-modeltranslation = "^0.19"
+django-bootstrap5 = "^26.2"
+django-modeltranslation = "^0.20.3"
 whitenoise = "^6.12.0"
-dj-database-url = "^2.3.0"
+dj-database-url = "^3.1.2"
 psycopg2-binary = "^2.9.12"
-django-filter = "^25.1"
+django-filter = "^25.2"
 rollbar = "^0.16.3"
 certifi = "^2026.4.22"
 
