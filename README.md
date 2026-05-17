@@ -30,7 +30,7 @@ The TaskMan application is available in multiple languages:
 
 ## Requirements
 - **OS**: Linux (recommended)
-- **Python**: ^3.11
+- **Python**: ^3.12
 - **Poetry**: ^1.2.2 (for non-Docker setup)
 - **Docker Engine**: ^20.10 (for Docker setup)
 - **Docker Compose**: ^2.0 (for Docker setup)
@@ -110,7 +110,7 @@ make help # view all available commands
 
 ### Option 2: Traditional Setup (Without Docker)
 **Prerequisites**
-- Python 3.11 or higher
+- Python 3.12 or higher
 - Poetry 1.2.2 or higher
 - PostgreSQL (for production) or SQLite (for development included)
 
