@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       
       - name: Cache Poetry dependencies
         uses: actions/cache@v3
@@ -84,7 +84,7 @@ jobs:
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
-        if: matrix.python-version == '3.11'
+        if: matrix.python-version == '3.12'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
