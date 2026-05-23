@@ -10,6 +10,28 @@ from task_manager.notifications.services import (
 )
 
 
+def _notify_assigned(instance, pk_set, actor):
+    """Notify users added as task executors."""
+    from task_manager.user.models import User
+    for user_pk in pk_set:
+        try:
+            user = User.objects.get(pk=user_pk)
+            notify_task_assigned(instance, user, actor)
+        except User.DoesNotExist:
+            pass
+
+
+def _notify_unassigned(instance, pk_set, actor):
+    """Notify users removed from task executors."""
+    from task_manager.user.models import User
+    for user_pk in pk_set:
+        try:
+            user = User.objects.get(pk=user_pk)
+            notify_task_unassigned(instance, user, actor)
+        except User.DoesNotExist:
+            pass
+
+
 @receiver(m2m_changed, sender=Task.executors.through)
 def task_executors_changed(sender, instance, action, pk_set, **kwargs):
     """
@@ -24,22 +46,9 @@ def task_executors_changed(sender, instance, action, pk_set, **kwargs):
         return
 
     if action == 'post_add':
-        for user_pk in pk_set:
-            from task_manager.user.models import User
-            try:
-                user = User.objects.get(pk=user_pk)
-                notify_task_assigned(instance, user, actor)
-            except User.DoesNotExist:
-                pass
-
+        _notify_assigned(instance, pk_set, actor)
     elif action == 'post_remove':
-        for user_pk in pk_set:
-            from task_manager.user.models import User
-            try:
-                user = User.objects.get(pk=user_pk)
-                notify_task_unassigned(instance, user, actor)
-            except User.DoesNotExist:
-                pass
+        _notify_unassigned(instance, pk_set, actor)
 
 
 @receiver(pre_save, sender=Task)
