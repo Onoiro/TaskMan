@@ -121,6 +121,7 @@ TEMPLATES = [
                 'task_manager.context_processors.team_context',
                 'task_manager.context_processors.static_version',
                 'task_manager.context_processors.limits_context',
+                'task_manager.notifications.context_processors.notifications_context',
             ],
         },
     },
