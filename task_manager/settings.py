@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'task_manager.tasks',
     'task_manager.labels',
     'task_manager.teams',
-    'task_manager.notes'
+    'task_manager.notes',
+    'task_manager.notifications',
 ]
 
 MIDDLEWARE = [
