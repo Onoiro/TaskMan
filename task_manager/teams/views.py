@@ -25,6 +25,15 @@ from task_manager.teams.models import Team, TeamMembership, TeamInvite
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
 from task_manager.limit_service import LimitService
+from task_manager.notifications.services import (
+    notify_team_join_request,
+    notify_team_member_joined,
+    notify_request_approved,
+    notify_request_rejected,
+    notify_member_removed,
+    notify_role_changed,
+    notify_team_deleted,
+)
 
 
 # Constants
@@ -230,11 +239,26 @@ class TeamExitView(LoginRequiredMixin, View):
 
     def _process_removal(self, request, team, target_user, is_removing_self):
         """handle user removal and send appropriate message"""
+        # Check if membership was pending before removal
+        was_pending = TeamMembership.objects.filter(
+            user=target_user,
+            team=team,
+            status='pending',
+        ).exists()
+
         # Clear executors from team tasks before removing membership
         self._clear_user_as_executor(target_user, team)
 
         # Perform removal
         self._remove_user_membership(target_user, team)
+
+        # Notify about rejection if removing pending membership
+        if was_pending and not is_removing_self:
+            notify_request_rejected(team, target_user)
+
+        # Notify about removal (skip if self-removal)
+        if not is_removing_self:
+            notify_member_removed(team, target_user, request.user)
 
         # Clear session if removing self
         if is_removing_self:
@@ -403,6 +427,8 @@ class TeamJoinView(LoginRequiredMixin, View):
                 role='member',
                 status='pending'
             )
+
+            notify_team_join_request(team, request.user)
 
             messages.info(
                 request,
@@ -587,6 +613,10 @@ class TeamJoinInviteView(View):
             status='active'
         )
 
+        from task_manager.notifications.services import notify_team_invited
+        notify_team_member_joined(invite.team, request.user)
+        notify_team_invited(invite.team, request.user)
+
         invite.is_used = True
         invite.used_by = request.user
         invite.used_at = timezone.now()
@@ -678,6 +708,11 @@ class TeamDeleteView(TeamAdminPermissions, DeleteView):
             )
             return redirect(USER_LIST_URL)
 
+        # Collect members before deletion for notifications
+        members = list(team.members.all())
+
+        notify_team_deleted(team, members)
+
         messages.success(self.request, _('Team deleted successfully'))
         return super().form_valid(form)
 
@@ -698,11 +733,13 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
         new_role = form.cleaned_data['role']
         old_status = membership.status
         new_status = form.cleaned_data['status']
+        team = membership.team
 
         response = super().form_valid(form)
 
         # Handle role changes
         if old_role != new_role:
+            notify_role_changed(team, membership.user, new_role)
             if new_role == 'admin':
                 messages.success(
                     self.request,
@@ -720,7 +757,8 @@ class TeamMemberRoleUpdateView(TeamMembershipAdminPermissions, UpdateView):
 
         # Handle status changes (approval)
         if old_status != new_status:
-            if new_status == 'active':
+            if old_status == 'pending' and new_status == 'active':
+                notify_request_approved(team, membership.user)
                 messages.success(
                     self.request,
                     _(

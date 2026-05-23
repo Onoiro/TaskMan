@@ -63,6 +63,7 @@ urlpatterns = [
     path('labels/', include('task_manager.labels.urls')),
     path('teams/', include('task_manager.teams.urls')),
     path('notes/', include('task_manager.notes.urls')),
+    path('notifications/', include('task_manager.notifications.urls')),
     path(f'{settings.ADMIN_URL}/', admin.site.urls),
     path('i18n/', include("django.conf.urls.i18n")),
     # (given with Content-Type: application/javascript)

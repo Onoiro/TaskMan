@@ -267,15 +267,18 @@ class TaskCreateView(CustomPermissions, SuccessMessageMixin, CreateView):
             form.instance.team = team
             if team.memberships.count() == 1:
                 form.instance.save()
+                form.instance._actor = self.request.user
                 form.instance.executors.add(self.request.user)
                 self.object = form.instance
                 return super().form_valid(form)
         else:
             form.instance.save()
+            form.instance._actor = self.request.user
             form.instance.executors.add(self.request.user)
             self.object = form.instance
             return super().form_valid(form)
 
+        form.instance._actor = self.request.user
         return super().form_valid(form)
 
     def get_form_kwargs(self):
@@ -312,6 +315,7 @@ class TaskUpdateView(TaskUpdatePermissionMixin,
 
     def form_valid(self, form):
         form.instance.updated_by = self.request.user
+        form.instance._actor = self.request.user
         return super().form_valid(form)
 
     def get_form_kwargs(self):
