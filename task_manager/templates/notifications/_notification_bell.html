@@ -1,1 +1,167 @@
-{# Notification bell placeholder — will be implemented in Stage 6 #}
+{% load i18n %}
+
+{% if user.is_authenticated %}
+  {% if unread_notifications_count == 0 %}
+    <span class="text-white opacity-50 px-2"
+          title="{% trans 'No notifications' %}">
+      <i class="bi bi-bell fs-5"></i>
+    </span>
+  {% else %}
+    <div class="dropdown" id="notificationDropdown">
+      <button class="btn btn-link nav-link text-white position-relative px-2"
+              type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-bell-fill fs-5"></i>
+        <span class="position-absolute top-0 start-100 translate-middle
+                     badge rounded-pill bg-danger"
+              id="notificationBadge">
+          {{ unread_notifications_count }}
+        </span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow"
+          style="min-width: 240px;">
+        <li class="d-flex justify-content-between align-items-center
+                   px-2 px-md-3 py-2">
+          <h6 class="dropdown-header m-0 p-0">
+            {% trans "Notifications" %}
+          </h6>
+          <button class="btn btn-sm btn-link text-decoration-none p-0"
+                  onclick="markAllRead(event)">
+            {% trans "Mark all as read" %}
+          </button>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        {% for notif in unread_notifications %}
+        <li class="px-2 px-md-3 py-2" id="notif-{{ notif.pk }}">
+          <div class="d-flex align-items-start gap-1 gap-md-2">
+            <div class="flex-shrink-0 mt-1">
+              {% if notif.notification_type == 'task_assigned' %}
+                <i class="bi bi-person-plus text-primary fs-6"></i>
+              {% elif notif.notification_type == 'task_unassigned' %}
+                <i class="bi bi-person-dash text-warning fs-6"></i>
+              {% elif notif.notification_type == 'task_status_changed' %}
+                <i class="bi bi-arrow-repeat text-info fs-6"></i>
+              {% elif notif.notification_type == 'task_completed' %}
+                <i class="bi bi-check-circle-fill text-success fs-6"></i>
+              {% elif notif.notification_type == 'team_join_request' %}
+                <i class="bi bi-person-plus text-primary fs-6"></i>
+              {% elif notif.notification_type == 'team_member_joined' %}
+                <i class="bi bi-people-fill text-success fs-6"></i>
+              {% elif notif.notification_type == 'team_request_approved' %}
+                <i class="bi bi-check-lg text-success fs-6"></i>
+              {% elif notif.notification_type == 'team_request_rejected' %}
+                <i class="bi bi-x-lg text-danger fs-6"></i>
+              {% elif notif.notification_type == 'team_member_removed' %}
+                <i class="bi bi-person-x text-danger fs-6"></i>
+              {% elif notif.notification_type == 'team_role_changed' %}
+                <i class="bi bi-person-gear text-info fs-6"></i>
+              {% elif notif.notification_type == 'team_invited' %}
+                <i class="bi bi-envelope-plus text-primary fs-6"></i>
+              {% elif notif.notification_type == 'team_deleted' %}
+                <i class="bi bi-trash text-danger fs-6"></i>
+              {% else %}
+                <i class="bi bi-bell text-secondary fs-6"></i>
+              {% endif %}
+            </div>
+            <div class="flex-grow-1" style="min-width: 0;">
+              <div class="small text-break">{{ notif.message }}</div>
+              <div class="text-muted" style="font-size: 0.75rem;">
+                {{ notif.created_at|timesince }} {% trans "ago" %}
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <button class="btn btn-sm btn-link text-success p-0"
+                      onclick="markOneRead(event, {{ notif.pk }}, '{{ notif.action_url|default:''|escapejs }}')"
+                      title="{% trans 'Mark as read' %}">
+                <i class="bi bi-check2-all fs-6"></i>
+              </button>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+        {% if unread_notifications_count >= 10 %}
+        <li><hr class="dropdown-divider"></li>
+        <li class="px-2 px-md-3 py-1 text-center text-muted small">
+          {% trans "Showing last 10 notifications" %}
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(
+              cookie.substring(name.length + 1)
+            );
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    function updateBadge(delta) {
+      const badge = document.getElementById('notificationBadge');
+      if (!badge) return;
+      let count = parseInt(badge.textContent) + delta;
+      if (count <= 0) {
+        const dropdown = document.getElementById('notificationDropdown');
+        if (dropdown) {
+          dropdown.outerHTML = '<span class="text-white opacity-50 px-2" title="{% trans 'No notifications' %}"><i class="bi bi-bell fs-5"></i></span>';
+        }
+      } else {
+        badge.textContent = count;
+      }
+    }
+
+    function markOneRead(event, pk, actionUrl) {
+      event.stopPropagation();
+      const url = "{% url 'notifications:mark-read' 0 %}".replace('0', pk);
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          const item = document.getElementById('notif-' + pk);
+          if (item) {
+            item.remove();
+          }
+          updateBadge(-1);
+          if (actionUrl) {
+            window.location.href = actionUrl;
+          }
+        }
+      });
+    }
+
+    function markAllRead(event) {
+      event.stopPropagation();
+      const url = "{% url 'notifications:mark-all-read' %}";
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          const dropdown = document.getElementById('notificationDropdown');
+          if (dropdown) {
+            dropdown.outerHTML = '<span class="text-white opacity-50 px-2" title="{% trans 'No notifications' %}"><i class="bi bi-bell fs-5"></i></span>';
+          }
+        }
+      });
+    }
+    </script>
+  {% endif %}
+{% endif %}
