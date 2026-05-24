@@ -20,6 +20,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         days = options['days']
+        verbosity = options['verbosity']
         cutoff_date = timezone.now() - timedelta(days=days)
 
         queryset = Notification.objects.filter(
@@ -28,13 +29,14 @@ class Command(BaseCommand):
         )
         deleted_count, _ = queryset.delete()
 
-        if deleted_count:
-            self.stdout.write(
-                f'Deleted {deleted_count} read notification(s) '
-                f'older than {days} day(s).'
-            )
-        else:
-            self.stdout.write(
-                f'No read notifications older than {days} '
-                f'day(s) to delete.'
-            )
+        if verbosity > 1:
+            if deleted_count:
+                self.stdout.write(
+                    f'Deleted {deleted_count} read notification(s) '
+                    f'older than {days} day(s).'
+                )
+            else:
+                self.stdout.write(
+                    f'No read notifications older than {days} '
+                    f'day(s) to delete.'
+                )
