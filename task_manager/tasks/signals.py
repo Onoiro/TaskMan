@@ -69,7 +69,7 @@ def task_pre_save(sender, instance, **kwargs):
 @receiver(post_save, sender=Task)
 def task_post_save(sender, instance, created, **kwargs):
     """
-    Notify author about status changes and completion.
+    Notify author and executors about status changes and completion.
     """
     if created:
         return

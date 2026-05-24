@@ -60,42 +60,58 @@ def notify_task_unassigned(task, assignee, actor):
 
 def notify_task_status_changed(task, actor):
     """
-    Notify task author when status changes.
-    Skip if author changed the status themselves.
+    Notify task author and executors about status change.
+    Skip the actor to avoid self-notifications.
     """
-    if task.author == actor:
-        return
-
     action_url = reverse('tasks:tasks-list')
     message = _(
-        f"Status of task '{task.name}' has been changed"
-    )
-    _create(
-        recipient=task.author,
-        notification_type=Notification.NotificationType.TASK_STATUS_CHANGED,
-        message=message,
-        action_url=action_url,
-    )
+        "Status of task '{}' has been changed"
+    ).format(task.name)
+
+    # Collect unique recipients to prevent duplicate notifications
+    # when the author is also an executor.
+    recipients = set()
+    if task.author:
+        recipients.add(task.author)
+    for executor in task.executors.all():
+        recipients.add(executor)
+
+    for recipient in recipients:
+        if recipient == actor:
+            continue
+        _create(
+            recipient=recipient,
+            notification_type=Notification.NotificationType.TASK_STATUS_CHANGED,
+            message=message,
+            action_url=action_url,
+        )
 
 
 def notify_task_completed(task, actor):
     """
-    Notify task author when task is completed.
-    Skip if author completed the task themselves.
+    Notify task author and executors about task completion.
+    Skip the actor to avoid self-notifications.
     """
-    if task.author == actor:
-        return
-
     action_url = reverse('tasks:tasks-list')
     message = _(
-        f"Task '{task.name}' has been completed"
-    )
-    _create(
-        recipient=task.author,
-        notification_type=Notification.NotificationType.TASK_COMPLETED,
-        message=message,
-        action_url=action_url,
-    )
+        "Task '{}' has been completed"
+    ).format(task.name)
+
+    recipients = set()
+    if task.author:
+        recipients.add(task.author)
+    for executor in task.executors.all():
+        recipients.add(executor)
+
+    for recipient in recipients:
+        if recipient == actor:
+            continue
+        _create(
+            recipient=recipient,
+            notification_type=Notification.NotificationType.TASK_COMPLETED,
+            message=message,
+            action_url=action_url,
+        )
 
 
 def notify_team_join_request(team, applicant):
