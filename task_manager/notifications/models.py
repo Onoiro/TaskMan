@@ -45,7 +45,24 @@ class Notification(models.Model):
         verbose_name=_('Notification type')
     )
     message = models.TextField(
-        verbose_name=_('Message')
+        verbose_name=_('Message'),
+        blank=True,
+        help_text=_(
+            'Legacy field. Use message_key and message_params for new '
+            'notifications.'
+        )
+    )
+    message_key = models.CharField(
+        max_length=50,
+        blank=True,
+        verbose_name=_('Message key'),
+        help_text=_('Translation key for the message template.')
+    )
+    message_params = models.JSONField(
+        default=dict,
+        blank=True,
+        verbose_name=_('Message parameters'),
+        help_text=_('JSON parameters for message template.')
     )
     action_url = models.CharField(
         max_length=500,
@@ -80,6 +97,23 @@ class Notification(models.Model):
         if not self.is_read:
             self.is_read = True
             self.save(update_fields=['is_read'])
+
+    def get_message(self):
+        """
+        Returns the translated message.
+        If message_key and message_params are set, translates the template.
+        Otherwise returns the legacy message field.
+        """
+        if self.message_key and self.message_params:
+            from django.utils.translation import gettext as _
+            # message_key is actually the msgid (English template)
+            # e.g., "Status of task '{task_name}' has been changed"
+            template = _(self.message_key)
+            try:
+                return template.format(**self.message_params)
+            except (KeyError, TypeError):
+                return self.message or template
+        return self.message
 
     def __str__(self):
         return (

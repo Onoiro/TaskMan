@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-24 23:26+0300\n"
+"POT-Creation-Date: 2026-05-25 23:27+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Kyrgyz\n"
@@ -160,7 +160,7 @@ msgstr "Команда"
 msgid "Task"
 msgstr "Тапшырма"
 
-#: notes/models.py:65 notifications/models.py:61 statuses/models.py:58
+#: notes/models.py:65 notifications/models.py:75 statuses/models.py:58
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -264,80 +264,102 @@ msgstr "Билдирменин түрү"
 msgid "Message"
 msgstr "Билдирүү"
 
-#: notifications/models.py:53
+#: notifications/models.py:50
+msgid "Legacy field. Use message_key and message_params for new notifications."
+msgstr "Эскирген талаа. Жаңы билдирмелер үчүн message_key жана message_params'ты колдонуңуз."
+
+#: notifications/models.py:55
+msgid "Message key"
+msgstr "Билдирүү ачкычы"
+
+#: notifications/models.py:56
+msgid "Translation key for the message template."
+msgstr "Билдирүү шаблону үчүн котормо ачкычы."
+
+#: notifications/models.py:61
+msgid "Message parameters"
+msgstr "Билдирүү параметрлери"
+
+#: notifications/models.py:62
+msgid "JSON parameters for message template."
+msgstr "Билдирүү шаблону үчүн JSON параметрлери."
+
+#: notifications/models.py:67
 msgid "Action URL"
 msgstr "Аракеттин URL-дареги"
 
-#: notifications/models.py:57
+#: notifications/models.py:71
 msgid "Is read"
 msgstr "Окулду"
 
-#: notifications/models.py:72
+#: notifications/models.py:86
 msgid "Notification"
 msgstr "Билдирме"
 
-#: notifications/models.py:73
+#: notifications/models.py:87
 #: templates/notifications/_notification_bell.html:25
 msgid "Notifications"
 msgstr "Билдирмелер"
 
-#: notifications/services.py:31
+#: notifications/services.py:46
 #, python-brace-format
-msgid "You have been assigned to task: {task.name}"
-msgstr "Сизге тапшырма дайындалды: {task.name}"
+msgid "You have been assigned to task: {task_name}"
+msgstr "Сизге тапшырма дайындалды: {task_name}"
 
-#: notifications/services.py:51
+#: notifications/services.py:67
 #, python-brace-format
-msgid "You have been removed from task: {task.name}"
-msgstr "Сиз '{task.name}' тапшырмасынан чыгарылдыңыз"
+msgid "You have been removed from task: {task_name}"
+msgstr "Сиз '{task_name}' тапшырмасынан чыгарылдыңыз"
 
-#: notifications/services.py:68
-msgid "Status of task '{}' has been changed"
-msgstr "'{}' тапшырмасынын статусу өзгөртүлдү"
-
-#: notifications/services.py:97
-msgid "Task '{}' has been completed"
-msgstr "'{}' тапшырмасы аткарылды"
-
-#: notifications/services.py:123
+#: notifications/services.py:81
 #, python-brace-format
-msgid "{applicant.username} wants to join team '{team.name}'"
-msgstr "{applicant.username} '{team.name}' командасына кошулууну каалайт"
+msgid "Status of task '{task_name}' has been changed"
+msgstr "'{task_name}' тапшырмасынын статусу өзгөртүлдү"
 
-#: notifications/services.py:158
+#: notifications/services.py:113
 #, python-brace-format
-msgid "{new_member.username} has joined team '{team.name}'"
-msgstr "{new_member.username} '{team.name}' командасына кошулду"
+msgid "Task '{task_name}' has been completed"
+msgstr "'{task_name}' тапшырмасы аткарылды"
 
-#: notifications/services.py:182
+#: notifications/services.py:146
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been approved"
-msgstr "Сиздин '{team.name}' командасына кошулуу өтүнүчүңүз кабыл алынды"
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username} '{team_name}' командасына кошулууну каалайт"
 
-#: notifications/services.py:198
+#: notifications/services.py:187
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been rejected"
-msgstr "Сиздин '{team.name}' командасына кошулуу өтүнүчүңүз четке кагылды"
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username} '{team_name}' командасына кошулду"
 
-#: notifications/services.py:218
+#: notifications/services.py:214
 #, python-brace-format
-msgid "You have been removed from team '{team.name}'"
-msgstr "Сиз '{team.name}' командасынан чыгарылдыңыз"
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "Сиздин '{team_name}' командасына кошулуу өтүнүчүңүз кабыл алынды"
 
-#: notifications/services.py:234
+#: notifications/services.py:233
 #, python-brace-format
-msgid "Your role in team '{team.name}' has been changed to {new_role}"
-msgstr "Сиздин '{team.name}' командасындагы ролуңуз {new_role} болуп өзгөрдү"
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "Сиздин '{team_name}' командасына кошулуу өтүнүчүңүз четке кагылды"
 
-#: notifications/services.py:250
+#: notifications/services.py:256
 #, python-brace-format
-msgid "You have been invited to join team '{team.name}'"
-msgstr "Сиз '{team.name}' командасына чакырылдыңыз"
+msgid "You have been removed from team '{team_name}'"
+msgstr "Сиз '{team_name}' командасынан чыгарылдыңыз"
 
-#: notifications/services.py:267
+#: notifications/services.py:275
 #, python-brace-format
-msgid "Team '{team.name}' has been deleted"
-msgstr "'{team.name}' командасы өчүрүлдү"
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "Сиздин '{team_name}' командасындагы ролуңуз {role} болуп өзгөрдү"
+
+#: notifications/services.py:294
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "Сиз '{team_name}' командасына чакырылдыңыз"
+
+#: notifications/services.py:314
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "'{team_name}' командасы өчүрүлдү"
 
 #: permissions.py:7
 msgid "You are not authorized! Please login."

@@ -63,7 +63,7 @@
               {% endif %}
             </div>
             <div class="flex-grow-1" style="min-width: 0;">
-              <div class="small text-break">{{ notif.message }}</div>
+              <div class="small text-break">{{ notif.get_message }}</div>
               <div class="text-muted" style="font-size: 0.75rem;">
                 {{ notif.created_at|timesince }} {% trans "ago" %}
               </div>

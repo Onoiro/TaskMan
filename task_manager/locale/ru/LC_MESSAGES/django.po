@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-24 23:26+0300\n"
+"POT-Creation-Date: 2026-05-25 23:41+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -17,34 +17,36 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: forms.py:8
+#: task_manager/forms.py:8
 msgid "Specify the subject:"
 msgstr "Укажите тему:"
 
-#: forms.py:11
+#: task_manager/forms.py:11
 msgid "Bug, suggestion, etc."
 msgstr "Баг, предложение и т.д."
 
-#: forms.py:15
+#: task_manager/forms.py:15
 msgid "* Your email or Telegram (@username):"
 msgstr "* Ваш email или Telegram (@username):"
 
-#: forms.py:22
+#: task_manager/forms.py:22
 msgid "* Message:"
 msgstr "* Сообщение:"
 
-#: forms.py:25
+#: task_manager/forms.py:25
 msgid "Describe your issue or suggestion..."
 msgstr "Опишите проблему или предложение..."
 
-#: labels/forms.py:13 labels/forms.py:14 statuses/forms.py:14
-#: statuses/forms.py:15 statuses/models.py:21 tasks/models.py:34
-#: teams/models.py:22 templates/statuses/statuses_create_form.html:20
+#: task_manager/labels/forms.py:13 task_manager/labels/forms.py:14
+#: task_manager/statuses/forms.py:14 task_manager/statuses/forms.py:15
+#: task_manager/statuses/models.py:21 task_manager/tasks/models.py:34
+#: task_manager/teams/models.py:22
+#: task_manager/templates/statuses/statuses_create_form.html:20
 msgid "Name"
 msgstr "Название"
 
-#: labels/models.py:24 notes/models.py:28 statuses/models.py:26
-#: tasks/models.py:28
+#: task_manager/labels/models.py:24 task_manager/notes/models.py:28
+#: task_manager/statuses/models.py:26 task_manager/tasks/models.py:28
 msgid ""
 "Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
 "#, & are not allowed."
@@ -52,23 +54,23 @@ msgstr ""
 "Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
 "не разрешены."
 
-#: labels/views.py:37
+#: task_manager/labels/views.py:37
 msgid "Label created successfully"
 msgstr "Метка успешно создана"
 
-#: labels/views.py:76
+#: task_manager/labels/views.py:76
 msgid "Label updated successfully"
 msgstr "Метка успешно изменена"
 
-#: labels/views.py:100
+#: task_manager/labels/views.py:100
 msgid "Label deleted successfully"
 msgstr "Метка успешно удалена"
 
-#: labels/views.py:123
+#: task_manager/labels/views.py:123
 msgid "Cannot delete label because it is in use"
 msgstr "Невозможно удалить метку, потому что она используется"
 
-#: limit_service.py:16
+#: task_manager/limit_service.py:16
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
@@ -79,283 +81,317 @@ msgstr ""
 "«%(resource)s» (%(max)s). Попробуйте удалить то, что вам больше не нужно. "
 "TaskMan Pro без ограничений уже в разработке — мы над этим работаем!"
 
-#: limit_service.py:36
+#: task_manager/limit_service.py:36
 msgid "teams"
 msgstr "команд"
 
-#: limit_service.py:37
+#: task_manager/limit_service.py:37
 msgid "team members"
 msgstr "участников команды"
 
-#: limit_service.py:38
+#: task_manager/limit_service.py:38
 msgid "tasks"
 msgstr "задач"
 
-#: limit_service.py:39
+#: task_manager/limit_service.py:39
 msgid "personal statuses"
 msgstr "личных статусов"
 
-#: limit_service.py:40
+#: task_manager/limit_service.py:40
 msgid "team statuses"
 msgstr "командных статусов"
 
-#: limit_service.py:41
+#: task_manager/limit_service.py:41
 msgid "personal labels"
 msgstr "личных меток"
 
-#: limit_service.py:42
+#: task_manager/limit_service.py:42
 msgid "team labels"
 msgstr "командных меток"
 
-#: limit_service.py:43
+#: task_manager/limit_service.py:43
 msgid "personal notes"
 msgstr "личных заметок"
 
-#: limit_service.py:44
+#: task_manager/limit_service.py:44
 msgid "team notes"
 msgstr "командных заметок"
 
-#: limit_service.py:45
+#: task_manager/limit_service.py:45
 msgid "checklist items"
 msgstr "пунктов чек-листа"
 
-#: notes/forms.py:34 statuses/forms.py:25 teams/forms.py:29
-#: templates/notes/note_form.html:65
-#: templates/statuses/statuses_create_form.html:60 user/forms.py:15
-#: user/forms.py:16 user/forms.py:17
+#: task_manager/notes/forms.py:34 task_manager/statuses/forms.py:25
+#: task_manager/teams/forms.py:29
+#: task_manager/templates/notes/note_form.html:65
+#: task_manager/templates/statuses/statuses_create_form.html:60
+#: task_manager/user/forms.py:15 task_manager/user/forms.py:16
+#: task_manager/user/forms.py:17
 msgid "Optional"
 msgstr "Необязательно"
 
-#: notes/forms.py:49
+#: task_manager/notes/forms.py:49
 msgid "Task must be from the same team."
 msgstr "Задача должна принадлежать той же команде."
 
-#: notes/forms.py:55
+#: task_manager/notes/forms.py:55
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Нельзя прикрепить заметку к командной задаче в индивидуальном режиме."
 
-#: notes/forms.py:59
+#: task_manager/notes/forms.py:59
 msgid "You can only attach notes to your own tasks."
 msgstr "Вы можете прикреплять заметки только к своим задачам."
 
-#: notes/models.py:23 templates/notes/note_form.html:57
+#: task_manager/notes/models.py:23
+#: task_manager/templates/notes/note_form.html:57
 msgid "Title"
 msgstr "Заголовок"
 
-#: notes/models.py:37 templates/notes/note_form.html:69
-#: templates/terms_of_service.html:33
+#: task_manager/notes/models.py:37
+#: task_manager/templates/notes/note_form.html:69
+#: task_manager/templates/terms_of_service.html:33
 msgid "Content"
 msgstr "Содержимое"
 
-#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_form.html:37
-#: templates/tasks/task_filter.html:389 templates/tasks/task_update.html:23
-#: templates/user/user_detail.html:80 templates/user/user_detail.html:102
+#: task_manager/notes/models.py:45 task_manager/tasks/filters.py:33
+#: task_manager/templates/notes/note_form.html:37
+#: task_manager/templates/tasks/task_filter.html:389
+#: task_manager/templates/tasks/task_update.html:23
+#: task_manager/templates/user/user_detail.html:80
+#: task_manager/templates/user/user_detail.html:102
 msgid "Author"
 msgstr "Автор"
 
-#: notes/models.py:53 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:29
+#: task_manager/notes/models.py:53 task_manager/tasks/models.py:47
+#: task_manager/templates/labels/labels_update.html:29
+#: task_manager/templates/notes/note_form.html:29
 msgid "Team"
 msgstr "Команда"
 
-#: notes/models.py:61 tasks/models.py:129
+#: task_manager/notes/models.py:61 task_manager/tasks/models.py:129
 msgid "Task"
 msgstr "Задача"
 
-#: notes/models.py:65 notifications/models.py:61 statuses/models.py:58
-#: tasks/models.py:73 teams/models.py:43 teams/models.py:136
-#: templates/labels/labels_update.html:54
-#: templates/statuses/statuses_update.html:58
-#: templates/teams/team_detail.html:34 templates/teams/team_detail.html:61
+#: task_manager/notes/models.py:65 task_manager/notifications/models.py:75
+#: task_manager/statuses/models.py:58 task_manager/tasks/models.py:73
+#: task_manager/teams/models.py:43 task_manager/teams/models.py:136
+#: task_manager/templates/labels/labels_update.html:54
+#: task_manager/templates/statuses/statuses_update.html:58
+#: task_manager/templates/teams/team_detail.html:34
+#: task_manager/templates/teams/team_detail.html:61
 msgid "Created at"
 msgstr "Дата создания"
 
-#: notes/models.py:69 tasks/models.py:78
+#: task_manager/notes/models.py:69 task_manager/tasks/models.py:78
 msgid "Updated at"
 msgstr "Дата обновления"
 
-#: notes/models.py:74 templates/feedback.html:28
-#: templates/notes/note_form.html:20
+#: task_manager/notes/models.py:74 task_manager/templates/feedback.html:28
+#: task_manager/templates/notes/note_form.html:20
 msgid "Note"
 msgstr "Заметка"
 
-#: notes/models.py:75 templates/base.html:128 templates/base.html:153
-#: templates/includes/limits_usage.html:72
-#: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:347
+#: task_manager/notes/models.py:75 task_manager/templates/base.html:128
+#: task_manager/templates/base.html:153
+#: task_manager/templates/includes/limits_usage.html:72
+#: task_manager/templates/includes/team_limits_usage.html:84
+#: task_manager/templates/notes/_task_notes.html:7
+#: task_manager/templates/tasks/task_filter.html:347
 msgid "Notes"
 msgstr "Заметки"
 
-#: notes/views.py:50
+#: task_manager/notes/views.py:50
 msgid "Note created successfully"
 msgstr "Заметка успешно создана"
 
-#: notes/views.py:119
+#: task_manager/notes/views.py:119
 msgid "Note can only be edited by its author or team admin."
 msgstr "Заметку может изменить только ее автор или администратор команды."
 
-#: notes/views.py:141
+#: task_manager/notes/views.py:141
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Заметку может удалить только ее автор или администратор команды."
 
-#: notes/views.py:157
+#: task_manager/notes/views.py:157
 msgid "Note updated successfully"
 msgstr "Заметка успешно изменена"
 
-#: notes/views.py:195
+#: task_manager/notes/views.py:195
 msgid "Note deleted successfully"
 msgstr "Заметка успешно удалена"
 
-#: notifications/models.py:9
+#: task_manager/notifications/models.py:9
 msgid "Task assigned"
 msgstr "Назначена задача"
 
-#: notifications/models.py:10
+#: task_manager/notifications/models.py:10
 msgid "Task unassigned"
 msgstr "Снято назначение с задачи"
 
-#: notifications/models.py:12
+#: task_manager/notifications/models.py:12
 msgid "Task status changed"
 msgstr "Статус задачи изменён"
 
-#: notifications/models.py:14
+#: task_manager/notifications/models.py:14
 msgid "Task completed"
 msgstr "Задача завершена"
 
-#: notifications/models.py:16
+#: task_manager/notifications/models.py:16
 msgid "Team join request"
 msgstr "Заявка на вступление в команду"
 
-#: notifications/models.py:19
+#: task_manager/notifications/models.py:19
 msgid "Team member joined"
 msgstr "Новый участник команды"
 
-#: notifications/models.py:22
+#: task_manager/notifications/models.py:22
 msgid "Team request approved"
 msgstr "Заявка в команду одобрена"
 
-#: notifications/models.py:25
+#: task_manager/notifications/models.py:25
 msgid "Team request rejected"
 msgstr "Заявка в команду отклонена"
 
-#: notifications/models.py:28
+#: task_manager/notifications/models.py:28
 msgid "Team member removed"
 msgstr "Участник удалён из команды"
 
-#: notifications/models.py:31
+#: task_manager/notifications/models.py:31
 msgid "Team role changed"
 msgstr "Изменена роль в команде"
 
-#: notifications/models.py:33
+#: task_manager/notifications/models.py:33
 msgid "Team invited"
 msgstr "Приглашение в команду"
 
-#: notifications/models.py:34
+#: task_manager/notifications/models.py:34
 msgid "Team deleted"
 msgstr "Команда удалена"
 
-#: notifications/models.py:40
+#: task_manager/notifications/models.py:40
 msgid "Recipient"
 msgstr "Получатель"
 
-#: notifications/models.py:45
+#: task_manager/notifications/models.py:45
 msgid "Notification type"
 msgstr "Тип уведомления"
 
-#: notifications/models.py:48
+#: task_manager/notifications/models.py:48
 msgid "Message"
 msgstr "Сообщение"
 
-#: notifications/models.py:53
+#: task_manager/notifications/models.py:50
+msgid "Legacy field. Use message_key and message_params for new notifications."
+msgstr "Устаревшее поле. Используйте message_key и message_params для новых уведомлений."
+
+#: task_manager/notifications/models.py:55
+msgid "Message key"
+msgstr "Ключ сообщения"
+
+#: task_manager/notifications/models.py:56
+msgid "Translation key for the message template."
+msgstr "Ключ перевода для шаблона сообщения."
+
+#: task_manager/notifications/models.py:61
+msgid "Message parameters"
+msgstr "Параметры сообщения"
+
+#: task_manager/notifications/models.py:62
+msgid "JSON parameters for message template."
+msgstr "JSON-параметры для шаблона сообщения."
+
+#: task_manager/notifications/models.py:67
 msgid "Action URL"
 msgstr "URL действия"
 
-#: notifications/models.py:57
+#: task_manager/notifications/models.py:71
 msgid "Is read"
 msgstr "Прочитано"
 
-#: notifications/models.py:72
+#: task_manager/notifications/models.py:86
 msgid "Notification"
 msgstr "Уведомление"
 
-#: notifications/models.py:73
-#: templates/notifications/_notification_bell.html:25
+#: task_manager/notifications/models.py:87
+#: task_manager/templates/notifications/_notification_bell.html:25
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: notifications/services.py:31
+#: task_manager/notifications/services.py:46
 #, python-brace-format
-msgid "You have been assigned to task: {task.name}"
-msgstr "Вам назначена задача: {task.name}"
+msgid "You have been assigned to task: {task_name}"
+msgstr "Вам назначена задача: {task_name}"
 
-#: notifications/services.py:51
+#: task_manager/notifications/services.py:67
 #, python-brace-format
-msgid "You have been removed from task: {task.name}"
-msgstr "Вы откреплены от задачи: {task.name}"
+msgid "You have been removed from task: {task_name}"
+msgstr "Вы откреплены от задачи: {task_name}"
 
-#: notifications/services.py:68
-msgid "Status of task '{}' has been changed"
-msgstr "Статус задачи '{}' изменён"
-
-#: notifications/services.py:97
-msgid "Task '{}' has been completed"
-msgstr "Задача '{}' завершена"
-
-#: notifications/services.py:123
+#: task_manager/notifications/services.py:81
 #, python-brace-format
-msgid "{applicant.username} wants to join team '{team.name}'"
-msgstr "{applicant.username} хочет вступить в команду '{team.name}'"
+msgid "Status of task '{task_name}' has been changed"
+msgstr "Статус задачи '{task_name}' изменён"
 
-#: notifications/services.py:158
+#: task_manager/notifications/services.py:113
 #, python-brace-format
-msgid "{new_member.username} has joined team '{team.name}'"
-msgstr "{new_member.username} присоединился к команде '{team.name}'"
+msgid "Task '{task_name}' has been completed"
+msgstr "Задача '{task_name}' завершена"
 
-#: notifications/services.py:182
+#: task_manager/notifications/services.py:147
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been approved"
-msgstr "Ваша заявка на вступление в команду '{team.name}' одобрена"
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username} хочет вступить в команду '{team_name}'"
 
-#: notifications/services.py:198
+#: task_manager/notifications/services.py:188
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been rejected"
-msgstr "Ваша заявка на вступление в команду '{team.name}' отклонена"
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username} присоединился к команде '{team_name}'"
 
-#: notifications/services.py:218
+#: task_manager/notifications/services.py:215
 #, python-brace-format
-msgid "You have been removed from team '{team.name}'"
-msgstr "Вы удалены из команды '{team.name}'"
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "Ваша заявка на вступление в команду '{team_name}' одобрена"
 
-#: notifications/services.py:234
+#: task_manager/notifications/services.py:235
 #, python-brace-format
-msgid "Your role in team '{team.name}' has been changed to {new_role}"
-msgstr "Ваша роль в команде '{team.name}' изменена на {new_role}"
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "Ваша заявка на вступление в команду '{team_name}' отклонена"
 
-#: notifications/services.py:250
+#: task_manager/notifications/services.py:258
 #, python-brace-format
-msgid "You have been invited to join team '{team.name}'"
-msgstr "Вы приглашены в команду '{team.name}'"
+msgid "You have been removed from team '{team_name}'"
+msgstr "Вы удалены из команды '{team_name}'"
 
-#: notifications/services.py:267
+#: task_manager/notifications/services.py:277
 #, python-brace-format
-msgid "Team '{team.name}' has been deleted"
-msgstr "Команда '{team.name}' удалена"
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "Ваша роль в команде '{team_name}' изменена на {role}"
 
-#: permissions.py:7
+#: task_manager/notifications/services.py:296
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "Вы приглашены в команду '{team_name}'"
+
+#: task_manager/notifications/services.py:316
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "Команда '{team_name}' удалена"
+
+#: task_manager/permissions.py:7
 msgid "You are not authorized! Please login."
 msgstr "Вы не авторизованы. Пожалуйста, выполните вход."
 
-#: permissions.py:24
+#: task_manager/permissions.py:24
 msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
-#: permissions.py:40
+#: task_manager/permissions.py:40
 msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "У вас нет прав, чтобы изменить это. Это может сделать только администратор "
 "команды."
 
-#: permissions.py:65
+#: task_manager/permissions.py:65
 msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
@@ -363,397 +399,415 @@ msgstr ""
 "У вас нет прав, чтобы управлять участниками команды. Это может сделать "
 "только администратор команды."
 
-#: permissions.py:74
+#: task_manager/permissions.py:74
 msgid "You cannot change your own role in the team."
 msgstr "Вы не можете изменить свою роль в команде."
 
-#: permissions.py:79
+#: task_manager/permissions.py:79
 msgid "Team membership not found."
 msgstr "Участие в команде не найдено."
 
-#: settings.py:186 templates/index.html:67
+#: task_manager/settings.py:186 task_manager/templates/index.html:67
 msgid "English"
 msgstr "Английский"
 
-#: settings.py:187 templates/index.html:76
+#: task_manager/settings.py:187 task_manager/templates/index.html:76
 msgid "Russian"
 msgstr "Русский"
 
-#: settings.py:188 templates/index.html:85
+#: task_manager/settings.py:188 task_manager/templates/index.html:85
 msgid "Tajik"
 msgstr "Таджикский"
 
-#: settings.py:189 templates/index.html:94
+#: task_manager/settings.py:189 task_manager/templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Азербайджанский"
 
-#: settings.py:190 templates/index.html:103
+#: task_manager/settings.py:190 task_manager/templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Киргизский"
 
-#: statuses/forms.py:19 statuses/forms.py:22 statuses/models.py:48
-#: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
-#: templates/statuses/statuses_create_form.html:54
-#: templates/statuses/statuses_update.html:40
-#: templates/teams/team_detail.html:25 templates/teams/team_detail.html:60
-#: templates/user/user_detail.html:30 user/models.py:11
+#: task_manager/statuses/forms.py:19 task_manager/statuses/forms.py:22
+#: task_manager/statuses/models.py:48 task_manager/tasks/models.py:38
+#: task_manager/teams/forms.py:27 task_manager/teams/models.py:32
+#: task_manager/templates/statuses/statuses_create_form.html:54
+#: task_manager/templates/statuses/statuses_update.html:40
+#: task_manager/templates/teams/team_detail.html:25
+#: task_manager/templates/teams/team_detail.html:60
+#: task_manager/templates/user/user_detail.html:30
+#: task_manager/user/models.py:11
 msgid "Description"
 msgstr "Описание"
 
-#: statuses/forms.py:30 templates/statuses/statuses_create_form.html:40
-#: templates/statuses/statuses_update.html:28
-#: templates/statuses/statuses_update.html:59
+#: task_manager/statuses/forms.py:30
+#: task_manager/templates/statuses/statuses_create_form.html:40
+#: task_manager/templates/statuses/statuses_update.html:28
+#: task_manager/templates/statuses/statuses_update.html:59
 msgid "Color"
 msgstr "Цвет"
 
-#: statuses/forms.py:35 templates/statuses/statuses_create_form.html:49
+#: task_manager/statuses/forms.py:35
+#: task_manager/templates/statuses/statuses_create_form.html:49
 msgid "Choose status color"
 msgstr "Выберите цвет статуса"
 
-#: statuses/models.py:67
+#: task_manager/statuses/models.py:67
 msgid "To Do"
 msgstr "Сделать"
 
-#: statuses/models.py:68
+#: task_manager/statuses/models.py:68
 msgid "Task has been created but not yet started"
 msgstr "Задача создана, но еще не начата"
 
-#: statuses/models.py:73
+#: task_manager/statuses/models.py:73
 msgid "In Progress"
 msgstr "В работе"
 
-#: statuses/models.py:74
+#: task_manager/statuses/models.py:74
 msgid "Task is currently being worked on"
 msgstr "Задача выполняется в данный момент"
 
-#: statuses/models.py:78
+#: task_manager/statuses/models.py:78
 msgid "On Hold"
 msgstr "На паузе"
 
-#: statuses/models.py:79
+#: task_manager/statuses/models.py:79
 msgid "Task is temporarily paused"
 msgstr "Задача временно приостановлена"
 
-#: statuses/models.py:83
+#: task_manager/statuses/models.py:83
 msgid "Completed"
 msgstr "Завершена"
 
-#: statuses/models.py:84
+#: task_manager/statuses/models.py:84
 msgid "Task has been finished successfully"
 msgstr "Задача успешно выполнена"
 
-#: statuses/models.py:88
+#: task_manager/statuses/models.py:88
 msgid "Cancelled"
 msgstr "Отменена"
 
-#: statuses/models.py:89
+#: task_manager/statuses/models.py:89
 msgid "Task was abandoned or deemed unnecessary"
 msgstr "Задача отменена или больше не актуальна"
 
-#: statuses/models.py:93
+#: task_manager/statuses/models.py:93
 msgid "Blocked"
 msgstr "Заблокирована"
 
-#: statuses/models.py:95
+#: task_manager/statuses/models.py:95
 msgid "Task cannot proceed due to external dependencies"
 msgstr "Задача не может быть выполнена из-за внешних факторов"
 
-#: statuses/views.py:38
+#: task_manager/statuses/views.py:38
 msgid "Status created successfully"
 msgstr "Статус успешно создан"
 
-#: statuses/views.py:71
+#: task_manager/statuses/views.py:71
 msgid "Status updated successfully"
 msgstr "Статус успешно изменен"
 
-#: statuses/views.py:80
+#: task_manager/statuses/views.py:80
 msgid "Status deleted successfully"
 msgstr "Статус успешно удален"
 
-#: statuses/views.py:90
+#: task_manager/statuses/views.py:90
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
-#: tasks/filters.py:15
+#: task_manager/tasks/filters.py:15
 msgid "Search"
 msgstr "Поиск"
 
-#: tasks/filters.py:18
+#: task_manager/tasks/filters.py:18
 msgid "Task name..."
 msgstr "Название задачи..."
 
-#: tasks/filters.py:26 tasks/models.py:52
-#: templates/statuses/statuses_update.html:51
-#: templates/teams/team_member_role_update.html:38
+#: task_manager/tasks/filters.py:26 task_manager/tasks/models.py:52
+#: task_manager/templates/statuses/statuses_update.html:51
+#: task_manager/templates/teams/team_member_role_update.html:38
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:393
-#: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
-#: templates/user/user_detail.html:105
+#: task_manager/tasks/filters.py:40
+#: task_manager/templates/tasks/task_filter.html:393
+#: task_manager/templates/tasks/task_update.html:28
+#: task_manager/templates/user/user_detail.html:83
+#: task_manager/templates/user/user_detail.html:105
 msgid "Executor"
 msgstr "Исполнитель"
 
-#: tasks/filters.py:47 templates/labels/labels_update.html:47
+#: task_manager/tasks/filters.py:47
+#: task_manager/templates/labels/labels_update.html:47
 msgid "Label"
 msgstr "Метка"
 
-#: tasks/filters.py:53 templates/tasks/task_filter.html:118
-#: templates/tasks/task_filter.html:177
+#: task_manager/tasks/filters.py:53
+#: task_manager/templates/tasks/task_filter.html:118
+#: task_manager/templates/tasks/task_filter.html:177
 msgid "My tasks"
 msgstr "Мои задачи"
 
-#: tasks/filters.py:61
+#: task_manager/tasks/filters.py:61
 msgid "From"
 msgstr "С"
 
-#: tasks/filters.py:71
+#: task_manager/tasks/filters.py:71
 msgid "To"
 msgstr "По"
 
-#: tasks/filters.py:80 templates/tasks/task_filter.html:229
+#: task_manager/tasks/filters.py:80
+#: task_manager/templates/tasks/task_filter.html:229
 msgid "Has checklist"
 msgstr "Есть чеклист"
 
-#: tasks/models.py:58
+#: task_manager/tasks/models.py:58
 msgid "Executors"
 msgstr "Исполнители"
 
-#: tasks/models.py:69 templates/base.html:123 templates/base.html:150
-#: templates/includes/limits_usage.html:56
-#: templates/includes/team_limits_usage.html:66 templates/index.html:49
+#: task_manager/tasks/models.py:69 task_manager/templates/base.html:123
+#: task_manager/templates/base.html:150
+#: task_manager/templates/includes/limits_usage.html:56
+#: task_manager/templates/includes/team_limits_usage.html:66
+#: task_manager/templates/index.html:49
 msgid "Labels"
 msgstr "Метки"
 
-#: tasks/models.py:86
+#: task_manager/tasks/models.py:86
 msgid "Updated by"
 msgstr "Кем обновлено"
 
-#: tasks/models.py:133
+#: task_manager/tasks/models.py:133
 msgid "Text"
 msgstr "Текст"
 
-#: tasks/models.py:137
+#: task_manager/tasks/models.py:137
 msgid "Done"
 msgstr "Выполнено"
 
-#: tasks/models.py:141
+#: task_manager/tasks/models.py:141
 msgid "Position"
 msgstr "Позиция"
 
-#: tasks/views.py:50 templates/privacy_policy.html:9
-#: templates/terms_of_service.html:9
+#: task_manager/tasks/views.py:50 task_manager/templates/privacy_policy.html:9
+#: task_manager/templates/terms_of_service.html:9
 msgid "Last updated"
 msgstr "Последнее обновление"
 
-#: tasks/views.py:51
+#: task_manager/tasks/views.py:51
 msgid "First updated"
 msgstr "Сначала давно обновлённые"
 
-#: tasks/views.py:52
+#: task_manager/tasks/views.py:52
 msgid "Newest first"
 msgstr "Сначала новые"
 
-#: tasks/views.py:53
+#: task_manager/tasks/views.py:53
 msgid "Oldest first"
 msgstr "Сначала старые"
 
-#: tasks/views.py:54
+#: task_manager/tasks/views.py:54
 msgid "Name A→Z"
 msgstr "Название A→Z"
 
-#: tasks/views.py:55
+#: task_manager/tasks/views.py:55
 msgid "Name Z→A"
 msgstr "Название Z→A"
 
-#: tasks/views.py:71
+#: task_manager/tasks/views.py:71
 msgid "Task can only be deleted by its author or team admin."
 msgstr "Задачу может удалить только ее автор или администратор команды."
 
-#: tasks/views.py:89 tasks/views.py:351
+#: task_manager/tasks/views.py:89 task_manager/tasks/views.py:351
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Задачу может изменить только ее автор, исполнители или администратор команды."
 
-#: tasks/views.py:151
+#: task_manager/tasks/views.py:151
 msgid "Filter saved as default"
 msgstr "Фильтр сохранен по умолчанию"
 
-#: tasks/views.py:234
+#: task_manager/tasks/views.py:234
 msgid "Task created successfully"
 msgstr "Задача успешно создана"
 
-#: tasks/views.py:298
+#: task_manager/tasks/views.py:298
 msgid "Task updated successfully"
 msgstr "Задача успешно изменена"
 
-#: tasks/views.py:338
+#: task_manager/tasks/views.py:338
 msgid "Task deleted successfully"
 msgstr "Задача успешно удалена"
 
-#: tasks/views.py:382
+#: task_manager/tasks/views.py:382
 msgid "Text is required"
 msgstr "Введите текст"
 
-#: tasks/views.py:386
+#: task_manager/tasks/views.py:386
 msgid "Text must be 300 characters or less"
 msgstr "Текст не должен превышать 300 символов"
 
-#: teams/forms.py:35 user/forms.py:22
+#: task_manager/teams/forms.py:35 task_manager/user/forms.py:22
 msgid "Password"
 msgstr "Пароль"
 
-#: teams/forms.py:37 user/forms.py:24
+#: task_manager/teams/forms.py:37 task_manager/user/forms.py:24
 msgid "Your password must contain at least 8 characters."
 msgstr "Пароль должен содержать не менее 8 символов."
 
-#: teams/forms.py:41 user/forms.py:29
+#: task_manager/teams/forms.py:41 task_manager/user/forms.py:29
 msgid "Confirm password"
 msgstr "Подтверждение пароля"
 
-#: teams/forms.py:43 user/forms.py:31
+#: task_manager/teams/forms.py:43 task_manager/user/forms.py:31
 msgid "Please enter your password one more time"
 msgstr "Для подтверждения введите пароль еще раз."
 
-#: teams/forms.py:52 teams/forms.py:55 user/forms.py:120 user/forms.py:123
+#: task_manager/teams/forms.py:52 task_manager/teams/forms.py:55
+#: task_manager/user/forms.py:120 task_manager/user/forms.py:123
 msgid "Leave blank if you don't want to change password"
 msgstr "Оставьте поле пустым, если не хотите менять пароль"
 
-#: teams/forms.py:65 user/forms.py:63
+#: task_manager/teams/forms.py:65 task_manager/user/forms.py:63
 msgid "Your password is too short. It must contain at least 8 characters."
 msgstr ""
 "Введенный пароль слишком короткий. Он должен содержать не менее 8 символов."
 
-#: teams/forms.py:79 user/forms.py:79
+#: task_manager/teams/forms.py:79 task_manager/user/forms.py:79
 msgid "The entered passwords do not match."
 msgstr "Введенные пароли не совпадают."
 
-#: teams/forms.py:90 user/forms.py:179
+#: task_manager/teams/forms.py:90 task_manager/user/forms.py:179
 msgid "Both password fields must be filled or both left blank"
 msgstr "Оба поля пароля должны быть заполнены или оба оставлены пустыми"
 
-#: teams/forms.py:110 templates/teams/team_detail.html:59
+#: task_manager/teams/forms.py:110
+#: task_manager/templates/teams/team_detail.html:59
 msgid "Team name"
 msgstr "Название команды"
 
-#: teams/forms.py:114
+#: task_manager/teams/forms.py:114
 msgid "Enter team name"
 msgstr "Введите название команды"
 
-#: teams/forms.py:121 teams/models.py:27 user/forms.py:44
+#: task_manager/teams/forms.py:121 task_manager/teams/models.py:27
+#: task_manager/user/forms.py:44
 msgid "Team password"
 msgstr "Пароль команды"
 
-#: teams/forms.py:125
+#: task_manager/teams/forms.py:125
 msgid "Enter team password"
 msgstr "Введите пароль команды"
 
-#: teams/forms.py:143 user/forms.py:212
+#: task_manager/teams/forms.py:143 task_manager/user/forms.py:212
 msgid "Team with this name does not exist"
 msgstr "Команды с таким названием не существует"
 
-#: teams/forms.py:153 teams/forms.py:185 user/forms.py:219
+#: task_manager/teams/forms.py:153 task_manager/teams/forms.py:185
+#: task_manager/user/forms.py:219
 msgid "Invalid team password"
 msgstr "Неверный пароль команды"
 
-#: teams/forms.py:173 user/forms.py:237
+#: task_manager/teams/forms.py:173 task_manager/user/forms.py:237
 msgid "You already have a pending request to join this team"
 msgstr "У вас уже есть неподтверждённая заявка на вступление в эту команду"
 
-#: teams/forms.py:174 teams/views.py:587 user/forms.py:240
+#: task_manager/teams/forms.py:174 task_manager/teams/views.py:587
+#: task_manager/user/forms.py:240
 msgid "You are already a member of this team"
 msgstr "Вы уже участник этой команды"
 
-#: teams/forms.py:213
+#: task_manager/teams/forms.py:213
 msgid "Invalid role selected."
 msgstr "Выбрана недопустимая роль."
 
-#: teams/forms.py:222
+#: task_manager/teams/forms.py:222
 msgid "Invalid status selected."
 msgstr "Выбран недопустимый статус."
 
-#: teams/models.py:28
+#: task_manager/teams/models.py:28
 msgid "Minimum length is 3 characters"
 msgstr "Минимальная длина — 3 символа"
 
-#: teams/models.py:77 user/forms.py:155
+#: task_manager/teams/models.py:77 task_manager/user/forms.py:155
 msgid "Admin"
 msgstr "Администратор"
 
-#: teams/models.py:78 user/forms.py:156
+#: task_manager/teams/models.py:78 task_manager/user/forms.py:156
 msgid "Member"
 msgstr "Участник"
 
-#: teams/models.py:81 templates/user/user_list.html:57
+#: task_manager/teams/models.py:81
+#: task_manager/templates/user/user_list.html:57
 msgid "Pending"
 msgstr "В ожидании"
 
-#: teams/models.py:82 teams/models.py:174
+#: task_manager/teams/models.py:82 task_manager/teams/models.py:174
 msgid "Active"
 msgstr "Активен"
 
-#: teams/models.py:132
+#: task_manager/teams/models.py:132
 msgid "Invite code"
 msgstr "Код приглашения"
 
-#: teams/models.py:139
+#: task_manager/teams/models.py:139
 msgid "Expires at"
 msgstr "Действителен до"
 
-#: teams/models.py:143
+#: task_manager/teams/models.py:143
 msgid "Is used"
 msgstr "Использовано"
 
-#: teams/models.py:151
+#: task_manager/teams/models.py:151
 msgid "Used by"
 msgstr "Кем использовано"
 
-#: teams/models.py:156
+#: task_manager/teams/models.py:156
 msgid "Used at"
 msgstr "Дата использования"
 
-#: teams/models.py:160
+#: task_manager/teams/models.py:160
 msgid "Max uses"
 msgstr "Лимит использований"
 
-#: teams/models.py:161
+#: task_manager/teams/models.py:161
 msgid "Number of times invite can be used"
 msgstr "Сколько раз можно использовать приглашение"
 
-#: teams/models.py:165
+#: task_manager/teams/models.py:165
 msgid "Use count"
 msgstr "Количество использований"
 
-#: teams/models.py:169
+#: task_manager/teams/models.py:169
 msgid "Team invite"
 msgstr "Приглашение в команду"
 
-#: teams/models.py:170
+#: task_manager/teams/models.py:170
 msgid "Team invites"
 msgstr "Приглашения в команду"
 
-#: teams/models.py:174
+#: task_manager/teams/models.py:174
 msgid "Used"
 msgstr "Использовано"
 
-#: teams/views.py:40
+#: task_manager/teams/views.py:40
 msgid "Team not found"
 msgstr "Команда не найдена"
 
-#: teams/views.py:67
+#: task_manager/teams/views.py:67
 msgid "Switched to individual mode"
 msgstr "Переключено на индивидуальный режим"
 
-#: teams/views.py:79
+#: task_manager/teams/views.py:79
 #, python-brace-format
 msgid "Switched to team: {team}"
 msgstr "Переключено на команду: {team}"
 
-#: teams/views.py:177
+#: task_manager/teams/views.py:177
 msgid "You are not a member of this team"
 msgstr "Вы не являетесь участником этой команды"
 
-#: teams/views.py:183
+#: task_manager/teams/views.py:183
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -761,7 +815,7 @@ msgstr ""
 "Администраторы команды не могут покинуть команду. Сначала передайте права "
 "администратора другому участнику."
 
-#: teams/views.py:201
+#: task_manager/teams/views.py:201
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -769,25 +823,25 @@ msgstr ""
 "У вас нет прав, чтобы управлять участниками команды. Это может сделать "
 "только администратор команды."
 
-#: teams/views.py:206
+#: task_manager/teams/views.py:206
 msgid "User is not a member of this team"
 msgstr "Пользователь не является участником этой команды"
 
-#: teams/views.py:283
+#: task_manager/teams/views.py:283
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Вы успешно покинули команду {team}"
 
-#: teams/views.py:289
+#: task_manager/teams/views.py:289
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "Пользователь {username} удалён из команды {team}."
 
-#: teams/views.py:303
+#: task_manager/teams/views.py:303
 msgid "Team membership not found"
 msgstr "Участие в команде не найдено."
 
-#: teams/views.py:339
+#: task_manager/teams/views.py:339
 msgid ""
 "You cannot exit the team because you are author or executor of tasks in this "
 "team."
@@ -795,11 +849,12 @@ msgstr ""
 "Вы не можете покинуть команду, так как являетесь автором или исполнителем "
 "задач в этой команде."
 
-#: teams/views.py:389
+#: task_manager/teams/views.py:389
 msgid "Team created successfully"
 msgstr "Команда успешно создана"
 
-#: teams/views.py:436 user/views.py:218 user/views.py:262
+#: task_manager/teams/views.py:436 task_manager/user/views.py:218
+#: task_manager/user/views.py:262
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -807,190 +862,199 @@ msgstr ""
 "Ваша заявка на вступление в команду {team} отправлена. Ожидайте одобрения "
 "администратора."
 
-#: teams/views.py:488
+#: task_manager/teams/views.py:488
 msgid "Invite link generated successfully. Scroll down to copy."
 msgstr ""
 "Ссылка для приглашения успешно создана. Прокрутите вниз, чтобы скопировать."
 
-#: teams/views.py:508
+#: task_manager/teams/views.py:508
 msgid "Team has reached the maximum number of members"
 msgstr "Команда достигла максимального количества участников"
 
-#: teams/views.py:554
+#: task_manager/teams/views.py:554
 msgid "Invalid or expired invite link"
 msgstr "Недействительная или просроченная ссылка для приглашения"
 
-#: teams/views.py:558 teams/views.py:566
+#: task_manager/teams/views.py:558 task_manager/teams/views.py:566
 msgid "Invite link has been used"
 msgstr "Ссылка для приглашения уже использована"
 
-#: teams/views.py:562
+#: task_manager/teams/views.py:562
 msgid "Invite link has expired"
 msgstr "Срок действия ссылки для приглашения истек"
 
-#: teams/views.py:629
+#: task_manager/teams/views.py:629
 #, python-brace-format
 msgid "You have successfully joined the team {team}"
 msgstr "Вы успешно присоединились к команде {team}"
 
-#: teams/views.py:681
+#: task_manager/teams/views.py:681
 msgid "Team updated successfully"
 msgstr "Команда успешно изменена"
 
-#: teams/views.py:699
+#: task_manager/teams/views.py:699
 msgid "Cannot delete a team because it has tasks."
 msgstr "Невозможно удалить команду, так как в ней есть задачи."
 
-#: teams/views.py:707
+#: task_manager/teams/views.py:707
 msgid "Cannot delete a team because it has other members."
 msgstr "Невозможно удалить команду, потому что в ней есть другие участники"
 
-#: teams/views.py:716
+#: task_manager/teams/views.py:716
 msgid "Team deleted successfully"
 msgstr "Команда успешно удалена"
 
-#: teams/views.py:747
+#: task_manager/teams/views.py:747
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "Пользователь {username} назначен администратором команды."
 
-#: teams/views.py:754
+#: task_manager/teams/views.py:754
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "Пользователь {username} стал участником команды."
 
-#: teams/views.py:765
+#: task_manager/teams/views.py:765
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "Пользователь {username} одобрен и теперь является участником команды."
 
-#: teams/views.py:773
+#: task_manager/teams/views.py:773
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "Заявка пользователя {username} переведена в статус ожидания."
 
-#: templates/base.html:50 templates/base.html:80 views.py:30
+#: task_manager/templates/base.html:50 task_manager/templates/base.html:80
+#: task_manager/views.py:30
 msgid "TaskMan"
 msgstr "ТаскМан"
 
-#: templates/base.html:105
+#: task_manager/templates/base.html:105
 msgid "Navigation"
 msgstr "Навигация"
 
-#: templates/base.html:108 templates/base.html:141
+#: task_manager/templates/base.html:108 task_manager/templates/base.html:141
 msgid "Users"
 msgstr "Пользователи"
 
-#: templates/base.html:113 templates/base.html:144
-#: templates/includes/limits_usage.html:8
-#: templates/includes/team_limits_usage.html:30
-#: templates/user/user_detail.html:76 templates/user/user_detail.html:98
+#: task_manager/templates/base.html:113 task_manager/templates/base.html:144
+#: task_manager/templates/includes/limits_usage.html:8
+#: task_manager/templates/includes/team_limits_usage.html:30
+#: task_manager/templates/user/user_detail.html:76
+#: task_manager/templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Задачи"
 
-#: templates/base.html:118 templates/base.html:147
-#: templates/includes/limits_usage.html:40
-#: templates/includes/team_limits_usage.html:48
+#: task_manager/templates/base.html:118 task_manager/templates/base.html:147
+#: task_manager/templates/includes/limits_usage.html:40
+#: task_manager/templates/includes/team_limits_usage.html:48
 msgid "Statuses"
 msgstr "Статусы"
 
-#: templates/base.html:188
+#: task_manager/templates/base.html:188
 msgid "Switch context"
 msgstr "Переключить контекст"
 
-#: templates/base.html:196 templates/labels/labels_update.html:34
+#: task_manager/templates/base.html:196
+#: task_manager/templates/labels/labels_update.html:34
 msgid "Individual"
 msgstr "Индивидуальный"
 
-#: templates/base.html:223
+#: task_manager/templates/base.html:223
 msgid "Profile"
 msgstr "Профиль"
 
-#: templates/base.html:228
+#: task_manager/templates/base.html:228
 msgid "New Team"
 msgstr "Новая команда"
 
-#: templates/base.html:233 templates/teams/team_join_form.html:11
+#: task_manager/templates/base.html:233
+#: task_manager/templates/teams/team_join_form.html:11
 msgid "Join Team"
 msgstr "Вступить в команду"
 
-#: templates/base.html:241 templates/teams/team_exit.html:8
-#: templates/teams/team_exit.html:15
+#: task_manager/templates/base.html:241
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
 msgid "Exit team"
 msgstr "Покинуть команду"
 
-#: templates/base.html:251
+#: task_manager/templates/base.html:251
 msgid "Logout"
 msgstr "Выйти"
 
-#: templates/base.html:263 templates/base.html:315
+#: task_manager/templates/base.html:263 task_manager/templates/base.html:315
 msgid "Settings"
 msgstr "Настройки"
 
-#: templates/base.html:267 templates/base.html:319
+#: task_manager/templates/base.html:267 task_manager/templates/base.html:319
 msgid "Theme"
 msgstr "Тема"
 
-#: templates/base.html:270 templates/base.html:322
+#: task_manager/templates/base.html:270 task_manager/templates/base.html:322
 msgid "Light"
 msgstr "Светлая"
 
-#: templates/base.html:273 templates/base.html:327
+#: task_manager/templates/base.html:273 task_manager/templates/base.html:327
 msgid "Dark"
 msgstr "Тёмная"
 
-#: templates/base.html:276 templates/base.html:332
+#: task_manager/templates/base.html:276 task_manager/templates/base.html:332
 msgid "Auto"
 msgstr "Авто"
 
-#: templates/base.html:284 templates/base.html:338
+#: task_manager/templates/base.html:284 task_manager/templates/base.html:338
 msgid "Language"
 msgstr "Язык"
 
-#: templates/base.html:307 templates/login.html:8
+#: task_manager/templates/base.html:307 task_manager/templates/login.html:8
 msgid "Login"
 msgstr "Вход"
 
-#: templates/base.html:308 templates/user/user_create_form.html:11
+#: task_manager/templates/base.html:308
+#: task_manager/templates/user/user_create_form.html:11
 msgid "Signup"
 msgstr "Регистрация"
 
-#: templates/base.html:367
+#: task_manager/templates/base.html:367
 msgid "You are approaching the free plan limits."
 msgstr "Вы приближаетесь к лимитам бесплатного плана."
 
-#: templates/base.html:370 templates/user/user_list.html:23
+#: task_manager/templates/base.html:370
+#: task_manager/templates/user/user_list.html:23
 msgid "Details"
 msgstr "Подробнее"
 
-#: templates/base.html:408
+#: task_manager/templates/base.html:408
 msgid "Go back"
 msgstr "Назад"
 
-#: templates/base.html:428 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:65
+#: task_manager/templates/base.html:428 task_manager/templates/feedback.html:7
+#: task_manager/templates/feedback.html:12 task_manager/views.py:65
 msgid "Feedback"
 msgstr "Обратная связь"
 
-#: templates/base.html:430 templates/privacy_policy.html:4
-#: templates/privacy_policy.html:8
+#: task_manager/templates/base.html:430
+#: task_manager/templates/privacy_policy.html:4
+#: task_manager/templates/privacy_policy.html:8
 msgid "Privacy Policy"
 msgstr "Политика конфиденциальности"
 
-#: templates/base.html:432 templates/terms_of_service.html:4
-#: templates/terms_of_service.html:8
+#: task_manager/templates/base.html:432
+#: task_manager/templates/terms_of_service.html:4
+#: task_manager/templates/terms_of_service.html:8
 msgid "Terms of Service"
 msgstr "Условия использования"
 
-#: templates/feedback.html:13
+#: task_manager/templates/feedback.html:13
 msgid "Found a bug or have a suggestion? Let us know!"
 msgstr "Нашли баг или есть предложение? Сообщите нам!"
 
-#: templates/feedback.html:21
+#: task_manager/templates/feedback.html:21
 msgid "Send"
 msgstr "Отправить"
 
-#: templates/feedback.html:28
+#: task_manager/templates/feedback.html:28
 msgid ""
 "Your message will be sent to developers via Telegram. We will reply to the "
 "contact you provide."
@@ -998,379 +1062,403 @@ msgstr ""
 "Сообщение будет отправлено разработчикам через Telegram. Мы ответим по "
 "указанному контакту."
 
-#: templates/feedback.html:51
+#: task_manager/templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
 msgstr "Telegram открыт. Отправьте сообщение там."
 
-#: templates/includes/limits_usage.html:24 templates/user/user_detail.html:61
+#: task_manager/templates/includes/limits_usage.html:24
+#: task_manager/templates/user/user_detail.html:61
 msgid "Teams"
 msgstr "Команды"
 
-#: templates/includes/limits_usage.html:90
+#: task_manager/templates/includes/limits_usage.html:90
 msgid "Extended plan is already in development — more features coming soon!"
 msgstr "Расширенный план уже в разработке — скоро появятся новые возможности!"
 
-#: templates/includes/team_limits_usage.html:6
+#: task_manager/templates/includes/team_limits_usage.html:6
 msgid "Team Limits"
 msgstr "Лимиты команды"
 
-#: templates/includes/team_limits_usage.html:12
-#: templates/teams/team_detail.html:43
+#: task_manager/templates/includes/team_limits_usage.html:12
+#: task_manager/templates/teams/team_detail.html:43
 msgid "Members"
 msgstr "Участники"
 
-#: templates/index.html:7
+#: task_manager/templates/index.html:7
 msgid "Task Manager"
 msgstr "Менеджер задач"
 
-#: templates/index.html:20 templates/teams/team_join_invite.html:24
+#: task_manager/templates/index.html:20
+#: task_manager/templates/teams/team_join_invite.html:24
 msgid "Go to Tasks"
 msgstr "Перейти к задачам"
 
-#: templates/index.html:24
+#: task_manager/templates/index.html:24
 msgid "Get Started"
 msgstr "Начать"
 
-#: templates/index.html:32
+#: task_manager/templates/index.html:32
 msgid "Features"
 msgstr "Возможности"
 
-#: templates/index.html:37
+#: task_manager/templates/index.html:37
 msgid "Personal space and teams"
 msgstr "Личное пространство и команды"
 
-#: templates/index.html:37
+#: task_manager/templates/index.html:37
 msgid "Switch context in one click"
 msgstr "Переключайте контекст в один клик"
 
-#: templates/index.html:41
+#: task_manager/templates/index.html:41
 msgid "Quick Task Creation"
 msgstr "Быстрое создание задач"
 
-#: templates/index.html:41
+#: task_manager/templates/index.html:41
 msgid "Title, description, assignee - done in seconds"
 msgstr "Название, описание, исполнитель - и задача создана за секунды"
 
-#: templates/index.html:45
+#: task_manager/templates/index.html:45
 msgid "Custom Statuses"
 msgstr "Пользовательские статусы"
 
-#: templates/index.html:45
+#: task_manager/templates/index.html:45
 msgid "To Do, In Progress, Done - or your own"
 msgstr "К выполнению, В работе, Завершена - или свои собственные"
 
-#: templates/index.html:49
+#: task_manager/templates/index.html:49
 msgid "Tag and filter tasks instantly"
 msgstr "Мгновенно добавляйте метки и фильтруйте задачи"
 
-#: templates/index.html:53
+#: task_manager/templates/index.html:53
 msgid "Any Device"
 msgstr "Любое устройство"
 
-#: templates/index.html:53
+#: task_manager/templates/index.html:53
 msgid "Works on desktop, tablet, and mobile"
 msgstr "Работает на компьютере, планшете и смартфоне"
 
-#: templates/index.html:58
+#: task_manager/templates/index.html:58
 msgid "Language Support"
 msgstr "Поддержка языков"
 
-#: templates/labels/labels_create.html:9
-#: templates/tasks/task_create_form.html:39
-#: templates/tasks/task_update.html:155
+#: task_manager/templates/labels/labels_create.html:9
+#: task_manager/templates/tasks/task_create_form.html:39
+#: task_manager/templates/tasks/task_update.html:155
 msgid "Create label"
 msgstr "Создать метку"
 
-#: templates/labels/labels_create.html:15 templates/notes/note_form.html:88
-#: templates/statuses/statuses_create_form.html:69
-#: templates/tasks/task_create_form.html:52
-#: templates/teams/team_create_form.html:28
+#: task_manager/templates/labels/labels_create.html:15
+#: task_manager/templates/notes/note_form.html:88
+#: task_manager/templates/statuses/statuses_create_form.html:69
+#: task_manager/templates/tasks/task_create_form.html:52
+#: task_manager/templates/teams/team_create_form.html:28
 msgid "Create"
 msgstr "Создать"
 
-#: templates/labels/labels_create.html:18
-#: templates/labels/labels_delete.html:23
-#: templates/labels/labels_update.html:66
-#: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_form.html:93 templates/notes/note_form.html:97
-#: templates/statuses/statuses_create_form.html:72
-#: templates/statuses/statuses_delete.html:23
-#: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:55 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:175
-#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:29
-#: templates/teams/team_member_role_update.html:55
-#: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
-#: templates/user/user_delete.html:22 templates/user/user_detail.html:145
-#: templates/user/user_update.html:16
+#: task_manager/templates/labels/labels_create.html:18
+#: task_manager/templates/labels/labels_delete.html:23
+#: task_manager/templates/labels/labels_update.html:66
+#: task_manager/templates/notes/note_confirm_delete.html:37
+#: task_manager/templates/notes/note_form.html:93
+#: task_manager/templates/notes/note_form.html:97
+#: task_manager/templates/statuses/statuses_create_form.html:72
+#: task_manager/templates/statuses/statuses_delete.html:23
+#: task_manager/templates/statuses/statuses_update.html:70
+#: task_manager/templates/tasks/task_create_form.html:55
+#: task_manager/templates/tasks/task_delete.html:23
+#: task_manager/templates/tasks/task_update.html:175
+#: task_manager/templates/teams/team_create_form.html:31
+#: task_manager/templates/teams/team_delete.html:22
+#: task_manager/templates/teams/team_detail.html:79
+#: task_manager/templates/teams/team_exit.html:28
+#: task_manager/templates/teams/team_join_form.html:29
+#: task_manager/templates/teams/team_member_role_update.html:55
+#: task_manager/templates/teams/team_update.html:29
+#: task_manager/templates/user/user_create_form.html:28
+#: task_manager/templates/user/user_delete.html:22
+#: task_manager/templates/user/user_detail.html:145
+#: task_manager/templates/user/user_update.html:16
 msgid "Cancel"
 msgstr "Отмена"
 
-#: templates/labels/labels_delete.html:8
+#: task_manager/templates/labels/labels_delete.html:8
 msgid "Delete labels"
 msgstr "Удаление меток"
 
-#: templates/labels/labels_delete.html:14
+#: task_manager/templates/labels/labels_delete.html:14
 msgid "Delete label"
 msgstr "Удаление метки"
 
-#: templates/labels/labels_delete.html:17
-#: templates/statuses/statuses_delete.html:17
-#: templates/tasks/task_delete.html:17 templates/teams/team_delete.html:17
-#: templates/user/user_delete.html:17
+#: task_manager/templates/labels/labels_delete.html:17
+#: task_manager/templates/statuses/statuses_delete.html:17
+#: task_manager/templates/tasks/task_delete.html:17
+#: task_manager/templates/teams/team_delete.html:17
+#: task_manager/templates/user/user_delete.html:17
 msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
-#: templates/labels/labels_delete.html:20
-#: templates/notes/note_confirm_delete.html:34
-#: templates/statuses/statuses_delete.html:20
-#: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
-#: templates/user/user_delete.html:19
+#: task_manager/templates/labels/labels_delete.html:20
+#: task_manager/templates/notes/note_confirm_delete.html:34
+#: task_manager/templates/statuses/statuses_delete.html:20
+#: task_manager/templates/tasks/task_delete.html:20
+#: task_manager/templates/teams/team_delete.html:19
+#: task_manager/templates/user/user_delete.html:19
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
-#: templates/labels/labels_list.html:14
+#: task_manager/templates/labels/labels_list.html:14
 msgid "New label"
 msgstr "Новая метка"
 
-#: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_form.html:38 templates/notes/note_list.html:74
-#: templates/tasks/task_filter.html:390 templates/tasks/task_update.html:25
-#: templates/tasks/task_update.html:41 user/models.py:22
+#: task_manager/templates/labels/labels_list.html:57
+#: task_manager/templates/labels/labels_update.html:38
+#: task_manager/templates/notes/note_form.html:38
+#: task_manager/templates/notes/note_list.html:74
+#: task_manager/templates/tasks/task_filter.html:390
+#: task_manager/templates/tasks/task_update.html:25
+#: task_manager/templates/tasks/task_update.html:41
+#: task_manager/user/models.py:22
 msgid "Deleted user"
 msgstr "Удалённый пользователь"
 
-#: templates/labels/labels_list.html:70
+#: task_manager/templates/labels/labels_list.html:70
 msgid "No labels found"
 msgstr "Меток нет"
 
-#: templates/labels/labels_list.html:71
+#: task_manager/templates/labels/labels_list.html:71
 msgid "Create your first label to organize tasks"
 msgstr "Создайте первую метку, чтобы удобнее организовывать задачи"
 
-#: templates/labels/labels_list.html:72
+#: task_manager/templates/labels/labels_list.html:72
 msgid "Create Label"
 msgstr "Создать метку"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_form.html:22
-#: templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:359
-#: templates/tasks/task_update.html:19
+#: task_manager/templates/labels/labels_update.html:22
+#: task_manager/templates/notes/note_form.html:22
+#: task_manager/templates/statuses/statuses_update.html:20
+#: task_manager/templates/tasks/task_filter.html:319
+#: task_manager/templates/tasks/task_filter.html:359
+#: task_manager/templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Создано"
 
-#: templates/labels/labels_update.html:33
+#: task_manager/templates/labels/labels_update.html:33
 msgid "Individual mode"
 msgstr "Индивидуальный режим"
 
-#: templates/labels/labels_update.html:37
-#: templates/statuses/statuses_update.html:36
+#: task_manager/templates/labels/labels_update.html:37
+#: task_manager/templates/statuses/statuses_update.html:36
 msgid "Creator"
 msgstr "Создатель"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:86
-#: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:275 templates/tasks/task_update.html:172
-#: templates/user/user_update.html:13
+#: task_manager/templates/labels/labels_update.html:63
+#: task_manager/templates/notes/note_form.html:86
+#: task_manager/templates/statuses/statuses_update.html:67
+#: task_manager/templates/tasks/task_filter.html:275
+#: task_manager/templates/tasks/task_update.html:172
+#: task_manager/templates/user/user_update.html:13
 msgid "Save"
 msgstr "Сохранить"
 
-#: templates/labels/labels_update.html:71 templates/notes/note_form.html:104
-#: templates/statuses/statuses_list.html:71
-#: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:115 templates/tasks/task_update.html:180
-#: templates/tasks/task_update.html:276 templates/teams/team_update.html:34
-#: templates/user/user_detail.html:151
+#: task_manager/templates/labels/labels_update.html:71
+#: task_manager/templates/notes/note_form.html:104
+#: task_manager/templates/statuses/statuses_list.html:71
+#: task_manager/templates/statuses/statuses_update.html:75
+#: task_manager/templates/tasks/task_update.html:115
+#: task_manager/templates/tasks/task_update.html:180
+#: task_manager/templates/tasks/task_update.html:276
+#: task_manager/templates/teams/team_update.html:34
+#: task_manager/templates/user/user_detail.html:151
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/limits/limits_info.html:14
+#: task_manager/templates/limits/limits_info.html:14
 msgid "Plans & Limits"
 msgstr "Планы и лимиты"
 
-#: templates/limits/limits_info.html:19
+#: task_manager/templates/limits/limits_info.html:19
 msgid "Current Plan"
 msgstr "Текущий план"
 
-#: templates/limits/limits_info.html:21
+#: task_manager/templates/limits/limits_info.html:21
 msgid "Free"
 msgstr "Бесплатный"
 
-#: templates/limits/limits_info.html:27
+#: task_manager/templates/limits/limits_info.html:27
 msgid "Current Usage"
 msgstr "Текущее использование"
 
-#: templates/limits/limits_info.html:35
+#: task_manager/templates/limits/limits_info.html:35
 msgid "Extended Plan"
 msgstr "Расширенный план"
 
-#: templates/limits/limits_info.html:37
+#: task_manager/templates/limits/limits_info.html:37
 msgid "In Development"
 msgstr "В разработке"
 
-#: templates/limits/limits_info.html:43
+#: task_manager/templates/limits/limits_info.html:43
 msgid "More teams"
 msgstr "Больше команд"
 
-#: templates/limits/limits_info.html:47
+#: task_manager/templates/limits/limits_info.html:47
 msgid "More team members"
 msgstr "Больше участников в команде"
 
-#: templates/limits/limits_info.html:51
+#: task_manager/templates/limits/limits_info.html:51
 msgid "Increased task limits"
 msgstr "Увеличенные лимиты задач"
 
-#: templates/limits/limits_info.html:55
+#: task_manager/templates/limits/limits_info.html:55
 msgid "Priority support"
 msgstr "Приоритетная поддержка"
 
-#: templates/limits/limits_info.html:66
+#: task_manager/templates/limits/limits_info.html:66
 msgid "Stay tuned for updates!"
 msgstr "Следите за обновлениями!"
 
-#: templates/limits/limits_info.html:70
+#: task_manager/templates/limits/limits_info.html:70
 msgid "Send Feedback"
 msgstr "Отправить отзыв"
 
-#: templates/limits/limits_info.html:79
+#: task_manager/templates/limits/limits_info.html:79
 msgid "Back"
 msgstr "Назад"
 
-#: templates/login.html:13
+#: task_manager/templates/login.html:13
 msgid "Log in"
 msgstr "Войти"
 
-#: templates/notes/_task_notes.html:14
+#: task_manager/templates/notes/_task_notes.html:14
 msgid "Add note"
 msgstr "Добавить заметку"
 
-#: templates/notes/_task_notes.html:42
+#: task_manager/templates/notes/_task_notes.html:42
 msgid "No notes for this task"
 msgstr "Для этой задачи заметок нет"
 
-#: templates/notes/note_confirm_delete.html:6
-#: templates/notes/note_confirm_delete.html:11
+#: task_manager/templates/notes/note_confirm_delete.html:6
+#: task_manager/templates/notes/note_confirm_delete.html:11
 msgid "Delete note"
 msgstr "Удаление заметки"
 
-#: templates/notes/note_confirm_delete.html:16
+#: task_manager/templates/notes/note_confirm_delete.html:16
 msgid "Are you sure you want to delete this note?"
 msgstr "Вы уверены, что хотите удалить эту заметку"
 
-#: templates/notes/note_form.html:33
+#: task_manager/templates/notes/note_form.html:33
 msgid "Personal note"
 msgstr "Личная заметка"
 
-#: templates/notes/note_form.html:34 templates/notes/note_list.html:69
+#: task_manager/templates/notes/note_form.html:34
+#: task_manager/templates/notes/note_list.html:69
 msgid "Personal"
 msgstr "Личная"
 
-#: templates/notes/note_form.html:50
+#: task_manager/templates/notes/note_form.html:50
 msgid "Edit note"
 msgstr "Изменение заметки"
 
-#: templates/notes/note_form.html:52
+#: task_manager/templates/notes/note_form.html:52
 msgid "Create note"
 msgstr "Создание заметки"
 
-#: templates/notes/note_form.html:75
+#: task_manager/templates/notes/note_form.html:75
 msgid "Enter note content..."
 msgstr "Введите содержание заметки..."
 
-#: templates/notes/note_list.html:12
+#: task_manager/templates/notes/note_list.html:12
 msgid "New note"
 msgstr "Новая заметка"
 
-#: templates/notes/note_list.html:85
+#: task_manager/templates/notes/note_list.html:85
 msgid "No notes found"
 msgstr "Заметок нет"
 
-#: templates/notes/note_list.html:86
+#: task_manager/templates/notes/note_list.html:86
 msgid "Create your first note to save important information"
 msgstr "Создайте первую заметку, чтобы сохранить важную информацию"
 
-#: templates/notes/note_list.html:87
+#: task_manager/templates/notes/note_list.html:87
 msgid "Create Note"
 msgstr "Создать заметку"
 
-#: templates/notifications/_notification_bell.html:6
-#: templates/notifications/_notification_bell.html:115
-#: templates/notifications/_notification_bell.html:160
+#: task_manager/templates/notifications/_notification_bell.html:6
+#: task_manager/templates/notifications/_notification_bell.html:115
+#: task_manager/templates/notifications/_notification_bell.html:160
 msgid "No notifications"
 msgstr "Нет уведомлений"
 
-#: templates/notifications/_notification_bell.html:29
+#: task_manager/templates/notifications/_notification_bell.html:29
 msgid "Mark all as read"
 msgstr "Отметить все как прочитанные"
 
-#: templates/notifications/_notification_bell.html:68
-#: templates/tasks/task_update.html:39
+#: task_manager/templates/notifications/_notification_bell.html:68
+#: task_manager/templates/tasks/task_update.html:39
 msgid "ago"
 msgstr "назад"
 
-#: templates/notifications/_notification_bell.html:74
+#: task_manager/templates/notifications/_notification_bell.html:74
 msgid "Mark as read"
 msgstr "Отметить как прочитанное"
 
-#: templates/notifications/_notification_bell.html:84
+#: task_manager/templates/notifications/_notification_bell.html:84
 msgid "Showing last 10 notifications"
 msgstr "Показаны последние 10 уведомлений"
 
-#: templates/privacy_policy.html:11
+#: task_manager/templates/privacy_policy.html:11
 msgid "Data We Collect"
 msgstr "Какие данные мы собираем"
 
-#: templates/privacy_policy.html:12
+#: task_manager/templates/privacy_policy.html:12
 msgid "When you register, we collect:"
 msgstr "При регистрации мы собираем:"
 
-#: templates/privacy_policy.html:14 templates/user/user_detail.html:123
+#: task_manager/templates/privacy_policy.html:14
+#: task_manager/templates/user/user_detail.html:123
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: templates/privacy_policy.html:15
+#: task_manager/templates/privacy_policy.html:15
 msgid "First and last name (optional)"
 msgstr "Имя и фамилию (необязательно)"
 
-#: templates/privacy_policy.html:16
+#: task_manager/templates/privacy_policy.html:16
 msgid "Password (stored in encrypted form)"
 msgstr "Пароль (хранится в зашифрованном виде)"
 
-#: templates/privacy_policy.html:19
+#: task_manager/templates/privacy_policy.html:19
 msgid "When you use the service, we store:"
 msgstr "При использовании сервиса мы храним:"
 
-#: templates/privacy_policy.html:21
+#: task_manager/templates/privacy_policy.html:21
 msgid "Tasks, notes, labels and statuses you create"
 msgstr "Созданные вами задачи, заметки, метки и статусы"
 
-#: templates/privacy_policy.html:22
+#: task_manager/templates/privacy_policy.html:22
 msgid "Team membership information"
 msgstr "Информацию об участии в командах"
 
-#: templates/privacy_policy.html:25
+#: task_manager/templates/privacy_policy.html:25
 msgid "How We Use Your Data"
 msgstr "Как мы используем ваши данные"
 
-#: templates/privacy_policy.html:27
+#: task_manager/templates/privacy_policy.html:27
 msgid "To provide the task management service"
 msgstr "Для предоставления сервиса управления задачами"
 
-#: templates/privacy_policy.html:28
+#: task_manager/templates/privacy_policy.html:28
 msgid "To authenticate you and protect your account"
 msgstr "Для вашей аутентификации и защиты аккаунта"
 
-#: templates/privacy_policy.html:29
+#: task_manager/templates/privacy_policy.html:29
 msgid "To enable team collaboration features"
 msgstr "Для работы функций командного взаимодействия"
 
-#: templates/privacy_policy.html:32
+#: task_manager/templates/privacy_policy.html:32
 msgid "Data Sharing"
 msgstr "Передача данных"
 
-#: templates/privacy_policy.html:33
+#: task_manager/templates/privacy_policy.html:33
 msgid ""
 "We do not sell, trade, or share your personal data with third parties, "
 "except:"
@@ -1378,21 +1466,21 @@ msgstr ""
 "Мы не продаём, не обмениваем и не передаём ваши персональные данные третьим "
 "лицам, за исключением случаев:"
 
-#: templates/privacy_policy.html:35
+#: task_manager/templates/privacy_policy.html:35
 msgid "Within your teams - other team members can see tasks assigned to them"
 msgstr ""
 "Внутри ваших команд — другие участники команды могут видеть назначенные им "
 "задачи"
 
-#: templates/privacy_policy.html:36
+#: task_manager/templates/privacy_policy.html:36
 msgid "When required by law"
 msgstr "Когда это требуется по закону"
 
-#: templates/privacy_policy.html:39
+#: task_manager/templates/privacy_policy.html:39
 msgid "Data Storage and Security"
 msgstr "Хранение данных и безопасность"
 
-#: templates/privacy_policy.html:40
+#: task_manager/templates/privacy_policy.html:40
 msgid ""
 "Your data is stored on secure servers. We use HTTPS encryption for all "
 "connections. Passwords are hashed and never stored in plain text."
@@ -1401,51 +1489,51 @@ msgstr ""
 "используем шифрование HTTPS. Пароли хэшируются и никогда не хранятся в "
 "открытом виде."
 
-#: templates/privacy_policy.html:42
+#: task_manager/templates/privacy_policy.html:42
 msgid "Your Rights"
 msgstr "Ваши права"
 
-#: templates/privacy_policy.html:43
+#: task_manager/templates/privacy_policy.html:43
 msgid "You can:"
 msgstr "Вы можете:"
 
-#: templates/privacy_policy.html:45
+#: task_manager/templates/privacy_policy.html:45
 msgid "View and edit your profile information at any time"
 msgstr "В любое время просматривать и редактировать данные своего профиля"
 
-#: templates/privacy_policy.html:46
+#: task_manager/templates/privacy_policy.html:46
 msgid "Delete your account and all associated data"
 msgstr "Удалить свой аккаунт и все связанные с ним данные"
 
-#: templates/privacy_policy.html:47
+#: task_manager/templates/privacy_policy.html:47
 msgid "Export your data by contacting us"
 msgstr "Экспортировать свои данные, связавшись с нами"
 
-#: templates/privacy_policy.html:50
+#: task_manager/templates/privacy_policy.html:50
 msgid "Cookies"
 msgstr "Файлы cookie"
 
-#: templates/privacy_policy.html:51
+#: task_manager/templates/privacy_policy.html:51
 msgid "We use essential cookies for:"
 msgstr "Мы используем необходимые файлы cookie для:"
 
-#: templates/privacy_policy.html:53
+#: task_manager/templates/privacy_policy.html:53
 msgid "Session management (keeping you logged in)"
 msgstr "Управления сессией (чтобы вы оставались в системе)"
 
-#: templates/privacy_policy.html:54
+#: task_manager/templates/privacy_policy.html:54
 msgid "CSRF protection (security)"
 msgstr "Защиты CSRF (безопасность)"
 
-#: templates/privacy_policy.html:55
+#: task_manager/templates/privacy_policy.html:55
 msgid "Language preference"
 msgstr "Сохранения языковых предпочтений"
 
-#: templates/privacy_policy.html:58
+#: task_manager/templates/privacy_policy.html:58
 msgid "Children's Privacy"
 msgstr "Конфиденциальность детей"
 
-#: templates/privacy_policy.html:59
+#: task_manager/templates/privacy_policy.html:59
 msgid ""
 "Our service is not intended for children under 13. We do not knowingly "
 "collect data from children."
@@ -1453,11 +1541,12 @@ msgstr ""
 "Наш сервис не предназначен для детей младше 13 лет. Мы сознательно не "
 "собираем данные детей."
 
-#: templates/privacy_policy.html:61 templates/terms_of_service.html:45
+#: task_manager/templates/privacy_policy.html:61
+#: task_manager/templates/terms_of_service.html:45
 msgid "Contact"
 msgstr "Контакты"
 
-#: templates/privacy_policy.html:62
+#: task_manager/templates/privacy_policy.html:62
 msgid ""
 "If you have questions about this privacy policy, contact us via the feedback "
 "form or at:"
@@ -1465,11 +1554,11 @@ msgstr ""
 "Если у вас есть вопросы по этой политике конфиденциальности, свяжитесь с "
 "нами через форму обратной связи или по адресу:"
 
-#: templates/privacy_policy.html:65
+#: task_manager/templates/privacy_policy.html:65
 msgid "Changes"
 msgstr "Изменения"
 
-#: templates/privacy_policy.html:66
+#: task_manager/templates/privacy_policy.html:66
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."
@@ -1477,209 +1566,218 @@ msgstr ""
 "Мы можем обновлять эту политику. Изменения будут опубликованы на этой "
 "странице с указанием обновлённой даты."
 
-#: templates/statuses/statuses_create_form.html:16
+#: task_manager/templates/statuses/statuses_create_form.html:16
 msgid "Create status"
 msgstr "Создать статус"
 
-#: templates/statuses/statuses_create_form.html:29
+#: task_manager/templates/statuses/statuses_create_form.html:29
 msgid "Enter status name..."
 msgstr "Введите название статуса..."
 
-#: templates/statuses/statuses_delete.html:8
-#: templates/statuses/statuses_delete.html:14
+#: task_manager/templates/statuses/statuses_delete.html:8
+#: task_manager/templates/statuses/statuses_delete.html:14
 msgid "Delete status"
 msgstr "Удаление статуса"
 
-#: templates/statuses/statuses_list.html:14
+#: task_manager/templates/statuses/statuses_list.html:14
 msgid "New status"
 msgstr "Новый статус"
 
-#: templates/statuses/statuses_list.html:68 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:134
+#: task_manager/templates/statuses/statuses_list.html:68
+#: task_manager/templates/teams/team_update.html:26
+#: task_manager/templates/user/user_detail.html:134
 msgid "Edit"
 msgstr "Изменить"
 
-#: templates/statuses/statuses_list.html:85
+#: task_manager/templates/statuses/statuses_list.html:85
 msgid "No statuses found"
 msgstr "Статусов нет"
 
-#: templates/statuses/statuses_list.html:86
+#: task_manager/templates/statuses/statuses_list.html:86
 msgid "Create your first status to organize tasks"
 msgstr "Создайте первый статус, чтобы удобнее организовывать задачи"
 
-#: templates/statuses/statuses_list.html:87
+#: task_manager/templates/statuses/statuses_list.html:87
 msgid "Create Status"
 msgstr "Создать статус"
 
-#: templates/statuses/statuses_update.html:41
+#: task_manager/templates/statuses/statuses_update.html:41
 msgid "Has description"
 msgstr "Есть описание"
 
-#: templates/tasks/partials/empty_state.html:8
+#: task_manager/templates/tasks/partials/empty_state.html:8
 msgid "No tasks found"
 msgstr "Задач нет"
 
-#: templates/tasks/partials/empty_state.html:9
+#: task_manager/templates/tasks/partials/empty_state.html:9
 msgid "Try adjusting filters or create a new task"
 msgstr "Попробуйте изменить фильтры или создать новую задачу"
 
-#: templates/tasks/partials/empty_state.html:12
+#: task_manager/templates/tasks/partials/empty_state.html:12
 msgid "Reset filters"
 msgstr "Сбросить фильтры"
 
-#: templates/tasks/partials/empty_state.html:16
+#: task_manager/templates/tasks/partials/empty_state.html:16
 msgid "Create Task"
 msgstr "Создать задачу"
 
-#: templates/tasks/task_create_form.html:11
+#: task_manager/templates/tasks/task_create_form.html:11
 msgid "Create task"
 msgstr "Создать задачу"
 
-#: templates/tasks/task_create_form.html:26
-#: templates/tasks/task_update.html:141
+#: task_manager/templates/tasks/task_create_form.html:26
+#: task_manager/templates/tasks/task_update.html:141
 msgid "Add checklist"
 msgstr "Добавить чек-лист"
 
-#: templates/tasks/task_delete.html:8 templates/tasks/task_delete.html:14
+#: task_manager/templates/tasks/task_delete.html:8
+#: task_manager/templates/tasks/task_delete.html:14
 msgid "Delete task"
 msgstr "Удаление задачи"
 
-#: templates/tasks/task_filter.html:13
+#: task_manager/templates/tasks/task_filter.html:13
 msgid "New task"
 msgstr "Новая задача"
 
-#: templates/tasks/task_filter.html:32
+#: task_manager/templates/tasks/task_filter.html:32
 msgid "Sort"
 msgstr "Сортировка"
 
-#: templates/tasks/task_filter.html:37
+#: task_manager/templates/tasks/task_filter.html:37
 msgid "Sort by"
 msgstr "Сортировать по"
 
-#: templates/tasks/task_filter.html:57
+#: task_manager/templates/tasks/task_filter.html:57
 msgid "Full view"
 msgstr "Полный вид"
 
-#: templates/tasks/task_filter.html:62
+#: task_manager/templates/tasks/task_filter.html:62
 msgid "Simple view"
 msgstr "Упрощённый вид"
 
-#: templates/tasks/task_filter.html:76
+#: task_manager/templates/tasks/task_filter.html:76
 msgid "Default filter is active"
 msgstr "Активен фильтр по умолчанию"
 
-#: templates/tasks/task_filter.html:78
+#: task_manager/templates/tasks/task_filter.html:78
 msgid "Default"
 msgstr "По умолчанию"
 
-#: templates/tasks/task_filter.html:122
+#: task_manager/templates/tasks/task_filter.html:122
 msgid "Assigned to me"
 msgstr "Назначено мне"
 
-#: templates/tasks/task_filter.html:134
+#: task_manager/templates/tasks/task_filter.html:134
 msgid "Who"
 msgstr "Кто"
 
-#: templates/tasks/task_filter.html:146 templates/tasks/task_filter.html:163
-#: templates/tasks/task_filter.html:199 templates/tasks/task_filter.html:215
+#: task_manager/templates/tasks/task_filter.html:146
+#: task_manager/templates/tasks/task_filter.html:163
+#: task_manager/templates/tasks/task_filter.html:199
+#: task_manager/templates/tasks/task_filter.html:215
 msgid "Exclude"
 msgstr "Исключить"
 
-#: templates/tasks/task_filter.html:178
+#: task_manager/templates/tasks/task_filter.html:178
 msgid "author or executor"
 msgstr "автор или исполнитель"
 
-#: templates/tasks/task_filter.html:188
+#: task_manager/templates/tasks/task_filter.html:188
 msgid "What"
 msgstr "Что"
 
-#: templates/tasks/task_filter.html:239
+#: task_manager/templates/tasks/task_filter.html:239
 msgid "When"
 msgstr "Когда"
 
-#: templates/tasks/task_filter.html:274
+#: task_manager/templates/tasks/task_filter.html:274
 msgid "Save as default"
 msgstr "Сохранить по умолчанию"
 
-#: templates/tasks/task_filter.html:283
+#: task_manager/templates/tasks/task_filter.html:283
 msgid "Reset"
 msgstr "Сбросить"
 
-#: templates/tasks/task_filter.html:287
+#: task_manager/templates/tasks/task_filter.html:287
 msgid "Apply"
 msgstr "Применить"
 
-#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:366
-#: templates/tasks/task_update.html:36
+#: task_manager/templates/tasks/task_filter.html:319
+#: task_manager/templates/tasks/task_filter.html:366
+#: task_manager/templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Обновлено"
 
-#: templates/tasks/task_filter.html:352 templates/tasks/task_update.html:80
+#: task_manager/templates/tasks/task_filter.html:352
+#: task_manager/templates/tasks/task_update.html:80
 msgid "Checklist"
 msgstr "Чек-лист"
 
-#: templates/tasks/task_update.html:128
+#: task_manager/templates/tasks/task_update.html:128
 msgid "Add item..."
 msgstr "Добавить пункт"
 
-#: templates/tasks/task_update.html:364
+#: task_manager/templates/tasks/task_update.html:364
 msgid "Delete this item?"
 msgstr "Удалить этот пункт?"
 
-#: templates/teams/team_create_form.html:11
+#: task_manager/templates/teams/team_create_form.html:11
 msgid "Create Team"
 msgstr "Создание команды"
 
-#: templates/teams/team_delete.html:8 templates/user/user_delete.html:8
-#: templates/user/user_delete.html:14
+#: task_manager/templates/teams/team_delete.html:8
+#: task_manager/templates/user/user_delete.html:8
+#: task_manager/templates/user/user_delete.html:14
 msgid "Delete user"
 msgstr "Удаление пользователя"
 
-#: templates/teams/team_delete.html:14
+#: task_manager/templates/teams/team_delete.html:14
 msgid "Delete team"
 msgstr "Удаление команды"
 
-#: templates/teams/team_detail.html:14
+#: task_manager/templates/teams/team_detail.html:14
 msgid "Team details"
 msgstr "Данные команды"
 
-#: templates/teams/team_detail.html:26
+#: task_manager/templates/teams/team_detail.html:26
 msgid "No description"
 msgstr "Нет описания"
 
-#: templates/teams/team_detail.html:69 templates/teams/team_update.html:16
+#: task_manager/templates/teams/team_detail.html:69
+#: task_manager/templates/teams/team_update.html:16
 msgid "Edit Team"
 msgstr "Изменение команды"
 
-#: templates/teams/team_detail.html:74
+#: task_manager/templates/teams/team_detail.html:74
 msgid "Generate Invite Link"
 msgstr "Создать ссылку для приглашения"
 
-#: templates/teams/team_detail.html:89
+#: task_manager/templates/teams/team_detail.html:89
 msgid "Invite Link Generated"
 msgstr "Ссылка для приглашения создана"
 
-#: templates/teams/team_detail.html:91
+#: task_manager/templates/teams/team_detail.html:91
 msgid "Copy the link below to share it:"
 msgstr "Скопируйте ссылку ниже, чтобы поделиться ей:"
 
-#: templates/teams/team_detail.html:99
+#: task_manager/templates/teams/team_detail.html:99
 msgid "Copy"
 msgstr "Скопировать"
 
-#: templates/teams/team_detail.html:104
+#: task_manager/templates/teams/team_detail.html:104
 msgid "This link is single-use and expires in 7 days."
 msgstr "Эта ссылка одноразовая и действительна 7 дней."
 
-#: templates/teams/team_exit.html:8 templates/teams/team_exit.html:15
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
 msgid "Remove team member"
 msgstr "Исключить участника из команды"
 
-#: templates/teams/team_exit.html:20
+#: task_manager/templates/teams/team_exit.html:20
 msgid "Are you sure you want to exit the team"
 msgstr "Вы уверены, что хотите покинуть команду?"
 
-#: templates/teams/team_exit.html:22
+#: task_manager/templates/teams/team_exit.html:22
 #, python-format
 msgid ""
 "Are you sure you want to remove user %(username)s from the team "
@@ -1688,60 +1786,60 @@ msgstr ""
 "Вы уверены, что хотите исключить пользователя %(username)s из команды "
 "%(team_name)s?"
 
-#: templates/teams/team_exit.html:25
+#: task_manager/templates/teams/team_exit.html:25
 msgid "Yes, exit"
 msgstr "Да, выйти"
 
-#: templates/teams/team_join_form.html:26
+#: task_manager/templates/teams/team_join_form.html:26
 msgid "Join"
 msgstr "Вступить"
 
-#: templates/teams/team_join_invite.html:11
+#: task_manager/templates/teams/team_join_invite.html:11
 msgid "Join Team via Invite"
 msgstr "Присоединиться к команде по приглашению"
 
-#: templates/teams/team_join_invite.html:15
+#: task_manager/templates/teams/team_join_invite.html:15
 #, python-format
 msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
 msgstr "Вы успешно присоединились к команде <strong>%(team_name)s</strong>."
 
-#: templates/teams/team_join_invite.html:28
+#: task_manager/templates/teams/team_join_invite.html:28
 msgid "Home"
 msgstr "Главная"
 
-#: templates/teams/team_member_role_update.html:10
+#: task_manager/templates/teams/team_member_role_update.html:10
 msgid "Manage Team Member"
 msgstr "Управление участником команды"
 
-#: templates/teams/team_member_role_update.html:14
+#: task_manager/templates/teams/team_member_role_update.html:14
 msgid "You are managing membership for"
 msgstr "Вы управляете участием пользователя"
 
-#: templates/teams/team_member_role_update.html:15
+#: task_manager/templates/teams/team_member_role_update.html:15
 msgid "in team"
 msgstr "в команде"
 
-#: templates/teams/team_member_role_update.html:22
+#: task_manager/templates/teams/team_member_role_update.html:22
 msgid "Role"
 msgstr "Роль"
 
-#: templates/teams/team_member_role_update.html:58
+#: task_manager/templates/teams/team_member_role_update.html:58
 msgid "Save Changes"
 msgstr "Сохранить изменения"
 
-#: templates/teams/team_member_role_update.html:67
+#: task_manager/templates/teams/team_member_role_update.html:67
 msgid "Are you sure you want to remove this user from the team?"
 msgstr "Вы уверены, что хотите удалить этого участника из команды?"
 
-#: templates/teams/team_member_role_update.html:70
+#: task_manager/templates/teams/team_member_role_update.html:70
 msgid "Remove from team"
 msgstr "Исключить из команды"
 
-#: templates/terms_of_service.html:11
+#: task_manager/templates/terms_of_service.html:11
 msgid "Acceptance of Terms"
 msgstr "Принятие условий"
 
-#: templates/terms_of_service.html:12
+#: task_manager/templates/terms_of_service.html:12
 msgid ""
 "By using TaskMan, you agree to these terms. If you disagree, please do not "
 "use the service."
@@ -1749,11 +1847,11 @@ msgstr ""
 "Используя ТаскМан, вы соглашаетесь с этими условиями. Если вы не согласны, "
 "пожалуйста, не используйте сервис."
 
-#: templates/terms_of_service.html:14
+#: task_manager/templates/terms_of_service.html:14
 msgid "Description of Service"
 msgstr "Описание сервиса"
 
-#: templates/terms_of_service.html:15
+#: task_manager/templates/terms_of_service.html:15
 msgid ""
 "TaskMan is a web application for task management, available for individual "
 "use and team collaboration."
@@ -1761,49 +1859,49 @@ msgstr ""
 "ТаскМан — это веб-приложение для управления задачами, доступное как для "
 "индивидуального использования, так и для командной работы."
 
-#: templates/terms_of_service.html:17
+#: task_manager/templates/terms_of_service.html:17
 msgid "User Account"
 msgstr "Аккаунт пользователя"
 
-#: templates/terms_of_service.html:19
+#: task_manager/templates/terms_of_service.html:19
 msgid "You are responsible for maintaining the security of your account"
 msgstr "Вы несёте ответственность за безопасность своего аккаунта"
 
-#: templates/terms_of_service.html:20
+#: task_manager/templates/terms_of_service.html:20
 msgid "You must provide accurate information during registration"
 msgstr "При регистрации вы должны указывать достоверную информацию"
 
-#: templates/terms_of_service.html:21
+#: task_manager/templates/terms_of_service.html:21
 msgid "You must not create accounts for automated use without permission"
 msgstr ""
 "Вы не должны создавать аккаунты для автоматизированного использования без "
 "разрешения"
 
-#: templates/terms_of_service.html:24
+#: task_manager/templates/terms_of_service.html:24
 msgid "Acceptable Use"
 msgstr "Допустимое использование"
 
-#: templates/terms_of_service.html:25
+#: task_manager/templates/terms_of_service.html:25
 msgid "You agree not to:"
 msgstr "Вы соглашаетесь не:"
 
-#: templates/terms_of_service.html:27
+#: task_manager/templates/terms_of_service.html:27
 msgid "Use the service for any illegal purpose"
 msgstr "Использовать сервис в незаконных целях"
 
-#: templates/terms_of_service.html:28
+#: task_manager/templates/terms_of_service.html:28
 msgid "Attempt to gain unauthorized access to the service"
 msgstr "Пытаться получить несанкционированный доступ к сервису"
 
-#: templates/terms_of_service.html:29
+#: task_manager/templates/terms_of_service.html:29
 msgid "Interfere with the proper operation of the service"
 msgstr "Нарушать нормальную работу сервиса"
 
-#: templates/terms_of_service.html:30
+#: task_manager/templates/terms_of_service.html:30
 msgid "Upload malicious content"
 msgstr "Загружать вредоносный контент"
 
-#: templates/terms_of_service.html:34
+#: task_manager/templates/terms_of_service.html:34
 msgid ""
 "You retain ownership of the content you create. We do not claim any rights "
 "to your tasks, notes, or other data."
@@ -1811,11 +1909,11 @@ msgstr ""
 "Вы сохраняете право собственности на созданный вами контент. Мы не "
 "претендуем на какие-либо права на ваши задачи, заметки или другие данные."
 
-#: templates/terms_of_service.html:36
+#: task_manager/templates/terms_of_service.html:36
 msgid "Service Availability"
 msgstr "Доступность сервиса"
 
-#: templates/terms_of_service.html:37
+#: task_manager/templates/terms_of_service.html:37
 msgid ""
 "We strive to maintain high availability but do not guarantee uninterrupted "
 "service. We may perform maintenance that temporarily affects availability."
@@ -1824,11 +1922,11 @@ msgstr ""
 "бесперебойную работу сервиса. Мы можем проводить технические работы, которые "
 "временно влияют на доступность."
 
-#: templates/terms_of_service.html:39
+#: task_manager/templates/terms_of_service.html:39
 msgid "Termination"
 msgstr "Прекращение доступа"
 
-#: templates/terms_of_service.html:40
+#: task_manager/templates/terms_of_service.html:40
 msgid ""
 "We reserve the right to suspend or terminate accounts that violate these "
 "terms."
@@ -1836,11 +1934,11 @@ msgstr ""
 "Мы оставляем за собой право приостанавливать или удалять аккаунты, которые "
 "нарушают эти условия."
 
-#: templates/terms_of_service.html:42
+#: task_manager/templates/terms_of_service.html:42
 msgid "Limitation of Liability"
 msgstr "Ограничение ответственности"
 
-#: templates/terms_of_service.html:43
+#: task_manager/templates/terms_of_service.html:43
 msgid ""
 "TaskMan is provided 'as is'. We are not liable for any data loss or damages "
 "arising from the use of the service."
@@ -1848,128 +1946,131 @@ msgstr ""
 "ТаскМан предоставляется «как есть». Мы не несем ответственности за потерю "
 "данных или любой ущерб, возникший в результате использования сервиса."
 
-#: templates/user/user_create_form.html:25
+#: task_manager/templates/user/user_create_form.html:25
 msgid "Sign up"
 msgstr "Зарегистрироваться"
 
-#: templates/user/user_detail.html:14
+#: task_manager/templates/user/user_detail.html:14
 msgid "User details"
 msgstr "Данные пользователя"
 
-#: templates/user/user_detail.html:25 templates/user/user_detail.html:124
+#: task_manager/templates/user/user_detail.html:25
+#: task_manager/templates/user/user_detail.html:124
 msgid "Full name"
 msgstr "Полное имя"
 
-#: templates/user/user_detail.html:39 templates/user/user_detail.html:125
+#: task_manager/templates/user/user_detail.html:39
+#: task_manager/templates/user/user_detail.html:125
 msgid "Date joined"
 msgstr "Дата регистрации"
 
-#: templates/user/user_detail.html:48 templates/user/user_detail.html:126
+#: task_manager/templates/user/user_detail.html:48
+#: task_manager/templates/user/user_detail.html:126
 msgid "Last login"
 msgstr "Последний вход"
 
-#: templates/user/user_detail.html:54
+#: task_manager/templates/user/user_detail.html:54
 msgid "Never"
 msgstr "Никогда"
 
-#: templates/user/user_detail.html:111
+#: task_manager/templates/user/user_detail.html:111
 msgid "No teams"
 msgstr "Команд нет"
 
-#: templates/user/user_detail.html:140
+#: task_manager/templates/user/user_detail.html:140
 msgid "Change Role"
 msgstr "Сменить роль"
 
-#: templates/user/user_list.html:16
+#: task_manager/templates/user/user_list.html:16
 msgid "Current Team"
 msgstr "Текущая команда"
 
-#: templates/user/user_list.html:41
+#: task_manager/templates/user/user_list.html:41
 msgid "Pending approval"
 msgstr "Ожидает одобрения"
 
-#: templates/user/user_list.html:67
+#: task_manager/templates/user/user_list.html:67
 msgid "Review"
 msgstr "Рассмотреть"
 
-#: templates/user/user_list.html:125
+#: task_manager/templates/user/user_list.html:125
 msgid "Not in team"
 msgstr "Не в команде"
 
-#: templates/user/user_list.html:140
+#: task_manager/templates/user/user_list.html:140
 msgid "No users found"
 msgstr "Пользователей нет"
 
-#: templates/user/user_list.html:141
+#: task_manager/templates/user/user_list.html:141
 msgid "No users available"
 msgstr "Пользователей нет"
 
-#: templates/user/user_update.html:8
+#: task_manager/templates/user/user_update.html:8
 msgid "Edit user"
 msgstr "Изменение пользователя"
 
-#: user/admin.py:54
+#: task_manager/user/admin.py:54
 msgid "Additional Info"
 msgstr "Дополнительная информация"
 
-#: user/forms.py:36
+#: task_manager/user/forms.py:36
 msgid "Join team (optional)"
 msgstr "Присоединиться к команде (необязательно)"
 
-#: user/forms.py:38
+#: task_manager/user/forms.py:38
 msgid ""
 "Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
 "Введите название команды, чтобы присоединиться к существующей команде, или "
 "оставьте поле пустым, чтобы работать индивидуально."
 
-#: user/forms.py:46
+#: task_manager/user/forms.py:46
 msgid "Required if joining a team"
 msgstr "Требуется при присоединении к команде"
 
-#: user/forms.py:139
+#: task_manager/user/forms.py:139
 msgid "Current teams"
 msgstr "Текущие команды"
 
-#: user/forms.py:166
+#: task_manager/user/forms.py:166
 msgid "Join another team (optional)"
 msgstr "Присоединиться к другой команде (необязательно)"
 
-#: user/forms.py:168
+#: task_manager/user/forms.py:168
 msgid "Enter team name to join another team, or leave empty"
 msgstr ""
 "Введите название команды, к которой хотите присоединиться, или оставьте поле "
 "пустым"
 
-#: user/forms.py:203
+#: task_manager/user/forms.py:203
 msgid "Team password is required when joining a team"
 msgstr "Пароль команды обязателен при присоединении к команде"
 
-#: user/views.py:168
+#: task_manager/user/views.py:168
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: user/views.py:206
+#: task_manager/user/views.py:206
 msgid "Welcome! Your account has been created and you have joined the team."
 msgstr "Добро пожаловать! Ваш аккаунт создан, и вы присоединились к команде."
 
-#: user/views.py:225
+#: task_manager/user/views.py:225
 msgid "Welcome! You can create a team or work individually"
 msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
-#: user/views.py:240
+#: task_manager/user/views.py:240
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменён"
 
-#: user/views.py:286
+#: task_manager/user/views.py:286
 msgid "User account has been deleted"
 msgstr "Аккаунт пользователя удалён"
 
-#: views.py:31
+#: task_manager/views.py:31
 msgid "Personal. Family. Work."
 msgstr "Личное. Семья. Работа."
 
-#: views.py:32
+#: task_manager/views.py:32
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -1977,17 +2078,21 @@ msgstr ""
 "Один планировщик для всего: от заметок и личных целей до семейных дел и "
 "командных проектов."
 
-#: views.py:35
+#: task_manager/views.py:35
 msgid "Read more"
 msgstr "Подробнее"
 
-#: views.py:44
+#: task_manager/views.py:44
 msgid "You successfully logged in"
 msgstr "Вы успешно вошли"
 
-#: views.py:54
+#: task_manager/views.py:54
 msgid "You are logged out"
 msgstr "Вы вышли из системы"
+
+#, python-brace-format
+#~ msgid "You have been unassigned from task: {task_name}"
+#~ msgstr "Вы откреплены от задачи: {task_name}"
 
 #~ msgid "Email address (optional)"
 #~ msgstr "Адрес электронной почты (необязательно)"

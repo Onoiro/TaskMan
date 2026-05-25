@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-24 23:26+0300\n"
+"POT-Creation-Date: 2026-05-25 23:27+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -162,7 +162,7 @@ msgstr "Даста"
 msgid "Task"
 msgstr "Вазифа"
 
-#: notes/models.py:65 notifications/models.py:61 statuses/models.py:58
+#: notes/models.py:65 notifications/models.py:75 statuses/models.py:58
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -266,80 +266,102 @@ msgstr "Навъи огоҳинома"
 msgid "Message"
 msgstr "Паём"
 
-#: notifications/models.py:53
+#: notifications/models.py:50
+msgid "Legacy field. Use message_key and message_params for new notifications."
+msgstr "Майдони кӯҳнашуда. Барои огоҳиномаҳои нав аз message_key ва message_params истифода баред."
+
+#: notifications/models.py:55
+msgid "Message key"
+msgstr "Калиди паём"
+
+#: notifications/models.py:56
+msgid "Translation key for the message template."
+msgstr "Калиди тарҷума барои қолаби паём."
+
+#: notifications/models.py:61
+msgid "Message parameters"
+msgstr "Параметрҳои паём"
+
+#: notifications/models.py:62
+msgid "JSON parameters for message template."
+msgstr "Параметрҳои JSON барои қолаби паём."
+
+#: notifications/models.py:67
 msgid "Action URL"
 msgstr "URL-и амал"
 
-#: notifications/models.py:57
+#: notifications/models.py:71
 msgid "Is read"
 msgstr "Хонда шудааст"
 
-#: notifications/models.py:72
+#: notifications/models.py:86
 msgid "Notification"
 msgstr "Огоҳинома"
 
-#: notifications/models.py:73
+#: notifications/models.py:87
 #: templates/notifications/_notification_bell.html:25
 msgid "Notifications"
 msgstr "Огоҳиномаҳо"
 
-#: notifications/services.py:31
+#: notifications/services.py:46
 #, python-brace-format
-msgid "You have been assigned to task: {task.name}"
-msgstr "Шумо ба вазифаи зерин таъин шудед: {task.name}"
+msgid "You have been assigned to task: {task_name}"
+msgstr "Шумо ба вазифаи зерин таъин шудед: {task_name}"
 
-#: notifications/services.py:51
+#: notifications/services.py:67
 #, python-brace-format
-msgid "You have been removed from task: {task.name}"
-msgstr "Шумо аз вазифаи зерин хориҷ карда шудед: {task.name}"
+msgid "You have been removed from task: {task_name}"
+msgstr "Шумо аз вазифаи зерин хориҷ карда шудед: {task_name}"
 
-#: notifications/services.py:68
-msgid "Status of task '{}' has been changed"
-msgstr "Ҳолати вазифаи '{}' тағйир ёфт"
-
-#: notifications/services.py:97
-msgid "Task '{}' has been completed"
-msgstr "Вазифаи '{}' анҷом ёфт"
-
-#: notifications/services.py:123
+#: notifications/services.py:81
 #, python-brace-format
-msgid "{applicant.username} wants to join team '{team.name}'"
-msgstr "{applicant.username} мехоҳад ба дастаи '{team.name}' ҳамроҳ шавад"
+msgid "Status of task '{task_name}' has been changed"
+msgstr "Ҳолати вазифаи '{task_name}' тағйир ёфт"
 
-#: notifications/services.py:158
+#: notifications/services.py:113
 #, python-brace-format
-msgid "{new_member.username} has joined team '{team.name}'"
-msgstr "{new_member.username} ба дастаи '{team.name}' ҳамроҳ шуд"
+msgid "Task '{task_name}' has been completed"
+msgstr "Вазифаи '{task_name}' анҷом ёфт"
 
-#: notifications/services.py:182
+#: notifications/services.py:146
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been approved"
-msgstr "Дархости шумо барои ҳамроҳшавӣ ба дастаи '{team.name}' тасдиқ шуд"
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username} мехоҳад ба дастаи '{team_name}' ҳамроҳ шавад"
 
-#: notifications/services.py:198
+#: notifications/services.py:187
 #, python-brace-format
-msgid "Your request to join team '{team.name}' has been rejected"
-msgstr "Дархости шумо барои ҳамроҳшавӣ ба дастаи '{team.name}' рад карда шуд"
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username} ба дастаи '{team_name}' ҳамроҳ шуд"
 
-#: notifications/services.py:218
+#: notifications/services.py:214
 #, python-brace-format
-msgid "You have been removed from team '{team.name}'"
-msgstr "Шумо аз дастаи '{team.name}' хориҷ карда шудед"
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "Дархости шумо барои ҳамроҳшавӣ ба дастаи '{team_name}' тасдиқ шуд"
 
-#: notifications/services.py:234
+#: notifications/services.py:233
 #, python-brace-format
-msgid "Your role in team '{team.name}' has been changed to {new_role}"
-msgstr "Нақши шумо дар дастаи '{team.name}' ба {new_role} тағйир ёфт"
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "Дархости шумо барои ҳамроҳшавӣ ба дастаи '{team_name}' рад карда шуд"
 
-#: notifications/services.py:250
+#: notifications/services.py:256
 #, python-brace-format
-msgid "You have been invited to join team '{team.name}'"
-msgstr "Шумо барои ҳамроҳ шудан ба дастаи '{team.name}' даъват шудаед"
+msgid "You have been removed from team '{team_name}'"
+msgstr "Шумо аз дастаи '{team_name}' хориҷ карда шудед"
 
-#: notifications/services.py:267
+#: notifications/services.py:275
 #, python-brace-format
-msgid "Team '{team.name}' has been deleted"
-msgstr "Дастаи '{team.name}' ҳазф карда шуд"
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "Нақши шумо дар дастаи '{team_name}' ба {role} тағйир ёфт"
+
+#: notifications/services.py:294
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "Шумо барои ҳамроҳ шудан ба дастаи '{team_name}' даъват шудаед"
+
+#: notifications/services.py:314
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "Дастаи '{team_name}' ҳазф карда шуд"
 
 #: permissions.py:7
 msgid "You are not authorized! Please login."
