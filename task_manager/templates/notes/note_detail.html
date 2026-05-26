@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1 py-3 py-lg-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+
+            <!-- Note Content Card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Header: Title + Meta -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-start mb-4 pb-3 border-bottom">
+                        <div class="me-3">
+                            {% if object.title %}
+                            <h1 class="h3 mb-2">{{ object.title }}</h1>
+                            {% else %}
+                            <h1 class="h3 mb-2 text-muted">{% trans "Untitled Note" %}</h1>
+                            {% endif %}
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                {% if object.team %}
+                                <span class="badge bg-body-tertiary text-body border fw-normal">
+                                    <i class="bi bi-building"></i> {{ object.team.name }}
+                                </span>
+                                {% else %}
+                                <span class="badge bg-body-tertiary text-body border fw-normal">
+                                    <i class="bi bi-person"></i> {% trans "Personal" %}
+                                </span>
+                                {% endif %}
+                                {% if object.task %}
+                                <a href="{% url 'tasks:task-update' object.task.uuid %}" class="badge bg-body-tertiary text-primary text-decoration-none border fw-normal">
+                                    <i class="bi bi-card-checklist"></i> {{ object.task.name|truncatechars:25 }}
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small mb-1">
+                                <i class="bi bi-clock"></i> {% trans "Created" %}: {{ object.created_at|date:"d.m.Y H:i" }}
+                            </div>
+                            {% if object.updated_at != object.created_at %}
+                            <div class="text-muted small">
+                                <i class="bi bi-pencil"></i> {% trans "Updated" %}: {{ object.updated_at|date:"d.m.Y H:i" }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Note Content - Full Width -->
+                    <div class="note-content mb-4">
+                        {{ object.content|linebreaks }}
+                    </div>
+
+                    <!-- Footer: Author -->
+                    <div class="d-flex align-items-center gap-2 pt-3 border-top">
+                        <i class="bi bi-person-circle text-muted fs-4"></i>
+                        <span class="text-muted small">
+                            {% trans "Author" %}: <strong>{{ object.author.display_name|default:_("Deleted user") }}</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-5">
+                <a href="{% url 'notes:note-update' object.uuid %}" class="btn btn-primary px-4 py-2 fw-bold">
+                    <i class="bi bi-pencil-square me-1"></i> {% trans "Edit" %}
+                </a>
+                <a href="{% if request.GET.task %}{% url 'tasks:task-update' request.GET.task %}{% else %}{% url 'notes:note-list' %}{% endif %}" class="btn btn-outline-secondary px-4 py-2">
+                    <i class="bi bi-x-lg me-1"></i> {% trans "Cancel" %}
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .note-content {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: var(--tm-text-color, #212529);
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .note-content p {
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 767.98px) {
+        .note-content {
+            font-size: 1rem;
+        }
+
+        .card-body {
+            padding: 1rem !important;
+        }
+    }
+</style>
+{% endblock %}

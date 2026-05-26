@@ -3,6 +3,7 @@ from django.urls import path
 from task_manager.notes.views import (
     NoteListView,
     NoteCreateView,
+    NoteDetailView,
     NoteUpdateView,
     NoteDeleteView,
 )
@@ -18,6 +19,9 @@ urlpatterns = [
     path('create/',
          NoteCreateView.as_view(),
          name='note-create'),
+    path('<uuid:uuid>/',
+         NoteDetailView.as_view(),
+         name='note-detail'),
     path('<uuid:uuid>/update/',
          NoteUpdateView.as_view(),
          name='note-update'),

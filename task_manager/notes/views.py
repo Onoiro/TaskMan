@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from task_manager.notes.models import Note
@@ -159,12 +159,11 @@ class NoteUpdateView(
     slug_url_kwarg = 'uuid'
 
     def get_success_url(self):
-        if self.object.task:
-            return reverse_lazy(
-                'tasks:task-update',
-                kwargs={'uuid': self.object.task.uuid}
-            )
-        return reverse_lazy('notes:note-list')
+        # Redirect back to note-detail page
+        return reverse_lazy(
+            'notes:note-detail',
+            kwargs={'uuid': self.object.uuid}
+        )
 
     def get_queryset(self):
         user = self.request.user
@@ -182,6 +181,25 @@ class NoteUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+
+class NoteDetailView(CustomPermissions, DetailView):
+    model = Note
+    template_name = 'notes/note_detail.html'
+    slug_field = 'uuid'
+    slug_url_kwarg = 'uuid'
+
+    def get_queryset(self):
+        user = self.request.user
+        team = getattr(self.request, 'active_team', None)
+
+        if team:
+            return Note.objects.filter(team=team)
+        else:
+            return Note.objects.filter(
+                author=user,
+                team__isnull=True
+            )
 
 
 class NoteDeleteView(

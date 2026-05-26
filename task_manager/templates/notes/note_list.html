@@ -33,11 +33,11 @@
                     <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                         <div class="me-2">
                             {% if note.title %}
-                            <a href="{% url 'notes:note-update' note.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
+                            <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
                                 {{ note.title }}
                             </a>
                             {% else %}
-                            <a href="{% url 'notes:note-update' note.uuid %}" class="text-decoration-none text-muted small stretched-link">
+                            <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-muted small stretched-link">
                                 {{ note.content|truncatechars:80 }}
                             </a>
                             {% endif %}

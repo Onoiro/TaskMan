@@ -503,8 +503,8 @@ class NoteViewsTestCase(TestCase):
         expected_url = reverse('tasks:task-update', args=[self.task.uuid])
         self.assertRedirects(response, expected_url)
 
-    def test_note_update_redirects_to_task_if_linked(self):
-        """Test redirect to task page after updating note linked to task."""
+    def test_note_update_redirects_to_detail(self):
+        """Test redirect to note-detail after updating a note."""
         note = Note.objects.create(
             title="Task Note",
             content="Content",
@@ -523,7 +523,7 @@ class NoteViewsTestCase(TestCase):
             follow=False
         )
 
-        expected_url = reverse('tasks:task-update', args=[self.task.uuid])
+        expected_url = reverse('notes:note-detail', args=[note.uuid])
         self.assertRedirects(response, expected_url)
 
     def test_note_list_page_content(self):
@@ -556,10 +556,183 @@ class NoteViewsTestCase(TestCase):
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
-        response = self.c.get(reverse('notes:note-update', args=[note.uuid]))
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Detail Note")
         self.assertContains(response, "Detail content here")
+
+    def test_note_detail_page_shows_edit_button(self):
+        """Test note detail page shows edit button."""
+        note = Note.objects.create(
+            title="Edit Test Note",
+            content="Test content",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertContains(response, '/notes/')
+        self.assertContains(response, '/update/')
+        self.assertContains(response, "Edit")
+
+    def test_note_detail_page_shows_cancel_button(self):
+        """Test note detail page shows cancel button."""
+        note = Note.objects.create(
+            title="Cancel Test Note",
+            content="Test content",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertContains(response, '/notes/')
+        self.assertContains(response, "Cancel")
+
+    def test_note_detail_page_shows_author_info(self):
+        """Test note detail page shows author information."""
+        note = Note.objects.create(
+            title="Author Test Note",
+            content="Test content",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertContains(response, self.user.display_name)
+        self.assertContains(response, "Author")
+
+    def test_note_detail_page_shows_created_date(self):
+        """Test note detail page shows created date."""
+        note = Note.objects.create(
+            title="Date Test Note",
+            content="Test content",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertContains(response, note.created_at.strftime('%d.%m.'))
+
+    def test_note_detail_page_shows_task_link(self):
+        """Test note detail page shows task link when note is linked to task."""
+        note = Note.objects.create(
+            title="Task Link Note",
+            content="Test content",
+            author=self.user,
+            team=self.team,
+            task=self.task
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertContains(response, self.task.name)
+        self.assertContains(response, '/tasks/')
+        self.assertContains(response, '/update/')
+
+    def test_note_detail_personal_note(self):
+        """Test note detail page for personal note without team."""
+        note = Note.objects.create(
+            title="Personal Detail Note",
+            content="Personal content",
+            author=self.user,
+            team=None
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = None
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Personal")
+        self.assertContains(response, "Personal Detail Note")
+
+    def test_note_detail_non_member_cannot_access_team_note(self):
+        """Test that non-team member cannot access team note detail."""
+        note = Note.objects.create(
+            title="Team Note",
+            content="Secret content",
+            author=self.user,
+            team=self.team
+        )
+
+        outsider = User.objects.get(pk=13)
+        self.c.force_login(outsider)
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_note_detail_non_author_cannot_access_individual_note(self):
+        """Test that non-author cannot access another user's individual note."""
+        note = Note.objects.create(
+            title="Private Note",
+            content="Private content",
+            author=self.user,
+            team=None
+        )
+
+        other_member = User.objects.get(username='he')
+        self.c.force_login(other_member)
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_note_detail_team_member_can_view_team_note(self):
+        """Test that team member can view another's team note detail."""
+        note = Note.objects.create(
+            title="Team Note",
+            content="Shared content",
+            author=self.user,
+            team=self.team
+        )
+
+        other_member = User.objects.get(username='he')
+        self.c.force_login(other_member)
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Shared content")
+
+    def test_note_detail_untitled_note(self):
+        """Test note detail page for note without title."""
+        note = Note.objects.create(
+            title="",
+            content="Content without title",
+            author=self.user,
+            team=self.team
+        )
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Untitled Note")
+        self.assertContains(response, "Content without title")
 
     def test_note_create_page_content(self):
         """Test note create page contains expected elements."""
