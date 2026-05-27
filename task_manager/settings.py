@@ -79,6 +79,11 @@ INSTALLED_APPS = [
     'task_manager.notifications',
 ]
 
+if DEBUG:
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -93,6 +98,9 @@ MIDDLEWARE = [
     'task_manager.middleware.team_middleware.ActiveTeamMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 ENABLE_ROLLBAR = not DEBUG and os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN')
 
@@ -308,3 +316,14 @@ if 'test' in sys.argv:
         'level': 'ERROR',  # only 5xx errors, not 4xx
         'propagate': False,
     }
+
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+        "::1",
+    ]
+
+    # trick for work inside docker
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]

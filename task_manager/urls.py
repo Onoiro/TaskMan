@@ -85,3 +85,9 @@ urlpatterns = [
     ), name='terms_of_service'),
     path('health/', health_check, name='health'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
