@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import models
+from django.db.models import Count, Q
 from .models import Task, ChecklistItem
 from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect, get_object_or_404
@@ -187,12 +188,38 @@ class TaskFilterView(CustomPermissions, FilterView):
         if team:
             return Task.objects.filter(team=team).order_by(
                 sort
-            ).prefetch_related('notes__author')
+            ).select_related('status', 'author', 'updated_by').annotate(
+                annotated_notes_count=Count('notes', distinct=True),
+                annotated_checklist_total=Count(
+                    'checklist_items',
+                    distinct=True
+                ),
+                annotated_checklist_done=Count(
+                    'checklist_items',
+                    filter=Q(checklist_items__is_done=True),
+                    distinct=True
+                )
+            ).prefetch_related(
+                'notes__author', 'labels', 'executors'
+            )
         else:
             return Task.objects.filter(
                 author=user,
                 team__isnull=True
-            ).order_by(sort).prefetch_related('notes__author')
+            ).order_by(sort).select_related(
+                'status', 'author', 'updated_by'
+            ).annotate(
+                annotated_notes_count=Count('notes', distinct=True),
+                annotated_checklist_total=Count(
+                    'checklist_items',
+                    distinct=True
+                ),
+                annotated_checklist_done=Count(
+                    'checklist_items',
+                    filter=Q(checklist_items__is_done=True),
+                    distinct=True
+                )
+            ).prefetch_related('notes__author', 'labels', 'executors')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -94,10 +94,14 @@ class Task(models.Model):
 
     @property
     def checklist_total(self):
+        if getattr(self, 'annotated_checklist_total', None) is not None:
+            return self.annotated_checklist_total
         return self.checklist_items.count()
 
     @property
     def checklist_done(self):
+        if getattr(self, 'annotated_checklist_done', None) is not None:
+            return self.annotated_checklist_done
         return self.checklist_items.filter(is_done=True).count()
 
     @property
@@ -108,6 +112,8 @@ class Task(models.Model):
 
     @property
     def notes_count(self):
+        if getattr(self, 'annotated_notes_count', None) is not None:
+            return self.annotated_notes_count
         return self.notes.count()
 
     def save(self, *args, **kwargs):
