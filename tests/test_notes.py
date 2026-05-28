@@ -615,6 +615,8 @@ class NoteViewsTestCase(TestCase):
 
     def test_note_detail_page_shows_created_date(self):
         """Test note detail page shows created date."""
+        import re
+
         note = Note.objects.create(
             title="Date Test Note",
             content="Test content",
@@ -627,7 +629,16 @@ class NoteViewsTestCase(TestCase):
         session.save()
 
         response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
-        self.assertContains(response, note.created_at.strftime('%d.%m.'))
+        # Extract date from HTML response to verify format
+        # Look for pattern like "Created: DD.MM.YYYY HH:MM"
+        date_pattern = r'Created:\s+(\d{2}\.\d{2}\.\d{4})\s+\d{2}:\d{2}'
+        match = re.search(date_pattern, response.content.decode('utf-8'))
+        self.assertIsNotNone(match, "Could not find created date in response")
+        self.assertRegex(
+            match.group(1),
+            r'\d{2}\.\d{2}\.\d{4}',
+            "Date format is incorrect"
+        )
 
     def test_note_detail_page_shows_task_link(self):
         """Test note detail page shows task link when note is linked to task."""
