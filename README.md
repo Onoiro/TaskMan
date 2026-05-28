@@ -18,6 +18,9 @@ TaskMan is a web application designed to manage tasks individually or in teams (
 - **Labels**: Organize tasks with custom labels created by team members
 - **Notes**: Create text notes with title and content, optionally linked to tasks; available in both individual and team modes
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team
+- **Task Search**: Search tasks by title and description
+- **Task Sorting**: Sort task list by creation date, update date, and alphabetically
+- **Theme Switching**: Switch between Light, Dark, and System themes
 - **Free Plan Limits**: Resource limits for free plan (teams, members, tasks, statuses, labels, notes, checklist items) with usage tracking and upgrade prompts
 
 ## Language Support
@@ -114,6 +117,8 @@ make help # view all available commands
 - Poetry 1.2.2 or higher
 - PostgreSQL (for production) or SQLite (for development included)
 
+**Note**: This setup is intended for local development and functional testing. It runs with DEBUG=True, default admin credentials (admin/admin), and SQLite database.
+
 **Setup Steps**
 ```bash
 # clone the repository:
@@ -148,6 +153,16 @@ make dev
 **Access the application**:
 Open your browser and navigate to: http://127.0.0.1:8001/
 
+**Django Debug Toolbar**:
+The Django Debug Toolbar menu opens on the right side of the page. It provides useful information for development and debugging:
+- **Timer**: Request/response time and Django startup time
+- **Settings**: Django settings values
+- **Headers**: HTTP request/response headers
+- **SQL**: Number of SQL queries executed and execution time
+- **Cache**: Cache operations (hits/misses)
+- **Signals**: Django signals emitted during the request
+- **Templates**: Templates rendered during the request
+
 **Traditional Management Commands**
 ```bash
 make dev # run development server
@@ -165,6 +180,8 @@ make shell # access Django shell
 
 TaskMan implements a team-based isolation system:
 - **Teams**: Users can create teams and invite other members
+- **Team Invites**: Team admins can generate invite links to add new members. Each link is single-use
+- **Join Request**: Users can also request to join a team by providing the team name and password. This is convenient when an admin wants to add multiple members at once without generating individual links
 - **Task Isolation**: When creating or editing tasks, only team members are available as executors
 - **Status & Labels**: Custom statuses and labels are shared only within team members
 - **Notes**: Notes can be created independently or linked to specific tasks; team members can view all team notes, while only the author or team admin can edit or delete them
