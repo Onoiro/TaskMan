@@ -235,3 +235,26 @@ footer {
         max-width: none;
     }
 }
+
+/* === Исправление позиционирования dropdown уведомлений на мобильных === */
+/* На узких экранах центрируем меню уведомлений относительно кнопки-триггера */
+@media (max-width: 575.98px) {
+    #notificationDropdown .dropdown-menu {
+        /* Центрируем относительно кнопки */
+        right: auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        
+        /* Ограничиваем ширину, чтобы влезало в экран */
+        min-width: 240px !important;
+        max-width: calc(100vw - 32px) !important;
+        
+        /* Добавляем отступ от верха навбара */
+        margin-top: 8px !important;
+    }
+    
+    /* Убираем translate при hover/focus для десктопа (через JS Bootstrap) */
+    #notificationDropdown .dropdown-menu.show {
+        transform: translateX(-50%) !important;
+    }
+}
