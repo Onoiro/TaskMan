@@ -419,24 +419,56 @@ class TeamJoinView(LoginRequiredMixin, View):
         form = TeamJoinForm(request.POST, initial={'user': request.user})
         if form.is_valid():
             team = form.cleaned_data['team']
+            invite = form.cleaned_data.get('_invite')
 
-            # Create membership as pending (like in user form)
-            TeamMembership.objects.create(
-                user=request.user,
-                team=team,
-                role='member',
-                status='pending'
-            )
+            # Create membership as pending (unless using invite link)
+            if invite:
+                # Using invite link - join immediately with active status
+                membership = TeamMembership.objects.create(
+                    user=request.user,
+                    team=team,
+                    role='member',
+                    status='active'
+                )
 
-            notify_team_join_request(team, request.user)
+                # Mark invite as used
+                invite.is_used = True
+                invite.used_by = request.user
+                invite.used_at = timezone.now()
+                invite.use_count = F('use_count') + 1
+                invite.save()
 
-            messages.info(
-                request,
-                _(
-                    "Your request to join team {team} has been sent. "
-                    "Waiting for admin approval."
-                ).format(team=team.name)
-            )
+                from task_manager.notifications.services import (
+                    notify_team_invited,
+                    notify_team_member_joined
+                )
+                notify_team_member_joined(team, request.user)
+                notify_team_invited(team, request.user)
+
+                messages.success(
+                    request,
+                    _(
+                        "You have successfully joined the team {team}"
+                    ).format(team=team.name)
+                )
+            else:
+                # Using team name and password - pending approval
+                TeamMembership.objects.create(
+                    user=request.user,
+                    team=team,
+                    role='member',
+                    status='pending'
+                )
+
+                notify_team_join_request(team, request.user)
+
+                messages.info(
+                    request,
+                    _(
+                        "Your request to join team {team} has been sent. "
+                        "Waiting for admin approval."
+                    ).format(team=team.name)
+                )
             return redirect('tasks:tasks-list')
 
         return render(request, self.template_name, {'form': form})

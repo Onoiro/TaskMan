@@ -973,6 +973,30 @@ msgstr "Новая команда"
 msgid "Join Team"
 msgstr "Вступить в команду"
 
+#: task_manager/teams/forms.py
+msgid "Invite link"
+msgstr "Ссылка-приглашение"
+
+#: task_manager/teams/forms.py
+msgid "Paste invite link here"
+msgstr "Вставьте ссылку-приглашение сюда"
+
+#: task_manager/teams/forms.py
+msgid "If you have an invite link, paste it here. Otherwise, enter team name and password below."
+msgstr "Если у вас есть ссылка-приглашение, вставьте её сюда. Если ссылки нет, введите название и пароль команды ниже."
+
+#: task_manager/teams/forms.py
+msgid "Team name is required when not using invite link"
+msgstr "Название команды обязательно, если не используется ссылка-приглашение"
+
+#: task_manager/teams/forms.py
+msgid "Team password is required when not using invite link"
+msgstr "Пароль команды обязателен, если не используется ссылка-приглашение"
+
+#: task_manager/teams/forms.py
+msgid "Either provide an invite link or team name and password"
+msgstr "Укажите либо ссылку-приглашение, либо название и пароль команды"
+
 #: task_manager/templates/base.html:241
 #: task_manager/templates/teams/team_exit.html:8
 #: task_manager/templates/teams/team_exit.html:15
