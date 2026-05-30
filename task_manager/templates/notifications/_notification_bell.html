@@ -18,7 +18,7 @@
         </span>
       </button>
       <ul class="dropdown-menu shadow"
-          style="min-width: 240px;">
+          style="min-width: 240px; max-height: 400px; overflow-y: auto;">
         <li class="d-flex justify-content-between align-items-center
                    px-2 px-md-3 py-2">
           <h6 class="dropdown-header m-0 p-0">
@@ -30,6 +30,7 @@
           </button>
         </li>
         <li><hr class="dropdown-divider"></li>
+        <div class="notification-list">
         {% for notif in unread_notifications %}
         <li class="px-2 px-md-3 py-2" id="notif-{{ notif.pk }}">
           <div class="d-flex align-items-start gap-1 gap-md-2">
@@ -79,10 +80,13 @@
         </li>
         {% endfor %}
         {% if unread_notifications_count >= 10 %}
+        </div>
         <li><hr class="dropdown-divider"></li>
         <li class="px-2 px-md-3 py-1 text-center text-muted small">
           {% trans "Showing last 10 notifications" %}
         </li>
+        {% else %}
+        </div>
         {% endif %}
       </ul>
     </div>
