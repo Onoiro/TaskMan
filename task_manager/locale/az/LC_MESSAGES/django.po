@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-25 23:27+0300\n"
+"POT-Creation-Date: 2026-05-31 16:01+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -145,9 +145,10 @@ msgstr "Başlıq"
 msgid "Content"
 msgstr "Məzmun"
 
-#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_form.html:37
-#: templates/tasks/task_filter.html:389 templates/tasks/task_update.html:23
-#: templates/user/user_detail.html:80 templates/user/user_detail.html:102
+#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:58
+#: templates/notes/note_form.html:37 templates/tasks/task_filter.html:389
+#: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
+#: templates/user/user_detail.html:102
 msgid "Author"
 msgstr "Müəllif"
 
@@ -156,11 +157,11 @@ msgstr "Müəllif"
 msgid "Team"
 msgstr "Komanda"
 
-#: notes/models.py:61 tasks/models.py:129
+#: notes/models.py:61 tasks/models.py:135
 msgid "Task"
 msgstr "Tapşırıq"
 
-#: notes/models.py:65 notifications/models.py:75 statuses/models.py:58
+#: notes/models.py:65 notifications/models.py:78 statuses/models.py:58
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -201,7 +202,7 @@ msgstr "Qeydi yalnız onun müəllifi və ya komanda administratoru silə bilər
 msgid "Note updated successfully"
 msgstr "Qeyd uğurla yeniləndi"
 
-#: notes/views.py:195
+#: notes/views.py:213
 msgid "Note deleted successfully"
 msgstr "Qeyd uğurla silindi"
 
@@ -265,39 +266,41 @@ msgstr "Bildiriş növü"
 msgid "Message"
 msgstr "Mesaj"
 
-#: notifications/models.py:50
+#: notifications/models.py:51
 msgid "Legacy field. Use message_key and message_params for new notifications."
-msgstr "Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə edin."
+msgstr ""
+"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə "
+"edin."
 
-#: notifications/models.py:55
+#: notifications/models.py:58
 msgid "Message key"
 msgstr "Mesaj açarı"
 
-#: notifications/models.py:56
+#: notifications/models.py:59
 msgid "Translation key for the message template."
 msgstr "Mesaj şablonu üçün tərcümə açarı."
 
-#: notifications/models.py:61
+#: notifications/models.py:64
 msgid "Message parameters"
 msgstr "Mesaj parametrləri"
 
-#: notifications/models.py:62
+#: notifications/models.py:65
 msgid "JSON parameters for message template."
 msgstr "Mesaj şablonu üçün JSON parametrləri."
 
-#: notifications/models.py:67
+#: notifications/models.py:70
 msgid "Action URL"
 msgstr "Fəaliyyət URL-i"
 
-#: notifications/models.py:71
+#: notifications/models.py:74
 msgid "Is read"
 msgstr "Oxunub"
 
-#: notifications/models.py:86
+#: notifications/models.py:89
 msgid "Notification"
 msgstr "Bildiriş"
 
-#: notifications/models.py:87
+#: notifications/models.py:90
 #: templates/notifications/_notification_bell.html:25
 msgid "Notifications"
 msgstr "Bildirişlər"
@@ -337,27 +340,27 @@ msgstr "{username} '{team_name}' komandasına qoşuldu"
 msgid "Your request to join team '{team_name}' has been approved"
 msgstr "'{team_name}' komandasına qoşulmaq üçün sorğunuz təsdiqləndi"
 
-#: notifications/services.py:233
+#: notifications/services.py:235
 #, python-brace-format
 msgid "Your request to join team '{team_name}' has been rejected"
 msgstr "'{team_name}' komandasına qoşulmaq üçün sorğunuz rədd edildi"
 
-#: notifications/services.py:256
+#: notifications/services.py:260
 #, python-brace-format
 msgid "You have been removed from team '{team_name}'"
 msgstr "Siz '{team_name}' komandasından çıxarıldınız"
 
-#: notifications/services.py:275
+#: notifications/services.py:279
 #, python-brace-format
 msgid "Your role in team '{team_name}' has been changed to {role}"
 msgstr "'{team_name}' komandasındakı rolunuz {role} olaraq dəyişdirildi"
 
-#: notifications/services.py:294
+#: notifications/services.py:300
 #, python-brace-format
 msgid "You have been invited to join team '{team_name}'"
 msgstr "Siz '{team_name}' komandasına dəvət edildiniz"
 
-#: notifications/services.py:314
+#: notifications/services.py:320
 #, python-brace-format
 msgid "Team '{team_name}' has been deleted"
 msgstr "'{team_name}' komandası silindi"
@@ -392,23 +395,23 @@ msgstr "Siz komandada öz rolunuzu dəyişə bilməzsiniz."
 msgid "Team membership not found."
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: settings.py:186 templates/index.html:67
+#: settings.py:194 templates/index.html:67
 msgid "English"
 msgstr "İngilis"
 
-#: settings.py:187 templates/index.html:76
+#: settings.py:195 templates/index.html:76
 msgid "Russian"
 msgstr "Rus"
 
-#: settings.py:188 templates/index.html:85
+#: settings.py:196 templates/index.html:85
 msgid "Tajik"
 msgstr "Tacik"
 
-#: settings.py:189 templates/index.html:94
+#: settings.py:197 templates/index.html:94
 msgid "Azerbaijani"
 msgstr "Azərbaycan dili"
 
-#: settings.py:190 templates/index.html:103
+#: settings.py:198 templates/index.html:103
 msgid "Kyrgyz"
 msgstr "Qırğız"
 
@@ -550,75 +553,75 @@ msgstr "Etiketlər"
 msgid "Updated by"
 msgstr "Yeniləyən"
 
-#: tasks/models.py:133
+#: tasks/models.py:139
 msgid "Text"
 msgstr "Mətn"
 
-#: tasks/models.py:137
+#: tasks/models.py:143
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: tasks/models.py:141
+#: tasks/models.py:147
 msgid "Position"
 msgstr "Mövqe"
 
-#: tasks/views.py:50 templates/privacy_policy.html:9
+#: tasks/views.py:51 templates/privacy_policy.html:9
 #: templates/terms_of_service.html:9
 msgid "Last updated"
 msgstr "Son yenilənmə"
 
-#: tasks/views.py:51
+#: tasks/views.py:52
 msgid "First updated"
 msgstr "Ən əvvəl yenilənənlər"
 
-#: tasks/views.py:52
+#: tasks/views.py:53
 msgid "Newest first"
 msgstr "Əvvəl yenilər"
 
-#: tasks/views.py:53
+#: tasks/views.py:54
 msgid "Oldest first"
 msgstr "Əvvəl köhnələr"
 
-#: tasks/views.py:54
+#: tasks/views.py:55
 msgid "Name A→Z"
 msgstr "Ad A→Z"
 
-#: tasks/views.py:55
+#: tasks/views.py:56
 msgid "Name Z→A"
 msgstr "Ad Z→A"
 
-#: tasks/views.py:71
+#: tasks/views.py:72
 msgid "Task can only be deleted by its author or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: tasks/views.py:89 tasks/views.py:351
+#: tasks/views.py:90 tasks/views.py:378
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi, icraçıları və ya komanda administratoru "
 "dəyişə bilər."
 
-#: tasks/views.py:151
+#: tasks/views.py:152
 msgid "Filter saved as default"
 msgstr "Filtr standart olaraq yadda saxlanıldı"
 
-#: tasks/views.py:234
+#: tasks/views.py:261
 msgid "Task created successfully"
 msgstr "Tapşırıq uğurla yaradıldı"
 
-#: tasks/views.py:298
+#: tasks/views.py:325
 msgid "Task updated successfully"
 msgstr "Tapşırıq uğurla yeniləndi"
 
-#: tasks/views.py:338
+#: tasks/views.py:365
 msgid "Task deleted successfully"
 msgstr "Tapşırıq uğurla silindi"
 
-#: tasks/views.py:382
+#: tasks/views.py:409
 msgid "Text is required"
 msgstr "Mətn tələb olunur"
 
-#: tasks/views.py:386
+#: tasks/views.py:413
 msgid "Text must be 300 characters or less"
 msgstr "Mətn 300 simvoldan çox olmamalıdır"
 
@@ -654,43 +657,75 @@ msgstr "Daxil edilmiş şifrələr uyğun gəlmir."
 msgid "Both password fields must be filled or both left blank"
 msgstr "Hər iki şifrə sahəsi doldurulmalı və ya hər ikisi boş saxlanmalıdır"
 
-#: teams/forms.py:110 templates/teams/team_detail.html:59
+#: teams/forms.py:110
+#, fuzzy
+#| msgid "Invite link has expired"
+msgid "Invite link"
+msgstr "Dəvət linkinin müddəti bitib"
+
+#: teams/forms.py:114
+#, fuzzy
+#| msgid "Invite link has expired"
+msgid "Paste invite link here"
+msgstr "Dəvət linkinin müddəti bitib"
+
+#: teams/forms.py:118
+msgid ""
+"If you have an invite link, paste it here. Otherwise, enter team name and "
+"password below."
+msgstr ""
+
+#: teams/forms.py:125 templates/teams/team_detail.html:59
 msgid "Team name"
 msgstr "Komanda adı"
 
-#: teams/forms.py:114
+#: teams/forms.py:129
 msgid "Enter team name"
 msgstr "Komanda adını daxil edin"
 
-#: teams/forms.py:121 teams/models.py:27 user/forms.py:44
+#: teams/forms.py:136 teams/models.py:27 user/forms.py:44
 msgid "Team password"
 msgstr "Komanda şifrəsi"
 
-#: teams/forms.py:125
+#: teams/forms.py:140
 msgid "Enter team password"
 msgstr "Komanda şifrəsini daxil edin"
 
-#: teams/forms.py:143 user/forms.py:212
+#: teams/forms.py:215 teams/views.py:586
+msgid "Invalid or expired invite link"
+msgstr "Etibarsız və ya müddəti bitmiş dəvət linki"
+
+#: teams/forms.py:234 user/forms.py:212
 msgid "Team with this name does not exist"
 msgstr "Bu adla komanda mövcud deyil"
 
-#: teams/forms.py:153 teams/forms.py:185 user/forms.py:219
+#: teams/forms.py:252 teams/forms.py:291 user/forms.py:219
 msgid "Invalid team password"
 msgstr "Yanlış komanda şifrəsi"
 
-#: teams/forms.py:173 user/forms.py:237
+#: teams/forms.py:272 user/forms.py:237
 msgid "You already have a pending request to join this team"
 msgstr "Bu komandaya qoşulmaq üçün artıq gözləmədə olan sorğunuz var"
 
-#: teams/forms.py:174 teams/views.py:587 user/forms.py:240
+#: teams/forms.py:273 teams/views.py:619 user/forms.py:240
 msgid "You are already a member of this team"
 msgstr "Siz artıq bu komandanın üzvüsünüz"
 
-#: teams/forms.py:213
+#: teams/forms.py:288
+#, fuzzy
+#| msgid "Team with this name does not exist"
+msgid "Team does not exist"
+msgstr "Bu adla komanda mövcud deyil"
+
+#: teams/forms.py:317
+msgid "Either provide an invite link or team name and password"
+msgstr ""
+
+#: teams/forms.py:338
 msgid "Invalid role selected."
 msgstr "Yanlış rol seçildi."
 
-#: teams/forms.py:222
+#: teams/forms.py:347
 msgid "Invalid status selected."
 msgstr "Yanlış status seçildi."
 
@@ -821,7 +856,12 @@ msgstr ""
 msgid "Team created successfully"
 msgstr "Komanda uğurla yaradıldı"
 
-#: teams/views.py:436 user/views.py:218 user/views.py:262
+#: teams/views.py:451 teams/views.py:661
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "Siz {team} komandasına uğurla qoşuldunuz"
+
+#: teams/views.py:468 user/views.py:218 user/views.py:262
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -829,63 +869,54 @@ msgstr ""
 "{team} komandasına qoşulmaq üçün sorğunuz göndərildi. Administratorun "
 "təsdiqini gözləyin."
 
-#: teams/views.py:488
+#: teams/views.py:520
 msgid "Invite link generated successfully. Scroll down to copy."
 msgstr "Dəvət linki uğurla yaradıldı. Kopyalamaq üçün aşağı sürüşdürün."
 
-#: teams/views.py:508
+#: teams/views.py:540
 msgid "Team has reached the maximum number of members"
 msgstr "Komanda maksimum üzv sayına çatıb"
 
-#: teams/views.py:554
-msgid "Invalid or expired invite link"
-msgstr "Etibarsız və ya müddəti bitmiş dəvət linki"
-
-#: teams/views.py:558 teams/views.py:566
+#: teams/views.py:590 teams/views.py:598
 msgid "Invite link has been used"
 msgstr "Dəvət linki artıq istifadə edilib"
 
-#: teams/views.py:562
+#: teams/views.py:594
 msgid "Invite link has expired"
 msgstr "Dəvət linkinin müddəti bitib"
 
-#: teams/views.py:629
-#, python-brace-format
-msgid "You have successfully joined the team {team}"
-msgstr "Siz {team} komandasına uğurla qoşuldunuz"
-
-#: teams/views.py:681
+#: teams/views.py:713
 msgid "Team updated successfully"
 msgstr "Komanda uğurla yeniləndi"
 
-#: teams/views.py:699
+#: teams/views.py:731
 msgid "Cannot delete a team because it has tasks."
 msgstr "Komandanı silmək mümkün deyil, çünki onun tapşırıqları var."
 
-#: teams/views.py:707
+#: teams/views.py:739
 msgid "Cannot delete a team because it has other members."
 msgstr "Komandanı silmək mümkün deyil, çünki onun başqa üzvləri var."
 
-#: teams/views.py:716
+#: teams/views.py:748
 msgid "Team deleted successfully"
 msgstr "Komanda uğurla silindi"
 
-#: teams/views.py:747
+#: teams/views.py:779
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "İstifadəçi {username} komanda administratoru təyin edildi."
 
-#: teams/views.py:754
+#: teams/views.py:786
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "İstifadəçi {username} komanda üzvü edildi."
 
-#: teams/views.py:765
+#: teams/views.py:797
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür."
 
-#: teams/views.py:773
+#: teams/views.py:805
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
@@ -1114,7 +1145,8 @@ msgstr "Yarat"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_form.html:93 templates/notes/note_form.html:97
+#: templates/notes/note_detail.html:70 templates/notes/note_form.html:93
+#: templates/notes/note_form.html:97
 #: templates/statuses/statuses_create_form.html:72
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1122,7 +1154,7 @@ msgstr "Yarat"
 #: templates/tasks/task_update.html:175
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:29
+#: templates/teams/team_join_form.html:36
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:145
@@ -1158,9 +1190,10 @@ msgid "New label"
 msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_form.html:38 templates/notes/note_list.html:74
-#: templates/tasks/task_filter.html:390 templates/tasks/task_update.html:25
-#: templates/tasks/task_update.html:41 user/models.py:22
+#: templates/notes/note_detail.html:58 templates/notes/note_form.html:38
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:390
+#: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
+#: user/models.py:22
 msgid "Deleted user"
 msgstr "Silinmiş istifadəçi"
 
@@ -1176,8 +1209,8 @@ msgstr "Tapşırıqları təşkil etmək üçün ilk etiketinizi yaradın"
 msgid "Create Label"
 msgstr "Etiket yarat"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_form.html:22
-#: templates/statuses/statuses_update.html:20
+#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:39
+#: templates/notes/note_form.html:22 templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:359
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1281,13 +1314,28 @@ msgstr "Qeydi sil"
 msgid "Are you sure you want to delete this note?"
 msgstr "Bu qeydi silmək istədiyinizə əminsiniz?"
 
+#: templates/notes/note_detail.html:18
+msgid "Untitled Note"
+msgstr ""
+
+#: templates/notes/note_detail.html:27 templates/notes/note_form.html:34
+#: templates/notes/note_list.html:69
+msgid "Personal"
+msgstr "Şəxsi"
+
+#: templates/notes/note_detail.html:43 templates/tasks/task_filter.html:319
+#: templates/tasks/task_filter.html:366 templates/tasks/task_update.html:36
+msgid "Updated"
+msgstr "Yenilənib"
+
+#: templates/notes/note_detail.html:67 templates/statuses/statuses_list.html:68
+#: templates/teams/team_update.html:26 templates/user/user_detail.html:134
+msgid "Edit"
+msgstr "Redaktə et"
+
 #: templates/notes/note_form.html:33
 msgid "Personal note"
 msgstr "Şəxsi qeyd"
-
-#: templates/notes/note_form.html:34 templates/notes/note_list.html:69
-msgid "Personal"
-msgstr "Şəxsi"
 
 #: templates/notes/note_form.html:50
 msgid "Edit note"
@@ -1318,8 +1366,8 @@ msgid "Create Note"
 msgstr "Qeyd yarat"
 
 #: templates/notifications/_notification_bell.html:6
-#: templates/notifications/_notification_bell.html:115
-#: templates/notifications/_notification_bell.html:160
+#: templates/notifications/_notification_bell.html:119
+#: templates/notifications/_notification_bell.html:164
 msgid "No notifications"
 msgstr "Bildiriş yoxdur"
 
@@ -1327,16 +1375,16 @@ msgstr "Bildiriş yoxdur"
 msgid "Mark all as read"
 msgstr "Hamısını oxunmuş kimi qeyd et"
 
-#: templates/notifications/_notification_bell.html:68
+#: templates/notifications/_notification_bell.html:69
 #: templates/tasks/task_update.html:39
 msgid "ago"
 msgstr "əvvəl"
 
-#: templates/notifications/_notification_bell.html:74
+#: templates/notifications/_notification_bell.html:75
 msgid "Mark as read"
 msgstr "Oxunmuş kimi qeyd et"
 
-#: templates/notifications/_notification_bell.html:84
+#: templates/notifications/_notification_bell.html:86
 msgid "Showing last 10 notifications"
 msgstr "Son 10 bildiriş göstərilir"
 
@@ -1516,11 +1564,6 @@ msgstr "Statusu sil"
 msgid "New status"
 msgstr "Yeni status"
 
-#: templates/statuses/statuses_list.html:68 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:134
-msgid "Edit"
-msgstr "Redaktə et"
-
 #: templates/statuses/statuses_list.html:85
 msgid "No statuses found"
 msgstr "Status yoxdur"
@@ -1631,11 +1674,6 @@ msgstr "Sıfırla"
 msgid "Apply"
 msgstr "Tətbiq et"
 
-#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:366
-#: templates/tasks/task_update.html:36
-msgid "Updated"
-msgstr "Yenilənib"
-
 #: templates/tasks/task_filter.html:352 templates/tasks/task_update.html:80
 msgid "Checklist"
 msgstr "Yoxlama siyahısı"
@@ -1714,7 +1752,15 @@ msgstr ""
 msgid "Yes, exit"
 msgstr "Bəli, çıx"
 
-#: templates/teams/team_join_form.html:26
+#: templates/teams/team_join_form.html:22
+msgid ""
+"If you have an invite link, paste it above. Otherwise, enter team name and "
+"password below."
+msgstr ""
+"Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
+"komandanın adını və şifrəsini daxil edin."
+
+#: templates/teams/team_join_form.html:33
 msgid "Join"
 msgstr "Qoşul"
 
