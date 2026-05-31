@@ -6,6 +6,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.utils.translation import gettext as _
+from django import forms
 from unittest.mock import patch, MagicMock
 import uuid
 
@@ -3058,3 +3059,401 @@ class TeamJoinViewTestCase(TestCase):
             'Maximum number of teams reached',
             str(messages[0])
         )
+
+
+class TeamJoinViaInviteLinkTestCase(TestCase):
+    """Test team joining via invite link on /teams/join/ page."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        from task_manager.user.models import User
+        from task_manager.teams.models import TeamInvite
+        from django.utils import timezone
+        from datetime import timedelta
+
+        # Use user pk=11 which is not in team memberships from fixtures
+        self.user = User.objects.get(pk=11)
+        self.c = Client()
+        self.c.force_login(self.user)
+        # Use team pk=2 (Another Test Team)
+        self.team = Team.objects.get(pk=2)
+        self.team.password = 'testpass123'
+        self.team.save(update_fields=['password'])
+
+        # Create valid invite
+        self.invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=User.objects.get(pk=10),
+            expires_at=timezone.now() + timedelta(days=7)
+        )
+        self.invite_url = reverse(
+            'teams:team-join-invite', args=[self.invite.invite_code]
+        )
+
+    def test_join_page_shows_invite_link_field(self):
+        """Test join page has invite link input field."""
+        response = self.c.get(reverse('teams:team-join'))
+        self.assertContains(response, 'id_invite_link')
+        self.assertContains(response, _('Invite link'))
+
+    def test_join_with_valid_invite_link(self):
+        """Test successful join with valid invite link."""
+        initial_count = TeamMembership.objects.filter(
+            user=self.user, team=self.team
+        ).count()
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': f'http://testserver{self.invite_url}'},
+            follow=True
+        )
+
+        # Check membership was created with active status
+        new_count = TeamMembership.objects.filter(
+            user=self.user, team=self.team
+        ).count()
+        self.assertEqual(initial_count + 1, new_count)
+
+        membership = TeamMembership.objects.get(
+            user=self.user, team=self.team
+        )
+        self.assertEqual(membership.status, 'active')
+        self.assertEqual(membership.role, 'member')
+
+        # Check invite was marked as used
+        self.invite.refresh_from_db()
+        self.assertTrue(self.invite.is_used)
+        self.assertEqual(self.invite.used_by, self.user)
+
+        # Check redirect to tasks list
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+    def test_join_with_invalid_invite_link(self):
+        """Test join with invalid invite link shows error."""
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': 'invalid-uuid'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+
+    def test_join_with_expired_invite_link(self):
+        """Test join with expired invite link shows error."""
+        from task_manager.teams.models import TeamInvite
+        from django.utils import timezone
+        from datetime import timedelta
+
+        # Create expired invite
+        expired_invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=User.objects.get(pk=10),
+            expires_at=timezone.now() - timedelta(days=1)
+        )
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': f'http://testserver/teams/join-invite/'
+                            f'{expired_invite.invite_code}'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+
+    def test_join_with_used_invite_link(self):
+        """Test join with used invite link shows error."""
+        # Mark invite as used
+        self.invite.is_used = True
+        self.invite.save()
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': f'http://testserver{self.invite_url}'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+
+    def test_join_with_invite_already_member(self):
+        """Test joining team via invite when already member shows error."""
+        # Make user a member first
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': f'http://testserver{self.invite_url}'},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+        self.assertIn('already a member', str(response.context['form'].errors))
+
+    def test_join_with_invite_extract_uuid_from_url(self):
+        """Test invite code extracted correctly from full URL."""
+        # Use full URL with https
+        full_url = (
+            f'https://example.com/teams/join-invite/'
+            f'{self.invite.invite_code}/'
+        )
+
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': full_url},
+            follow=True
+        )
+
+        # Should succeed
+        self.assertRedirects(response, reverse('tasks:tasks-list'))
+        self.assertTrue(
+            TeamMembership.objects.filter(
+                user=self.user, team=self.team, status='active'
+            ).exists()
+        )
+
+    def test_join_without_invite_or_credentials(self):
+        """Test join without invite or credentials shows error."""
+        response = self.c.post(
+            reverse('teams:team-join'),
+            {'invite_link': '', 'name': '', 'password': ''},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['form'].is_valid())
+
+
+class TeamJoinFormHelperMethodsTestCase(TestCase):
+    """Test helper methods of TeamJoinForm."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+    ]
+
+    def setUp(self):
+        from task_manager.user.models import User
+        from task_manager.teams.models import TeamInvite
+        from task_manager.teams.forms import TeamJoinForm
+        from django.utils import timezone
+        from datetime import timedelta
+
+        self.user = User.objects.get(pk=11)
+        self.team = Team.objects.get(pk=2)
+        self.team.password = 'testpass123'
+        self.team.save(update_fields=['password'])
+
+        # Create valid invite
+        self.invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=User.objects.get(pk=10),
+            expires_at=timezone.now() + timedelta(days=7)
+        )
+
+        self.TeamJoinForm = TeamJoinForm
+        self.form = TeamJoinForm(
+            data={'name': self.team.name, 'password': 'testpass123'},
+            initial={'user': self.user}
+        )
+
+    def test_extract_invite_code_from_full_url(self):
+        """Test extracting invite code from full URL."""
+        code = self.form._extract_invite_code(
+            f'https://example.com/teams/join-invite/{self.invite.invite_code}/'
+        )
+        self.assertEqual(str(code), str(self.invite.invite_code))
+
+    def test_extract_invite_code_from_short_url(self):
+        """Test extracting invite code from short URL."""
+        code = self.form._extract_invite_code(
+            f'http://testserver/teams/join-invite/{self.invite.invite_code}'
+        )
+        self.assertEqual(str(code), str(self.invite.invite_code))
+
+    def test_extract_invite_code_from_partial_url(self):
+        """Test extracting invite code from partial URL."""
+        code = self.form._extract_invite_code(
+            f'join-invite/{self.invite.invite_code}/extra'
+        )
+        self.assertEqual(str(code), str(self.invite.invite_code))
+
+    def test_extract_invite_code_from_plain_uuid(self):
+        """Test extracting invite code from plain UUID string."""
+        code = self.form._extract_invite_code(str(self.invite.invite_code))
+        self.assertEqual(str(code), str(self.invite.invite_code))
+
+    def test_extract_invite_code_empty(self):
+        """Test extracting invite code from empty string."""
+        code = self.form._extract_invite_code('')
+        self.assertEqual(code, '')
+
+    def test_extract_invite_code_invalid(self):
+        """Test extracting invite code from invalid URL."""
+        code = self.form._extract_invite_code('not-a-valid-url')
+        self.assertEqual(code, 'not-a-valid-url')
+
+    def test_validate_invite_code_valid_uuid(self):
+        """Test validating a valid UUID."""
+        import uuid
+        result = self.form._validate_invite_code(str(self.invite.invite_code))
+        self.assertIsInstance(result, uuid.UUID)
+        self.assertEqual(result, self.invite.invite_code)
+
+    def test_validate_invite_code_invalid_uuid(self):
+        """Test validating an invalid UUID."""
+        result = self.form._validate_invite_code('not-a-uuid')
+        self.assertIsNone(result)
+
+    def test_validate_invite_code_empty(self):
+        """Test validating empty string."""
+        result = self.form._validate_invite_code('')
+        self.assertIsNone(result)
+
+    def test_is_invite_valid_not_used(self):
+        """Test is_invite_valid with unused invite."""
+        self.invite.is_used = False
+        self.invite.save()
+        self.assertTrue(self.form._is_invite_valid(self.invite))
+
+    def test_is_invite_valid_used(self):
+        """Test is_invite_valid with used invite."""
+        self.invite.is_used = True
+        self.invite.save()
+        self.assertFalse(self.form._is_invite_valid(self.invite))
+
+    def test_is_invite_valid_expired(self):
+        """Test is_invite_valid with expired invite."""
+        from django.utils import timezone
+        from datetime import timedelta
+
+        self.invite.expires_at = timezone.now() - timedelta(days=1)
+        self.invite.is_used = False
+        self.invite.save()
+        self.assertFalse(self.form._is_invite_valid(self.invite))
+
+    def test_get_invite_from_link_valid(self):
+        """Test getting invite from valid link."""
+        invite = self.form._get_invite_from_link(
+            f'http://testserver/teams/join-invite/{self.invite.invite_code}'
+        )
+        self.assertEqual(invite, self.invite)
+
+    def test_get_invite_from_link_invalid(self):
+        """Test getting invite from invalid link."""
+        invite = self.form._get_invite_from_link('invalid-link')
+        self.assertIsNone(invite)
+
+    def test_get_invite_from_link_empty(self):
+        """Test getting invite from empty link."""
+        invite = self.form._get_invite_from_link('')
+        self.assertIsNone(invite)
+
+    def test_get_invite_from_link_expired(self):
+        """Test getting invite from expired link."""
+        from task_manager.teams.models import TeamInvite
+        from django.utils import timezone
+        from datetime import timedelta
+
+        expired_invite = TeamInvite.objects.create(
+            team=self.team,
+            created_by=User.objects.get(pk=10),
+            expires_at=timezone.now() - timedelta(days=1)
+        )
+
+        invite = self.form._get_invite_from_link(
+            f'http://testserver/teams/join-invite/{expired_invite.invite_code}'
+        )
+        self.assertIsNone(invite)
+
+    def test_validate_invite_join_success(self):
+        """Test _validate_invite_join with valid invite."""
+        self.form._validate_invite_join(self.invite, self.user)
+        # Should not raise any exception
+
+    def test_validate_invite_join_already_member(self):
+        """Test _validate_invite_join when user is already member."""
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        with self.assertRaises(forms.ValidationError):
+            self.form._validate_invite_join(self.invite, self.user)
+
+    def test_validate_name_password_join_success(self):
+        """Test _validate_name_password_join with valid credentials."""
+        team = self.form._validate_name_password_join(
+            self.team.name, 'testpass123', self.user
+        )
+        self.assertEqual(team, self.team)
+
+    def test_validate_name_password_join_team_not_exist(self):
+        """Test _validate_name_password_join with non-existent team."""
+        with self.assertRaises(forms.ValidationError):
+            self.form._validate_name_password_join(
+                'NonExistentTeam', 'pass', self.user
+            )
+
+    def test_validate_name_password_join_wrong_password(self):
+        """Test _validate_name_password_join with wrong password."""
+        with self.assertRaises(forms.ValidationError):
+            self.form._validate_name_password_join(
+                self.team.name, 'wrongpass', self.user
+            )
+
+    def test_validate_name_password_join_already_member(self):
+        """Test _validate_name_password_join when user is already member."""
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+        with self.assertRaises(forms.ValidationError):
+            self.form._validate_name_password_join(
+                self.team.name, 'testpass123', self.user
+            )
+
+    def test_clean_no_invite_or_credentials(self):
+        """Test clean() when no invite or credentials provided."""
+        form = self.TeamJoinForm(
+            data={'invite_link': '', 'name': '', 'password': ''},
+            initial={'user': self.user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)
+
+    def test_clean_name_only_no_password(self):
+        """Test clean() when only name provided, no password."""
+        form = self.TeamJoinForm(
+            data={'invite_link': '', 'name': self.team.name, 'password': ''},
+            initial={'user': self.user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)
+
+    def test_clean_password_only_no_name(self):
+        """Test clean() when only password provided, no name."""
+        form = self.TeamJoinForm(
+            data={'invite_link': '', 'name': '', 'password': 'pass'},
+            initial={'user': self.user}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)

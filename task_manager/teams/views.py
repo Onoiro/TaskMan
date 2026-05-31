@@ -424,7 +424,7 @@ class TeamJoinView(LoginRequiredMixin, View):
             # Create membership as pending (unless using invite link)
             if invite:
                 # Using invite link - join immediately with active status
-                membership = TeamMembership.objects.create(
+                TeamMembership.objects.create(
                     user=request.user,
                     team=team,
                     role='member',

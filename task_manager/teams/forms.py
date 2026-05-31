@@ -149,54 +149,60 @@ class TeamJoinForm(forms.Form):
         except Team.DoesNotExist:
             return None
 
-    def _get_invite_from_link(self, link):
+    def _extract_invite_code(self, link):
+        """Extract invite code UUID from URL or return None."""
+        if '/teams/join-invite/' in link:
+            parts = link.split('/teams/join-invite/')
+            if len(parts) > 1:
+                return parts[1].rstrip('/').split('/')[0]
+        elif 'join-invite/' in link:
+            parts = link.split('join-invite/')
+            if len(parts) > 1:
+                return parts[1].rstrip('/').split('/')[0]
+        else:
+            return link.strip()
+
+    def _validate_invite_code(self, code_part):
+        """Validate UUID format and return UUID object or None."""
+        import uuid
+
+        try:
+            return uuid.UUID(code_part)
+        except ValueError:
+            return None
+
+    def _is_invite_valid(self, invite):
+        """Check if invite is valid for use."""
+        return (
+            not invite.is_used
+            and invite.is_valid()
+            and invite.use_count < invite.max_uses
+        )
+
+    def _get_invite_from_link(self, link):  # noqa: C901
         """Extract invite code from link and return invite object."""
         from task_manager.teams.models import TeamInvite
-        from django.utils import timezone
 
         if not link:
             return None
 
-        # Extract invite code from URL
-        # Expected formats:
-        # - https://taskman.tech/teams/join-invite/<uuid>/
-        # - <uuid>
-        try:
-            # Try to extract UUID from URL
-            if '/teams/join-invite/' in link:
-                parts = link.split('/teams/join-invite/')
-                if len(parts) > 1:
-                    code_part = parts[1].rstrip('/').split('/')[0]
-                else:
-                    return None
-            elif 'join-invite/' in link:
-                parts = link.split('join-invite/')
-                if len(parts) > 1:
-                    code_part = parts[1].rstrip('/').split('/')[0]
-                else:
-                    return None
-            else:
-                # Try to use as direct UUID
-                code_part = link.strip()
-
-            # Validate UUID format
-            import uuid
-            invite_code = uuid.UUID(code_part)
-
-            # Get invite
-            invite = TeamInvite.objects.get(invite_code=invite_code)
-
-            # Validate invite
-            if invite.is_used:
-                return None
-            if not invite.is_valid():
-                return None
-            if invite.use_count >= invite.max_uses:
-                return None
-
-            return invite
-        except (ValueError, TeamInvite.DoesNotExist):
+        code_part = self._extract_invite_code(link)
+        if not code_part:
             return None
+
+        invite_code = self._validate_invite_code(code_part)
+        if not invite_code:
+            return None
+
+        try:
+            invite = TeamInvite.objects.get(invite_code=invite_code)
+        except TeamInvite.DoesNotExist:
+            return None
+
+        if not self._is_invite_valid(invite):
+            return None
+
+        return invite
 
     def clean_invite_link(self):
         invite_link = self.cleaned_data.get('invite_link', '').strip()
@@ -218,10 +224,9 @@ class TeamJoinForm(forms.Form):
         if invite:
             return name
 
+        # If no name provided, return None (validation in clean())
         if not name:
-            raise forms.ValidationError(
-                _("Team name is required when not using invite link")
-            )
+            return None
 
         team = self._get_team(name)
         if not team:
@@ -237,12 +242,11 @@ class TeamJoinForm(forms.Form):
         if invite:
             return password
 
-        name = self.cleaned_data.get('name')
-        if not name or not password:
-            raise forms.ValidationError(
-                _("Team password is required when not using invite link")
-            )
+        # If no password provided, return None (validation in clean())
+        if not password:
+            return None
 
+        name = self.cleaned_data.get('name')
         team = self._get_team(name)
         if team and team.password != password:
             raise forms.ValidationError(_("Invalid team password"))
@@ -268,6 +272,31 @@ class TeamJoinForm(forms.Form):
             return _("You already have a pending request to join this team")
         return _("You are already a member of this team")
 
+    def _validate_invite_join(self, invite, user):
+        """Validate join via invite link. Return team or raise error."""
+        team = invite.team
+        if user:
+            error = self._check_membership(user, team)
+            if error:
+                raise forms.ValidationError(error)
+        return team
+
+    def _validate_name_password_join(self, name, password, user):
+        """Validate join via name and password. Return team or raise error."""
+        team = self._get_team(name)
+        if not team:
+            raise forms.ValidationError(_("Team does not exist"))
+
+        if team.password != password:
+            raise forms.ValidationError(_("Invalid team password"))
+
+        if user:
+            error = self._check_membership(user, team)
+            if error:
+                raise forms.ValidationError(error)
+
+        return team
+
     def clean(self):
         cleaned_data = super().clean()
         invite = cleaned_data.get('_invite')
@@ -277,25 +306,12 @@ class TeamJoinForm(forms.Form):
 
         if invite:
             # Using invite link
-            team = invite.team
-            if user:
-                error = self._check_membership(user, team)
-                if error:
-                    raise forms.ValidationError(error)
-            cleaned_data['team'] = team
+            cleaned_data['team'] = self._validate_invite_join(invite, user)
         elif name and password:
             # Using team name and password
-            team = self._get_team(name)
-            if team:
-                if team.password != password:
-                    raise forms.ValidationError(_("Invalid team password"))
-
-                if user:
-                    error = self._check_membership(user, team)
-                    if error:
-                        raise forms.ValidationError(error)
-
-                cleaned_data['team'] = team
+            cleaned_data['team'] = self._validate_name_password_join(
+                name, password, user
+            )
         else:
             raise forms.ValidationError(
                 _("Either provide an invite link or team name and password")
