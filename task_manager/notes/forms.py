@@ -35,31 +35,31 @@ class NoteForm(forms.ModelForm):
 
     def clean_task(self):
         task = self.cleaned_data.get('task')
-        if not task:
-            return task
-
-        # Validate task belongs to user's context
-        if not self.request or not self.request.user.is_authenticated:
+        if (not task
+                or not self.request
+                or not self.request.user.is_authenticated):
             return task
 
         user = self.request.user
         team = getattr(self.request, 'active_team', None)
 
+        # Validate task belongs to user's context
+        error_message = self._validate_task_context(task, user, team)
+        if error_message is not None:
+            raise forms.ValidationError(error_message)
+
+        return task
+
+    def _validate_task_context(self, task, user, team):
+        """Validate task context and return error message or None if valid."""
         if team:
             # Team context: task must belong to same team
             if task.team != team:
-                raise forms.ValidationError(
-                    _("Task must be from the same team.")
-                )
+                return _("Task must be from the same team.")
         else:
             # Individual context: task must be personal
             if task.team is not None:
-                raise forms.ValidationError(
-                    _("Cannot attach note to team task in individual mode.")
-                )
+                return _("Cannot attach note to team task in individual mode.")
             if task.author != user:
-                raise forms.ValidationError(
-                    _("You can only attach notes to your own tasks.")
-                )
-
-        return task
+                return _("You can only attach notes to your own tasks.")
+        return None

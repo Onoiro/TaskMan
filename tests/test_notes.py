@@ -559,6 +559,7 @@ class NoteViewsTestCase(TestCase):
         response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Detail Note")
+        # Content is rendered via JavaScript, check raw content element
         self.assertContains(response, "Detail content here")
 
     def test_note_detail_page_shows_edit_button(self):
@@ -743,6 +744,7 @@ class NoteViewsTestCase(TestCase):
         response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Untitled Note")
+        # Content is rendered via JavaScript, check raw content element
         self.assertContains(response, "Content without title")
 
     def test_note_create_page_content(self):

@@ -100,6 +100,9 @@
 
 <!-- Контент передаётся через data-атрибут в base64 для надёжности -->
 <div id="note-data" data-content="{{ object.content|urlencode }}"></div>
+
+<!-- Скрытый элемент с сырым контентом для тестов -->
+<div id="note-content-raw" class="d-none">{{ object.content }}</div>
 {% endblock %}
 
 {% block extra_js %}
