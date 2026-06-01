@@ -41,7 +41,7 @@ class MarkdownToolbar {
 
     renderToolbar() {
         const toolbar = document.createElement('div');
-        toolbar.className = 'markdown-toolbar btn-group flex-nowrap overflow-auto';
+        toolbar.className = 'markdown-toolbar btn-group flex-nowrap overflow-auto mb-2';
         toolbar.setAttribute('role', 'toolbar');
 
         this.buttons.forEach(btn => {
@@ -54,7 +54,18 @@ class MarkdownToolbar {
             toolbar.appendChild(button);
         });
 
-        this.textarea.parentNode.insertBefore(toolbar, this.textarea);
+        // Вставляем toolbar перед editor-col (который содержит textarea)
+        const editorContainer = document.getElementById('markdown-editor-container');
+        if (editorContainer) {
+            const editorCol = this.textarea.closest('.editor-col');
+            if (editorCol) {
+                editorContainer.insertBefore(toolbar, editorCol);
+            } else {
+                editorContainer.insertBefore(toolbar, this.textarea);
+            }
+        } else {
+            this.textarea.parentNode.insertBefore(toolbar, this.textarea);
+        }
         this.toolbarElement = toolbar;
     }
 
@@ -210,10 +221,5 @@ class MarkdownToolbar {
     }
 }
 
-// Авто-инициализация при загрузке DOM
-document.addEventListener('DOMContentLoaded', () => {
-    const textarea = document.getElementById('id_content');
-    if (textarea) {
-        window.markdownToolbar = new MarkdownToolbar('id_content', 'markdown-preview');
-    }
-});
+// Экспорт для использования в шаблонах
+window.MarkdownToolbar = MarkdownToolbar;

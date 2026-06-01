@@ -98,8 +98,8 @@
     </div>
 </div>
 
-<!-- Hidden div with raw content for JavaScript -->
-<div id="raw-content" class="d-none">{{ object.content|escapejs }}</div>
+<!-- Контент передаётся через data-атрибут в base64 для надёжности -->
+<div id="note-data" data-content="{{ object.content|urlencode }}"></div>
 {% endblock %}
 
 {% block extra_js %}
@@ -119,67 +119,70 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем сырой контент
-    const rawContentDiv = document.getElementById('raw-content');
+    // Получаем контент из data-атрибута (URL-encoded)
+    const noteDataElement = document.getElementById('note-data');
     const contentDiv = document.getElementById('note-content');
 
-    if (!rawContentDiv || !contentDiv) return;
+    if (!noteDataElement || !contentDiv) return;
 
-    // Декодируем контент
-    let markdownText = rawContentDiv.textContent;
+    // Декодируем URL-encoded контент
+    let markdownText = decodeURIComponent(noteDataElement.getAttribute('data-content') || '');
 
     // Настройка marked.js
     marked.setOptions({
         breaks: true,
         gfm: true,
-        sanitize: false // Разрешаем HTML для лучшей совместимости
+        sanitize: false
     });
 
-    // Парсим Markdown
-    const html = marked.parse(markdownText);
-    contentDiv.innerHTML = html;
+    try {
+        // Парсим Markdown
+        const html = marked.parse(markdownText);
+        contentDiv.innerHTML = html;
 
-    // Применяем подсветку кода
-    if (typeof hljs !== 'undefined') {
-        contentDiv.querySelectorAll('pre code').forEach((block) => {
-            // Определяем язык из класса или используем авто-определение
-            const langClass = Array.from(block.classList).find(c => c.startsWith('language-'));
-            const lang = langClass ? langClass.replace('language-', '') : null;
+        // Применяем подсветку кода
+        if (typeof hljs !== 'undefined') {
+            contentDiv.querySelectorAll('pre code').forEach((block) => {
+                const langClass = Array.from(block.classList).find(c => c.startsWith('language-'));
+                const lang = langClass ? langClass.replace('language-', '') : null;
 
-            if (lang && hljs.getLanguage(lang)) {
-                try {
-                    hljs.highlightElement(block);
-                } catch (e) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        hljs.highlightElement(block);
+                    } catch (e) {
+                        hljs.highlightAuto(block);
+                    }
+                } else {
                     hljs.highlightAuto(block);
                 }
-            } else {
-                hljs.highlightAuto(block);
-            }
+            });
+        }
+
+        // Добавляем lazy loading и кликабельность для изображений
+        contentDiv.querySelectorAll('img').forEach((img) => {
+            img.loading = 'lazy';
+            img.classList.add('img-fluid');
+
+            img.addEventListener('click', function() {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('modalImage');
+                if (modal && modalImg) {
+                    modalImg.src = this.src;
+                    modalImg.alt = this.alt || 'Image';
+                    const bsModal = new bootstrap.Modal(modal);
+                    bsModal.show();
+                }
+            });
         });
+
+        // Добавляем классы Bootstrap для таблиц
+        contentDiv.querySelectorAll('table').forEach((table) => {
+            table.classList.add('table', 'table-bordered', 'table-hover');
+        });
+    } catch (e) {
+        console.error('Error rendering markdown:', e);
+        contentDiv.textContent = markdownText;
     }
-
-    // Добавляем lazy loading для изображений
-    contentDiv.querySelectorAll('img').forEach((img) => {
-        img.loading = 'lazy';
-        img.classList.add('img-fluid');
-
-        // Клик для просмотра в модалке
-        img.addEventListener('click', function() {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            if (modal && modalImg) {
-                modalImg.src = this.src;
-                modalImg.alt = this.alt || 'Image';
-                const bsModal = new bootstrap.Modal(modal);
-                bsModal.show();
-            }
-        });
-    });
-
-    // Добавляем классы для таблиц (Bootstrap styling)
-    contentDiv.querySelectorAll('table').forEach((table) => {
-        table.classList.add('table', 'table-bordered', 'table-hover');
-    });
 });
 </script>
 

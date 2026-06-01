@@ -14,7 +14,7 @@ class NoteForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
 
-        if self.request is None:
+        if self.request is None or not self.request.user.is_authenticated:
             return
 
         user = self.request.user
@@ -39,6 +39,9 @@ class NoteForm(forms.ModelForm):
             return task
 
         # Validate task belongs to user's context
+        if not self.request or not self.request.user.is_authenticated:
+            return task
+
         user = self.request.user
         team = getattr(self.request, 'active_team', None)
 
