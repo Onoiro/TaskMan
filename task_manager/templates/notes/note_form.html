@@ -1,11 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% load django_bootstrap5 %}
 {% load i18n %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/markdown-editor.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container py-3 py-lg-4">
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
+        <div class="col-12 col-lg-10">
 
             <form method="post" class="h-100 d-flex flex-column">
                 {% csrf_token %}
@@ -52,6 +57,8 @@
                                 {% trans "Create note" %}
                             {% endif %}
                         </h1>
+
+                        <!-- Title field -->
                         <div class="mb-3">
                             <label class="form-label small text-muted mb-1" for="id_title">
                                 {% trans "Title" %}
@@ -64,16 +71,46 @@
                                    maxlength="150"
                                    placeholder="{% trans 'Optional' %}">
                         </div>
+
+                        <!-- Content field with Markdown editor -->
                         <div class="mb-3">
                             <label class="form-label required-mark" for="id_content">
                                 {% trans "Content" %}
                             </label>
-                            <textarea class="form-control"
-                                      name="content"
-                                      id="id_content"
-                                      required
-                                      placeholder="{% trans 'Enter note content...' %}">{{ form.content.value|default:'' }}</textarea>
+
+                            <!-- Markdown Editor Row -->
+                            <div class="markdown-editor-row">
+                                <!-- Editor Column -->
+                                <div class="editor-col">
+                                    <textarea class="form-control"
+                                              name="content"
+                                              id="id_content"
+                                              required
+                                              placeholder="{% trans 'Enter note content... Use Markdown for formatting.' %}">{{ form.content.value|default:'' }}</textarea>
+                                </div>
+
+                                <!-- Preview Column -->
+                                <div class="preview-col d-none">
+                                    <div class="preview-header">
+                                        <i class="bi bi-eye"></i> {% trans "Preview" %}
+                                    </div>
+                                    <div id="markdown-preview" class="markdown-preview markdown-content"></div>
+                                </div>
+                            </div>
+
+                            <!-- Helper text -->
+                            <div class="form-text">
+                                <i class="bi bi-markdown"></i>
+                                {% trans "Markdown supported:" %}
+                                <strong>**bold**</strong>,
+                                <em>*italic*</em>,
+                                # heading,
+                                [link](url),
+                                ```code```
+                            </div>
                         </div>
+
+                        <!-- Task field -->
                         {% bootstrap_field form.task show_help_text=True %}
                     </div>
                 </div>
@@ -111,30 +148,119 @@
     </div>
 </div>
 
-<style>
-    textarea.form-control {
-        min-height: 150px;
-        background-color: var(--tm-bg-tertiary);
-        line-height: 1.6;
+<!-- Image Insert Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">
+                    <i class="bi bi-image"></i> {% trans "Insert Image" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="imageUrl">
+                        <i class="bi bi-link-45deg"></i> {% trans "Image URL" %}
+                    </label>
+                    <input type="url"
+                           class="form-control"
+                           id="imageUrl"
+                           placeholder="https://example.com/image.png">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="imageAlt">
+                        <i class="bi bi-card-text"></i> {% trans "Description (alt text)" %}
+                    </label>
+                    <input type="text"
+                           class="form-control"
+                           id="imageAlt"
+                           placeholder="{% trans 'Image description' %}">
+                </div>
+                <img id="imagePreview" src="" alt="{% trans 'Preview' %}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    {% trans "Cancel" %}
+                </button>
+                <button type="button" class="btn btn-primary" data-insert-image>
+                    <i class="bi bi-plus-lg"></i> {% trans "Insert" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden field to store original content for preview -->
+<input type="hidden" id="originalContent" value="{{ form.content.value|default:''|escapejs }}">
+{% endblock %}
+
+{% block extra_js %}
+<!-- Marked.js for Markdown parsing -->
+<script src="{% static 'js/vendor/marked.min.js' %}"></script>
+
+<!-- Highlight.js for code highlighting -->
+<script src="{% static 'js/vendor/highlight.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/python.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/javascript.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/bash.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/json.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/sql.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/xml.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/css.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/yaml.min.js' %}"></script>
+
+<!-- Markdown Toolbar -->
+<script src="{% static 'js/markdown-toolbar.js' %}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Настройка marked.js
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        highlight: function(code, lang) {
+            if (typeof hljs !== 'undefined' && lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(code, { language: lang }).value;
+                } catch (e) {}
+            }
+            return hljs.highlightAuto(code).value;
+        }
+    });
+
+    // Инициализация toolbar
+    const textarea = document.getElementById('id_content');
+    if (textarea) {
+        window.markdownToolbar = new MarkdownToolbar('id_content', 'markdown-preview');
     }
 
-    input[name="title"] {
-        font-weight: 400;
-        font-size: 1rem;
-        padding: 0.5rem;
-    }
+    // Обработчик для модального окна изображений
+    const imageModal = document.getElementById('imageModal');
+    if (imageModal) {
+        const urlInput = document.getElementById('imageUrl');
+        const altInput = document.getElementById('imageAlt');
+        const preview = document.getElementById('imagePreview');
 
-    label.form-label {
-        color: var(--tm-text-muted);
-        font-size: 0.85rem;
-        margin-bottom: 0.2rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+        // Обновление превью при вводе URL
+        urlInput.addEventListener('input', function() {
+            const url = this.value.trim();
+            if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                preview.src = url;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
 
-    .required-mark::after {
-        content: " *";
-        color: var(--bs-danger, #dc3545);
+        // Сброс полей при закрытии модального окна
+        imageModal.addEventListener('hidden.bs.modal', function() {
+            urlInput.value = '';
+            altInput.value = '';
+            preview.src = '';
+            preview.style.display = 'none';
+        });
     }
-</style>
+});
+</script>
 {% endblock %}

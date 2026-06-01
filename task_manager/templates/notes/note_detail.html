@@ -1,5 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 {% load i18n %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/markdown-editor.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container wrapper flex-grow-1 py-3 py-lg-4">
@@ -46,9 +51,15 @@
                         </div>
                     </div>
 
-                    <!-- Note Content - Full Width -->
-                    <div class="note-content mb-4">
-                        {{ object.content|linebreaks }}
+                    <!-- Note Content - Markdown Rendered -->
+                    <div id="note-content" class="note-content markdown-content mb-4">
+                        <!-- Content will be rendered by JavaScript -->
+                        <div class="text-muted">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            {% trans "Loading content..." %}
+                        </div>
                     </div>
 
                     <!-- Footer: Author -->
@@ -75,27 +86,142 @@
     </div>
 </div>
 
+<!-- Image Modal for full-size viewing -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-index-10" data-bs-dismiss="modal" aria-label="Close"></button>
+                <img id="modalImage" src="" alt="" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden div with raw content for JavaScript -->
+<div id="raw-content" class="d-none">{{ object.content|escapejs }}</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Marked.js for Markdown parsing -->
+<script src="{% static 'js/vendor/marked.min.js' %}"></script>
+
+<!-- Highlight.js for code highlighting -->
+<script src="{% static 'js/vendor/highlight.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/python.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/javascript.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/bash.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/json.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/sql.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/xml.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/css.min.js' %}"></script>
+<script src="{% static 'js/vendor/languages/yaml.min.js' %}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Получаем сырой контент
+    const rawContentDiv = document.getElementById('raw-content');
+    const contentDiv = document.getElementById('note-content');
+
+    if (!rawContentDiv || !contentDiv) return;
+
+    // Декодируем контент
+    let markdownText = rawContentDiv.textContent;
+
+    // Настройка marked.js
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        sanitize: false // Разрешаем HTML для лучшей совместимости
+    });
+
+    // Парсим Markdown
+    const html = marked.parse(markdownText);
+    contentDiv.innerHTML = html;
+
+    // Применяем подсветку кода
+    if (typeof hljs !== 'undefined') {
+        contentDiv.querySelectorAll('pre code').forEach((block) => {
+            // Определяем язык из класса или используем авто-определение
+            const langClass = Array.from(block.classList).find(c => c.startsWith('language-'));
+            const lang = langClass ? langClass.replace('language-', '') : null;
+
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    hljs.highlightElement(block);
+                } catch (e) {
+                    hljs.highlightAuto(block);
+                }
+            } else {
+                hljs.highlightAuto(block);
+            }
+        });
+    }
+
+    // Добавляем lazy loading для изображений
+    contentDiv.querySelectorAll('img').forEach((img) => {
+        img.loading = 'lazy';
+        img.classList.add('img-fluid');
+
+        // Клик для просмотра в модалке
+        img.addEventListener('click', function() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            if (modal && modalImg) {
+                modalImg.src = this.src;
+                modalImg.alt = this.alt || 'Image';
+                const bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+            }
+        });
+    });
+
+    // Добавляем классы для таблиц (Bootstrap styling)
+    contentDiv.querySelectorAll('table').forEach((table) => {
+        table.classList.add('table', 'table-bordered', 'table-hover');
+    });
+});
+</script>
+
 <style>
+/* Специфичные стили для note_detail */
+.note-content {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 767.98px) {
     .note-content {
-        font-size: 1.05rem;
-        line-height: 1.7;
-        color: var(--bs-body-color);
-        white-space: pre-wrap;
-        word-wrap: break-word;
+        font-size: 1rem;
     }
 
-    .note-content p {
-        margin-bottom: 1rem;
+    .card-body {
+        padding: 1rem !important;
     }
+}
 
-    @media (max-width: 767.98px) {
-        .note-content {
-            font-size: 1rem;
-        }
+/* Modal image styles */
+#imageModal .modal-body {
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
 
-        .card-body {
-            padding: 1rem !important;
-        }
-    }
+#imageModal .modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#modalImage {
+    max-height: 85vh;
+    object-fit: contain;
+}
+
+.z-index-10 {
+    z-index: 10;
+}
 </style>
 {% endblock %}
