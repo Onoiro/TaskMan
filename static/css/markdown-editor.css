@@ -12,10 +12,15 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Скрываем скроллбар визуально, но оставляем функциональность */
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
 }
 
+/* Скрываем скроллбар для WebKit */
 .markdown-toolbar::-webkit-scrollbar {
     height: 4px;
+    display: none;
 }
 
 .markdown-toolbar::-webkit-scrollbar-thumb {
@@ -48,17 +53,18 @@
     min-height: 400px;
 }
 
-@media (min-width: 768px) {
-    .markdown-editor-row {
-        display: flex;
-        gap: 1rem;
-    }
+/* Editor и preview всегда располагаются вертикально */
+.markdown-editor-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-    .editor-col,
-    .preview-col {
-        flex: 1;
-        min-width: 0;
-    }
+.editor-col,
+.preview-col {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
 }
 
 .editor-col textarea {
