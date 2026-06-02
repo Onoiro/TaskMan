@@ -659,22 +659,20 @@ msgid "Both password fields must be filled or both left blank"
 msgstr "Ҳар ду майдони рамз бояд пур карда шаванд ё ҳар ду холӣ монанд"
 
 #: teams/forms.py:110
-#, fuzzy
-#| msgid "Invite link has expired"
 msgid "Invite link"
-msgstr "Муҳлати истиноди даъват гузаштааст"
+msgstr "Истиноди даъват"
 
 #: teams/forms.py:114
-#, fuzzy
-#| msgid "Invite link has expired"
 msgid "Paste invite link here"
-msgstr "Муҳлати истиноди даъват гузаштааст"
+msgstr "Истиноди даъватро дар ин ҷо часбонед"
 
 #: teams/forms.py:118
 msgid ""
 "If you have an invite link, paste it here. Otherwise, enter team name and "
 "password below."
 msgstr ""
+"Агар шумо истиноди даъват дошта бошед, онро дар ин ҷо часбонед. Дар акси ҳол, "
+"номи даста ва гузарвожаро дар поён ворид кунед."
 
 #: teams/forms.py:125 templates/teams/team_detail.html:59
 msgid "Team name"
@@ -713,14 +711,12 @@ msgid "You are already a member of this team"
 msgstr "Шумо аллакай узви ин даста ҳастед"
 
 #: teams/forms.py:288
-#, fuzzy
-#| msgid "Team with this name does not exist"
 msgid "Team does not exist"
-msgstr "Даста бо чунин ном вуҷуд надорад"
+msgstr "Даста вуҷуд надорад"
 
 #: teams/forms.py:317
 msgid "Either provide an invite link or team name and password"
-msgstr ""
+msgstr "Ё истиноди даъватро, ё номи даста ва гузарвожаро ворид кунед"
 
 #: teams/forms.py:338
 msgid "Invalid role selected."
@@ -1320,7 +1316,7 @@ msgstr "Оё мутмаинед, ки мехоҳед ин эзоҳро ҳазф 
 
 #: templates/notes/note_detail.html:18
 msgid "Untitled Note"
-msgstr ""
+msgstr "Ёддошти беном"
 
 #: templates/notes/note_detail.html:27 templates/notes/note_form.html:34
 #: templates/notes/note_list.html:69

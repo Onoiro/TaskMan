@@ -658,22 +658,20 @@ msgid "Both password fields must be filled or both left blank"
 msgstr "Hər iki şifrə sahəsi doldurulmalı və ya hər ikisi boş saxlanmalıdır"
 
 #: teams/forms.py:110
-#, fuzzy
-#| msgid "Invite link has expired"
 msgid "Invite link"
-msgstr "Dəvət linkinin müddəti bitib"
+msgstr "Dəvət linki"
 
 #: teams/forms.py:114
-#, fuzzy
-#| msgid "Invite link has expired"
 msgid "Paste invite link here"
-msgstr "Dəvət linkinin müddəti bitib"
+msgstr "Dəvət linkini bura yapışdırın"
 
 #: teams/forms.py:118
 msgid ""
 "If you have an invite link, paste it here. Otherwise, enter team name and "
 "password below."
 msgstr ""
+"Dəvət linkiniz varsa, onu bura yapışdırın. Əks halda, aşağıda "
+"komandanın adını və şifrəsini daxil edin."
 
 #: teams/forms.py:125 templates/teams/team_detail.html:59
 msgid "Team name"
@@ -712,14 +710,12 @@ msgid "You are already a member of this team"
 msgstr "Siz artıq bu komandanın üzvüsünüz"
 
 #: teams/forms.py:288
-#, fuzzy
-#| msgid "Team with this name does not exist"
 msgid "Team does not exist"
-msgstr "Bu adla komanda mövcud deyil"
+msgstr "Komanda mövcud deyil"
 
 #: teams/forms.py:317
 msgid "Either provide an invite link or team name and password"
-msgstr ""
+msgstr "Ya dəvət linkini, ya da komandanın adını və şifrəsini daxil edin"
 
 #: teams/forms.py:338
 msgid "Invalid role selected."
@@ -1316,7 +1312,7 @@ msgstr "Bu qeydi silmək istədiyinizə əminsiniz?"
 
 #: templates/notes/note_detail.html:18
 msgid "Untitled Note"
-msgstr ""
+msgstr "Başlıqsız qeyd"
 
 #: templates/notes/note_detail.html:27 templates/notes/note_form.html:34
 #: templates/notes/note_list.html:69

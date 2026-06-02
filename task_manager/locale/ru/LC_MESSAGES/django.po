@@ -710,10 +710,8 @@ msgid "You are already a member of this team"
 msgstr "Вы уже участник этой команды"
 
 #: teams/forms.py:288
-#, fuzzy
-#| msgid "Team with this name does not exist"
 msgid "Team does not exist"
-msgstr "Команды с таким названием не существует"
+msgstr "Команда не существует"
 
 #: teams/forms.py:317
 msgid "Either provide an invite link or team name and password"
@@ -1314,7 +1312,7 @@ msgstr "Вы уверены, что хотите удалить эту заме�
 
 #: templates/notes/note_detail.html:18
 msgid "Untitled Note"
-msgstr ""
+msgstr "Заметка без названия"
 
 #: templates/notes/note_detail.html:27 templates/notes/note_form.html:34
 #: templates/notes/note_list.html:69
