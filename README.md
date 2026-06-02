@@ -14,9 +14,9 @@ TaskMan is a web application designed to manage tasks individually or in teams (
 - **Task Management**: Create tasks with detailed information including title and description
 - **Team-Based Isolation**: All task-related entities (executors, statuses, labels) are isolated by team membership
 - **Task Assignment**: Assign tasks to team members only*
-- **Custom Task Status**: Create and manage custom task statuses (e.g., To Do, In Progress, Done) within your team
+- **Custom Task Status**: Create and manage custom task statuses (e.g., To Do, In Progress, Done) within your team with custom color for each status
 - **Labels**: Organize tasks with custom labels created by team members
-- **Notes**: Create text notes with title and content, optionally linked to tasks; available in both individual and team modes
+- **Notes**: Create text notes with title and content, optionally linked to tasks; available in both individual and team modes with full markdown support and live preview
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team
 - **Task Search**: Search tasks by title and description
 - **Task Sorting**: Sort task list by creation date, update date, and alphabetically
@@ -184,7 +184,11 @@ TaskMan implements a team-based isolation system:
 - **Join Request**: Users can also request to join a team by providing the team name and password. This is convenient when an admin wants to add multiple members at once without generating individual links
 - **Task Isolation**: When creating or editing tasks, only team members are available as executors
 - **Status & Labels**: Custom statuses and labels are shared only within team members
-- **Notes**: Notes can be created independently or linked to specific tasks; team members can view all team notes, while only the author or team admin can edit or delete them
+- **Notes**: Notes can be created independently or linked to specific tasks; team members can view all team notes, while only the author or team admin can edit or delete them. Notes support full markdown functionality with live preview
+- **Notifications**: Team members receive real-time notifications for important events:
+  - New task assignment
+  - Task status changes
+  - Team membership changes (invites, joins, removals)
 - **Filtering**: Task filters show only values created by team members
 - **Independent Work**: Users can also work independently without joining any team
 
