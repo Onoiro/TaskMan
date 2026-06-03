@@ -35,7 +35,7 @@ class NoteListView(CustomPermissions, ListView):
         if task_uuid:
             queryset = queryset.filter(task__uuid=task_uuid)
 
-        return queryset.select_related('author', 'task')
+        return queryset.select_related('author', 'task').prefetch_related('team')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -170,12 +170,12 @@ class NoteUpdateView(
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            return Note.objects.filter(team=team)
+            return Note.objects.filter(team=team).select_related('team')
         else:
             return Note.objects.filter(
                 author=user,
                 team__isnull=True
-            )
+            ).select_related('team')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -194,12 +194,12 @@ class NoteDetailView(CustomPermissions, DetailView):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            return Note.objects.filter(team=team)
+            return Note.objects.filter(team=team).select_related('team')
         else:
             return Note.objects.filter(
                 author=user,
                 team__isnull=True
-            )
+            ).select_related('team')
 
 
 class NoteDeleteView(
@@ -228,9 +228,9 @@ class NoteDeleteView(
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            return Note.objects.filter(team=team)
+            return Note.objects.filter(team=team).select_related('team')
         else:
             return Note.objects.filter(
                 author=user,
                 team__isnull=True
-            )
+            ).select_related('team')
