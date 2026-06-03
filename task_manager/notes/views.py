@@ -35,7 +35,8 @@ class NoteListView(CustomPermissions, ListView):
         if task_uuid:
             queryset = queryset.filter(task__uuid=task_uuid)
 
-        return queryset.select_related('author', 'task').prefetch_related('team')
+        return queryset.select_related('author', 'task'
+                                       ).prefetch_related('team')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

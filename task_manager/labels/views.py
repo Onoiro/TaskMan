@@ -22,13 +22,13 @@ class LabelsListView(CustomPermissions, ListView):
 
         if team:
             # show team's labels
-            return Label.objects.filter(team=team)
+            return Label.objects.filter(team=team).select_related('creator')
         else:
             # show labels for individual mode
             return Label.objects.filter(
                 creator=user,
                 team__isnull=True
-            )
+            ).select_related('creator')
 
 
 class LabelsCreateView(SuccessMessageMixin, CreateView):
@@ -84,13 +84,13 @@ class LabelsUpdateView(CustomPermissions, SuccessMessageMixin, UpdateView):
 
         if team:
             # in team mode - can only update labels from this team
-            return Label.objects.filter(team=team)
+            return Label.objects.filter(team=team).select_related('creator')
         else:
             # in individual mode - can only update personal labels
             return Label.objects.filter(
                 creator=user,
                 team__isnull=True
-            )
+            ).select_related('creator')
 
 
 class LabelsDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
@@ -107,12 +107,12 @@ class LabelsDeleteView(CustomPermissions, SuccessMessageMixin, DeleteView):
         team = getattr(self.request, 'active_team', None)
 
         if team:
-            return Label.objects.filter(team=team)
+            return Label.objects.filter(team=team).select_related('creator')
         else:
             return Label.objects.filter(
                 creator=user,
                 team__isnull=True
-            )
+            ).select_related('creator')
 
     def form_valid(self, form):
         label = self.get_object()
