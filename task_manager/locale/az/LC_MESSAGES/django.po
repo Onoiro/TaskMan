@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 16:01+0300\n"
+"POT-Creation-Date: 2026-06-03 23:39+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -118,42 +118,42 @@ msgid "checklist items"
 msgstr "yoxlama siyahısı bəndləri"
 
 #: notes/forms.py:34 statuses/forms.py:25 teams/forms.py:29
-#: templates/notes/note_form.html:65
+#: templates/notes/note_form.html:72
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "İstəyə bağlı"
 
-#: notes/forms.py:49
+#: notes/forms.py:58
 msgid "Task must be from the same team."
 msgstr "Tapşırıq eyni komandaya aid olmalıdır."
 
-#: notes/forms.py:55
+#: notes/forms.py:62
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Fərdi rejimdə qeydi komanda tapşırığına əlavə etmək olmaz."
 
-#: notes/forms.py:59
+#: notes/forms.py:64
 msgid "You can only attach notes to your own tasks."
 msgstr "Qeydləri yalnız öz tapşırıqlarınıza əlavə edə bilərsiniz."
 
-#: notes/models.py:23 templates/notes/note_form.html:57
+#: notes/models.py:23 templates/notes/note_form.html:64
 msgid "Title"
 msgstr "Başlıq"
 
-#: notes/models.py:37 templates/notes/note_form.html:69
+#: notes/models.py:37 templates/notes/note_form.html:78
 #: templates/terms_of_service.html:33
 msgid "Content"
 msgstr "Məzmun"
 
-#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:58
-#: templates/notes/note_form.html:37 templates/tasks/task_filter.html:389
+#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:69
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:389
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:102
 msgid "Author"
 msgstr "Müəllif"
 
 #: notes/models.py:53 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:29
+#: templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Komanda"
 
@@ -174,11 +174,11 @@ msgid "Updated at"
 msgstr "Yenilənmə tarixi"
 
 #: notes/models.py:74 templates/feedback.html:28
-#: templates/notes/note_form.html:20
+#: templates/notes/note_form.html:25
 msgid "Note"
 msgstr "Qeyd"
 
-#: notes/models.py:75 templates/base.html:128 templates/base.html:153
+#: notes/models.py:75 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
 #: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:347
@@ -543,7 +543,7 @@ msgstr "Yoxlama siyahısı var"
 msgid "Executors"
 msgstr "İcraçılar"
 
-#: tasks/models.py:69 templates/base.html:123 templates/base.html:150
+#: tasks/models.py:69 templates/base.html:125 templates/base.html:152
 #: templates/includes/limits_usage.html:56
 #: templates/includes/team_limits_usage.html:66 templates/index.html:49
 msgid "Labels"
@@ -670,8 +670,8 @@ msgid ""
 "If you have an invite link, paste it here. Otherwise, enter team name and "
 "password below."
 msgstr ""
-"Dəvət linkiniz varsa, onu bura yapışdırın. Əks halda, aşağıda "
-"komandanın adını və şifrəsini daxil edin."
+"Dəvət linkiniz varsa, onu bura yapışdırın. Əks halda, aşağıda komandanın "
+"adını və şifrəsini daxil edin."
 
 #: teams/forms.py:125 templates/teams/team_detail.html:59
 msgid "Team name"
@@ -917,115 +917,115 @@ msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
 
-#: templates/base.html:50 templates/base.html:80 views.py:30
+#: templates/base.html:50 templates/base.html:82 views.py:30
 msgid "TaskMan"
 msgstr "TaskMan"
 
-#: templates/base.html:105
+#: templates/base.html:107
 msgid "Navigation"
 msgstr "Naviqasiya"
 
-#: templates/base.html:108 templates/base.html:141
+#: templates/base.html:110 templates/base.html:143
 msgid "Users"
 msgstr "İstifadəçilər"
 
-#: templates/base.html:113 templates/base.html:144
+#: templates/base.html:115 templates/base.html:146
 #: templates/includes/limits_usage.html:8
 #: templates/includes/team_limits_usage.html:30
 #: templates/user/user_detail.html:76 templates/user/user_detail.html:98
 msgid "Tasks"
 msgstr "Tapşırıqlar"
 
-#: templates/base.html:118 templates/base.html:147
+#: templates/base.html:120 templates/base.html:149
 #: templates/includes/limits_usage.html:40
 #: templates/includes/team_limits_usage.html:48
 msgid "Statuses"
 msgstr "Statuslar"
 
-#: templates/base.html:188
+#: templates/base.html:190
 msgid "Switch context"
 msgstr "Konteksti dəyiş"
 
-#: templates/base.html:196 templates/labels/labels_update.html:34
+#: templates/base.html:198 templates/labels/labels_update.html:34
 msgid "Individual"
 msgstr "Fərdi"
 
-#: templates/base.html:223
+#: templates/base.html:225
 msgid "Profile"
 msgstr "Profil"
 
-#: templates/base.html:228
+#: templates/base.html:230
 msgid "New Team"
 msgstr "Yeni komanda"
 
-#: templates/base.html:233 templates/teams/team_join_form.html:11
+#: templates/base.html:235 templates/teams/team_join_form.html:11
 msgid "Join Team"
 msgstr "Komandaya qoşul"
 
-#: templates/base.html:241 templates/teams/team_exit.html:8
+#: templates/base.html:243 templates/teams/team_exit.html:8
 #: templates/teams/team_exit.html:15
 msgid "Exit team"
 msgstr "Komandadan çıx"
 
-#: templates/base.html:251
+#: templates/base.html:253
 msgid "Logout"
 msgstr "Çıxış"
 
-#: templates/base.html:263 templates/base.html:315
+#: templates/base.html:265 templates/base.html:317
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: templates/base.html:267 templates/base.html:319
+#: templates/base.html:269 templates/base.html:321
 msgid "Theme"
 msgstr "Mövzu"
 
-#: templates/base.html:270 templates/base.html:322
+#: templates/base.html:272 templates/base.html:324
 msgid "Light"
 msgstr "Açıq"
 
-#: templates/base.html:273 templates/base.html:327
+#: templates/base.html:275 templates/base.html:329
 msgid "Dark"
 msgstr "Tünd"
 
-#: templates/base.html:276 templates/base.html:332
+#: templates/base.html:278 templates/base.html:334
 msgid "Auto"
 msgstr "Avtomatik"
 
-#: templates/base.html:284 templates/base.html:338
+#: templates/base.html:286 templates/base.html:340
 msgid "Language"
 msgstr "Dil"
 
-#: templates/base.html:307 templates/login.html:8
+#: templates/base.html:309 templates/login.html:8
 msgid "Login"
 msgstr "Giriş"
 
-#: templates/base.html:308 templates/user/user_create_form.html:11
+#: templates/base.html:310 templates/user/user_create_form.html:11
 msgid "Signup"
 msgstr "Qeydiyyat"
 
-#: templates/base.html:367
+#: templates/base.html:369
 msgid "You are approaching the free plan limits."
 msgstr "Siz pulsuz planın limitlərinə yaxınlaşırsınız."
 
-#: templates/base.html:370 templates/user/user_list.html:23
+#: templates/base.html:372 templates/user/user_list.html:23
 msgid "Details"
 msgstr "Ətraflı"
 
-#: templates/base.html:408
+#: templates/base.html:410
 msgid "Go back"
 msgstr "Geri qayıt"
 
-#: templates/base.html:428 templates/feedback.html:7 templates/feedback.html:12
+#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
 #: views.py:65
 msgid "Feedback"
 msgstr "Əks əlaqə"
 
-#: templates/base.html:430 templates/privacy_policy.html:4
+#: templates/base.html:432 templates/privacy_policy.html:4
 #: templates/privacy_policy.html:8
 msgid "Privacy Policy"
 msgstr "Məxfilik siyasəti"
 
-#: templates/base.html:432 templates/terms_of_service.html:4
+#: templates/base.html:434 templates/terms_of_service.html:4
 #: templates/terms_of_service.html:8
 msgid "Terms of Service"
 msgstr "İstifadə şərtləri"
@@ -1130,7 +1130,7 @@ msgstr "Dil dəstəyi"
 msgid "Create label"
 msgstr "Etiket yarat"
 
-#: templates/labels/labels_create.html:15 templates/notes/note_form.html:88
+#: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
 #: templates/statuses/statuses_create_form.html:69
 #: templates/tasks/task_create_form.html:52
 #: templates/teams/team_create_form.html:28
@@ -1141,8 +1141,8 @@ msgstr "Yarat"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:70 templates/notes/note_form.html:93
-#: templates/notes/note_form.html:97
+#: templates/notes/note_detail.html:81 templates/notes/note_form.html:130
+#: templates/notes/note_form.html:134 templates/notes/note_form.html:184
 #: templates/statuses/statuses_create_form.html:72
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1150,7 +1150,7 @@ msgstr "Yarat"
 #: templates/tasks/task_update.html:175
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:36
+#: templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:145
@@ -1186,7 +1186,7 @@ msgid "New label"
 msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:58 templates/notes/note_form.html:38
+#: templates/notes/note_detail.html:69 templates/notes/note_form.html:43
 #: templates/notes/note_list.html:74 templates/tasks/task_filter.html:390
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
@@ -1205,8 +1205,8 @@ msgstr "Tapşırıqları təşkil etmək üçün ilk etiketinizi yaradın"
 msgid "Create Label"
 msgstr "Etiket yarat"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:39
-#: templates/notes/note_form.html:22 templates/statuses/statuses_update.html:20
+#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
+#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:359
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1221,14 +1221,14 @@ msgstr "Fərdi rejim"
 msgid "Creator"
 msgstr "Yaradan"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:86
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:275 templates/tasks/task_update.html:172
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Yadda saxla"
 
-#: templates/labels/labels_update.html:71 templates/notes/note_form.html:104
+#: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
 #: templates/statuses/statuses_list.html:71
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:115 templates/tasks/task_update.html:180
@@ -1310,40 +1310,76 @@ msgstr "Qeydi sil"
 msgid "Are you sure you want to delete this note?"
 msgstr "Bu qeydi silmək istədiyinizə əminsiniz?"
 
-#: templates/notes/note_detail.html:18
+#: templates/notes/note_detail.html:23
 msgid "Untitled Note"
 msgstr "Başlıqsız qeyd"
 
-#: templates/notes/note_detail.html:27 templates/notes/note_form.html:34
+#: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
 #: templates/notes/note_list.html:69
 msgid "Personal"
 msgstr "Şəxsi"
 
-#: templates/notes/note_detail.html:43 templates/tasks/task_filter.html:319
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:319
 #: templates/tasks/task_filter.html:366 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Yenilənib"
 
-#: templates/notes/note_detail.html:67 templates/statuses/statuses_list.html:68
+#: templates/notes/note_detail.html:61
+msgid "Loading content..."
+msgstr "Məzmun yüklənir..."
+
+#: templates/notes/note_detail.html:78 templates/statuses/statuses_list.html:68
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:134
 msgid "Edit"
 msgstr "Redaktə et"
 
-#: templates/notes/note_form.html:33
+#: templates/notes/note_form.html:38
 msgid "Personal note"
 msgstr "Şəxsi qeyd"
 
-#: templates/notes/note_form.html:50
+#: templates/notes/note_form.html:55
 msgid "Edit note"
 msgstr "Qeydi redaktə et"
 
-#: templates/notes/note_form.html:52
+#: templates/notes/note_form.html:57
 msgid "Create note"
 msgstr "Qeyd yarat"
 
-#: templates/notes/note_form.html:75
-msgid "Enter note content..."
-msgstr "Qeydin məzmununu daxil edin..."
+#: templates/notes/note_form.html:89
+msgid "Enter note content... Use Markdown for formatting."
+msgstr "Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
+
+#: templates/notes/note_form.html:95 templates/notes/note_form.html:180
+msgid "Preview"
+msgstr "İlkin baxış"
+
+#: templates/notes/note_form.html:104
+msgid "Markdown supported:"
+msgstr "Markdown dəstəklənir:"
+
+#: templates/notes/note_form.html:157
+msgid "Insert Image"
+msgstr "Şəkil əlavə et"
+
+#: templates/notes/note_form.html:159
+msgid "Close"
+msgstr "Bağla"
+
+#: templates/notes/note_form.html:164
+msgid "Image URL"
+msgstr "Şəkil URL-i"
+
+#: templates/notes/note_form.html:173
+msgid "Description (alt text)"
+msgstr "Təsvir (alt mətn)"
+
+#: templates/notes/note_form.html:178
+msgid "Image description"
+msgstr "Şəklin təsviri"
+
+#: templates/notes/note_form.html:187
+msgid "Insert"
+msgstr "Əlavə et"
 
 #: templates/notes/note_list.html:12
 msgid "New note"
@@ -1748,15 +1784,7 @@ msgstr ""
 msgid "Yes, exit"
 msgstr "Bəli, çıx"
 
-#: templates/teams/team_join_form.html:22
-msgid ""
-"If you have an invite link, paste it above. Otherwise, enter team name and "
-"password below."
-msgstr ""
-"Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
-"komandanın adını və şifrəsini daxil edin."
-
-#: templates/teams/team_join_form.html:33
+#: templates/teams/team_join_form.html:28
 msgid "Join"
 msgstr "Qoşul"
 
@@ -2051,6 +2079,13 @@ msgstr "Siz uğurla daxil oldunuz"
 #: views.py:54
 msgid "You are logged out"
 msgstr "Siz sistemdən çıxdınız"
+
+#~ msgid ""
+#~ "If you have an invite link, paste it above. Otherwise, enter team name "
+#~ "and password below."
+#~ msgstr ""
+#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
+#~ "komandanın adını və şifrəsini daxil edin."
 
 #~ msgid "Email address (optional)"
 #~ msgstr "E-poçt ünvanı (istəyə bağlı)"
