@@ -1106,8 +1106,8 @@ class TaskTestCase(TestCase):
         """Test filtering by multiple statuses (ModelMultipleChoiceFilter)"""
         # Get 2 different statuses
         statuses = Status.objects.filter(team=self.team)[:2] if self.team else \
-                   Status.objects.filter(creator=self.user, team__isnull=True)[:2]
-        
+            Status.objects.filter(creator=self.user, team__isnull=True)[:2]
+
         if len(statuses) < 2:
             self.skipTest("Not enough statuses for multiple selection test")
 
@@ -1137,16 +1137,18 @@ class TaskTestCase(TestCase):
             expected_tasks = expected_tasks.filter(
                 author=self.user, team__isnull=True
             )
-        
-        self.assertEqual(sorted(task_ids), 
-                        sorted(list(expected_tasks.values_list('id', flat=True))))
+
+        self.assertEqual(
+            sorted(task_ids),
+            sorted(list(expected_tasks.values_list('id', flat=True)))
+        )
 
     def test_filter_multiple_statuses_exclude_mode(self):
         """Test excluding multiple statuses"""
         # Get 2 statuses to exclude
         statuses = Status.objects.filter(team=self.team)[:2] if self.team else \
-                   Status.objects.filter(creator=self.user, team__isnull=True)[:2]
-        
+            Status.objects.filter(creator=self.user, team__isnull=True)[:2]
+
         if len(statuses) < 2:
             self.skipTest("Not enough statuses for exclude test")
 
@@ -1170,8 +1172,8 @@ class TaskTestCase(TestCase):
         """Test filtering by multiple labels (ModelMultipleChoiceFilter)"""
         # Get 2 different labels
         labels = Label.objects.filter(team=self.team)[:2] if self.team else \
-                 Label.objects.filter(creator=self.user, team__isnull=True)[:2]
-        
+            Label.objects.filter(creator=self.user, team__isnull=True)[:2]
+
         if len(labels) < 2:
             self.skipTest("Not enough labels for multiple selection test")
 
