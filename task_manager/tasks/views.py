@@ -5,8 +5,10 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Count, OuterRef, Subquery, Value
+from django.db.models.functions import Coalesce
 from .models import Task, ChecklistItem
+from task_manager.notes.models import Note
 from task_manager.tasks.forms import TaskForm
 from django.shortcuts import redirect, get_object_or_404
 from django_filters.views import FilterView
@@ -185,41 +187,46 @@ class TaskFilterView(CustomPermissions, FilterView):
         team = getattr(self.request, 'active_team', None)
         sort = self._get_sort_param()
 
+        qs = Task.objects.all()
+
         if team:
-            return Task.objects.filter(team=team).order_by(
-                sort
-            ).select_related('status', 'author', 'updated_by').annotate(
-                annotated_notes_count=Count('notes', distinct=True),
-                annotated_checklist_total=Count(
-                    'checklist_items',
-                    distinct=True
-                ),
-                annotated_checklist_done=Count(
-                    'checklist_items',
-                    filter=Q(checklist_items__is_done=True),
-                    distinct=True
-                )
-            ).prefetch_related(
-                'notes__author', 'labels', 'executors'
-            )
+            qs = qs.filter(team=team)
         else:
-            return Task.objects.filter(
-                author=user,
-                team__isnull=True
-            ).order_by(sort).select_related(
-                'status', 'author', 'updated_by'
-            ).annotate(
-                annotated_notes_count=Count('notes', distinct=True),
-                annotated_checklist_total=Count(
-                    'checklist_items',
-                    distinct=True
-                ),
-                annotated_checklist_done=Count(
-                    'checklist_items',
-                    filter=Q(checklist_items__is_done=True),
-                    distinct=True
-                )
-            ).prefetch_related('notes__author', 'labels', 'executors')
+            qs = qs.filter(author=user, team__isnull=True)
+
+        # Single relations — use select_related
+        qs = qs.select_related('status', 'author', 'updated_by')
+
+        # Annotations for notes and checklist counts
+        # Use Subquery to avoid duplication with ManyToMany JOINs
+        notes_count_subq = Note.objects.filter(
+            task=OuterRef('pk')
+        ).values('task').annotate(c=Count('*')).values('c')
+
+        checklist_total_subq = ChecklistItem.objects.filter(
+            task=OuterRef('pk')
+        ).values('task').annotate(c=Count('*')).values('c')
+
+        checklist_done_subq = ChecklistItem.objects.filter(
+            task=OuterRef('pk'), is_done=True
+        ).values('task').annotate(c=Count('*')).values('c')
+
+        qs = qs.annotate(
+            annotated_notes_count=Coalesce(
+                Subquery(notes_count_subq), Value(0)
+            ),
+            annotated_checklist_total=Coalesce(
+                Subquery(checklist_total_subq), Value(0)
+            ),
+            annotated_checklist_done=Coalesce(
+                Subquery(checklist_done_subq), Value(0)
+            )
+        )
+
+        # Prefetch ManyToMany and reverse relations
+        qs = qs.prefetch_related('labels', 'executors', 'notes__author')
+
+        return qs.distinct().order_by(sort)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
