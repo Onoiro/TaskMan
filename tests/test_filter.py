@@ -1193,6 +1193,48 @@ class TaskTestCase(TestCase):
             task_labels = list(task.labels.all())
             self.assertTrue(label1 in task_labels or label2 in task_labels)
 
+        # Verify we got tasks with either label
+        task_ids = list(filtered_tasks.values_list('id', flat=True))
+        expected_tasks = Task.objects.filter(labels__in=[label1, label2])
+        if self.team:
+            expected_tasks = expected_tasks.filter(team=self.team)
+        else:
+            expected_tasks = expected_tasks.filter(
+                author=self.user, team__isnull=True
+            )
+
+        self.assertEqual(
+            sorted(task_ids),
+            sorted(list(expected_tasks.values_list('id', flat=True)))
+        )
+
+    def test_filter_multiple_labels_exclude_mode(self):
+        """Test excluding multiple labels"""
+        # Get 2 labels to exclude
+        labels = Label.objects.filter(team=self.team)[:2] if self.team else \
+            Label.objects.filter(creator=self.user, team__isnull=True)[:2]
+
+        if len(labels) < 2:
+            self.skipTest("Not enough labels for exclude test")
+
+        label1, label2 = labels[0], labels[1]
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'labels': [label1.id, label2.id],
+            'labels_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT have the excluded labels
+        for task in filtered_tasks:
+            task_labels = list(task.labels.all())
+            self.assertNotIn(label1, task_labels)
+            self.assertNotIn(label2, task_labels)
+
     # Tests for _apply_my_tasks_filter with exclude mode
     def test_apply_my_tasks_filter_exclude_mode(self):
         """Test _apply_my_tasks_filter in exclude mode"""

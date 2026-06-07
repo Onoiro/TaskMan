@@ -221,6 +221,9 @@
                                     <input type="hidden" name="labels_exclude" id="id_labels_exclude"
                                            value="{% if request.GET.labels_exclude %}on{% endif %}">
                                 </div>
+                                <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">
+                                    <i class="bi bi-info-circle"></i> {% trans "Hold Ctrl/Cmd to select multiple labels" %}
+                                </small>
                             </div>
 
                             <!-- Has checklist -->

@@ -42,10 +42,10 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
-    labels = django_filters.ModelChoiceFilter(
+    labels = django_filters.ModelMultipleChoiceFilter(
         queryset=Label.objects.all(),
-        label=_('Label'),
-        widget=forms.Select(attrs={'class': 'form-select'}),
+        label=_('Labels'),
+        widget=forms.SelectMultiple(attrs={'class': 'form-select'}),
         label_suffix="",
     )
 
