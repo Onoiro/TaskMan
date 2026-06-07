@@ -201,6 +201,9 @@
                                     </button>
                                     <input type="hidden" name="status_exclude" id="id_status_exclude"
                                            value="{% if request.GET.status_exclude %}on{% endif %}">
+                                    <small class="text-muted mt-1" style="font-size: 0.7rem;">
+                                        <i class="bi bi-info-circle"></i> {% trans "Hold Ctrl/Cmd to select multiple" %}
+                                    </small>
                                 </div>
                             </div>
 
@@ -574,6 +577,14 @@
     color: #fff;
 }
 
+/* Multiple select styling */
+.filter-input-wrap select[multiple] {
+    height: auto;
+    min-height: 80px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
 /* Checkboxes */
 #filter-form .form-check-input:checked {
     border-color: #0d6efd;
@@ -733,7 +744,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('filter-form');
             
             // Reset all fields first
-            form.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+            form.querySelectorAll('select').forEach(s => {
+                s.selectedIndex = -1;
+                // For multiple selects, clear all selected options
+                if (s.hasAttribute('multiple')) {
+                    for (let i = 0; i < s.options.length; i++) {
+                        s.options[i].selected = false;
+                    }
+                }
+            });
             form.querySelectorAll('input[type="checkbox"]').forEach(c => {
                 // Don't reset show_filter and view_mode
                 if (c.name !== 'show_filter') c.checked = false;

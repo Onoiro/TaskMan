@@ -21,10 +21,10 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
-    status = django_filters.ModelChoiceFilter(
+    status = django_filters.ModelMultipleChoiceFilter(
         queryset=Status.objects.all(),
         label=_('Status'),
-        widget=forms.Select(attrs={'class': 'form-select'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-select'}),
         label_suffix="",
     )
 
@@ -179,7 +179,7 @@ class TaskFilter(django_filters.FilterSet):
         ).order_by(sort)
 
     def _apply_model_filter(self, qs, field_name, lookup_field=None):
-        """Apply filter with optional exclude mode."""
+        """Apply filter with exclude mode and multiple values support."""
         value = self._get_filter_value(field_name)
         if not value:
             return qs
@@ -187,11 +187,17 @@ class TaskFilter(django_filters.FilterSet):
         lookup_field = lookup_field or field_name
         exclude_mode = self._is_excluded(f'{field_name}_exclude')
 
+        # Handle multiple values (for ModelMultipleChoiceFilter)
         if isinstance(value, (list, tuple)):
+            if not value:
+                return qs
             condition = Q(**{f'{lookup_field}__in': value})
         else:
             condition = Q(**{lookup_field: value})
-        return qs.filter(~condition if exclude_mode else condition)
+
+        if exclude_mode:
+            return qs.exclude(condition)
+        return qs.filter(condition)
 
     def _apply_date_filters(self, qs):
         """Apply date range filters."""

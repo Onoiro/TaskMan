@@ -1102,6 +1102,95 @@ class TaskTestCase(TestCase):
         # Should filter with __in lookup
         self.assertIsNotNone(result)
 
+    def test_filter_multiple_statuses(self):
+        """Test filtering by multiple statuses (ModelMultipleChoiceFilter)"""
+        # Get 2 different statuses
+        statuses = Status.objects.filter(team=self.team)[:2] if self.team else \
+                   Status.objects.filter(creator=self.user, team__isnull=True)[:2]
+        
+        if len(statuses) < 2:
+            self.skipTest("Not enough statuses for multiple selection test")
+
+        status1, status2 = statuses[0], statuses[1]
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': [status1.id, status2.id]
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should have one of the selected statuses
+        for task in filtered_tasks:
+            self.assertIn(task.status, [status1, status2])
+
+        # Verify we got tasks with either status
+        task_ids = list(filtered_tasks.values_list('id', flat=True))
+        expected_tasks = Task.objects.filter(
+            status__in=[status1, status2]
+        )
+        if self.team:
+            expected_tasks = expected_tasks.filter(team=self.team)
+        else:
+            expected_tasks = expected_tasks.filter(
+                author=self.user, team__isnull=True
+            )
+        
+        self.assertEqual(sorted(task_ids), 
+                        sorted(list(expected_tasks.values_list('id', flat=True))))
+
+    def test_filter_multiple_statuses_exclude_mode(self):
+        """Test excluding multiple statuses"""
+        # Get 2 statuses to exclude
+        statuses = Status.objects.filter(team=self.team)[:2] if self.team else \
+                   Status.objects.filter(creator=self.user, team__isnull=True)[:2]
+        
+        if len(statuses) < 2:
+            self.skipTest("Not enough statuses for exclude test")
+
+        status1, status2 = statuses[0], statuses[1]
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': [status1.id, status2.id],
+            'status_exclude': 'on'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should NOT have the excluded statuses
+        for task in filtered_tasks:
+            self.assertNotIn(task.status, [status1, status2])
+
+    def test_filter_multiple_labels(self):
+        """Test filtering by multiple labels (ModelMultipleChoiceFilter)"""
+        # Get 2 different labels
+        labels = Label.objects.filter(team=self.team)[:2] if self.team else \
+                 Label.objects.filter(creator=self.user, team__isnull=True)[:2]
+        
+        if len(labels) < 2:
+            self.skipTest("Not enough labels for multiple selection test")
+
+        label1, label2 = labels[0], labels[1]
+
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'labels': [label1.id, label2.id]
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        filtered_tasks = response.context['filter'].qs
+
+        # All tasks should have at least one of the selected labels
+        for task in filtered_tasks:
+            task_labels = list(task.labels.all())
+            self.assertTrue(label1 in task_labels or label2 in task_labels)
+
     # Tests for _apply_my_tasks_filter with exclude mode
     def test_apply_my_tasks_filter_exclude_mode(self):
         """Test _apply_my_tasks_filter in exclude mode"""
