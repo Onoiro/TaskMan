@@ -28,17 +28,17 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
-    author = django_filters.ModelChoiceFilter(
+    author = django_filters.ModelMultipleChoiceFilter(
         queryset=User.objects.all(),
         label=_('Author'),
-        widget=forms.Select(attrs={'class': 'form-select'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-select'}),
         label_suffix="",
     )
 
-    executors = django_filters.ModelChoiceFilter(
+    executors = django_filters.ModelMultipleChoiceFilter(
         queryset=User.objects.all(),
         label=_('Executor'),
-        widget=forms.Select(attrs={'class': 'form-select'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-select'}),
         label_suffix="",
     )
 

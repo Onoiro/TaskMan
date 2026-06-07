@@ -132,6 +132,9 @@
                     <div class="filter-group">
                         <div class="filter-group-label">
                             <i class="bi bi-people"></i> {% trans "Who" %}
+                            <span class="text-muted ms-2" style="font-size: 0.65rem;">
+                                (<i class="bi bi-key"></i> {% trans "Ctrl/Cmd for multiple" %})
+                            </span>
                         </div>
                         <div class="filter-group-fields">
                             {% if request.active_team %}
@@ -186,6 +189,9 @@
                     <div class="filter-group">
                         <div class="filter-group-label">
                             <i class="bi bi-tag"></i> {% trans "What" %}
+                            <span class="text-muted ms-2" style="font-size: 0.65rem;">
+                                (<i class="bi bi-key"></i> {% trans "Ctrl/Cmd for multiple" %})
+                            </span>
                         </div>
                         <div class="filter-group-fields">
                             <!-- Status -->
@@ -202,9 +208,6 @@
                                     <input type="hidden" name="status_exclude" id="id_status_exclude"
                                            value="{% if request.GET.status_exclude %}on{% endif %}">
                                 </div>
-                                <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">
-                                    <i class="bi bi-info-circle"></i> {% trans "Hold Ctrl/Cmd to select multiple statuses" %}
-                                </small>
                             </div>
 
                             <!-- Labels -->
@@ -221,9 +224,6 @@
                                     <input type="hidden" name="labels_exclude" id="id_labels_exclude"
                                            value="{% if request.GET.labels_exclude %}on{% endif %}">
                                 </div>
-                                <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">
-                                    <i class="bi bi-info-circle"></i> {% trans "Hold Ctrl/Cmd to select multiple labels" %}
-                                </small>
                             </div>
 
                             <!-- Has checklist -->
