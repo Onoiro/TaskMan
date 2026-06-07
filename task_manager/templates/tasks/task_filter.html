@@ -38,7 +38,7 @@
                     {% for sort_key, sort_label in sort_options.items %}
                     <li>
                         <a class="dropdown-item small{% if current_sort == sort_key %} active{% endif %}"
-                           href="?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}sort={{ sort_key }}">
+                           href="?{% for key, values in request.GET.lists %}{% if key != 'sort' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}sort={{ sort_key }}">
                             {% if '-' in sort_key %}
                                 <i class="bi bi-sort-down me-2"></i>
                             {% else %}
@@ -53,12 +53,12 @@
 
             <!-- View mode toggle -->
             {% if request.GET.view_mode == 'simple' %}
-                <a href="?{% for key, value in request.GET.items %}{% if key != 'view_mode' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'view_mode' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}" 
                 class="btn btn-sm btn-outline-secondary view-mode-btn" title="{% trans 'Full view' %}">
                     <i class="bi bi-card-text"></i>
                 </a>
             {% else %}
-                <a href="?{% for key, value in request.GET.items %}{% if key != 'view_mode' %}{{ key }}={{ value }}&{% endif %}{% endfor %}view_mode=simple" 
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'view_mode' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}view_mode=simple" 
                 class="btn btn-sm btn-outline-secondary view-mode-btn" title="{% trans 'Simple view' %}">
                     <i class="bi bi-list-ul"></i>
                 </a>
@@ -66,13 +66,13 @@
 
             <!-- Filter toggle button -->
             {% if request.GET.show_filter %}
-                <a href="?{% for key, value in request.GET.items %}{% if key != 'show_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'show_filter' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}" 
                 class="btn btn-sm btn-secondary filter-btn">
                     <i class="bi bi-x-lg"></i>
                 </a>
             {% else %}
                 {% if saved_filter_enabled and has_saved_filter and active_filter_count > 0 %}
-                    <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}show_filter=1" 
+                    <a href="?{% for key, values in request.GET.lists %}{% if key != 'show_filter' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}show_filter=1" 
                     class="btn btn-sm btn-success filter-btn" title="{% trans 'Default filter is active' %}">
                         <i class="bi bi-funnel-fill"></i>
                         <span class="d-none d-sm-inline ms-1">{% trans "Default" %}</span>
@@ -280,7 +280,7 @@
                         </div>
                         
                         <div class="d-flex gap-2">
-                            <a href="{% url 'tasks:tasks-list' %}?show_filter=1&reset_default=1" 
+                            <a href="?reset_default=1&{% for key, values in request.GET.lists %}{% if key != 'reset_default' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}" 
                                class="btn btn-sm btn-link text-muted text-decoration-none">
                                 <i class="bi bi-arrow-counterclockwise"></i>
                                 {% trans "Reset" %}
