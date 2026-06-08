@@ -769,29 +769,6 @@ class TaskTestCase(TestCase):
         # Should return None when cleaned_data contains None
         self.assertIsNone(value)
 
-    def test_get_base_queryset_with_team(self):
-        """Test _get_base_queryset when team is available"""
-        from task_manager.tasks.filters import TaskFilter
-        from django.test import RequestFactory
-        from task_manager.teams.models import Team
-
-        # Use existing team from fixtures
-        team = Team.objects.get(pk=1)
-
-        factory = RequestFactory()
-        request = factory.get('/')
-        request.user = self.user
-        request.active_team = team
-
-        filter_instance = TaskFilter(queryset=Task.objects.all())
-        filter_instance.request = request
-
-        # Test getting base queryset with team
-        queryset = filter_instance._get_base_queryset()
-
-        # Should return tasks filtered by team
-        self.assertTrue(queryset.filter(team=team).exists())
-
     def test_apply_model_filter_with_exclude_mode(self):
         """Test _apply_model_filter in exclude mode"""
         from task_manager.tasks.filters import TaskFilter
@@ -1273,26 +1250,3 @@ class TaskTestCase(TestCase):
 
         # Should return original queryset unchanged
         self.assertEqual(result, queryset)
-
-    # Test for _get_base_queryset without team (uncommented)
-    def test_get_base_queryset_without_team(self):
-        """Test _get_base_queryset when no team is available"""
-        from task_manager.tasks.filters import TaskFilter
-        from django.test import RequestFactory
-
-        factory = RequestFactory()
-        request = factory.get('/')
-        request.user = self.user
-        # No active_team set
-
-        filter_instance = TaskFilter(queryset=Task.objects.all())
-        filter_instance.request = request
-
-        # Test getting base queryset without team
-        queryset = filter_instance._get_base_queryset()
-
-        # Should filter by author and team__isnull=True
-        # Check that all results match the expected pattern
-        for task in queryset:
-            self.assertEqual(task.author, self.user)
-            self.assertIsNone(task.team)

@@ -24,8 +24,8 @@ def team_context(request):
 
 def static_version(request):
     """
-    Генерирует версию на основе staticfiles.json.
-    Меняется автоматически при каждом collectstatic.
+    Generate version based on staticfiles.json.
+    Changes automatically on each collectstatic.
     """
     manifest_path = os.path.join(settings.STATIC_ROOT, 'staticfiles.json')
     try:

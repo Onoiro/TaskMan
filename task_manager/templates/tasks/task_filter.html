@@ -18,8 +18,8 @@
             {% if filter.qs %}
             <span class="task-counter text-muted">
                 <i class="bi bi-card-checklist"></i>
-                <span class="fw-bold">{{ filter.qs.count }}</span>
-                <span class="d-none d-sm-inline">task{{ filter.qs.count|pluralize }}</span>
+                <span class="fw-bold">{{ filter.qs|length }}</span>
+                <span class="d-none d-sm-inline">task{{ filter.qs|length|pluralize }}</span>
             </span>
             {% endif %}
 

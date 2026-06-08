@@ -187,18 +187,20 @@ class TaskFilterView(CustomPermissions, FilterView):
         team = getattr(self.request, 'active_team', None)
         sort = self._get_sort_param()
 
+        # Start with base queryset
         qs = Task.objects.all()
 
+        # Filter by team or individual tasks
         if team:
             qs = qs.filter(team=team)
         else:
             qs = qs.filter(author=user, team__isnull=True)
 
-        # Single relations — use select_related
+        # Optimize single relations with select_related
         qs = qs.select_related('status', 'author', 'updated_by')
 
-        # Annotations for notes and checklist counts
-        # Use Subquery to avoid duplication with ManyToMany JOINs
+        # Create Subquery annotations for counts to avoid N+1 queries
+        # This prevents duplicate rows from ManyToMany JOINs
         notes_count_subq = Note.objects.filter(
             task=OuterRef('pk')
         ).values('task').annotate(c=Count('*')).values('c')
@@ -211,6 +213,7 @@ class TaskFilterView(CustomPermissions, FilterView):
             task=OuterRef('pk'), is_done=True
         ).values('task').annotate(c=Count('*')).values('c')
 
+        # Apply annotations with Coalesce to handle null values
         qs = qs.annotate(
             annotated_notes_count=Coalesce(
                 Subquery(notes_count_subq), Value(0)
@@ -226,6 +229,7 @@ class TaskFilterView(CustomPermissions, FilterView):
         # Prefetch ManyToMany and reverse relations
         qs = qs.prefetch_related('labels', 'executors', 'notes__author')
 
+        # Apply distinct and ordering
         return qs.distinct().order_by(sort)
 
     def get_context_data(self, **kwargs):

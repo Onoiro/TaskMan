@@ -149,7 +149,7 @@ DATABASES = {
     )
 }
 
-ADMIN_URL = os.getenv('ADMIN_URL', default='admin/')  # переопределить в .env
+ADMIN_URL = os.getenv('ADMIN_URL', default='admin/')  # override in .env
 
 AUTH_USER_MODEL = 'user.User'
 
@@ -258,14 +258,14 @@ TRUSTED_PROXIES = {
 }
 
 # === Proxy headers ===
-# Говорим Django что он стоит за прокси.
-# Только для продакшена — когда есть доверенные прокси.
+# Tell Django it's behind a proxy.
+# Only for production — when there are trusted proxies.
 if TRUSTED_PROXIES:
-    # Django доверяет заголовку X-Forwarded-Proto от прокси.
-    # Нужно чтобы request.is_secure() возвращал True для HTTPS запросов.
+    # Django trusts X-Forwarded-Proto header from proxy.
+    # Needed for request.is_secure() to return True for HTTPS requests.
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-    # Django использует X-Forwarded-Host как основной Host.
+    # Django uses X-Forwarded-Host as the primary Host.
     USE_X_FORWARDED_HOST = True
     USE_X_FORWARDED_PORT = True
 

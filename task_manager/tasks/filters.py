@@ -158,26 +158,6 @@ class TaskFilter(django_filters.FilterSet):
                 return value
         return self.form.initial.get(field_name)
 
-    def _get_base_queryset(self):
-        """Get base queryset based on team context."""
-        user = self.request.user
-        team = getattr(self.request, 'active_team', None)
-
-        sort = self.request.GET.get('sort', '-updated_at')
-        valid_sorts = {
-            '-updated_at', 'updated_at',
-            '-created_at', 'created_at',
-            'name', '-name',
-        }
-        if sort not in valid_sorts:
-            sort = '-updated_at'
-
-        if team:
-            return Task.objects.filter(team=team).order_by(sort)
-        return Task.objects.filter(
-            author=user, team__isnull=True
-        ).order_by(sort)
-
     def _apply_model_filter(self, qs, field_name, lookup_field=None):
         """Apply filter with exclude mode and multiple values support."""
         value = self._get_filter_value(field_name)
@@ -242,8 +222,12 @@ class TaskFilter(django_filters.FilterSet):
         return qs.filter(checklist_items__isnull=False).distinct()
 
     def filter_queryset(self, queryset):
-        """Override to handle exclude logic properly."""
-        qs = self._get_base_queryset()
+        """Override to handle exclude logic properly.
+
+        Uses the provided queryset (which may already have select_related,
+        annotate, prefetch_related) and applies filters on top of it.
+        """
+        qs = queryset
 
         # Text search
         qs = self._apply_search_filter(qs)

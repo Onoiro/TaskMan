@@ -78,23 +78,6 @@ class TaskSortTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['current_sort'], '-created_at')
 
-    # ===== Filter base queryset fallback (covers filters.py:173) =====
-
-    def test_filter_base_queryset_invalid_sort_fallback(self):
-        """Filter's _get_base_queryset falls back on invalid sort."""
-        from task_manager.tasks.filters import TaskFilter
-
-        factory = RequestFactory()
-        request = factory.get('/', {'sort': 'INVALID'})
-        request.user = self.user
-        request.active_team = self.team
-
-        f = TaskFilter(request.GET, queryset=Task.objects.all())
-        f.request = request
-
-        qs = f._get_base_queryset()
-        self.assertIsNotNone(qs)
-
     # ===== Ordering verification =====
 
     def test_sort_by_name_asc(self):
