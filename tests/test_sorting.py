@@ -1,6 +1,5 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.urls import reverse
-from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
 from task_manager.user.models import User
 from task_manager.teams.models import TeamMembership
