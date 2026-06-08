@@ -6,7 +6,7 @@
 #     def setUp(self):
 #         self.client = Client()
 
-#     @patch('rollbar.report_exc_info')  # замена Rollbar на mock-объект
+#     @patch('rollbar.report_exc_info')  # Replace Rollbar with mock object
 #     def test_trigger_error(self, mock_rollbar):
 #         """
 #         Test that a division by zero error occurs and Rollbar is called.

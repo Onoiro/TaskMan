@@ -1,6 +1,6 @@
 /**
- * MarkdownToolbar - лёгкий компонент для форматирования Markdown
- * Без зависимостей, работает с Bootstrap Icons
+ * MarkdownToolbar - lightweight component for Markdown formatting
+ * No dependencies, works with Bootstrap Icons
  */
 
 class MarkdownToolbar {
@@ -54,7 +54,7 @@ class MarkdownToolbar {
             toolbar.appendChild(button);
         });
 
-        // Вставляем toolbar перед editor-col (который содержит textarea)
+        // Insert toolbar before editor-col (which contains the textarea)
         const editorContainer = document.getElementById('markdown-editor-container');
         if (editorContainer) {
             const editorCol = this.textarea.closest('.editor-col');
@@ -83,7 +83,7 @@ class MarkdownToolbar {
             }
         });
 
-        // Live preview при вводе
+        // Live preview on input
         if (this.preview) {
             this.textarea.addEventListener('input', () => this.updatePreview());
         }
@@ -104,11 +104,11 @@ class MarkdownToolbar {
         const selectedText = textarea.value.substring(start, end);
         const text = textarea.value;
 
-        // Вставка синтаксиса
+        // Insert syntax
         const newText = text.substring(0, start) + before + selectedText + after + text.substring(end);
         textarea.value = newText;
 
-        // Восстановление фокуса и позиции
+        // Restore focus and cursor position
         textarea.focus();
         if (selectedText) {
             textarea.setSelectionRange(start + before.length, end + before.length);
@@ -117,23 +117,23 @@ class MarkdownToolbar {
             textarea.setSelectionRange(cursorPos, cursorPos);
         }
 
-        // Обновление превью
+        // Update preview
         if (this.preview) {
             this.updatePreview();
         }
 
-        // Trigger change event для Django form
+        // Trigger change event for Django form
         textarea.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
     image() {
-        // Открываем модальное окно для вставки изображения
+        // Open modal for image insertion
         const modal = document.getElementById('imageModal');
         if (modal) {
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show();
 
-            // Обработчик вставки
+            // Insert handler
             const insertBtn = modal.querySelector('[data-insert-image]');
             if (insertBtn) {
                 insertBtn.onclick = () => {
@@ -142,7 +142,7 @@ class MarkdownToolbar {
 
                     if (url) {
                         this.insertText(`![${alt}](`, `)`);
-                        // Вставляем URL между скобками
+                        // Insert URL between parentheses
                         const start = this.textarea.selectionStart;
                         const text = this.textarea.value;
                         const newText = text.substring(0, start - 1) + url + text.substring(start - 1);
@@ -174,23 +174,23 @@ class MarkdownToolbar {
         const editorCol = this.textarea.closest('.editor-col');
 
         if (previewCol.classList.contains('d-none')) {
-            // Показать превью
+            // Show preview
             previewCol.classList.remove('d-none');
             editorCol.classList.remove('flex-grow-1');
             editorCol.classList.add('flex-grow-1');
             this.updatePreview();
 
-            // Обновить иконку
+            // Update icon
             const previewBtn = this.toolbarElement.querySelector('[data-action="preview"]');
             if (previewBtn) {
                 previewBtn.innerHTML = '<i class="bi bi-eye-slash"></i>';
                 previewBtn.setAttribute('title', 'Hide Preview');
             }
         } else {
-            // Скрыть превью
+            // Hide preview
             previewCol.classList.add('d-none');
 
-            // Обновить иконку
+            // Update icon
             const previewBtn = this.toolbarElement.querySelector('[data-action="preview"]');
             if (previewBtn) {
                 previewBtn.innerHTML = '<i class="bi bi-eye"></i>';
@@ -208,18 +208,18 @@ class MarkdownToolbar {
             const html = marked.parse(markdownText);
             this.preview.innerHTML = html;
 
-            // Применить подсветку кода
+            // Apply syntax highlighting
             if (typeof hljs !== 'undefined') {
                 this.preview.querySelectorAll('pre code').forEach((block) => {
                     hljs.highlightElement(block);
                 });
             }
         } else {
-            // Fallback: просто текст
+            // Fallback: plain text
             this.preview.textContent = markdownText;
         }
     }
 }
 
-// Экспорт для использования в шаблонах
+// Export for use in templates
 window.MarkdownToolbar = MarkdownToolbar;

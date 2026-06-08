@@ -66,34 +66,34 @@ class Status(models.Model):
             {
                 'name': _("To Do"),
                 'description': _("Task has been created but not yet started"),
-                # 'color': '#64748B'  # Slate (Серо-синий)
-                'color': '#A78BFA'  # Лавандовый
+                # 'color': '#64748B'  # Slate (Gray-blue)
+                'color': '#A78BVA'  # Lavender
             },
             {
                 'name': _("In Progress"),
                 'description': _("Task is currently being worked on"),
-                'color': '#3B82F6'  # Синий
+                'color': '#3B82F6'  # Blue
             },
             {
                 'name': _("On Hold"),
                 'description': _("Task is temporarily paused"),
-                'color': '#F59E0B'  # Янтарный/оранжевый
+                'color': '#F59E0B'  # Amber/Orange
             },
             {
                 'name': _("Completed"),
                 'description': _("Task has been finished successfully"),
-                'color': '#10B981'  # Зелёный
+                'color': '#10B981'  # Green
             },
             {
                 'name': _("Cancelled"),
                 'description': _("Task was abandoned or deemed unnecessary"),
-                'color': '#9CA3AF'  # Тускло-серый
+                'color': '#9CA3AF'  # Dim Gray
             },
             {
                 'name': _("Blocked"),
                 'description': _(
                     "Task cannot proceed due to external dependencies"),
-                'color': '#EF4444'  # Красный
+                'color': '#EF4444'  # Red
             },
         ]
 

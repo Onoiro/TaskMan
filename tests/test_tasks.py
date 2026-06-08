@@ -1241,7 +1241,7 @@ class TaskTestCase(TestCase):
 
     def test_save_filter_excludes_service_params(self):
         """Check that service parameters are not saved to filter"""
-        # Сохраняем фильтр (без reset_default!)
+        # Save filter (without reset_default!)
         url = reverse('tasks:tasks-list')
         query_params = '?status=1&show_filter=1&save_as_default=1'
         self.c.get(url + query_params, follow=True)

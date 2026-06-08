@@ -1,15 +1,15 @@
-/* Улучшение навбара */
+/* Navbar improvements */
 .navbar {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-/* Принудительная одна строка */
+/* Force single line */
 .navbar .container-fluid {
     flex-wrap: nowrap !important;
 }
 
-/* === Стили для обрезки текста === */
+/* === Text truncation styles === */
 .text-truncate {
     white-space: nowrap;
     overflow: hidden;
@@ -27,25 +27,25 @@
   text-decoration: underline !important;
 }
 
-/* Safe area для PWA (home indicator на iPhone, Android gesture bar) */
+/* Safe area for PWA (home indicator on iPhone, Android gesture bar) */
 footer {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* ───── Кнопка "Назад" ───── */
-/* Убираем на страницах где history.length <= 1 — нет куда возвращаться */
+/* === Back button styles === */
+/* Hide on pages where history.length <= 1 - nothing to go back to */
 .btn-back-mobile {
   transition: opacity 0.2s ease;
 }
 
-/* Отступ снизу чтобы fixed-кнопка не перекрывала контент страницы */
+/* Bottom margin so fixed button doesn't overlap page content */
 @media (max-width: 991.98px) {
   #content {
     padding-bottom: calc(80px + env(safe-area-inset-bottom));
   }
 }
 
-/* === Стили для имени пользователя/команды === */
+/* === User/team name styles === */
 .context-name {
     display: inline-block;
     white-space: nowrap;
@@ -53,12 +53,12 @@ footer {
     text-overflow: ellipsis;
     vertical-align: middle;
 
-    /* На мобильных (по умолчанию) */
+    /* On mobile (by default) */
     max-width: 70px;
     font-size: 0.85rem;
 }
 
-/* На планшетах и десктопах */
+/* On tablets and desktops */
 @media (min-width: 768px) {
     .context-name {
         max-width: 150px;
@@ -66,15 +66,15 @@ footer {
     }
 }
 
-/* Дополнительные твики для мобильного заголовка */
+/* Additional mobile navbar tweaks */
 @media (max-width: 767.98px) {
-    /* Чтобы навбар не скакал по высоте */
+    /* Prevent navbar from jumping in height */
     .navbar-brand, .navbar-nav .nav-link {
         font-size: 1rem;
     }
 }
 
-/* Области нажатия */
+/* Click areas */
 .nav-link, .dropdown-item {
     padding-top: 8px;
     padding-bottom: 8px;
@@ -89,19 +89,19 @@ footer {
     box-shadow: none;
 }
 
-/* === Прокрутка для dropdown уведомлений === */
+/* === Notification dropdown scroll === */
 #notificationDropdown .dropdown-menu {
     max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-/* Контейнер для списка уведомлений внутри dropdown */
+/* Notification list container inside dropdown */
 #notificationDropdown .notification-list {
     padding-bottom: 4px;
 }
 
-/* Стилизация скроллбара для Webkit браузеров */
+/* Scrollbar styling for Webkit browsers */
 #notificationDropdown .dropdown-menu::-webkit-scrollbar {
     width: 6px;
 }
@@ -119,7 +119,7 @@ footer {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Увеличение размера кнопок тулбара и иконок внутри них */
+/* Increase toolbar button and icon sizes */
 .toolbar-left .btn-group .btn {
     min-width: 2.5rem;
     display: inline-flex;
@@ -132,7 +132,7 @@ footer {
     font-size: 1.2rem;
 }
 
-/* === Кастомные сообщения === */
+/* === Custom message styles === */
 .custom-messages {
     position: fixed;
     top: 80px;
@@ -184,7 +184,7 @@ footer {
     animation: slideOut 0.3s ease-in forwards;
 }
 
-/* Типы сообщений */
+/* Message types */
 .custom-message.success {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
     border-left-color: #28a745 !important;
@@ -256,7 +256,7 @@ footer {
     background: rgba(0, 0, 0, 0.2);
 }
 
-/* Адаптивность для мобильных */
+/* Mobile responsiveness */
 @media (max-width: 575.98px) {
     .custom-messages {
         top: 70px;
@@ -266,41 +266,41 @@ footer {
     }
 }
 
-/* === Исправление позиционирования dropdown уведомлений на мобильных === */
-/* На узких экранах центрируем меню уведомлений относительно кнопки-триггера */
+/* === Fix notification dropdown positioning on mobile === */
+/* Center the dropdown menu relative to the trigger button on narrow screens */
 @media (max-width: 575.98px) {
     #notificationDropdown .dropdown-menu {
-        /* Центрируем относительно кнопки */
+        /* Center relative to the button */
         right: auto !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         
-        /* Ограничиваем ширину, чтобы влезало в экран */
+        /* Limit width to fit screen */
         min-width: 240px !important;
         max-width: calc(100vw - 32px) !important;
         
-        /* Добавляем отступ от верха навбара */
+        /* Add top offset from navbar */
         margin-top: 8px !important;
     }
     
-    /* Убираем translate при hover/focus для десктопа (через JS Bootstrap) */
+    /* Remove translate on hover/focus for desktop (via JS Bootstrap) */
     #notificationDropdown .dropdown-menu.show {
         transform: translateX(-50%) !important;
     }
     
-    /* Прокрутка для списка уведомлений */
+    /* Scroll for notification list */
     #notificationDropdown .dropdown-menu {
         max-height: 400px;
         overflow-y: auto;
         overflow-x: hidden;
     }
     
-    /* Контейнер для списка уведомлений внутри dropdown */
+    /* Container for notification list inside dropdown */
     #notificationDropdown .notification-list {
         padding-bottom: 4px;
     }
     
-    /* Стилизация скроллбара для Webkit браузеров */
+    /* Scrollbar styling for Webkit browsers */
     #notificationDropdown .dropdown-menu::-webkit-scrollbar {
         width: 6px;
     }

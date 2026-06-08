@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
     <meta name="theme-color" content="#007bff">
     
-    <!-- ... ваши мета теги PWA и иконки ... -->
+    <!-- PWA meta tags and icons -->
     <link rel="manifest" href="/manifest.json">
 
     <!-- Icons -->
@@ -68,16 +68,16 @@
   <body class="d-flex flex-column min-vh-100">
 
     {% block navbar %}
-      <div class="wrapper sticky-top"> <!-- sticky-top чтобы меню было всегда доступно -->
+      <div class="wrapper sticky-top"> <!-- sticky-top to keep menu always accessible -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
-          <div class="container-fluid px-3 px-md-4"> <!-- container-fluid для большего места -->
+          <div class="container-fluid px-3 px-md-4"> <!-- container-fluid for more space -->
             
             <!-- 1. LOGO -->
             <a class="navbar-brand d-flex align-items-center me-2 me-md-4" href="{% url 'index' %}">
               <img src="{% static 'icons/emodji.png' %}" alt="TaskMan" style="height: 28px; width: auto;">
 
-              <!-- Логика отображения текста:
-                   Показываем текст ТОЛЬКО на десктопе (d-none d-md-block). -->
+              <!-- Text display logic:
+                   Show text ONLY on desktop (d-none d-md-block). -->
               <span class="ms-2 fw-bold d-none d-md-block">
                 {% trans "TaskMan" %}
               </span>
@@ -88,7 +88,7 @@
             <div class="d-flex d-md-none me-auto">
               <div class="dropdown">
                 <button class="btn btn-link nav-link text-white px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <!-- Иконка текущей страницы -->
+                  <!-- Current page icon -->
                   {% if request.resolver_match.url_name == 'user-list' %}
                     <i class="bi bi-people fs-2"></i>
                   {% elif request.resolver_match.url_name == 'tasks-list' %}
@@ -449,14 +449,14 @@
         const backBtn = document.querySelector('.btn-back-mobile');
         if (!backBtn) return;
 
-        // Проверяем, есть ли куда возвращаться.
-        // Если length <= 1, значит это первая страница во вкладке (или свежий запуск PWA)
+        // Check if there is a page to go back to.
+        // If length <= 1, this is the first page in the tab (or fresh PWA launch)
         if (window.history.length <= 1) {
-          // Скрываем кнопку надежно через классы Bootstrap
+          // Hide button reliably using Bootstrap classes
           backBtn.classList.remove('d-flex');
           backBtn.classList.add('d-none');
         }
-        // Иначе кнопка отображается (по умолчанию d-flex)
+        // Otherwise button is shown (default d-flex)
       });
     </script>
 

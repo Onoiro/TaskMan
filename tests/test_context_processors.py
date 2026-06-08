@@ -94,7 +94,7 @@ class StaticVersionProcessorTestCase(TestCase):
 
         self.assertIn('STATIC_VERSION', result)
         self.assertNotEqual(result['STATIC_VERSION'], 'dev')
-        # Версия должна быть хэшем от времени модификации
+        # Version should be a hash from modification time
         self.assertEqual(len(result['STATIC_VERSION']), 8)
 
     def test_static_version_when_manifest_does_not_exist(self):
@@ -228,6 +228,6 @@ class LimitsContextProcessorTestCase(TestCase):
             context = limits_context(request)
 
         self.assertIn('usage', context)
-        # Когда max=0, percent должен быть 0
+        # When max=0, percent should be 0
         self.assertEqual(context['usage']['teams']['percent'], 0)
         self.assertEqual(context['usage']['tasks']['percent'], 5)

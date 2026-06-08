@@ -207,7 +207,7 @@ class TeamTestCase(TestCase):
                 defaults={'role': 'admin'}
             )
 
-        second_team = Team.objects.get(pk=2)  # Another Test Team из фикстур
+        second_team = Team.objects.get(pk=2)  # Another Test Team from fixtures
 
         # try to update first team with name of second team
         update_data = {

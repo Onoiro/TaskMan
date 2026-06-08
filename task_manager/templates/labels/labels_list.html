@@ -6,16 +6,16 @@
 {% block content %}
 <div class="container wrapper flex-grow-1 py-3 py-lg-4">
     
-    <!-- Тулбар: Кнопка создания + Счетчик -->
+    <!-- Toolbar: Create button + Counter -->
     <div class="toolbar-row mb-3">
-        <!-- Левая часть: Кнопка создания метки -->
+        <!-- Left part: Create label button -->
         <div class="toolbar-left">
             <a class="btn btn-sm btn-primary" href="{% url 'labels:labels-create' %}">
                 <i class="bi bi-plus-lg"></i><span class="ms-1">{% trans "New label" %}</span>
             </a>
         </div>
 
-        <!-- Правая часть: Счётчик меток -->
+        <!-- Right part: Label counter -->
         <div class="toolbar-right">
             {% if label_list %}
             <span class="task-counter text-muted">
@@ -35,7 +35,7 @@
                 <div class="card-body p-3">
                     <div class="row g-0">
                         <div class="col">
-                            <!-- Верхняя строка: Название + ID + Дата -->
+                            <!-- Top row: Title + ID + Date -->
                             <div class="d-flex w-100 justify-content-between align-items-start mb-1">
                                 <div class="me-2">
                                     <a href="{% url 'labels:labels-update' label.uuid %}" class="text-decoration-none text-body fw-bold fs-5 stretched-link">
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <!-- Нижняя строка: Бейдж + Автор -->
+                            <!-- Bottom row: Badge + Author -->
                             <div class="d-flex flex-wrap align-items-center gap-2 mt-auto pt-1">
                                 <span class="badge bg-body-tertiary text-body border fw-normal" title="{{ label.name }}">
                                     <i class="bi bi-tag"></i> {{ label.name }}

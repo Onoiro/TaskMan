@@ -1,6 +1,6 @@
 /**
  * Markdown Editor Styles
- * Стили для toolbar, preview и рендеринга Markdown-контента
+ * Styles for toolbar, preview, and Markdown content rendering
  */
 
 /* ========== MARKDOWN TOOLBAR ========== */
@@ -12,12 +12,12 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    /* Скрываем скроллбар визуально, но оставляем функциональность */
+    /* Hide scrollbar visually but keep functionality */
     scrollbar-width: thin;
     -ms-overflow-style: none;
 }
 
-/* Скрываем скроллбар для WebKit */
+/* Hide scrollbar for WebKit */
 .markdown-toolbar::-webkit-scrollbar {
     height: 4px;
     display: none;
@@ -53,7 +53,7 @@
     min-height: 400px;
 }
 
-/* Editor и preview всегда располагаются вертикально */
+/* Editor and preview are always arranged vertically */
 .markdown-editor-row {
     display: flex;
     flex-direction: column;
@@ -106,7 +106,7 @@
     color: var(--bs-body-color);
 }
 
-/* Заголовки */
+/* Headings */
 .markdown-content h1,
 .markdown-content h2,
 .markdown-content h3,
@@ -140,12 +140,12 @@
     color: var(--bs-secondary);
 }
 
-/* Параграфы */
+/* Paragraphs */
 .markdown-content p {
     margin-bottom: 1rem;
 }
 
-/* Ссылки */
+/* Links */
 .markdown-content a {
     color: var(--bs-link-color);
     text-decoration: underline;
@@ -155,7 +155,7 @@
     color: var(--bs-link-hover-color);
 }
 
-/* Жирный и курсив */
+/* Bold and italic */
 .markdown-content strong {
     font-weight: 600;
 }
@@ -164,7 +164,7 @@
     font-style: italic;
 }
 
-/* Код */
+/* Code */
 .markdown-content code {
     padding: 0.2em 0.4em;
     margin: 0;
@@ -202,7 +202,7 @@
     border-radius: 4px;
 }
 
-/* Цитаты */
+/* Blockquotes */
 .markdown-content blockquote {
     margin: 1rem 0;
     padding: 0.5rem 1rem;
@@ -215,7 +215,7 @@
     margin-bottom: 0;
 }
 
-/* Списки */
+/* Lists */
 .markdown-content ul,
 .markdown-content ol {
     margin-bottom: 1rem;
@@ -232,7 +232,7 @@
     margin-bottom: 0;
 }
 
-/* Таблицы */
+/* Tables */
 .markdown-content table {
     width: 100%;
     margin: 1rem 0;
@@ -261,14 +261,14 @@
     background-color: var(--tm-bg-secondary);
 }
 
-/* Горизонтальная линия */
+/* Horizontal rule */
 .markdown-content hr {
     margin: 1.5rem 0;
     border: 0;
     border-top: 2px solid var(--bs-border-color);
 }
 
-/* Изображения */
+/* Images */
 .markdown-content img {
     max-width: 100%;
     height: auto;
@@ -282,13 +282,13 @@
     opacity: 0.9;
 }
 
-/* Темная тема - переопределения для highlight.js */
+/* Dark theme - overrides for highlight.js */
 [data-bs-theme="dark"] .markdown-content pre code.hljs {
     background-color: #1e1e1e;
     color: #d4d4d4;
 }
 
-/* ========== МОДАЛЬНОЕ ОКНО ДЛЯ ИЗОБРАЖЕНИЙ ========== */
+/* ========== IMAGE MODAL ========== */
 #imageModal .modal-body {
     padding: 1.5rem;
 }
@@ -314,7 +314,7 @@
     display: block;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
+/* ========== RESPONSIVENESS ========== */
 @media (max-width: 767.98px) {
     .markdown-toolbar {
         padding-bottom: 0.75rem;
