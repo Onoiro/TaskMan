@@ -575,6 +575,172 @@ class TaskTestCase(TestCase):
         self.assertIn('has_saved_filter', response.context)
         self.assertFalse(response.context['has_saved_filter'])
 
+    def test_saved_filter_multiple_statuses_persist(self):
+        """Test that saved filter with multiple statuses persists."""
+        # Get 2 statuses
+        if self.team:
+            statuses = list(Status.objects.filter(
+                team=self.team)[:2])
+        else:
+            statuses = list(Status.objects.filter(
+                creator=self.user, team__isnull=True)[:2])
+
+        if len(statuses) < 2:
+            self.skipTest("Not enough statuses")
+
+        # Save filter with multiple statuses
+        session = self.c.session
+        filter_key, enabled_key = _get_filter_session_keys(
+            session, self.team)
+        session[filter_key] = {
+            'status': [str(s.id) for s in statuses]
+        }
+        session[enabled_key] = True
+        session[f'{filter_key}_explicit'] = True
+        session.save()
+
+        # Visit the page
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should redirect with saved parameters
+        self.assertEqual(response.status_code, 302)
+
+        # Parse the redirect URL
+        from urllib.parse import urlparse, parse_qs
+        parsed_url = urlparse(response.url)
+        query_params = parse_qs(parsed_url.query)
+
+        # Verify all status values are preserved
+        self.assertEqual(
+            sorted(query_params.get('status', [])),
+            sorted([str(s.id) for s in statuses])
+        )
+
+    def test_saved_filter_multiple_labels_persist(self):
+        """Test that saved filter with multiple labels persists."""
+        # Get 2 labels
+        if self.team:
+            labels_list = list(Label.objects.filter(
+                team=self.team)[:2])
+        else:
+            labels_list = list(Label.objects.filter(
+                creator=self.user, team__isnull=True)[:2])
+
+        if len(labels_list) < 2:
+            self.skipTest("Not enough labels")
+
+        # Save filter with multiple labels
+        session = self.c.session
+        filter_key, enabled_key = _get_filter_session_keys(
+            session, self.team)
+        session[filter_key] = {
+            'labels': [str(lbl.id) for lbl in labels_list]
+        }
+        session[enabled_key] = True
+        session[f'{filter_key}_explicit'] = True
+        session.save()
+
+        # Visit the page
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should redirect with saved parameters
+        self.assertEqual(response.status_code, 302)
+
+        # Parse the redirect URL
+        from urllib.parse import urlparse, parse_qs
+        parsed_url = urlparse(response.url)
+        query_params = parse_qs(parsed_url.query)
+
+        # Verify all label values are preserved
+        self.assertEqual(
+            sorted(query_params.get('labels', [])),
+            sorted([str(lbl.id) for lbl in labels_list])
+        )
+
+    def test_saved_filter_multiple_authors_persist(self):
+        """Test that saved filter with multiple authors persists."""
+        if not self.team:
+            self.skipTest("Team mode required")
+
+        # Get 2 team members
+        team_users = list(User.objects.filter(
+            team_memberships__team=self.team,
+            team_memberships__status='active'
+        )[:2])
+
+        if len(team_users) < 2:
+            self.skipTest("Not enough team members")
+
+        # Save filter with multiple authors
+        session = self.c.session
+        filter_key, enabled_key = _get_filter_session_keys(
+            session, self.team)
+        session[filter_key] = {
+            'author': [str(u.id) for u in team_users]
+        }
+        session[enabled_key] = True
+        session[f'{filter_key}_explicit'] = True
+        session.save()
+
+        # Visit the page
+        response = self.c.get(reverse('tasks:tasks-list'))
+
+        # Should redirect with saved parameters
+        self.assertEqual(response.status_code, 302)
+
+        # Parse the redirect URL
+        from urllib.parse import urlparse, parse_qs
+        parsed_url = urlparse(response.url)
+        query_params = parse_qs(parsed_url.query)
+
+        # Verify all author values are preserved
+        self.assertEqual(
+            sorted(query_params.get('author', [])),
+            sorted([str(u.id) for u in team_users])
+        )
+
+    def test_saved_filter_multiple_values_applied_to_queryset(self):
+        """Test that saved filter with multiple values filters correctly.
+
+        Verifies that when a filter with multiple values is restored,
+        it correctly filters the queryset.
+        """
+        # Get 2 statuses
+        if self.team:
+            statuses = list(Status.objects.filter(
+                team=self.team)[:2])
+        else:
+            statuses = list(Status.objects.filter(
+                creator=self.user, team__isnull=True)[:2])
+
+        if len(statuses) < 2:
+            self.skipTest("Not enough statuses")
+
+        status1, status2 = statuses[0], statuses[1]
+
+        # Save filter with multiple statuses
+        session = self.c.session
+        filter_key, enabled_key = _get_filter_session_keys(
+            session, self.team)
+        session[filter_key] = {
+            'status': [str(status1.id), str(status2.id)]
+        }
+        session[enabled_key] = True
+        session[f'{filter_key}_explicit'] = True
+        session.save()
+
+        # Get the page with saved filter applied
+        response = self.c.get(
+            reverse('tasks:tasks-list'), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('filter', response.context)
+
+        # All tasks should have one of the saved statuses
+        filtered_tasks = response.context['filter'].qs
+        for task in filtered_tasks:
+            self.assertIn(task.status, [status1, status2])
+
     def test_has_saved_filter_true_with_saved_params(self):
         """Test that has_saved_filter is True when saved parameters exist"""
         session = self.c.session
