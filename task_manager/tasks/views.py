@@ -125,11 +125,20 @@ class TaskFilterView(CustomPermissions, FilterView):
         return super().get(request, *args, **kwargs)
 
     def _get_filter_params(self, request):
-        """Extract filter parameters from GET (without service params)."""
-        return {
-            k: v for k, v in request.GET.items()
-            if k not in SERVICE_PARAMS and v
-        }
+        """Extract filter parameters from GET (without service params).
+
+        Uses .lists() to properly handle multiple values for the same parameter.
+        Returns a dict where each value is a list of non-empty values.
+        """
+        result = {}
+        for k, v_list in request.GET.lists():
+            if k in SERVICE_PARAMS:
+                continue
+            # Filter out empty values and keep only non-empty ones
+            filtered_values = [v for v in v_list if v]
+            if filtered_values:
+                result[k] = filtered_values
+        return result
 
     def _get_sort_param(self):
         """Get validated sort parameter."""
@@ -179,7 +188,8 @@ class TaskFilterView(CustomPermissions, FilterView):
         """Redirect with saved filter parameters applied."""
         filter_key, _ = _get_filter_session_keys(request)
         saved_params = request.session.get(filter_key, {})
-        query_string = urlencode(saved_params)
+        # saved_params is already in list format from .lists()
+        query_string = urlencode(saved_params, doseq=True)
         return redirect(f"{request.path}?{query_string}")
 
     def get_queryset(self):
@@ -250,9 +260,12 @@ class TaskFilterView(CustomPermissions, FilterView):
         context['has_saved_filter'] = bool(saved_params)
 
         # Count of active filter params (not empty)
+        # Use .lists() to properly count multiple values for the same parameter
+        # Filter out empty strings from each list of values
         active_filter_count = sum(
-            1 for key, value in self.request.GET.items()
-            if value and key not in SERVICE_PARAMS
+            len([v for v in values if v])
+            for key, values in self.request.GET.lists()
+            if key not in SERVICE_PARAMS
         )
         context['active_filter_count'] = active_filter_count
 
