@@ -292,12 +292,12 @@ make d-space
 - For database connection issues, ensure PostgreSQL container is healthy ('make status').
 - Use 'make help' to see all available commands
 
-### Contributing
-- Fork the repository
-- Create a feature branch
-- Make your changes
-- Run tests and linting
-- Submit a pull request
+## Contributing (We need your help!)
+TaskMan is an open-source project, and contributions are highly welcome! Whether you are a beginner or an experienced developer, you can help us improve this project.
+
+- We maintain **98% test coverage**, making it safe and easy to contribute without breaking things.
+- Check out our [Issues page](https://github.com/Onoiro/TaskMan/issues) and look for tasks labeled `good first issue` or `help wanted`.
+- Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to set up the project locally, run tests, and submit a Pull Request.
 
 ### License
 This project is licensed under the MIT License.

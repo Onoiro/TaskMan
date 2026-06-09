@@ -91,6 +91,7 @@ jobs:
   deploy:  # on staging
     runs-on: ubuntu-latest
     needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Deploying to Staging via SSH
         uses: appleboy/ssh-action@v1.0.3
