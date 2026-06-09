@@ -503,6 +503,48 @@ class NotificationSignalsTest(TestCase):
         ).first()
         self.assertIsNone(notif)
 
+    def test_update_task_to_completed_sends_notification(self):
+        """Test changing status to 'Completed' sends TASK_COMPLETED."""
+        # Create task with 'In Progress' status
+        in_progress = Status.objects.create(
+            name='In Progress',
+            team=self.team,
+            creator=self.user,
+        )
+        task = Task.objects.create(
+            name='Completion Task',
+            status=in_progress,
+            author=self.other_user,
+            team=self.team,
+        )
+        task.executors.add(self.user)
+
+        # Get or create 'Completed' status (exact name match required)
+        completed_status, _ = Status.objects.get_or_create(
+            name='Completed',
+            team=self.team,
+            creator=self.user,
+        )
+
+        # Update task to completed
+        data = {
+            'name': 'Completion Task',
+            'status': completed_status.id,
+            'executors': [self.user.id],
+        }
+        self.c.post(
+            reverse('tasks:task-update', args=[task.uuid]),
+            data,
+            follow=True
+        )
+
+        # Should receive TASK_COMPLETED notification
+        notif = Notification.objects.filter(
+            recipient=self.other_user,
+            notification_type=Notification.NotificationType.TASK_COMPLETED,
+        ).first()
+        self.assertIsNotNone(notif)
+
     def test_join_team_creates_admin_notification(self):
         """Test joining team creates TEAM_MEMBER_JOINED for admins."""
         # Remove any existing membership first
