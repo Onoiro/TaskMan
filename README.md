@@ -3,6 +3,8 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Onoiro_TaskMan&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Onoiro_TaskMan)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/Onoiro/TaskMan/blob/main/CONTRIBUTING.md)
+[![GitHub issues](https://img.shields.io/github/issues/Onoiro/TaskMan)](https://github.com/Onoiro/TaskMan/issues)
 
 # [TaskMan](https://taskman.tech)
 TaskMan is a web application designed to manage tasks individually or in teams (or families). It allows users to register, create teams, and effectively manage tasks with team-based isolation. The application is deployed and accessible at: https://taskman.tech
@@ -292,11 +294,19 @@ make d-space
 - For database connection issues, ensure PostgreSQL container is healthy ('make status').
 - Use 'make help' to see all available commands
 
-## Contributing (We need your help!)
-TaskMan is an open-source project, and contributions are highly welcome! Whether you are a beginner or an experienced developer, you can help us improve this project.
+## Contributing
+TaskMan is an open-source project, and contributions are highly welcome! Whether you are a beginner or an experienced developer, you can help us improve this project. If you want to help - pick an issue and submit a pull request.
+
+**How to start:**
+1. Browse [open issues](https://github.com/Onoiro/TaskMan/issues)
+2. Find an issue labeled `help wanted` or `good first issue`
+3. Leave a comment: "I would like to work on this"
+4. Fork → branch → make changes → open PR
+
+CI runs automatically on every PR (lint + tests on Python 3.12 and 3.13).
+A PR can only be merged after CI passes and the maintainer approves it.
 
 - We maintain **98% test coverage**, making it safe and easy to contribute without breaking things.
-- Check out our [Issues page](https://github.com/Onoiro/TaskMan/issues) and look for tasks labeled `good first issue` or `help wanted`.
 - Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to set up the project locally, run tests, and submit a Pull Request.
 
 ### License
