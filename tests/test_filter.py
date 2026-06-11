@@ -1416,3 +1416,174 @@ class TaskTestCase(TestCase):
 
         # Should return original queryset unchanged
         self.assertEqual(result, queryset)
+
+    def test_filter_author_includes_deleted_user(self):
+        """Test that deleted authors appear in author filter queryset.
+
+        Verifies that when a user is soft deleted, they still appear
+        in the author filter if they authored tasks in the team.
+        """
+        if not self.team:
+            self.skipTest("Team mode required")
+
+        # Create a user and assign them as author of a task
+        deleted_user = User.objects.create_user(
+            username='test_deleted_author',
+            password='testpass123'
+        )
+
+        # Add to team as active member
+        membership = TeamMembership.objects.create(
+            user=deleted_user,
+            team=self.team,
+            status='active',
+            role='member'
+        )
+
+        # Create a task with this user as author
+        task = Task.objects.create(
+            name='Task by deleted user',
+            author=deleted_user,
+            status=Status.objects.filter(team=self.team).first(),
+            team=self.team
+        )
+
+        # Soft delete the user
+        deleted_user.soft_delete()
+
+        # Now check the filter queryset
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # The deleted user should be in the author queryset
+        author_ids = list(
+            filter_instance.filters['author'].queryset.values_list(
+                'id', flat=True))
+        self.assertIn(deleted_user.id, author_ids)
+
+        # And filtering by this author should return the task
+        filtered_qs = filter_instance.filter_queryset(Task.objects.all())
+        # Apply author filter manually
+        filtered_qs = filtered_qs.filter(author=deleted_user)
+        self.assertIn(task, filtered_qs)
+
+        # Cleanup
+        task.delete()
+        membership.delete()
+        deleted_user.delete()
+
+    def test_filter_author_includes_removed_from_team(self):
+        """Test that authors removed from team appear in author filter.
+
+        Verifies that when a user is removed from a team (membership
+        status changed to inactive), they still appear in the author
+        filter if they authored tasks in the team.
+        """
+        if not self.team:
+            self.skipTest("Team mode required")
+
+        # Create a user and assign them as author of a task
+        removed_user = User.objects.create_user(
+            username='test_removed_author',
+            password='testpass123'
+        )
+
+        # Add to team as active member
+        membership = TeamMembership.objects.create(
+            user=removed_user,
+            team=self.team,
+            status='active',
+            role='member'
+        )
+
+        # Create a task with this user as author
+        task = Task.objects.create(
+            name='Task by removed user',
+            author=removed_user,
+            status=Status.objects.filter(team=self.team).first(),
+            team=self.team
+        )
+
+        # Remove from team (set membership to inactive)
+        membership.status = 'inactive'
+        membership.save()
+
+        # Now check the filter queryset
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # The removed user should be in the author queryset
+        author_ids = list(
+            filter_instance.filters['author'].queryset.values_list(
+                'id', flat=True))
+        self.assertIn(removed_user.id, author_ids)
+
+        # And filtering by this author should return the task
+        filtered_qs = filter_instance.filter_queryset(Task.objects.all())
+        # Apply author filter manually
+        filtered_qs = filtered_qs.filter(author=removed_user)
+        self.assertIn(task, filtered_qs)
+
+        # Cleanup
+        task.delete()
+        membership.delete()
+        removed_user.delete()
+
+    def test_filter_author_includes_team_members_and_authors(self):
+        """Test that author filter includes team members and task authors.
+
+        Verifies that the author filter in team mode returns a queryset
+        containing users who are either active team members or have
+        authored tasks in this team.
+        """
+        if not self.team:
+            self.skipTest("Team mode required")
+
+        from task_manager.tasks.filters import TaskFilter
+        from django.test import RequestFactory
+
+        factory = RequestFactory()
+        request = factory.get('/')
+        request.user = self.user
+        request.active_team = self.team
+
+        filter_instance = TaskFilter(queryset=Task.objects.all())
+        filter_instance.request = request
+
+        # The author queryset should not be empty for a team with tasks
+        author_qs = filter_instance.filters['author'].queryset
+        self.assertGreater(
+            author_qs.count(), 0,
+            "Author filter queryset should contain users for team mode")
+
+        # Verify that the queryset can be used for filtering
+        # Get the first author from the queryset
+        first_author = author_qs.first()
+        if first_author:
+            # Filter tasks by this author
+            filtered_tasks = Task.objects.filter(
+                author=first_author, team=self.team)
+            # The filter should work without errors
+            result = filter_instance.filter_queryset(
+                Task.objects.all()).filter(author=first_author)
+            # Result should match expected tasks
+            self.assertEqual(
+                set(result.values_list('id', flat=True)),
+                set(filtered_tasks.values_list('id', flat=True))
+            )

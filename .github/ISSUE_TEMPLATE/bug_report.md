@@ -22,3 +22,6 @@ A clear description of what you expected to happen.
  - OS: [e.g. Ubuntu, Windows]
  - Browser: [e.g. Chrome, Safari]
  - Environment: [Docker or Local setup?]
+
+**Technical hints:**
+*(Adding a quick hint for the developer)*:

@@ -105,7 +105,21 @@ class TaskFilter(django_filters.FilterSet):
             ).distinct()
 
             self.filters['executors'].queryset = team_users
-            self.filters['author'].queryset = team_users
+
+            # Для авторов добавляем всех, кто когда-либо был автором задач
+            # в этой команде:
+            # - активных участников команды
+            # - удалённых пользователей (is_deleted=True)
+            # - пользователей, исключённых из команды (status != 'active')
+            authors_from_tasks = User.objects.filter(
+                author_set__team=team
+            ).distinct()
+
+            # Объединяем активных участников и всех авторов задач
+            self.filters['author'].queryset = (
+                team_users | authors_from_tasks
+            ).distinct()
+
             self.filters['status'].queryset = Status.objects.filter(team=team)
             self.filters['labels'].queryset = Label.objects.filter(team=team)
         else:
