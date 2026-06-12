@@ -66,6 +66,10 @@ POSTGRES_DB := $(shell $(DC) exec db printenv POSTGRES_DB)
 PROD_HOST := taskman-prod
 PROD_DIR := ~/taskman
 
+# Staging server settings
+STAGE_HOST := taskman-stage
+STAGE_DIR := ~/taskman
+
 # start all services in background
 up:
 	$(DC) up -d
@@ -196,12 +200,13 @@ d-reset-db:
 # Backup synchronization (Server <-> Local)
 # ========================================
 
-# Download the latest backup from the production server
+# Download the latest backups from the production and staging server
 d-pull-backup:
 	@echo "Looking for the latest backup on the server..."
 	@mkdir -p backups
 	scp $(PROD_HOST):$$(ssh $(PROD_HOST) "ls -t $(PROD_DIR)/backups/backup_*.sql.gz | head -n 1") ./backups/latest_prod.sql.gz
-	@echo "✅ Backup successfully downloaded to backups/latest_prod.sql.gz"
+	scp $(STAGE_HOST):$$(ssh $(STAGE_HOST) "ls -t $(STAGE_DIR)/backups/backup_*.sql.gz | head -n 1") ./backups/latest_stage.sql.gz
+	@echo "✅ Backups successfully downloaded to backups/latest_prod.sql.gz and backups/latest_stage.sql.gz"
 
 # Upload a local backup to the production server (use: make d-push-backup FILE=backup_name.sql.gz)
 d-push-backup:
