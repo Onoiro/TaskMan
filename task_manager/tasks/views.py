@@ -100,7 +100,7 @@ class TaskFilterView(CustomPermissions, FilterView):
     model = Task
     template_name = 'tasks/task_filter.html'
     filterset_class = TaskFilter
-    paginate_by = 50     
+    paginate_by = 50
 
     def get(self, request, *args, **kwargs):
         # Handle reset filter button (removes saved default filter)
@@ -276,7 +276,7 @@ class TaskFilterView(CustomPermissions, FilterView):
         context['current_sort_label'] = SORT_OPTIONS.get(
             current_sort, SORT_OPTIONS[DEFAULT_SORT])
         context['sort_options'] = SORT_OPTIONS
-        
+
         query_params = self.request.GET.copy()
         query_params.pop('page', None)
         context['query_string'] = query_params.urlencode()

@@ -1428,9 +1428,12 @@ class TaskTestCase(TestCase):
     def _create_tasks_for_pagination(self, count=60):
         """Create enough tasks to trigger pagination."""
 
-        status = Status.objects.filter(team=self.team).first() \
-            if self.team else \
-            Status.objects.filter(
+        if self.team:
+            status = Status.objects.filter(
+                team=self.team
+            ).first()
+        else:
+            status = Status.objects.filter(
                 creator=self.user,
                 team__isnull=True
             ).first()
@@ -1443,9 +1446,9 @@ class TaskTestCase(TestCase):
                 team=self.team
             )
             task.executors.add(self.user)
-    
+
     def test_tasks_list_is_paginated(self):
-        """Check that pagination is enabled when task count exceeds page size."""
+        """Check that pagination is enabled for large task lists."""
 
         self._create_tasks_for_pagination(60)
         response = self.c.get(reverse('tasks:tasks-list'))
@@ -1454,7 +1457,7 @@ class TaskTestCase(TestCase):
 
     def test_tasks_list_max_50_tasks_per_page(self):
         """Check that no more than 50 tasks are displayed per page."""
-        
+
         self._create_tasks_for_pagination(60)
         response = self.c.get(reverse('tasks:tasks-list'))
         self.assertEqual(len(response.context['page_obj']), 50)
@@ -1481,7 +1484,6 @@ class TaskTestCase(TestCase):
             response,
             'sort=created_at&page=2'
         )
-
 
 
 class TaskFilterSaveEmptyTestCase(TestCase):
