@@ -1425,6 +1425,64 @@ class TaskTestCase(TestCase):
         # Default view should show task-card class
         self.assertContains(response, 'task-card')
 
+    def _create_tasks_for_pagination(self, count=60):
+        """Create enough tasks to trigger pagination."""
+
+        status = Status.objects.filter(team=self.team).first() \
+            if self.team else \
+            Status.objects.filter(
+                creator=self.user,
+                team__isnull=True
+            ).first()
+
+        for i in range(count):
+            task = Task.objects.create(
+                name=f"Pagination Task {i}",
+                author=self.user,
+                status=status,
+                team=self.team
+            )
+            task.executors.add(self.user)
+    
+    def test_tasks_list_is_paginated(self):
+        """Check that pagination is enabled when task count exceeds page size."""
+
+        self._create_tasks_for_pagination(60)
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['is_paginated'])
+
+    def test_tasks_list_max_50_tasks_per_page(self):
+        """Check that no more than 50 tasks are displayed per page."""
+        
+        self._create_tasks_for_pagination(60)
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(len(response.context['page_obj']), 50)
+
+    def test_tasks_list_second_page_works(self):
+        """Check that the second page of tasks is accessible."""
+        self._create_tasks_for_pagination(60)
+
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?page=2'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['page_obj'].number, 2)
+
+    def test_pagination_preserves_sort_parameter(self):
+        """Check that sort parameters are preserved in pagination links."""
+
+        self._create_tasks_for_pagination(60)
+        response = self.c.get(
+            reverse('tasks:tasks-list') + '?sort=created_at'
+        )
+        self.assertContains(
+            response,
+            'sort=created_at&page=2'
+        )
+
+
 
 class TaskFilterSaveEmptyTestCase(TestCase):
     """Test cases for empty filter saving scenarios"""
