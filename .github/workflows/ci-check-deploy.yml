@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   DJANGO_LANGUAGE_CODE: 'en-us'
   DATABASE_URL: sqlite:///db.sqlite3
@@ -16,6 +20,7 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       
@@ -25,7 +30,7 @@ jobs:
           python-version: "3.12"
       
       - name: Cache Poetry dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry
           key: lint-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
@@ -43,12 +48,15 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         python-version: ["3.12", "3.13"]
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -56,7 +64,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       
       - name: Cache Poetry dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pypoetry
           key: test-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
@@ -84,12 +92,16 @@ jobs:
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
-        if: matrix.python-version == '3.12'
+        if: >
+          matrix.python-version == '3.12'
+          && (github.event_name == 'push'
+          || github.event.pull_request.head.repo.full_name == github.repository)
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
   deploy:  # on staging
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [lint, test]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:

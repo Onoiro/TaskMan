@@ -44,7 +44,9 @@ The TaskMan application is available in multiple languages:
 
 The project includes an `.env.example` file in the repository root. You will use this as a template to create configuration files for different environments.
 
-### Option 1: Docker Setup (Recommended)
+### Option 1: Docker Setup (Recommended for production)
+> ⚠️ **For local development, use Option 2 (Traditional Setup).**
+> Docker setup is intended for production-like environments only.
 **Prerequisites**
 - Docker and Docker Compose installed on your system
 
@@ -113,7 +115,7 @@ make d-backup # create database backup
 make help # view all available commands
 ```
 
-### Option 2: Traditional Setup (Without Docker)
+### Option 2: Traditional Setup (Without Docker for local development)
 **Prerequisites**
 - Python 3.12 or higher
 - Poetry 1.2.2 or higher

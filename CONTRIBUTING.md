@@ -25,7 +25,7 @@ It is simpler and faster for writing and testing code.
 - DEBUG=True - you see full error details in the browser
 - Django Debug Toolbar - panel for inspecting database queries and debugging performance issues
 
-Follow the **Option 2: Traditional Setup** section in README.md.
+Follow the **Option 2: Traditional Setup** section in [README.md](https://github.com/Onoiro/TaskMan/blob/main/README.md).
 
 Docker setup is not needed for development.
 You can use it at the end to verify your changes work in a production-like environment - but this is optional.
@@ -84,10 +84,10 @@ In Django templates:
 
 Translations are optional for contributors.
 If you can - add translations for your new strings:
-1. Run make messages - this finds all new strings
+1. Run `make messages` - this finds all new strings
 2. Open .po files in the locale/ directory
 3. Add translations for each language
-4. Run make compile - this applies the translations
+4. Run `make compile` - this applies the translations
 
 If you cannot translate - that is fine. Just make sure all new strings are wrapped with _() or {% trans %}. The maintainer will handle missing translations.
 
