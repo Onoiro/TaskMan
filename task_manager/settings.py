@@ -84,12 +84,6 @@ INSTALLED_APPS = [
     'task_manager.notifications', # In-app notifications system
 ]
 
-# Debug Toolbar is only enabled in development mode
-if DEBUG:
-    INSTALLED_APPS += [
-        'debug_toolbar',
-    ]
-
 # Middleware stack - processes requests and responses
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',    # Security headers
@@ -106,9 +100,15 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',  # Error tracking
 ]
 
-# Debug Toolbar middleware is inserted at the beginning for development
+# Debug Toolbar is only enabled in development mode
 if DEBUG:
-    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    try:
+        import debug_toolbar
+        INSTALLED_APPS.append('debug_toolbar')
+        MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    except ImportError:
+        # Debug toolbar not installed (e.g., in Docker without dev dependencies)
+        pass
 
 # Enable Rollbar error tracking in production
 ENABLE_ROLLBAR = not DEBUG and os.getenv('POST_SERVER_ITEM_ACCESS_TOKEN')

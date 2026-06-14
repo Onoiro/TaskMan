@@ -87,7 +87,11 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+    try:
+        import debug_toolbar
+        urlpatterns = [
+            path('__debug__/', include(debug_toolbar.urls)),
+        ] + urlpatterns
+    except ImportError:
+        # Debug toolbar not installed (e.g., in Docker without dev dependencies)
+        pass
