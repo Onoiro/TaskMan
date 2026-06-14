@@ -421,14 +421,14 @@
             <a class="page-link"
                href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}">
                 <i class="bi bi-chevron-left"></i>
-                Previous
+                {% trans "Previous" %}
             </a>
         </li>
         {% else %}
         <li class="page-item disabled">
             <span class="page-link">
                 <i class="bi bi-chevron-left"></i>
-                Previous
+                {% trans "Previous" %}
             </span>
         </li>
         {% endif %}
@@ -448,14 +448,14 @@
         <li class="page-item">
             <a class="page-link"
                href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}">
-                Next
+                {% trans "Next" %}
                 <i class="bi bi-chevron-right"></i>
             </a>
         </li>
         {% else %}
         <li class="page-item disabled">
             <span class="page-link">
-                Next
+                {% trans "Next" %}
                 <i class="bi bi-chevron-right"></i>
             </span>
         </li>

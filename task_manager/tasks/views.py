@@ -46,6 +46,7 @@ SERVICE_PARAMS = (
     'reset_default',
     'view_mode',
     'sort',
+    'page',
 )
 
 # Sort options for task list
