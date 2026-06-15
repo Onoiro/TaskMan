@@ -53,7 +53,7 @@ class Notification(models.Model):
         )
     )
     message_key = models.CharField(
-        max_length=50,
+        max_length=255,
         blank=True,
         verbose_name=_('Message key'),
         help_text=_('Translation key for the message template.')
