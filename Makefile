@@ -53,8 +53,30 @@ messages:
 compile:
 	cd task_manager && django-admin compilemessages
 
-# ========================================
-# Docker commands (use .env.docker)
+# Automatically translate empty/fuzzy entries (skips ru by default)
+.PHONY: translate
+translate:
+	SKIP_LANGS=ru poetry run python scripts/translate_po.py
+
+# Translate all languages including ru
+.PHONY: translate-all
+translate-all:
+	poetry run python scripts/translate_po.py
+
+# Full i18n cycle: extract → translate → compile
+.PHONY: i18n
+i18n: messages translate compile
+
+# Preview what would be translated without making API requests
+.PHONY: translate-dry
+translate-dry:
+	DRY_RUN=1 poetry run python scripts/translate_po.py
+
+# Show untranslated strings with line numbers (ru only)
+.PHONY: translate-dry-ru
+translate-dry-ru:
+	poetry run python scripts/translate_po.py list-ru
+
 # ========================================
 
 DC := docker compose --env-file .env.docker
