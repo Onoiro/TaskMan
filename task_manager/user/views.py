@@ -96,17 +96,38 @@ class UserDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
+        active_team = getattr(self.request, 'active_team', None)
 
-        # get user's teams
         from task_manager.teams.models import TeamMembership
         from task_manager.tasks.models import Task
 
-        user_teams = TeamMembership.objects.filter(user=user)
-        context['user_teams'] = user_teams
+        context['user_teams'] = TeamMembership.objects.filter(user=user)
+        context['team_task_info'] = self._get_team_task_info(
+            user, active_team, TeamMembership, Task
+        )
+        context['individual_task_info'] = self._get_individual_task_info(
+            user, active_team, Task
+        )
+        context['is_own_profile'] = self.request.user == user
+        context['active_team'] = active_team
 
-        # Get task counts for each team
+        self._set_role_change_context(
+            context, user, active_team, TeamMembership
+        )
+        return context
+
+    def _get_team_task_info(self, user, active_team, TeamMembership, Task):
+        user_teams = TeamMembership.objects.filter(user=user)
+        if self.request.user == user:
+            memberships = user_teams
+        else:
+            if active_team:
+                memberships = user_teams.filter(team=active_team)
+            else:
+                memberships = user_teams.none()
+
         team_task_info = []
-        for membership in user_teams:
+        for membership in memberships:
             team = membership.team
             author_count = Task.objects.filter(
                 team=team, author=user
@@ -120,45 +141,42 @@ class UserDetailView(DetailView):
                 'author_count': author_count,
                 'executor_count': executor_count,
             })
-        context['team_task_info'] = team_task_info
+        return team_task_info
 
-        # Get individual task counts (no team)
-        individual_author_count = Task.objects.filter(
+    def _get_individual_task_info(self, user, active_team, Task):
+        if self.request.user != user:
+            return None
+        author_count = Task.objects.filter(
             author=user, team__isnull=True
         ).count()
-        individual_executor_count = Task.objects.filter(
+        executor_count = Task.objects.filter(
             executors=user, team__isnull=True
         ).count()
-        context['individual_task_info'] = {
-            'author_count': individual_author_count,
-            'executor_count': individual_executor_count,
+        return {
+            'author_count': author_count,
+            'executor_count': executor_count,
         }
 
-        # Check if current user can change role of this user
+    def _set_role_change_context(
+        self, context, user, active_team, TeamMembership
+    ):
         context['can_change_role'] = False
         context['membership_uuid'] = None
-        context['active_team'] = getattr(self.request, 'active_team', None)
 
-        is_authenticated = self.request.user.is_authenticated
-        is_different_user = self.request.user != user
-        has_active_team = context['active_team']
-
-        if is_authenticated and is_different_user and has_active_team:
-
-            # Check if current user is admin of the active team
-            if context['active_team'].is_admin(self.request.user):
-                # Get membership of the viewed user in active team
-                try:
-                    membership = TeamMembership.objects.get(
-                        user=user,
-                        team=context['active_team']
-                    )
-                    context['membership_uuid'] = membership.uuid
-                    context['can_change_role'] = True
-                except TeamMembership.DoesNotExist:
-                    pass
-
-        return context
+        if (
+            self.request.user.is_authenticated
+            and self.request.user != user
+            and active_team
+            and active_team.is_admin(self.request.user)
+        ):
+            try:
+                membership = TeamMembership.objects.get(
+                    user=user, team=active_team
+                )
+                context['membership_uuid'] = membership.uuid
+                context['can_change_role'] = True
+            except TeamMembership.DoesNotExist:
+                pass
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
