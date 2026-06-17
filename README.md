@@ -47,6 +47,7 @@ The project includes an `.env.example` file in the repository root. You will use
 ### Option 1: Docker Setup (Recommended for production)
 > ⚠️ **For local development, use Option 2 (Traditional Setup).**
 > Docker setup is intended for production-like environments only.
+
 **Prerequisites**
 - Docker and Docker Compose installed on your system
 
@@ -217,12 +218,95 @@ make migrate     # or make d-migrate for Docker
 make shell       # or make db-shell for Docker
 ```
 ### Internationalization
+
+The application supports 5 languages: English, Russian, Tajik, Azerbaijani, and Kyrgyz.
+Translations are automated using **Yandex Translate API** with a two-stage workflow for quality control.
+
+#### Why Two-Stage Translation?
+
+Machine translation services (including Yandex) translate strings without context - they don't know that these texts are for application users, buttons, labels, or messages. Therefore:
+
+1. **English → Russian**: You can verify and correct Russian translations manually (if you know Russian)
+2. **Russian → Tajik/Azerbaijani/Kyrgyz**: Once Russian is verified, use it as the source for translating to other languages
+
+This ensures quality: you control the Russian translation, and other languages are translated from the verified Russian version.
+
+#### Translation Workflow
+
+**Step 1: Extract new translatable strings from code**
 ```bash
-# extract translatable strings
-make messages    # or make d-makemessages for Docker
-# compile translations
-make compile     # or make d-compilemessages for Docker
+make messages    # or make d-messages for Docker
 ```
+This creates/updates `task_manager/locale/*/LC_MESSAGES/django.po` files with new English strings.
+
+**Step 2: Translate English → Russian**
+```bash
+make translate-ru    # or make d-translate-ru for Docker
+```
+This uses Yandex Translate API to translate new English strings to Russian.
+
+**Step 3: Review and fix Russian translations**
+```bash
+# Open task_manager/locale/ru/LC_MESSAGES/django.po in your editor
+# Fix translations as needed, for example:
+# "Next" → "Следующая" (not "Следующий")
+# "Add checklist item" → "Добавьте пункт в чеклист" (context-aware)
+```
+This is the **most important step** — you ensure Russian translations are correct and context-appropriate.
+
+**Step 4: Translate other languages from verified Russian**
+```bash
+make translate-from-ru    # or make d-translate-from-ru for Docker
+```
+This translates Tajik, Azerbaijani, and Kyrgyz from the **verified Russian** translations, not from English.
+
+**Step 5: Compile translations**
+```bash
+make compile    # or make d-compile for Docker
+```
+This compiles `.po` files to `.mo` (binary format used by Django).
+
+#### Environment Variables for Translation
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `YANDEX_API_KEY` | Yandex Translate API key | `your_api_key` |
+| `SKIP_LANGS` | Comma-separated list of languages to skip | `ru,az` |
+| `TARGET_LANG` | Translate only one language | `ru` |
+| `FROM_RU=1` | Use Russian as source for az/ky/tg | `1` |
+| `DRY_RUN=1` | Preview without API calls | `1` |
+
+#### Additional Commands
+
+```bash
+# Translate only one specific language (e.g., only Russian)
+TARGET_LANG=ru make translate
+
+# Translate from Russian to all other languages (skip English and Russian)
+FROM_RU=1 make translate
+
+# Skip specific languages (e.g., skip Russian and Azerbaijani)
+SKIP_LANGS=ru,az make translate
+
+# Preview what would be translated without making changes
+DRY_RUN=1 make translate
+
+# List Russian translations (check coverage)
+make list-ru
+```
+
+#### Yandex Translate API Setup
+
+To use automatic translation, you need a Yandex Cloud API key:
+
+1. Create a Yandex Cloud account at https://cloud.yandex.com
+2. Create a new project or select existing
+3. Enable the **Machine Translation** API
+4. Create an API key in the service account settings
+5. Set the key in your environment: `export YANDEX_API_KEY=your_key_here`
+
+**Note:** The script uses `polib` library (already in dev dependencies) and `urllib.request` (stdlib) — no additional HTTP clients required.
+
 ### Production Deployment
 
 For production deployment with Docker:
@@ -316,5 +400,6 @@ This project is licensed under the MIT License.
 
 ### Links
 - Live Application: https://taskman.tech
-- Repository: https://github.com/Onoiro/taskman
+- Repositories: https://github.com/Onoiro/taskman
+                https://gitverse.ru/oriono/taskman
 - Author: Andrey Bogatyrev <mailto:donoriono@gmail.com>
