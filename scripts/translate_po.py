@@ -6,11 +6,38 @@ with empty or fuzzy msgstr, and automatically translates them via the
 Yandex Cloud Translate API. Placeholder strings like ``%(name)s`` and ``%d``
 are preserved during translation.
 
+By default, translates from English to all target languages except Russian.
+Supports two-stage translation workflow:
+
+1. EN -> RU: Developer translates Russian first, reviews and edits manually.
+2. RU -> AZ/KY/TG: Uses verified Russian as source for other languages.
+
+Environment variables:
+
+- ``YANDEX_TRANSLATE_API_KEY``: Yandex Cloud API key (required).
+- ``YANDEX_FOLDER_ID``: Yandex Cloud folder ID (required).
+- ``SKIP_LANGS``: Comma-separated list of languages to skip (default: ru).
+- ``TARGET_LANG``: Translate only this language (e.g., ``ru``).
+- ``FROM_RU=1``: Use Russian as source language for az/ky/tg translation.
+- ``DRY_RUN=1``: Show what would be translated without API calls.
+
 Usage::
 
+    # Default: translate all except Russian (EN -> AZ/KY/TG)
     poetry run python scripts/translate_po.py
+
+    # Translate only Russian (EN -> RU)
+    TARGET_LANG=ru poetry run python scripts/translate_po.py
+
+    # Translate AZ/KY/TG from verified Russian (RU -> target)
+    FROM_RU=1 poetry run python scripts/translate_po.py
+
+    # Dry run: preview without API calls
     DRY_RUN=1 poetry run python scripts/translate_po.py
-    SKIP_LANGS=ru poetry run python scripts/translate_po.py
+
+    # List untranslated entries
+    poetry run python scripts/translate_po.py list-ru
+    poetry run python scripts/translate_po.py list
 """
 
 import json
@@ -36,6 +63,8 @@ SKIP_LANGS = [
     if lang.strip()
 ]
 DRY_RUN = os.environ.get("DRY_RUN", "0") == "1"
+TARGET_LANG = os.environ.get("TARGET_LANG", "").strip()
+FROM_RU = os.environ.get("FROM_RU", "0") == "1"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LOCALE_DIR = PROJECT_ROOT / "task_manager" / "locale"
@@ -52,6 +81,9 @@ SUPPORTED_LANG_MAP = {
     "ky": "ky",
     "tg": "tg",
 }
+
+# Languages to translate when FROM_RU=1 (source is always ru).
+FROM_RU_TARGETS = ["az", "ky", "tg"]
 
 # ---------------------------------------------------------------------------
 # Placeholder helpers
@@ -200,15 +232,16 @@ def is_language_supported(lang_code, supported_codes):
     return lang_code in supported_codes
 
 
-def translate_texts(texts, target_lang, supported_codes):
-    """Translate a list of English texts to target_lang.
+def translate_texts(texts, target_lang, supported_codes, source_lang="en"):
+    """Translate a list of texts to target_lang.
 
     Splits texts into chunks of up to 100 and sends each chunk to the API.
 
     Args:
-        texts: List of English strings to translate.
+        texts: List of strings to translate.
         target_lang: Target language code, e.g. ``"ru"``.
         supported_codes: Set of supported language codes.
+        source_lang: Source language code (``"en"`` or ``"ru"``).
 
     Returns:
         List of translated strings (same length as texts).
@@ -232,7 +265,7 @@ def translate_texts(texts, target_lang, supported_codes):
         payload = {
             "folderId": YANDEX_FOLDER_ID,
             "texts": chunk,
-            "sourceLanguageCode": "en",
+            "sourceLanguageCode": source_lang,
             "targetLanguageCode": yandex_target,
         }
         headers = {"Authorization": f"Api-Key {YANDEX_API_KEY}"}
@@ -321,7 +354,75 @@ def _write_back(pob, po_path):
     pob.save(str(po_path))
 
 
-def process_po_file(lang_code, supported_codes):
+def build_russian_translation_dict():
+    """Build a dictionary mapping msgid -> Russian msgstr.
+
+    Reads ru/django.po and returns a dict of msgid (newline-joined) -> msgstr
+    for all non-obsolete, non-empty entries.
+
+    Returns:
+        Dict mapping msgid strings to their Russian translations.
+    """
+    ru_po_path = LOCALE_DIR / "ru" / "LC_MESSAGES" / "django.po"
+    if not ru_po_path.exists():
+        print("  WARNING: ru/django.po not found. FROM_RU mode disabled.")
+        return {}
+
+    pob = polib.pofile(str(ru_po_path))
+    ru_dict = {}
+
+    for entry in pob:
+        if entry.obsolete:
+            continue
+        msgstr = entry.msgstr or entry.msgstr_plural.get(0, "")
+        if not msgstr:
+            continue
+        msgid = entry.msgid.replace("\n", " ")
+        ru_dict[msgid] = msgstr
+
+    print(f"  Built Russian translation dictionary: {len(ru_dict)} entries.")
+    return ru_dict
+
+
+def _check_po_prerequisites(lang_code, pob, entries, supported_codes):
+    """Check prerequisites and return early if nothing to do.
+
+    Checks file existence, empty entries, dry-run mode,
+    and language support. Returns True if processing should continue.
+
+    Args:
+        lang_code: Language code, e.g. ``"ru"``.
+        pob: The polib POFile instance.
+        entries: List of entries needing translation.
+        supported_codes: Set of supported language codes.
+
+    Returns:
+        True if processing should continue, False otherwise.
+    """
+    if not entries:
+        print(f"  No empty/fuzzy entries in {lang_code}.")
+        return False
+
+    print(f"  Found {len(entries)} entries needing translation.")
+
+    if DRY_RUN:
+        print("  DRY_RUN=1 — skipping API calls and file writes.")
+        for entry, _ in entries:
+            msgid = entry.msgid.replace("\n", " ")
+            print(f"    msgid: {msgid[:100]}")
+        return False
+
+    if not is_language_supported(lang_code, supported_codes):
+        print(
+            f"  WARNING: language {lang_code} not supported "
+            "by Yandex API. Skipping."
+        )
+        return False
+
+    return True
+
+
+def process_po_file(lang_code, supported_codes, ru_dict=None):
     """Process a single .po file.
 
     Translates empty/fuzzy entries, verifies placeholders,
@@ -330,6 +431,7 @@ def process_po_file(lang_code, supported_codes):
     Args:
         lang_code: Language code, e.g. ``"ru"``.
         supported_codes: Cached set of supported language pairs.
+        ru_dict: Optional dict of msgid -> Russian translation (for FROM_RU).
 
     Returns:
         Dict with counts: ``{"translated": N, "skipped_warnings": M}``.
@@ -346,35 +448,28 @@ def process_po_file(lang_code, supported_codes):
     pob = polib.pofile(str(po_path))
     entries = collect_entries(pob)
 
-    if not entries:
-        print(f"  No empty/fuzzy entries in {lang_code}.")
-        return {"translated": 0, "skipped_warnings": 0}
-
-    print(f"  Found {len(entries)} entries needing translation.")
-
-    # Dry-run mode
-    if DRY_RUN:
-        print("  DRY_RUN=1 — skipping API calls and file writes.")
-        for entry, _ in entries:
-            msgid = entry.msgid.replace("\n", " ")
-            print(f"    msgid: {msgid[:100]}")
-        return {"translated": 0, "skipped_warnings": 0}
-
-    # Check language support
-    if not is_language_supported(lang_code, supported_codes):
-        print(
-            f"  WARNING: language {lang_code} not supported "
-            "by Yandex API. Skipping."
-        )
+    if not _check_po_prerequisites(
+        lang_code, pob, entries, supported_codes
+    ):
         return {"translated": 0, "skipped_warnings": 0}
 
     # Prepare texts for translation
     texts, originals, entry_indices = _build_translation_batch(entries)
 
-    # Translate
-    translated_texts = translate_texts(
-        texts, lang_code, supported_codes
-    )
+    # Determine source language and translations
+    if ru_dict and lang_code in FROM_RU_TARGETS:
+        # FROM_RU mode: use Russian as source
+        translated_texts, skipped_count = (
+            _translate_from_russian(
+                entry_indices, ru_dict, lang_code, supported_codes
+            )
+        )
+    else:
+        # Default EN mode
+        translated_texts = translate_texts(
+            texts, lang_code, supported_codes
+        )
+        skipped_count = 0
 
     # Write back results
     translated_count, warning_count = _apply_translations(
@@ -388,10 +483,92 @@ def process_po_file(lang_code, supported_codes):
         f"  Done: {translated_count} translated, "
         f"{warning_count} skipped with warnings."
     )
+    if skipped_count:
+        print(f"  Skipped (no Russian): {skipped_count}")
+
     return {
         "translated": translated_count,
         "skipped_warnings": warning_count,
+        "skipped_no_ru": skipped_count,
     }
+
+
+def _build_from_ru_batch(entry_indices, ru_dict):
+    """Prepare texts for FROM_RU translation and count skipped.
+
+    Args:
+        entry_indices: List of PO entries to translate.
+        ru_dict: Dict of msgid -> Russian msgstr.
+
+    Returns:
+        Tuple of (texts, originals, skipped_count).
+    """
+    texts = []
+    originals = []
+    skipped_count = 0
+
+    for entry in entry_indices:
+        msgid = entry.msgid.replace("\n", " ")
+        ru_translation = ru_dict.get(msgid, "").strip()
+
+        if not ru_translation:
+            skipped_count += 1
+            continue
+
+        escaped, ph_list = escape_placeholders(ru_translation)
+        texts.append(escaped)
+        originals.append(ph_list)
+
+    return texts, originals, skipped_count
+
+
+def _translate_from_russian(entry_indices, ru_dict,
+                            target_lang, supported_codes):
+    """Translate entries using Russian as the source language.
+
+    For each entry, looks up the msgid in the Russian dictionary.
+    If a Russian translation is found, uses it as source for Yandex API.
+    If not found, marks the entry as skipped.
+
+    Args:
+        entry_indices: List of PO entries to translate.
+        ru_dict: Dict of msgid -> Russian msgstr.
+        target_lang: Target language code (az, ky, or tg).
+        supported_codes: Set of supported codes.
+
+    Returns:
+        Tuple of (translated_texts, skipped_count).
+    """
+    texts, originals, skipped_count = _build_from_ru_batch(
+        entry_indices, ru_dict
+    )
+
+    if not texts:
+        print(
+            f"  No Russian translations found for {target_lang}. "
+            "Skipping API call."
+        )
+        return [None] * len(entry_indices), skipped_count
+
+    translated_texts = translate_texts(
+        texts, target_lang, supported_codes, source_lang="ru"
+    )
+
+    # Build result aligned with entry_indices
+    result = []
+    text_idx = 0
+    for entry in entry_indices:
+        msgid = entry.msgid.replace("\n", " ")
+        ru_translation = ru_dict.get(msgid, "").strip()
+        if not ru_translation:
+            result.append(None)
+        elif text_idx < len(translated_texts):
+            result.append(translated_texts[text_idx])
+            text_idx += 1
+        else:
+            result.append(None)
+
+    return result, skipped_count
 
 
 def _build_translation_batch(entries):
@@ -453,19 +630,147 @@ def _apply_translations(entry_indices, originals, translated_texts):
     return translated_count, warning_count
 
 
-def _run_translation_flow():
-    """Run the full translation flow: fetch languages, process each .po file."""
-    print("=" * 60)
-    print("Django .po Auto-Translator")
-    print("=" * 60)
+def _resolve_target_langs(available_langs):
+    """Determine which languages to process based on env vars.
 
-    # Validate configuration
+    Args:
+        available_langs: Sorted list of available language codes.
+
+    Returns:
+        Tuple of (target_langs, ru_dict_or_None).
+    """
+    ru_dict = None
+
+    if TARGET_LANG:
+        # Single language mode (e.g. TARGET_LANG=ru)
+        if TARGET_LANG not in available_langs:
+            print(
+                f"  WARNING: language '{TARGET_LANG}' not found in "
+                f"{', '.join(available_langs)}. Nothing to do."
+            )
+            return [], None
+        return [TARGET_LANG], None
+
+    if FROM_RU:
+        # FROM_RU mode: translate az/ky/tg from Russian
+        target_langs = [
+            lang for lang in FROM_RU_TARGETS if lang in available_langs
+        ]
+        ru_dict = build_russian_translation_dict()
+        if not ru_dict:
+            print("ERROR: Cannot build Russian dictionary. Aborting.")
+            sys.exit(1)
+        print("FROM_RU mode: translating az/ky/tg from Russian.")
+        return target_langs, ru_dict
+
+    # Default mode: translate all available languages
+    target_langs = [
+        lang for lang in available_langs if lang not in SKIP_LANGS
+    ]
+    return target_langs, ru_dict
+
+
+def _collect_skipped_ids(target_langs, ru_dict):
+    """Collect msgids that were skipped due to missing Russian translations.
+
+    Args:
+        target_langs: List of target language codes.
+        ru_dict: Dict of msgid -> Russian msgstr.
+
+    Returns:
+        List of (lang, msgid) tuples.
+    """
+    all_skipped = []
+    for lang in target_langs:
+        po_path = LOCALE_DIR / lang / "LC_MESSAGES" / "django.po"
+        pob = polib.pofile(str(po_path))
+        entries = collect_entries(pob)
+        for entry, _ in entries:
+            msgid = entry.msgid.replace("\n", " ")
+            if ru_dict and ru_dict.get(msgid, "").strip():
+                continue
+            all_skipped.append((lang, msgid[:120]))
+    return all_skipped
+
+
+def _print_skipped_summary(skipped_ids):
+    """Print skipped msgids to stderr with instructions.
+
+    Args:
+        skipped_ids: List of (lang, msgid) tuples.
+    """
+    print(
+        f"\n  Skipped (no Russian translation): "
+        f"{len(skipped_ids)}"
+    )
+    print("  These msgids need to be added to ru/django.po first:")
+    print("  " + "-" * 56)
+    seen = set()
+    for lang, msgid in skipped_ids:
+        if msgid not in seen:
+            print(f"    [{lang}] {msgid}")
+            seen.add(msgid)
+    print("  " + "-" * 56)
+    print("  Run 'make translate-ru' first to add these to Russian,")
+    print("  then re-run 'make translate-from-ru'.")
+
+
+def _validate_config():
+    """Validate Yandex API configuration.
+
+    Exits if YANDEX_TRANSLATE_API_KEY or YANDEX_FOLDER_ID is not set.
+    """
     if not YANDEX_API_KEY:
         print("ERROR: YANDEX_TRANSLATE_API_KEY is not set.")
         sys.exit(1)
     if not YANDEX_FOLDER_ID:
         print("ERROR: YANDEX_FOLDER_ID is not set.")
         sys.exit(1)
+
+
+def _get_available_langs():
+    """Get sorted list of available language codes.
+
+    Returns:
+        List of language codes that have a django.po file.
+    """
+    return sorted(
+        d.name
+        for d in LOCALE_DIR.iterdir()
+        if d.is_dir()
+        and (d / "LC_MESSAGES" / "django.po").exists()
+    )
+
+
+def _process_languages(target_langs, supported_codes, ru_dict):
+    """Process all target languages and return totals.
+
+    Args:
+        target_langs: List of language codes to process.
+        supported_codes: Set of supported language codes.
+        ru_dict: Optional Russian dictionary for FROM_RU mode.
+
+    Returns:
+        Tuple of (total_translated, total_warnings).
+    """
+    total_translated = 0
+    total_warnings = 0
+
+    for lang in target_langs:
+        result = process_po_file(lang, supported_codes, ru_dict=ru_dict)
+        total_translated += result.get("translated", 0)
+        total_warnings += result.get("skipped_warnings", 0)
+
+    return total_translated, total_warnings
+
+
+def _run_translation_flow():
+    """Run the full translation flow: fetch languages, process each .po file."""
+    print("=" * 60)
+    print("Django .po Auto-Translator")
+    print("=" * 60)
+
+    _validate_config()
 
     if DRY_RUN:
         print(
@@ -474,22 +779,11 @@ def _run_translation_flow():
         )
         supported_codes = set()
     else:
-        # Use the predefined supported languages
         supported_codes = set(SUPPORTED_LANG_MAP.keys())
 
-    # Gather available languages
-    available_langs = sorted(
-        d.name
-        for d in LOCALE_DIR.iterdir()
-        if d.is_dir()
-        and (d / "LC_MESSAGES" / "django.po").exists()
-    )
+    available_langs = _get_available_langs()
+    target_langs, ru_dict = _resolve_target_langs(available_langs)
 
-    # Filter out skipped languages
-    target_langs = [
-        lang for lang in available_langs
-        if lang not in SKIP_LANGS
-    ]
     if not target_langs:
         print(
             f"All languages are skipped "
@@ -497,19 +791,12 @@ def _run_translation_flow():
         )
         return
 
-    print(
-        f"Target languages: {', '.join(target_langs)}"
-    )
+    print(f"Target languages: {', '.join(target_langs)}")
     print(f"Skipped languages: {', '.join(SKIP_LANGS)}")
 
-    # Process each language
-    total_translated = 0
-    total_warnings = 0
-
-    for lang in target_langs:
-        result = process_po_file(lang, supported_codes)
-        total_translated += result["translated"]
-        total_warnings += result["skipped_warnings"]
+    total_translated, total_warnings = _process_languages(
+        target_langs, supported_codes, ru_dict
+    )
 
     # Summary
     print("\n" + "=" * 60)
@@ -517,6 +804,12 @@ def _run_translation_flow():
     print("=" * 60)
     print(f"  Total translated: {total_translated}")
     print(f"  Skipped (warnings): {total_warnings}")
+
+    if FROM_RU:
+        all_skipped = _collect_skipped_ids(target_langs, ru_dict)
+        if all_skipped:
+            _print_skipped_summary(all_skipped)
+
     print("=" * 60)
 
 

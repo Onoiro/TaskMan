@@ -58,14 +58,24 @@ compile:
 translate:
 	SKIP_LANGS=ru poetry run python scripts/translate_po.py
 
-# Translate all languages including ru
+# Translate all languages including ru (EN -> all)
 .PHONY: translate-all
 translate-all:
 	poetry run python scripts/translate_po.py
 
-# Full i18n cycle: extract → translate → compile
+# Step 1: Translate only Russian (EN -> RU)
+.PHONY: translate-ru
+translate-ru:
+	TARGET_LANG=ru poetry run python scripts/translate_po.py
+
+# Step 2: Translate az/ky/tg from verified Russian (RU -> AZ/KY/TG)
+.PHONY: translate-from-ru
+translate-from-ru:
+	FROM_RU=1 poetry run python scripts/translate_po.py
+
+# Full i18n cycle: extract + compile (translate runs separately)
 .PHONY: i18n
-i18n: messages translate compile
+i18n: messages compile
 
 # Preview what would be translated without making API requests
 .PHONY: translate-dry
