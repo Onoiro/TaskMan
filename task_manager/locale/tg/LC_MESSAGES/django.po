@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-17 00:44+0300\n"
+"POT-Creation-Date: 2026-06-17 21:53+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -1690,8 +1690,8 @@ msgid "Who"
 msgstr "Кӣ"
 
 #: templates/tasks/task_filter.html:136 templates/tasks/task_filter.html:193
-msgid "Ctrl/Cmd for multiple"
-msgstr "Ctrl / Cmd барои якчанд"
+msgid "Hold Ctrl/Cmd for multiple"
+msgstr "Барои интихоби якчанд Ctrl/Cmd-ро пахш кунед"
 
 #: templates/tasks/task_filter.html:149 templates/tasks/task_filter.html:166
 #: templates/tasks/task_filter.html:205 templates/tasks/task_filter.html:221
@@ -1727,7 +1727,6 @@ msgid "Checklist"
 msgstr "Рӯйхати санҷиш"
 
 #: templates/tasks/task_filter.html:424 templates/tasks/task_filter.html:431
-#| msgid "Preview"
 msgid "Previous"
 msgstr "Гузашта"
 
@@ -1736,9 +1735,8 @@ msgid "Next"
 msgstr "Баъдӣ"
 
 #: templates/tasks/task_update.html:125
-#| msgid "checklist items"
 msgid "Add a checklist item"
-msgstr "Ҷузъи рӯйхати назоратро илова кунед"
+msgstr "Унсури чеклистро илова кунед"
 
 #: templates/tasks/task_update.html:130
 msgid "Add item..."
@@ -2109,6 +2107,9 @@ msgstr "Шумо бомуваффақият ворид шудед"
 #: views.py:54
 msgid "You are logged out"
 msgstr "Шумо аз система баромадед"
+
+#~ msgid "Ctrl/Cmd for multiple"
+#~ msgstr "Ctrl / Cmd барои якчанд"
 
 #~ msgid ""
 #~ "If you have an invite link, paste it above. Otherwise, enter team name and "
