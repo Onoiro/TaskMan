@@ -161,6 +161,12 @@
                             </div>
                         </div>
 
+                        <!-- Multi-select help text (desktop only) -->
+                        <div class="multi-select-help text-muted mb-3">
+                            <i class="bi bi-info-circle me-1"></i>
+                            {% trans "Hold Ctrl/Cmd to select multiple items" %}
+                        </div>
+
                         <!-- Notes section -->
                         {% include "notes/_task_notes.html" with notes=notes task=object %}
 
@@ -229,6 +235,18 @@
         border-radius: 0.375rem;
         font-size: 0.85rem;
         white-space: nowrap;
+    }
+
+    /* Multi-select help text - desktop only, small like checkbox labels */
+    .multi-select-help {
+        font-size: 0.75rem;
+        color: var(--tm-text-muted);
+        display: none;
+    }
+    @media (min-width: 768px) {
+        .multi-select-help {
+            display: block;
+        }
     }
 </style>
 

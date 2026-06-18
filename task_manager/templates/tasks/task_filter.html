@@ -132,9 +132,6 @@
                     <div class="filter-group">
                         <div class="filter-group-label">
                             <i class="bi bi-people"></i> {% trans "Who" %}
-                            <span class="text-muted ms-2" style="font-size: 0.65rem;">
-                                ({% trans "Hold Ctrl/Cmd for multiple" %})
-                            </span>
                         </div>
                         <div class="filter-group-fields">
                             {% if request.active_team %}
@@ -189,9 +186,6 @@
                     <div class="filter-group">
                         <div class="filter-group-label">
                             <i class="bi bi-tag"></i> {% trans "What" %}
-                            <span class="text-muted ms-2" style="font-size: 0.65rem;">
-                                ({% trans "Hold Ctrl/Cmd for multiple" %})
-                            </span>
                         </div>
                         <div class="filter-group-fields">
                             <!-- Status -->
@@ -235,6 +229,14 @@
                                         {% trans "Has checklist" %}
                                     </label>
                                 </div>
+                            </div>
+
+                            <!-- Multi-select help text -->
+                            <div class="filter-field w-100 filter-multi-select-help">
+                                <span class="text-muted">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    {% trans "Hold Ctrl/Cmd to select multiple items" %}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -709,6 +711,18 @@
     height: 12px;
     border-radius: 2px;
     flex-shrink: 0;
+}
+
+/* Help text for multi-select - desktop only, small like checkbox labels */
+.filter-multi-select-help {
+    font-size: 0.75rem;
+    color: var(--tm-text-muted);
+    display: none;
+}
+@media (min-width: 768px) {
+    .filter-multi-select-help {
+        display: block;
+    }
 }
 
 /* ===== MOBILE OPTIMIZATIONS ===== */
