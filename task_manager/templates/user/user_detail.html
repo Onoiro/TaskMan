@@ -143,7 +143,9 @@
                 </div>
             </div>
 
+            {% if can_view_limits %}
             {% include "includes/limits_usage.html" %}
+            {% endif %}
 
             <!-- hidden elements for tests -->
             <div class="visually-hidden">

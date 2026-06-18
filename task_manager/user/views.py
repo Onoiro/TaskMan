@@ -110,11 +110,36 @@ class UserDetailView(DetailView):
         )
         context['is_own_profile'] = self.request.user == user
         context['active_team'] = active_team
+        context['can_view_limits'] = self._can_view_limits(
+            user, active_team, TeamMembership
+        )
 
         self._set_role_change_context(
             context, user, active_team, TeamMembership
         )
         return context
+
+    def _can_view_limits(self, user, active_team, TeamMembership):
+        """Check if current user can view another user's limits."""
+        # Own profile - always can view
+        if self.request.user == user:
+            return True
+
+        # Superuser can view all
+        if self.request.user.is_superuser:
+            return True
+
+        # In team mode: admin can view team members' limits
+        if active_team and active_team.is_admin(self.request.user):
+            try:
+                TeamMembership.objects.get(
+                    user=user, team=active_team, status='active'
+                )
+                return True
+            except TeamMembership.DoesNotExist:
+                pass
+
+        return False
 
     def _get_team_task_info(self, user, active_team, TeamMembership, Task):
         user_teams = TeamMembership.objects.filter(user=user)
@@ -144,6 +169,7 @@ class UserDetailView(DetailView):
         return team_task_info
 
     def _get_individual_task_info(self, user, active_team, Task):
+        # Return individual task info only for own profile
         if self.request.user != user:
             return None
         author_count = Task.objects.filter(

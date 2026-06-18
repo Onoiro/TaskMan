@@ -97,19 +97,11 @@ class LimitService:
     def can_create_task(self) -> LimitCheckResult:
         from task_manager.tasks.models import Task
 
-        # Personal tasks (no team, author = user)
-        personal_tasks = Task.objects.filter(
-            author=self.user,
-            team__isnull=True
-        ).count()
-
-        # Tasks in user's teams (active membership)
-        team_tasks = Task.objects.filter(
-            team__memberships__user=self.user,
-            team__memberships__status='active'
-        ).distinct().count()
-
-        current = personal_tasks + team_tasks
+        # Count only tasks where user is the author
+        # (both personal and team tasks)
+        # Tasks are attributed to the author only to avoid double-counting
+        # when multiple users are members of the same team
+        current = Task.objects.filter(author=self.user).count()
         max_tasks = self.limits.max_tasks_total
 
         allowed = current < max_tasks
@@ -263,6 +255,9 @@ class LimitService:
 
         Returns dict with keys: tasks, teams, statuses, labels, notes.
         Each value is {'current': int, 'max': int}.
+
+        Note: Tasks are counted only where user is the author.
+        This prevents double-counting when multiple users share a team.
         """
         from task_manager.tasks.models import Task
         from task_manager.teams.models import TeamMembership
@@ -276,19 +271,8 @@ class LimitService:
             role='admin'
         ).count()
 
-        # Personal tasks
-        personal_tasks = Task.objects.filter(
-            author=self.user,
-            team__isnull=True
-        ).count()
-
-        # Tasks in user's teams
-        team_tasks = Task.objects.filter(
-            team__memberships__user=self.user,
-            team__memberships__status='active'
-        ).distinct().count()
-
-        tasks_count = personal_tasks + team_tasks
+        # Tasks: count only where user is author (personal + team)
+        tasks_count = Task.objects.filter(author=self.user).count()
 
         # Personal statuses
         statuses_count = Status.objects.filter(

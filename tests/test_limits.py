@@ -38,8 +38,8 @@ class LimitServiceTasksTest(TestCase):
         self.assertEqual(result.current, 0)
 
     def test_cannot_exceed_task_limit(self):
-        """Cannot create task when 500 personal tasks exist."""
-        # Create 500 personal tasks
+        """Cannot create task when 1000 personal tasks exist."""
+        # Create 1000 personal tasks
         tasks = [
             Task(
                 name=f'task_{i}',
@@ -47,16 +47,16 @@ class LimitServiceTasksTest(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(500)
+            for i in range(1000)
         ]
         Task.objects.bulk_create(tasks)
 
         result = self.service.can_create_task()
         self.assertFalse(result.allowed)
-        self.assertEqual(result.current, 500)
+        self.assertEqual(result.current, 1000)
 
     def test_task_limit_counts_team_tasks(self):
-        """Task limit counts team tasks."""
+        """Task limit counts only team tasks where user is author."""
         # Create team and add user as admin
         team = Team.objects.create(
             name='Test Team Limit',
@@ -76,7 +76,7 @@ class LimitServiceTasksTest(TestCase):
             color='#ff0000'
         )
 
-        # Create 500 tasks in the team
+        # Create 1000 tasks in the team (user is author)
         tasks = [
             Task(
                 name=f'team_task_{i}',
@@ -84,16 +84,16 @@ class LimitServiceTasksTest(TestCase):
                 team=team,
                 status=team_status
             )
-            for i in range(500)
+            for i in range(1000)
         ]
         Task.objects.bulk_create(tasks)
 
         result = self.service.can_create_task()
         self.assertFalse(result.allowed)
-        self.assertEqual(result.current, 500)
+        self.assertEqual(result.current, 1000)
 
     def test_task_limit_is_cross_team(self):
-        """Task limit is cross-team (personal + team tasks)."""
+        """Task limit counts all tasks where user is author."""
         # Create team and add user as admin
         team = Team.objects.create(
             name='Test Team Cross',
@@ -114,7 +114,7 @@ class LimitServiceTasksTest(TestCase):
             color='#00ff00'
         )
 
-        # Create 250 personal tasks
+        # Create 500 personal tasks
         personal_tasks = [
             Task(
                 name=f'personal_task_{i}',
@@ -122,11 +122,11 @@ class LimitServiceTasksTest(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(250)
+            for i in range(500)
         ]
         Task.objects.bulk_create(personal_tasks)
 
-        # Create 250 team tasks
+        # Create 500 team tasks
         team_tasks = [
             Task(
                 name=f'team_task_{i}',
@@ -134,17 +134,17 @@ class LimitServiceTasksTest(TestCase):
                 team=team,
                 status=team_status
             )
-            for i in range(250)
+            for i in range(500)
         ]
         Task.objects.bulk_create(team_tasks)
 
         result = self.service.can_create_task()
         self.assertFalse(result.allowed)
-        self.assertEqual(result.current, 500)
+        self.assertEqual(result.current, 1000)
 
-    def test_task_limit_499_still_allowed(self):
-        """499 tasks still allowed (limit is 500)."""
-        # Create 499 personal tasks
+    def test_task_limit_999_still_allowed(self):
+        """999 tasks still allowed (limit is 1000)."""
+        # Create 999 personal tasks
         tasks = [
             Task(
                 name=f'task_{i}',
@@ -152,17 +152,68 @@ class LimitServiceTasksTest(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(499)
+            for i in range(999)
         ]
         Task.objects.bulk_create(tasks)
 
         result = self.service.can_create_task()
         self.assertTrue(result.allowed)
-        self.assertEqual(result.current, 499)
+        self.assertEqual(result.current, 999)
+
+    def test_task_limit_does_not_count_others_tasks(self):
+        """Task limit does not count tasks where user is not author."""
+        # Create team and add user as admin
+        team = Team.objects.create(
+            name='Test Team Others',
+            password='test'
+        )
+        TeamMembership.objects.create(
+            user=self.user,
+            team=team,
+            role='admin',
+            status='active'
+        )
+
+        # Create another user
+        other_user = User.objects.create_user(
+            username='other_user_limit',
+            password='test'
+        )
+        TeamMembership.objects.create(
+            user=other_user,
+            team=team,
+            role='member',
+            status='active'
+        )
+
+        # Create a team status
+        team_status = Status.objects.create(
+            name='Team Status Others',
+            creator=self.user,
+            team=team,
+            color='#00ff00'
+        )
+
+        # Create 100 tasks by other user in the team
+        other_tasks = [
+            Task(
+                name=f'other_task_{i}',
+                author=other_user,
+                team=team,
+                status=team_status
+            )
+            for i in range(100)
+        ]
+        Task.objects.bulk_create(other_tasks)
+
+        # These tasks should NOT be counted in self.user's limit
+        result = self.service.can_create_task()
+        self.assertTrue(result.allowed)
+        self.assertEqual(result.current, 0)
 
     def test_limit_message_contains_max(self):
         """Limit message contains max value."""
-        # Create 500 tasks to reach limit
+        # Create 1000 tasks to reach limit
         tasks = [
             Task(
                 name=f'task_{i}',
@@ -170,12 +221,12 @@ class LimitServiceTasksTest(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(500)
+            for i in range(1000)
         ]
         Task.objects.bulk_create(tasks)
 
         result = self.service.can_create_task()
-        self.assertIn('500', result.message)
+        self.assertIn('1000', result.message)
 
 
 class LimitServiceTeamsTest(TestCase):
@@ -572,7 +623,7 @@ class LimitCheckInViewsTest(TestCase):
 
     def test_task_create_blocked_at_limit(self):
         """Task creation blocked when limit reached."""
-        # Create 500 tasks to reach limit
+        # Create 1000 tasks to reach limit
         tasks = [
             Task(
                 name=f'task_{i}',
@@ -580,7 +631,7 @@ class LimitCheckInViewsTest(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(500)
+            for i in range(1000)
         ]
         Task.objects.bulk_create(tasks)
 
@@ -601,7 +652,7 @@ class LimitCheckInViewsTest(TestCase):
         messages_list = list(get_messages(response.wsgi_request))
         warning_msgs = [m for m in messages_list if m.level == 30]
         self.assertTrue(len(warning_msgs) > 0)
-        self.assertIn('500', str(warning_msgs[0]))
+        self.assertIn('1000', str(warning_msgs[0]))
 
     def test_task_create_allowed_below_limit(self):
         """Task creation allowed when below limit."""
@@ -612,7 +663,7 @@ class LimitCheckInViewsTest(TestCase):
         ).count()
 
         # Calculate how many more we can create (leave room for 1 more)
-        tasks_to_create = min(100, 500 - current_tasks - 1)
+        tasks_to_create = min(100, 1000 - current_tasks - 1)
 
         # Create some tasks to get close but not at limit
         if tasks_to_create > 0:
@@ -705,3 +756,81 @@ class LimitsContextProcessorTest(TestCase):
         # For anonymous user, usage should not be in context
         # (context processor returns empty dict)
         self.assertNotIn('usage', response.context)
+
+
+class UserDetailLimitsPermissionTest(TestCase):
+    """Tests for limits visibility permissions in user detail view."""
+
+    fixtures = ["tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json"]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.other_user = User.objects.get(username='alone')
+        self.admin_user = User.objects.get(pk=11)  # Admin in fixtures
+
+        self.c = Client()
+        self.c.force_login(self.user)
+
+        # Create team for testing
+        self.team = Team.objects.create(
+            name='Limits Test Team',
+            password='test'
+        )
+        TeamMembership.objects.create(
+            user=self.user,
+            team=self.team,
+            role='admin',
+            status='active'
+        )
+        TeamMembership.objects.create(
+            user=self.other_user,
+            team=self.team,
+            role='member',
+            status='active'
+        )
+
+    def test_own_profile_can_view_limits(self):
+        """User can view limits on own profile."""
+        response = self.c.get(
+            reverse('user:user-detail', args=[self.user.username])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['can_view_limits'])
+
+    def test_other_user_profile_cannot_view_limits(self):
+        """User cannot view limits on another user's profile."""
+        response = self.c.get(
+            reverse('user:user-detail', args=[self.other_user.username])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context['can_view_limits'])
+
+    def test_admin_can_view_member_limits(self):
+        """Team admin can view team member's limits."""
+        # Login as admin
+        self.c.force_login(self.admin_user)
+
+        response = self.c.get(
+            reverse('user:user-detail', args=[self.other_user.username])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['can_view_limits'])
+
+    def test_superuser_can_view_all_limits(self):
+        """Superuser can view any user's limits."""
+        # Create superuser
+        superuser = User.objects.create_superuser(
+            username='super',
+            password='test',
+            email='super@test.com'
+        )
+        self.c.force_login(superuser)
+
+        response = self.c.get(
+            reverse('user:user-detail', args=[self.other_user.username])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['can_view_limits'])

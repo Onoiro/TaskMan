@@ -43,7 +43,7 @@ class LimitsInfoViewTestCase(TestCase):
 
     def test_limits_info_view_usage_percentages_calculated(self):
         """Test that usage percentages are correctly calculated."""
-        # Create some tasks to have non-zero usage
+        # Create 100 personal tasks (10% of 1000 limit)
         tasks = [
             Task(
                 name=f'percent_test_task_{i}',
@@ -51,7 +51,7 @@ class LimitsInfoViewTestCase(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(50)  # 50 out of 500 = 10%
+            for i in range(100)  # 100 out of 1000 = 10%
         ]
         Task.objects.bulk_create(tasks)
 
@@ -60,10 +60,10 @@ class LimitsInfoViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         usage = response.context['usage']
 
-        # Check tasks percentage is calculated (50/500 = 10%)
+        # Check tasks percentage is calculated (100/1000 = 10%)
         self.assertIn('tasks', usage)
-        self.assertEqual(usage['tasks']['current'], 50)
-        self.assertEqual(usage['tasks']['max'], 500)
+        self.assertEqual(usage['tasks']['current'], 100)
+        self.assertEqual(usage['tasks']['max'], 1000)
         self.assertEqual(usage['tasks']['percent'], 10)
 
     def test_limits_info_view_zero_percentage(self):
@@ -82,7 +82,7 @@ class LimitsInfoViewTestCase(TestCase):
 
     def test_limits_info_view_capped_at_100_percent(self):
         """Test that percentage is capped at 100%."""
-        # Create 600 tasks (exceeding limit of 500)
+        # Create 1200 tasks (exceeding limit of 1000)
         tasks = [
             Task(
                 name=f'cap_test_task_{i}',
@@ -90,7 +90,7 @@ class LimitsInfoViewTestCase(TestCase):
                 team=None,
                 status=self.status
             )
-            for i in range(600)
+            for i in range(1200)
         ]
         Task.objects.bulk_create(tasks)
 
@@ -100,7 +100,7 @@ class LimitsInfoViewTestCase(TestCase):
         usage = response.context['usage']
 
         # Check percentage is capped at 100
-        self.assertEqual(usage['tasks']['current'], 600)
+        self.assertEqual(usage['tasks']['current'], 1200)
         self.assertEqual(usage['tasks']['percent'], 100)
 
     def test_limits_info_view_anonymous_redirects(self):
