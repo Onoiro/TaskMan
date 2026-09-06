@@ -64,10 +64,10 @@ class Status(models.Model):
         """Создает дефолтные статусы для нового пользователя или команды"""
         default_statuses = [
             {
-                'name': _("To Do"),
+                'name': _("New"),
                 'description': _("Task has been created but not yet started"),
                 # 'color': '#64748B'  # Slate (Gray-blue)
-                'color': '#A78BVA'  # Lavender
+                'color': '#A78BFA'  # Lavender
             },
             {
                 'name': _("In Progress"),

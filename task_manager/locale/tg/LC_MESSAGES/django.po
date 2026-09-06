@@ -438,8 +438,8 @@ msgid "Choose status color"
 msgstr "Ранги ҳолатро интихоб кунед"
 
 #: statuses/models.py:67
-msgid "To Do"
-msgstr "Барои иҷро"
+msgid "New"
+msgstr "Нав"
 
 #: statuses/models.py:68
 msgid "Task has been created but not yet started"
@@ -1109,8 +1109,8 @@ msgid "Custom Statuses"
 msgstr "Ҳолатҳои фармоишӣ"
 
 #: templates/index.html:45
-msgid "To Do, In Progress, Done - or your own"
-msgstr "Барои иҷро, Дар раванди иҷро, Анҷом ёфтааст — ё ҳолатҳои худатон"
+msgid "New, In Progress, Done - or your own"
+msgstr "Нав, Дар раванди иҷро, Анҷом ёфтааст — ё ҳолатҳои худатон"
 
 #: templates/index.html:49
 msgid "Tag and filter tasks instantly"

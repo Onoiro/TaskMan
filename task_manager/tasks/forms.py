@@ -46,6 +46,10 @@ class TaskForm(forms.ModelForm):
             self.fields['labels'].queryset = Label.objects.filter(
                 team=team
             )
+            # default status is the first one (e.g. "New")
+            self.fields['status'].initial = (
+                self.fields['status'].queryset.first()
+            )
             # if team has only one member - set executor to author
             if team.memberships.count() == 1:
                 self.fields['executors'].initial = [user]
@@ -61,6 +65,10 @@ class TaskForm(forms.ModelForm):
             self.fields['labels'].queryset = Label.objects.filter(
                 creator=user,
                 team__isnull=True
+            )
+            # default status is the first one (e.g. "New")
+            self.fields['status'].initial = (
+                self.fields['status'].queryset.first()
             )
             # user is executor in individual mode
             self.fields['executors'].initial = [user]
