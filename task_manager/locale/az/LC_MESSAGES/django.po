@@ -437,8 +437,8 @@ msgid "Choose status color"
 msgstr "Status rəngini seçin"
 
 #: statuses/models.py:67
-msgid "To Do"
-msgstr "Ediləcək"
+msgid "New"
+msgstr "Yeni"
 
 #: statuses/models.py:68
 msgid "Task has been created but not yet started"
@@ -1104,8 +1104,8 @@ msgid "Custom Statuses"
 msgstr "Fərdi statuslar"
 
 #: templates/index.html:45
-msgid "To Do, In Progress, Done - or your own"
-msgstr "Ediləcək, İcradadır, Tamamlandı — və ya öz statuslarınız"
+msgid "New, In Progress, Done - or your own"
+msgstr "Yeni, İcradadır, Tamamlandı — və ya öz statuslarınız"
 
 #: templates/index.html:49
 msgid "Tag and filter tasks instantly"

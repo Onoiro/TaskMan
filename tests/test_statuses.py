@@ -529,7 +529,7 @@ class StatusDefaultCreationTestCase(TestCase):
 
     def test_create_default_statuses_for_user(self):
         default_status_names = [
-            "To Do",
+            "New",
             "In Progress",
             "On Hold",
             "Completed",

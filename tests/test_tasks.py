@@ -676,6 +676,29 @@ class TaskTestCase(TestCase):
         # cleanup
         user_no_team.delete()
 
+    def test_create_task_form_default_status_initial(self):
+        """Task create form pre-selects the first available status."""
+        user_no_team = User.objects.create_user(
+            username='notinteam3',
+            password='testpass123'
+        )
+        Status.create_default_statuses_for_user(user_no_team)
+        self.c.force_login(user_no_team)
+
+        response = self.c.get(reverse('tasks:task-create'))
+
+        form = response.context.get('form')
+        self.assertIsNotNone(form)
+        expected_status = Status.objects.filter(
+            creator=user_no_team,
+            team__isnull=True
+        ).first()
+        self.assertIsNotNone(expected_status)
+        self.assertEqual(form.fields['status'].initial, expected_status)
+
+        # cleanup
+        user_no_team.delete()
+
     # ========== UPDATE TASK TESTS ==========
 
     def test_update_task_with_add_checklist_button(self):
