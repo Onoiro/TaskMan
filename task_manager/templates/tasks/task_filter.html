@@ -137,7 +137,7 @@
                             {% if request.active_team %}
                             <!-- Author (only in team mode) -->
                             <div class="filter-field">
-                                <label class="filter-label">{{ filter.form.author.label }}</label>
+                                <label class="filter-label" for="{{ filter.form.author.id_for_label }}">{{ filter.form.author.label }}</label>
                                 <div class="filter-input-wrap">
                                     {{ filter.form.author }}
                                     <button type="button" 
@@ -154,7 +154,7 @@
 
                             <!-- Executor -->
                             <div class="filter-field">
-                                <label class="filter-label">{{ filter.form.executors.label }}</label>
+                                <label class="filter-label" for="{{ filter.form.executors.id_for_label }}">{{ filter.form.executors.label }}</label>
                                 <div class="filter-input-wrap">
                                     {{ filter.form.executors }}
                                     <button type="button"
@@ -190,7 +190,7 @@
                         <div class="filter-group-fields">
                             <!-- Status -->
                             <div class="filter-field">
-                                <label class="filter-label">{{ filter.form.status.label }}</label>
+                                <label class="filter-label" for="{{ filter.form.status.id_for_label }}">{{ filter.form.status.label }}</label>
                                 <div class="filter-input-wrap">
                                     {{ filter.form.status }}
                                     <button type="button"
@@ -206,7 +206,7 @@
 
                             <!-- Labels -->
                             <div class="filter-field">
-                                <label class="filter-label">{{ filter.form.labels.label }}</label>
+                                <label class="filter-label" for="{{ filter.form.labels.id_for_label }}">{{ filter.form.labels.label }}</label>
                                 <div class="filter-input-wrap">
                                     {{ filter.form.labels }}
                                     <button type="button"
@@ -249,11 +249,11 @@
                         <div class="filter-group-fields">
                             <div class="filter-dates">
                                 <div class="filter-field">
-                                    <label class="filter-label">{{ filter.form.created_after.label }}</label>
+                                    <label class="filter-label" for="{{ filter.form.created_after.id_for_label }}">{{ filter.form.created_after.label }}</label>
                                     {{ filter.form.created_after }}
                                 </div>
                                 <div class="filter-field">
-                                    <label class="filter-label">{{ filter.form.created_before.label }}</label>
+                                    <label class="filter-label" for="{{ filter.form.created_before.id_for_label }}">{{ filter.form.created_before.label }}</label>
                                     {{ filter.form.created_before }}
                                 </div>
                             </div>

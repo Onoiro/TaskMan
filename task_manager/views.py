@@ -5,7 +5,6 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.http import HttpResponse
 from . import forms
 from .permissions import CustomPermissions
 
@@ -13,7 +12,6 @@ from .permissions import CustomPermissions
 # use this path '/trigger-error' when need to check connect to rollbar
 def trigger_error(request):
     1 / 0
-    return HttpResponse("This should not be reached")
 
 
 class IndexView(View):

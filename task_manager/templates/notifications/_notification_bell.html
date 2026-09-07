@@ -30,7 +30,7 @@
           </button>
         </li>
         <li><hr class="dropdown-divider"></li>
-        <div class="notification-list">
+        <ul class="notification-list list-unstyled m-0">
         {% for notif in unread_notifications %}
         <li class="px-2 px-md-3 py-2" id="notif-{{ notif.pk }}">
           <div class="d-flex align-items-start gap-1 gap-md-2">
@@ -80,13 +80,13 @@
         </li>
         {% endfor %}
         {% if unread_notifications_count >= 10 %}
-        </div>
+        </ul>
         <li><hr class="dropdown-divider"></li>
         <li class="px-2 px-md-3 py-1 text-center text-muted small">
           {% trans "Showing last 10 notifications" %}
         </li>
         {% else %}
-        </div>
+        </ul>
         {% endif %}
       </ul>
     </div>
