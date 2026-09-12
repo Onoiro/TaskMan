@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-26 08:21+0300\n"
+"POT-Creation-Date: 2026-09-12 22:56+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -44,11 +44,11 @@ msgstr "Ad"
 #: labels/models.py:24 notes/models.py:28 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
-" #, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
 msgstr ""
-"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <,"
-" >, #, & simvollarına icazə verilmir."
+"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <, "
+">, #, & simvollarına icazə verilmir."
 
 #: labels/views.py:37
 msgid "Label created successfully"
@@ -70,12 +70,12 @@ msgstr "Etiketi silmək mümkün deyil, çünki o istifadə olunur"
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way —"
-" we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way — "
+"we're working on it!"
 msgstr ""
 "Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. "
-"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır"
-" — biz bunun üzərində işləyirik!"
+"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır "
+"— biz bunun üzərində işləyirik!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -146,18 +146,18 @@ msgid "Content"
 msgstr "Məzmun"
 
 #: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:71
-#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:397
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:412
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
 msgstr "Müəllif"
 
-#: notes/models.py:53 tasks/models.py:47
-#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
+#: notes/models.py:53 tasks/models.py:47 templates/labels/labels_update.html:29
+#: templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Komanda"
 
-#: notes/models.py:61 tasks/models.py:135
+#: notes/models.py:61 tasks/models.py:140
 msgid "Task"
 msgstr "Tapşırıq"
 
@@ -181,7 +181,7 @@ msgstr "Qeyd"
 #: notes/models.py:75 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:355
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:362
 msgid "Notes"
 msgstr "Qeydlər"
 
@@ -267,11 +267,10 @@ msgid "Message"
 msgstr "Mesaj"
 
 #: notifications/models.py:51
-msgid ""
-"Legacy field. Use message_key and message_params for new notifications."
+msgid "Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
-"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə"
-" edin."
+"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə "
+"edin."
 
 #: notifications/models.py:58
 msgid "Message key"
@@ -375,8 +374,7 @@ msgid "You don't have permissions to modify another user."
 msgstr "Başqa istifadəçini dəyişdirmək üçün icazəniz yoxdur."
 
 #: permissions.py:40
-msgid ""
-"You don't have permissions to modify this. Only team admin can do this."
+msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "Bunu dəyişdirmək üçün icazəniz yoxdur. Bunu yalnız komanda administratoru "
 "edə bilər."
@@ -514,7 +512,7 @@ msgstr "Tapşırığın adı..."
 msgid "Status"
 msgstr "Status"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:401
+#: tasks/filters.py:40 templates/tasks/task_filter.html:416
 #: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:106 templates/user/user_detail.html:132
 msgid "Executor"
@@ -551,15 +549,20 @@ msgstr "İcraçılar"
 msgid "Updated by"
 msgstr "Yeniləyən"
 
-#: tasks/models.py:139
+#: tasks/models.py:91 templates/tasks/task_create_form.html:25
+#: templates/tasks/task_update.html:81
+msgid "Deadline"
+msgstr "Son tarix"
+
+#: tasks/models.py:144
 msgid "Text"
 msgstr "Mətn"
 
-#: tasks/models.py:143
+#: tasks/models.py:148
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: tasks/models.py:147
+#: tasks/models.py:152
 msgid "Position"
 msgstr "Mövqe"
 
@@ -840,8 +843,8 @@ msgstr "Komanda üzvlüyü tapılmadı."
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this"
-" team."
+"You cannot exit the team because you are author or executor of tasks in this "
+"team."
 msgstr ""
 "Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi "
 "və ya icraçısısınız."
@@ -915,7 +918,7 @@ msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
 
-#: templates/base.html:50 templates/base.html:82 views.py:30
+#: templates/base.html:50 templates/base.html:82 views.py:28
 msgid "TaskMan"
 msgstr "TaskMan"
 
@@ -1014,8 +1017,8 @@ msgstr "Ətraflı"
 msgid "Go back"
 msgstr "Geri qayıt"
 
-#: templates/base.html:430 templates/feedback.html:7
-#: templates/feedback.html:12 views.py:65
+#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:63
 msgid "Feedback"
 msgstr "Əks əlaqə"
 
@@ -1124,14 +1127,14 @@ msgid "Language Support"
 msgstr "Dil dəstəyi"
 
 #: templates/labels/labels_create.html:9
-#: templates/tasks/task_create_form.html:39
-#: templates/tasks/task_update.html:158
+#: templates/tasks/task_create_form.html:59
+#: templates/tasks/task_update.html:188
 msgid "Create label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
 #: templates/statuses/statuses_create_form.html:69
-#: templates/tasks/task_create_form.html:58
+#: templates/tasks/task_create_form.html:78
 #: templates/teams/team_create_form.html:28
 msgid "Create"
 msgstr "Yarat"
@@ -1145,11 +1148,11 @@ msgstr "Yarat"
 #: templates/statuses/statuses_create_form.html:72
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:61
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:184
-#: templates/teams/team_create_form.html:31
-#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
-#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:214
+#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
+#: templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1186,7 +1189,7 @@ msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:71 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:398
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:413
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1205,9 +1208,8 @@ msgid "Create Label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27
-#: templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:327 templates/tasks/task_filter.html:367
+#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
+#: templates/tasks/task_filter.html:334 templates/tasks/task_filter.html:374
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Yaradılıb"
@@ -1227,7 +1229,7 @@ msgstr "Etiket"
 
 #: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:181
+#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:211
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Yadda saxla"
@@ -1235,8 +1237,8 @@ msgstr "Yadda saxla"
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
 #: templates/statuses/statuses_list.html:71
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:115 templates/tasks/task_update.html:189
-#: templates/tasks/task_update.html:297 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:145 templates/tasks/task_update.html:219
+#: templates/tasks/task_update.html:359 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Sil"
@@ -1323,8 +1325,8 @@ msgstr "Başlıqsız qeyd"
 msgid "Personal"
 msgstr "Şəxsi"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:327
-#: templates/tasks/task_filter.html:374 templates/tasks/task_update.html:36
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:334
+#: templates/tasks/task_filter.html:381 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Yenilənib"
 
@@ -1332,8 +1334,7 @@ msgstr "Yenilənib"
 msgid "Loading content..."
 msgstr "Məzmun yüklənir..."
 
-#: templates/notes/note_detail.html:80
-#: templates/statuses/statuses_list.html:68
+#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:68
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Redaktə et"
@@ -1352,8 +1353,7 @@ msgstr "Qeyd yarat"
 
 #: templates/notes/note_form.html:89
 msgid "Enter note content... Use Markdown for formatting."
-msgstr ""
-"Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
+msgstr "Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
 
 #: templates/notes/note_form.html:95 templates/notes/note_form.html:180
 msgid "Preview"
@@ -1405,7 +1405,7 @@ msgstr "Qeyd yarat"
 
 #: templates/notifications/_notification_bell.html:6
 #: templates/notifications/_notification_bell.html:119
-#: templates/notifications/_notification_bell.html:164
+#: templates/notifications/_notification_bell.html:165
 msgid "No notifications"
 msgstr "Bildiriş yoxdur"
 
@@ -1567,8 +1567,8 @@ msgstr "Əlaqə"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback"
-" form or at:"
+"If you have questions about this privacy policy, contact us via the feedback "
+"form or at:"
 msgstr ""
 "Bu məxfilik siyasəti ilə bağlı sualınız varsa, bizimlə əks əlaqə forması və "
 "ya aşağıdakı vasitə ilə əlaqə saxlayın:"
@@ -1638,14 +1638,39 @@ msgstr "Tapşırıq yarat"
 msgid "Create task"
 msgstr "Tapşırıq yarat"
 
-#: templates/tasks/task_create_form.html:26
-#: templates/tasks/task_update.html:144
+#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:84
+#, fuzzy
+#| msgid "Quick Task Creation"
+msgid "Quick deadline"
+msgstr "Sürətli tapşırıq yaratma"
+
+#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:85
+msgid "in 8 hours"
+msgstr "8 saatdan sonra"
+
+#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:86
+msgid "in 1 day"
+msgstr "1 gündən sonra"
+
+#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:87
+msgid "in 3 days"
+msgstr "3 gündən sonra"
+
+#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:88
+msgid "in 21 days"
+msgstr "21 gündən sonra"
+
+#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:90
+msgid "Clear deadline"
+msgstr "Son tarixi təmizlə"
+
+#: templates/tasks/task_create_form.html:46
+#: templates/tasks/task_update.html:174
 msgid "Add checklist"
 msgstr "Yoxlama siyahısı əlavə et"
 
-#: templates/tasks/task_create_form.html:48
-#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:167
-#| msgid "Hold Ctrl/Cmd for multiple"
+#: templates/tasks/task_create_form.html:68
+#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:197
 msgid "Hold Ctrl/Cmd to select multiple items"
 msgstr "Bir neçə seçmək üçün Ctrl / Cmd düyməsini basın"
 
@@ -1718,27 +1743,37 @@ msgstr "Sıfırla"
 msgid "Apply"
 msgstr "Tətbiq et"
 
-#: templates/tasks/task_filter.html:360 templates/tasks/task_update.html:80
+#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:401
+#: templates/tasks/task_update.html:50
+msgid "Time left: "
+msgstr "Qalan vaxt: "
+
+#: templates/tasks/task_filter.html:320 templates/tasks/task_filter.html:402
+#: templates/tasks/task_update.html:51
+msgid "Overdue"
+msgstr "Gecikmiş"
+
+#: templates/tasks/task_filter.html:367 templates/tasks/task_update.html:110
 msgid "Checklist"
 msgstr "Yoxlama siyahısı"
 
-#: templates/tasks/task_filter.html:426 templates/tasks/task_filter.html:433
+#: templates/tasks/task_filter.html:441 templates/tasks/task_filter.html:448
 msgid "Previous"
 msgstr "Əvvəlki"
 
-#: templates/tasks/task_filter.html:453 templates/tasks/task_filter.html:460
+#: templates/tasks/task_filter.html:468 templates/tasks/task_filter.html:475
 msgid "Next"
 msgstr "Növbəti"
 
-#: templates/tasks/task_update.html:125
+#: templates/tasks/task_update.html:155
 msgid "Add a checklist item"
 msgstr "Çeklist elementi əlavə edin"
 
-#: templates/tasks/task_update.html:130
+#: templates/tasks/task_update.html:160
 msgid "Add item..."
 msgstr "Bənd əlavə et..."
 
-#: templates/tasks/task_update.html:385
+#: templates/tasks/task_update.html:447
 msgid "Delete this item?"
 msgstr "Bu bənd silinsin?"
 
@@ -2034,8 +2069,7 @@ msgstr "Komandaya qoşul (istəyə bağlı)"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work "
-"individually"
+"Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
 "Mövcud komandaya qoşulmaq üçün komanda adını daxil edin və ya fərdi işləmək "
 "üçün boş saxlayın"
@@ -2081,11 +2115,11 @@ msgstr "İstifadəçi uğurla yeniləndi"
 msgid "User account has been deleted"
 msgstr "İstifadəçi hesabı silindi"
 
-#: views.py:31
+#: views.py:29
 msgid "Personal. Family. Work."
 msgstr "Şəxsi. Ailə. İş."
 
-#: views.py:32
+#: views.py:30
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -2093,15 +2127,15 @@ msgstr ""
 "Hər şey üçün bir planlayıcı: qeydlərdən və şəxsi məqsədlərdən ailə "
 "tapşırıqlarına və komanda layihələrinə qədər."
 
-#: views.py:35
+#: views.py:33
 msgid "Read more"
 msgstr "Daha ətraflı"
 
-#: views.py:44
+#: views.py:42
 msgid "You successfully logged in"
 msgstr "Siz uğurla daxil oldunuz"
 
-#: views.py:54
+#: views.py:52
 msgid "You are logged out"
 msgstr "Siz sistemdən çıxdınız"
 
@@ -2109,11 +2143,11 @@ msgstr "Siz sistemdən çıxdınız"
 #~ msgstr "Bir neçə üçün Ctrl / Cmd"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
-#~ "password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name "
+#~ "and password below."
 #~ msgstr ""
-#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda komandanın"
-#~ " adını və şifrəsini daxil edin."
+#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
+#~ "komandanın adını və şifrəsini daxil edin."
 
 #~ msgid "Email address (optional)"
 #~ msgstr "E-poçt ünvanı (istəyə bağlı)"

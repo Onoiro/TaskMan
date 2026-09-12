@@ -313,6 +313,13 @@
                         <span class="status-dot flex-shrink-0" style="background-color: {{ obj.status.color|default:'#dee2e6' }};"></span>
                         <span class="text-truncate">{{ obj.name }}</span>
                         <span class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+                            {% if obj.deadline %}
+                            <span class="deadline-timer small"
+                                  data-deadline="{{ obj.deadline|date:'c' }}"
+                                  data-left-text="{% trans 'Time left: ' %}"
+                                  data-overdue-text="{% trans 'Overdue' %}">
+                            </span>
+                            {% endif %}
                             {% if obj.notes_count > 0 %}
                             <span class="text-muted small">
                                 <i class="bi bi-sticky"></i> {{ obj.notes_count }}
@@ -388,6 +395,14 @@
                                 <span class="badge border bg-body" style="color: {{ obj.status.color|default:'#6c757d' }}; border-color: {{ obj.status.color|default:'#dee2e6' }} !important;">
                                     {{ obj.status.name }}
                                 </span>
+                                {% if obj.deadline %}
+                                <span class="badge deadline-timer border bg-body"
+                                      data-deadline="{{ obj.deadline|date:'c' }}"
+                                      data-left-text="{% trans 'Time left: ' %}"
+                                      data-overdue-text="{% trans 'Overdue' %}">
+                                    <i class="bi bi-hourglass-split me-1"></i><span class="deadline-text"></span>
+                                </span>
+                                {% endif %}
                                 {% for label in obj.labels.all %}
                                 <span class="badge bg-body-tertiary text-body border fw-normal">{{ label.name }}</span>
                                 {% endfor %}
@@ -702,6 +717,21 @@
 .simple-task-item {
     background-color: var(--tm-task-bg);
     transition: background-color 0.15s ease;
+}
+
+/* Deadline countdown */
+.deadline-timer {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+.deadline-soon {
+    color: #b45309 !important;
+    border-color: #f59e0b !important;
+}
+.deadline-overdue {
+    color: #b91c1c !important;
+    border-color: #dc3545 !important;
+    font-weight: 600;
 }
 .simple-task-item:hover {
     background-color: var(--tm-bg-secondary);

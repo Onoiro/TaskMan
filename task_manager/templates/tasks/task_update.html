@@ -43,6 +43,16 @@
                             </span>
                         </div>
                         {% endif %}
+                        {% if object.deadline %}
+                        <div class="d-flex flex-wrap gap-2 align-items-center text-muted small mt-1">
+                            <span class="deadline-timer"
+                                  data-deadline="{{ object.deadline|date:'c' }}"
+                                  data-left-text="{% trans 'Time left: ' %}"
+                                  data-overdue-text="{% trans 'Overdue' %}">
+                                <i class="bi bi-hourglass-split me-1"></i><span class="deadline-text"></span>
+                            </span>
+                        </div>
+                        {% endif %}
                         <!-- Middle row: status (left), labels (right) -->
                         <div class="d-flex justify-content-between align-items-start mt-2">
                             <span class="badge border bg-body" style="color: {{ object.status.color|default:'#6c757d' }}; border-color: {{ object.status.color|default:'#dee2e6' }} !important;">
@@ -65,6 +75,26 @@
                         {% bootstrap_field form.name %}
                         {% bootstrap_field form.status %}
                         {% bootstrap_field form.description %}
+
+                        <!-- Deadline field with duration presets -->
+                        <div class="mb-3">
+                            <label class="form-label" for="id_deadline">{% trans "Deadline" %}</label>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                {{ form.deadline }}
+                                <div class="btn-group btn-group-sm" role="group" aria-label="{% trans 'Quick deadline' %}">
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="8">{% trans "in 8 hours" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="24">{% trans "in 1 day" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="72">{% trans "in 3 days" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="504">{% trans "in 21 days" %}</button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary deadline-clear" title="{% trans 'Clear deadline' %}">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                            {% for error in form.deadline.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
 
                         <!-- Checklist section -->
                         {% if object.checklist_items.exists or request.GET.focus_checklist %}
@@ -237,6 +267,19 @@
         white-space: nowrap;
     }
 
+    /* Deadline countdown */
+    .deadline-timer {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+    }
+    .deadline-soon {
+        color: #b45309 !important;
+    }
+    .deadline-overdue {
+        color: #b91c1c !important;
+        font-weight: 600;
+    }
+
     /* Multi-select help text - desktop only, small like checkbox labels */
     .multi-select-help {
         font-size: 0.75rem;
@@ -263,6 +306,25 @@ document.addEventListener('DOMContentLoaded', function() {
         textarea.addEventListener('input', resize);
         // Запуск при загрузке (если в поле уже есть длинный текст)
         setTimeout(resize, 0);
+    }
+
+    // Deadline presets: fill datetime-local input with now + N hours
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+    document.querySelectorAll('.deadline-preset').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const input = document.getElementById('id_deadline');
+            if (!input) return;
+            const target = new Date(Date.now() + Number(this.dataset.hours) * 3600000);
+            input.value = target.getFullYear() + '-' + pad(target.getMonth() + 1) + '-' + pad(target.getDate()) +
+                'T' + pad(target.getHours()) + ':' + pad(target.getMinutes());
+        });
+    });
+    const deadlineClear = document.querySelector('.deadline-clear');
+    if (deadlineClear) {
+        deadlineClear.addEventListener('click', function () {
+            const input = document.getElementById('id_deadline');
+            if (input) input.value = '';
+        });
     }
 
     // Checklist functionality

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-26 08:21+0300\n"
+"POT-Creation-Date: 2026-09-12 22:56+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -148,7 +148,7 @@ msgid "Content"
 msgstr "Содержимое"
 
 #: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:71
-#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:397
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:412
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
@@ -159,7 +159,7 @@ msgstr "Автор"
 msgid "Team"
 msgstr "Команда"
 
-#: notes/models.py:61 tasks/models.py:135
+#: notes/models.py:61 tasks/models.py:140
 msgid "Task"
 msgstr "Задача"
 
@@ -183,7 +183,7 @@ msgstr "Заметка"
 #: notes/models.py:75 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:355
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:362
 msgid "Notes"
 msgstr "Заметки"
 
@@ -513,7 +513,7 @@ msgstr "Название задачи..."
 msgid "Status"
 msgstr "Статус"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:401
+#: tasks/filters.py:40 templates/tasks/task_filter.html:416
 #: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:106 templates/user/user_detail.html:132
 msgid "Executor"
@@ -550,15 +550,20 @@ msgstr "Исполнители"
 msgid "Updated by"
 msgstr "Кем обновлено"
 
-#: tasks/models.py:139
+#: tasks/models.py:91 templates/tasks/task_create_form.html:25
+#: templates/tasks/task_update.html:81
+msgid "Deadline"
+msgstr "Дедлайн"
+
+#: tasks/models.py:144
 msgid "Text"
 msgstr "Текст"
 
-#: tasks/models.py:143
+#: tasks/models.py:148
 msgid "Done"
 msgstr "Выполнено"
 
-#: tasks/models.py:147
+#: tasks/models.py:152
 msgid "Position"
 msgstr "Позиция"
 
@@ -914,7 +919,7 @@ msgstr "Пользователь {username} одобрен и теперь яв�
 msgid "User {username} membership has been set to pending."
 msgstr "Заявка пользователя {username} переведена в статус ожидания."
 
-#: templates/base.html:50 templates/base.html:82 views.py:30
+#: templates/base.html:50 templates/base.html:82 views.py:28
 msgid "TaskMan"
 msgstr "ТаскМан"
 
@@ -1014,7 +1019,7 @@ msgid "Go back"
 msgstr "Назад"
 
 #: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:65
+#: views.py:63
 msgid "Feedback"
 msgstr "Обратная связь"
 
@@ -1091,7 +1096,7 @@ msgstr "Переключайте контекст в один клик"
 
 #: templates/index.html:41
 msgid "Quick Task Creation"
-msgstr "Быстрое создание задач"
+msgstr "Быстрый дедлайн"
 
 #: templates/index.html:41
 msgid "Title, description, assignee - done in seconds"
@@ -1122,14 +1127,14 @@ msgid "Language Support"
 msgstr "Поддержка языков"
 
 #: templates/labels/labels_create.html:9
-#: templates/tasks/task_create_form.html:39
-#: templates/tasks/task_update.html:158
+#: templates/tasks/task_create_form.html:59
+#: templates/tasks/task_update.html:188
 msgid "Create label"
 msgstr "Создать метку"
 
 #: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
 #: templates/statuses/statuses_create_form.html:69
-#: templates/tasks/task_create_form.html:58
+#: templates/tasks/task_create_form.html:78
 #: templates/teams/team_create_form.html:28
 msgid "Create"
 msgstr "Создать"
@@ -1143,8 +1148,8 @@ msgstr "Создать"
 #: templates/statuses/statuses_create_form.html:72
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:61 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:184
+#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:214
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
 #: templates/teams/team_join_form.html:31
@@ -1184,7 +1189,7 @@ msgstr "Новая метка"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:71 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:398
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:413
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1204,7 +1209,7 @@ msgstr "Создать метку"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
 #: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:327 templates/tasks/task_filter.html:367
+#: templates/tasks/task_filter.html:334 templates/tasks/task_filter.html:374
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Создано"
@@ -1224,7 +1229,7 @@ msgstr "Метка"
 
 #: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:181
+#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:211
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Сохранить"
@@ -1232,8 +1237,8 @@ msgstr "Сохранить"
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
 #: templates/statuses/statuses_list.html:71
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:115 templates/tasks/task_update.html:189
-#: templates/tasks/task_update.html:297 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:145 templates/tasks/task_update.html:219
+#: templates/tasks/task_update.html:359 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Удалить"
@@ -1320,8 +1325,8 @@ msgstr "Заметка без названия"
 msgid "Personal"
 msgstr "Личная"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:327
-#: templates/tasks/task_filter.html:374 templates/tasks/task_update.html:36
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:334
+#: templates/tasks/task_filter.html:381 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Обновлено"
 
@@ -1400,7 +1405,7 @@ msgstr "Создать заметку"
 
 #: templates/notifications/_notification_bell.html:6
 #: templates/notifications/_notification_bell.html:119
-#: templates/notifications/_notification_bell.html:164
+#: templates/notifications/_notification_bell.html:165
 msgid "No notifications"
 msgstr "Нет уведомлений"
 
@@ -1633,13 +1638,39 @@ msgstr "Создать задачу"
 msgid "Create task"
 msgstr "Создать задачу"
 
-#: templates/tasks/task_create_form.html:26
-#: templates/tasks/task_update.html:144
+#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:84
+#, fuzzy
+#| msgid "Quick Task Creation"
+msgid "Quick deadline"
+msgstr "Быстрый дедлайн"
+
+#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:85
+msgid "in 8 hours"
+msgstr "через 8 часов"
+
+#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:86
+msgid "in 1 day"
+msgstr "через 1 день"
+
+#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:87
+msgid "in 3 days"
+msgstr "через 3 дня"
+
+#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:88
+msgid "in 21 days"
+msgstr "через 21 день"
+
+#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:90
+msgid "Clear deadline"
+msgstr "Убрать дедлайн"
+
+#: templates/tasks/task_create_form.html:46
+#: templates/tasks/task_update.html:174
 msgid "Add checklist"
 msgstr "Добавить чек-лист"
 
-#: templates/tasks/task_create_form.html:48
-#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:167
+#: templates/tasks/task_create_form.html:68
+#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:197
 msgid "Hold Ctrl/Cmd to select multiple items"
 msgstr "Зажмите Ctrl/Cmd для выбора нескольких"
 
@@ -1712,27 +1743,37 @@ msgstr "Сбросить"
 msgid "Apply"
 msgstr "Применить"
 
-#: templates/tasks/task_filter.html:360 templates/tasks/task_update.html:80
+#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:401
+#: templates/tasks/task_update.html:50
+msgid "Time left: "
+msgstr "Осталось: "
+
+#: templates/tasks/task_filter.html:320 templates/tasks/task_filter.html:402
+#: templates/tasks/task_update.html:51
+msgid "Overdue"
+msgstr "Просрочено"
+
+#: templates/tasks/task_filter.html:367 templates/tasks/task_update.html:110
 msgid "Checklist"
 msgstr "Чек-лист"
 
-#: templates/tasks/task_filter.html:426 templates/tasks/task_filter.html:433
+#: templates/tasks/task_filter.html:441 templates/tasks/task_filter.html:448
 msgid "Previous"
 msgstr "Предыдущая"
 
-#: templates/tasks/task_filter.html:453 templates/tasks/task_filter.html:460
+#: templates/tasks/task_filter.html:468 templates/tasks/task_filter.html:475
 msgid "Next"
 msgstr "Следующая"
 
-#: templates/tasks/task_update.html:125
+#: templates/tasks/task_update.html:155
 msgid "Add a checklist item"
 msgstr "Добавьте элемент чеклиста"
 
-#: templates/tasks/task_update.html:130
+#: templates/tasks/task_update.html:160
 msgid "Add item..."
 msgstr "Добавить пункт"
 
-#: templates/tasks/task_update.html:385
+#: templates/tasks/task_update.html:447
 msgid "Delete this item?"
 msgstr "Удалить этот пункт?"
 
@@ -2075,11 +2116,11 @@ msgstr "Пользователь успешно изменён"
 msgid "User account has been deleted"
 msgstr "Аккаунт пользователя удалён"
 
-#: views.py:31
+#: views.py:29
 msgid "Personal. Family. Work."
 msgstr "Личное. Семья. Работа."
 
-#: views.py:32
+#: views.py:30
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -2087,15 +2128,15 @@ msgstr ""
 "Один планировщик для всего: от заметок и личных целей до семейных дел и "
 "командных проектов."
 
-#: views.py:35
+#: views.py:33
 msgid "Read more"
 msgstr "Подробнее"
 
-#: views.py:44
+#: views.py:42
 msgid "You successfully logged in"
 msgstr "Вы успешно вошли"
 
-#: views.py:54
+#: views.py:52
 msgid "You are logged out"
 msgstr "Вы вышли из системы"
 

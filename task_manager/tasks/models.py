@@ -85,6 +85,11 @@ class Task(models.Model):
         related_name='updated_tasks',
         verbose_name=_('Updated by')
     )
+    deadline = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_('Deadline')
+    )
 
     @property
     def was_edited(self):
