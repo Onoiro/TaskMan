@@ -26,8 +26,18 @@ class TaskForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
         self.fields['deadline'].required = False
+        # datetime-local requires ISO format (T separator, no localized
+        # formats), otherwise the browser silently drops the initial
+        # value and saving the form clears the deadline.
+        self.fields['deadline'].input_formats = (
+            '%Y-%m-%dT%H:%M',
+            '%Y-%m-%dT%H:%M:%S',
+            '%Y-%m-%d %H:%M',
+            '%Y-%m-%d %H:%M:%S',
+        )
         self.fields['deadline'].widget = forms.DateTimeInput(
             attrs={'type': 'datetime-local'},
+            format='%Y-%m-%dT%H:%M',
         )
         if self.request is None:
             return
