@@ -794,6 +794,97 @@ class NotificationViewsTest(TestCase):
         self.assertEqual(len(response.context['unread_notifications']), 10)
 
 
+class UnreadCountEndpointTest(TestCase):
+    """Tests for the unread-count JSON endpoint used by the app badge."""
+
+    fixtures = [
+        'tests/fixtures/test_users.json',
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.other_user = User.objects.get(username='he')
+        self.c = Client()
+
+    def test_requires_login(self):
+        """Test unauthenticated request redirects to login."""
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login/', response.url)
+
+    def test_returns_zero_without_notifications(self):
+        """Test endpoint returns 0 when user has no notifications."""
+        self.c.force_login(self.user)
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'unread_count': 0})
+
+    def test_returns_exact_count_over_ten(self):
+        """Test endpoint returns exact count, not capped at 10."""
+        for i in range(12):
+            Notification.objects.create(
+                recipient=self.user,
+                notification_type=Notification.NotificationType.TASK_ASSIGNED,
+                message=f'Test {i}',
+                is_read=False,
+            )
+        self.c.force_login(self.user)
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.json(), {'unread_count': 12})
+
+    def test_ignores_read_notifications(self):
+        """Test read notifications are not counted."""
+        Notification.objects.create(
+            recipient=self.user,
+            notification_type=Notification.NotificationType.TASK_ASSIGNED,
+            message='Unread',
+            is_read=False,
+        )
+        Notification.objects.create(
+            recipient=self.user,
+            notification_type=Notification.NotificationType.TASK_ASSIGNED,
+            message='Read',
+            is_read=True,
+        )
+        self.c.force_login(self.user)
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.json(), {'unread_count': 1})
+
+    def test_ignores_other_users_notifications(self):
+        """Test notifications of other users are not counted."""
+        Notification.objects.create(
+            recipient=self.other_user,
+            notification_type=Notification.NotificationType.TASK_ASSIGNED,
+            message='Foreign',
+            is_read=False,
+        )
+        self.c.force_login(self.user)
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.json(), {'unread_count': 0})
+
+    def test_count_drops_after_mark_all_read(self):
+        """Test count becomes zero after marking all as read."""
+        Notification.objects.create(
+            recipient=self.user,
+            notification_type=Notification.NotificationType.TASK_ASSIGNED,
+            message='Test',
+            is_read=False,
+        )
+        self.c.force_login(self.user)
+        self.c.post(
+            reverse('notifications:mark-all-read'),
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        response = self.c.get(reverse('notifications:unread-count'))
+        self.assertEqual(response.json(), {'unread_count': 0})
+
+    def test_post_not_allowed(self):
+        """Test POST requests are rejected."""
+        self.c.force_login(self.user)
+        response = self.c.post(reverse('notifications:unread-count'))
+        self.assertEqual(response.status_code, 405)
+
+
 class NotificationTemplateTest(TestCase):
     """Tests for notification template rendering."""
 

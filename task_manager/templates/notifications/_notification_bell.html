@@ -140,6 +140,7 @@
             item.remove();
           }
           updateBadge(-1);
+          if (window.refreshAppBadge) window.refreshAppBadge();
           if (actionUrl) {
             window.location.href = actionUrl;
           }
@@ -163,6 +164,7 @@
           if (dropdown) {
             dropdown.outerHTML = '<span class="text-white opacity-50 px-2" title="{% trans 'No notifications' %}"><i class="bi bi-bell fs-5"></i></span>';
           }
+          if (window.refreshAppBadge) window.refreshAppBadge();
         }
       });
     }
