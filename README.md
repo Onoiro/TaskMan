@@ -194,6 +194,7 @@ TaskMan implements a team-based isolation system:
   - New task assignment
   - Task status changes
   - Team membership changes (invites, joins, removals)
+  - Unread notifications show a badge on the PWA app icon (Badging API, supported on Android and iOS 16.4+; silently ignored elsewhere)
 - **Filtering**: Task filters show only values created by team members
 - **Independent Work**: Users can also work independently without joining any team
 

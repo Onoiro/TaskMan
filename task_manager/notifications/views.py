@@ -1,9 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from task_manager.notifications.models import Notification
+
+
+@require_GET
+@login_required
+def unread_count(request):
+    """
+    Returns the exact number of unread notifications for the current user.
+    Used by the PWA app badge (Badging API) to stay in sync.
+    """
+    count = Notification.objects.filter(
+        recipient=request.user,
+        is_read=False
+    ).count()
+    return JsonResponse({'unread_count': count})
 
 
 @require_POST
