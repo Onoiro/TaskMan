@@ -20,6 +20,26 @@
                         {% bootstrap_field form.status %}
                         {% bootstrap_field form.description %}
 
+                        <!-- Deadline field with duration presets -->
+                        <div class="mb-3">
+                            <label class="form-label" for="id_deadline">{% trans "Deadline" %}</label>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                {{ form.deadline }}
+                                <div class="btn-group btn-group-sm" role="group" aria-label="{% trans 'Quick deadline' %}">
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="8">{% trans "in 8 hours" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="24">{% trans "in 1 day" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="72">{% trans "in 3 days" %}</button>
+                                    <button type="button" class="btn btn-outline-secondary deadline-preset" data-hours="504">{% trans "in 21 days" %}</button>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-secondary deadline-clear" title="{% trans 'Clear deadline' %}">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                            {% for error in form.deadline.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
                         <!-- Checklist section (add button) -->
                         <div class="mb-3 mt-2">
                             <button type="submit" name="add_checklist" value="1" class="btn btn-sm btn-outline-primary border-0 p-0 text-decoration-none">
@@ -118,6 +138,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         textarea.addEventListener('input', resize);
         setTimeout(resize, 0);
+    }
+
+    // Deadline presets: fill datetime-local input with now + N hours
+    function pad(n) { return n < 10 ? '0' + n : String(n); }
+    document.querySelectorAll('.deadline-preset').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const input = document.getElementById('id_deadline');
+            if (!input) return;
+            const target = new Date(Date.now() + Number(this.dataset.hours) * 3600000);
+            input.value = target.getFullYear() + '-' + pad(target.getMonth() + 1) + '-' + pad(target.getDate()) +
+                'T' + pad(target.getHours()) + ':' + pad(target.getMinutes());
+        });
+    });
+    const deadlineClear = document.querySelector('.deadline-clear');
+    if (deadlineClear) {
+        deadlineClear.addEventListener('click', function () {
+            const input = document.getElementById('id_deadline');
+            if (input) input.value = '';
+        });
     }
 });
 </script>

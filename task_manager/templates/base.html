@@ -443,6 +443,7 @@
     {% if user.is_authenticated %}
     <script src="{% static 'js/app-badge.js' %}"></script>
     {% endif %}
+    <script src="{% static 'js/countdown.js' %}" defer></script>
     
     {% block extra_js %}{% endblock %}
 

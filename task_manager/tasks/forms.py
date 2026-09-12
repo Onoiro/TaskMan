@@ -3,6 +3,7 @@ from task_manager.user.models import User
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django import forms
+from django.utils import timezone
 
 
 class TaskForm(forms.ModelForm):
@@ -14,6 +15,7 @@ class TaskForm(forms.ModelForm):
             'status',
             'executors',
             'labels',
+            'deadline',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -23,6 +25,20 @@ class TaskForm(forms.ModelForm):
         # depending on the user and their team.
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
+        self.fields['deadline'].required = False
+        # datetime-local requires ISO format (T separator, no localized
+        # formats), otherwise the browser silently drops the initial
+        # value and saving the form clears the deadline.
+        self.fields['deadline'].input_formats = (
+            '%Y-%m-%dT%H:%M',
+            '%Y-%m-%dT%H:%M:%S',
+            '%Y-%m-%d %H:%M',
+            '%Y-%m-%d %H:%M:%S',
+        )
+        self.fields['deadline'].widget = forms.DateTimeInput(
+            attrs={'type': 'datetime-local'},
+            format='%Y-%m-%dT%H:%M',
+        )
         if self.request is None:
             return
 
@@ -73,3 +89,13 @@ class TaskForm(forms.ModelForm):
             # user is executor in individual mode
             self.fields['executors'].initial = [user]
             self.fields['executors'].widget.attrs['readonly'] = True
+
+    def clean_deadline(self):
+        deadline = self.cleaned_data.get('deadline')
+        if deadline and timezone.is_naive(deadline):
+            # datetime-local submits naive time in user's local zone
+            deadline = timezone.make_aware(
+                deadline,
+                timezone.get_current_timezone()
+            )
+        return deadline

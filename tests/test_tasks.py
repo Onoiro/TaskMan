@@ -7,6 +7,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+from django.utils import timezone
 import uuid
 
 
@@ -1542,3 +1543,114 @@ class TaskFilterSaveEmptyTestCase(TestCase):
             if _('Filter saved as default') in str(m)
         ]
         self.assertEqual(len(success_messages), 0)
+
+
+class TaskDeadlineTestCase(TaskTestCase):
+    """Test cases for task deadline field and countdown display"""
+
+    def _deadline_data(self, **overrides):
+        data = dict(self.tasks_data)
+        data.update(overrides)
+        return data
+
+    def test_create_task_with_deadline(self):
+        """Deadline is saved on task creation"""
+        data = self._deadline_data(deadline='2030-12-31 15:00')
+        response = self.c.post(reverse('tasks:task-create'), data)
+        self.assertEqual(response.status_code, 302)
+
+        task = Task.objects.get(name='new_test_task')
+        self.assertIsNotNone(task.deadline)
+        self.assertEqual(
+            timezone.localtime(task.deadline).strftime('%Y-%m-%d %H:%M'),
+            '2030-12-31 15:00'
+        )
+
+    def test_create_task_without_deadline(self):
+        """Deadline is optional (null by default)"""
+        response = self.c.post(
+            reverse('tasks:task-create'), self.tasks_data
+        )
+        self.assertEqual(response.status_code, 302)
+
+        task = Task.objects.get(name='new_test_task')
+        self.assertIsNone(task.deadline)
+
+    def test_update_task_deadline(self):
+        """Deadline can be set on task update"""
+        url = reverse('tasks:task-update', kwargs={'uuid': self.task.uuid})
+        data = {
+            'name': self.task.name,
+            'status': self.task.status.id,
+            'executors': [self.user.id],
+            'deadline': '2030-06-01 12:00',
+        }
+        response = self.c.post(url, data)
+        self.assertEqual(response.status_code, 302)
+
+        self.task.refresh_from_db()
+        self.assertIsNotNone(self.task.deadline)
+
+    def test_update_task_clear_deadline(self):
+        """Deadline can be cleared with empty value"""
+        self.task.deadline = timezone.now() + timezone.timedelta(days=1)
+        self.task.save()
+
+        url = reverse('tasks:task-update', kwargs={'uuid': self.task.uuid})
+        data = {
+            'name': self.task.name,
+            'status': self.task.status.id,
+            'executors': [self.user.id],
+            'deadline': '',
+        }
+        response = self.c.post(url, data)
+        self.assertEqual(response.status_code, 302)
+
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.deadline)
+
+    def test_deadline_naive_datetime_makes_aware(self):
+        """Naive datetime from datetime-local input becomes aware"""
+        form_data = {
+            'name': 'naive_deadline_task',
+            'status': self.task.status.id,
+            'deadline': '2030-01-15 10:30',
+        }
+        from task_manager.tasks.forms import TaskForm
+        form = TaskForm(data=form_data, request=None)
+        self.assertTrue(form.is_valid(), form.errors)
+        deadline = form.cleaned_data['deadline']
+        self.assertTrue(timezone.is_aware(deadline))
+
+    def test_deadline_displayed_in_task_list(self):
+        """Countdown element with data-deadline is rendered in list"""
+        self.task.deadline = timezone.now() + timezone.timedelta(days=2)
+        self.task.save()
+
+        response = self.c.get(reverse('tasks:tasks-list'))
+        content = response.content.decode('utf-8')
+        self.assertIn('data-deadline', content)
+        self.assertIn('deadline-timer', content)
+
+    def test_no_deadline_marker_without_deadline(self):
+        """No countdown element rendered when deadline is not set"""
+        self.task.deadline = None
+        self.task.save()
+
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertNotContains(response, 'data-deadline')
+
+    def test_deadline_displayed_in_update_view(self):
+        """Countdown element is rendered on task detail page"""
+        self.task.deadline = timezone.now() + timezone.timedelta(days=2)
+        self.task.save()
+
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.uuid]))
+        self.assertContains(response, 'data-deadline')
+
+    def test_deadline_form_field_present(self):
+        """Deadline field is present on create form"""
+        response = self.c.get(reverse('tasks:task-create'))
+        self.assertContains(response, 'id_deadline')
+        self.assertContains(response, 'datetime-local')
