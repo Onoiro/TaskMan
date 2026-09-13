@@ -10,6 +10,7 @@ from task_manager.teams.models import Team, TeamMembership
 from task_manager.tasks.models import Task, ChecklistItem
 from task_manager.statuses.models import Status
 from task_manager.limit_service import LimitService
+from task_manager.limits import FREE_PLAN
 
 
 class LimitServiceTasksTest(TestCase):
@@ -254,9 +255,11 @@ class LimitServiceTeamsTest(TestCase):
         self.assertEqual(result.current, self.initial_teams)
 
     def test_cannot_exceed_team_limit(self):
-        """Cannot create more than 3 teams."""
+        """Cannot create more teams than the plan limit allows."""
+        limit = FREE_PLAN.max_teams
+
         # Calculate how many more teams we need to create
-        teams_to_create = 3 - self.initial_teams
+        teams_to_create = limit - self.initial_teams
 
         # Create teams where user is admin
         for i in range(teams_to_create):
@@ -273,7 +276,7 @@ class LimitServiceTeamsTest(TestCase):
 
         result = self.service.can_create_team()
         self.assertFalse(result.allowed)
-        self.assertEqual(result.current, 3)
+        self.assertEqual(result.current, limit)
 
     def test_member_not_counted_as_owner(self):
         """Team member (not admin) is not counted as owner."""

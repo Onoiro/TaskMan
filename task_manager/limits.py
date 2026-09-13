@@ -23,7 +23,7 @@ class PlanLimits:
 
 
 FREE_PLAN = PlanLimits(
-    max_teams=3,
+    max_teams=5,
     max_team_members=10,
     max_tasks_total=1000,
     max_personal_statuses=10,
