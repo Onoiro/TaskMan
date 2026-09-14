@@ -721,6 +721,8 @@
 
 /* Deadline countdown */
 .deadline-timer {
+    /* .badge defaults to white text; bg-body needs the body text color */
+    color: var(--bs-body-color) !important;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
