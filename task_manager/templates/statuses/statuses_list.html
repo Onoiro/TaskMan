@@ -61,6 +61,11 @@
                                     <span class="badge border bg-body status-color-badge" style="color: {{ status.color|default:'#6c757d' }}; border-color: {{ status.color|default:'#dee2e6' }} !important;">
                                         {{ status.name }}
                                     </span>
+                                    {% if status.is_completed %}
+                                    <span class="badge border bg-body text-success" title="{% trans 'Tasks with a final status are hidden from the default task list' %}">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                    </span>
+                                    {% endif %}
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2 small d-none d-md-flex">

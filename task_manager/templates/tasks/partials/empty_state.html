@@ -7,6 +7,14 @@
         </div>
         <h4 class="text-muted">{% trans "No tasks found" %}</h4>
         <p class="text-muted small">{% trans "Try adjusting filters or create a new task" %}</p>
+        {% if current_completion == 'active' and not status_filter_active %}
+        <p class="text-muted small mb-2">
+            {% trans "Completed tasks are hidden by default" %}
+        </p>
+        <a href="?completion=all" class="btn btn-outline-secondary btn-sm mt-1 me-2">
+            <i class="bi bi-circle-half me-1"></i>{% trans "Show all tasks" %}
+        </a>
+        {% endif %}
         {% if request.GET|length > 0 %}
             <a href="{% url 'tasks:tasks-list' %}" class="btn btn-outline-secondary mt-2">
                 {% trans "Reset filters" %}

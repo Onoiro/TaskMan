@@ -47,6 +47,7 @@ SERVICE_PARAMS = (
     'view_mode',
     'sort',
     'page',
+    'completion',
 )
 
 # Sort options for task list
@@ -59,6 +60,10 @@ SORT_OPTIONS = {
     '-name': _('Name Z→A'),
 }
 DEFAULT_SORT = '-created_at'
+
+# Completion toggle options for task list
+COMPLETION_OPTIONS = ('active', 'done', 'all')
+DEFAULT_COMPLETION = 'active'
 
 
 class TaskDeletePermissionMixin():
@@ -149,6 +154,32 @@ class TaskFilterView(CustomPermissions, FilterView):
             sort = DEFAULT_SORT
         return sort
 
+    def _get_completion_param(self):
+        """Get validated completion toggle parameter."""
+        completion = self.request.GET.get('completion', DEFAULT_COMPLETION)
+        if completion not in COMPLETION_OPTIONS:
+            completion = DEFAULT_COMPLETION
+        return completion
+
+    def _status_filter_active(self):
+        """Check if a status filter is explicitly set (GET or saved).
+
+        An explicit status filter wins over the completion toggle,
+        otherwise tasks requested by the user would be hidden.
+        """
+        filter_key, _ = _get_filter_session_keys(self.request)
+        saved_params = self.request.session.get(filter_key, {})
+
+        status_values = list(self.request.GET.getlist('status'))
+        if not status_values:
+            saved_values = saved_params.get('status', [])
+            if isinstance(saved_values, list):
+                status_values = [
+                    v for v in saved_values if v
+                ]
+
+        return bool(status_values)
+
     def _save_filter_to_session(self, request):
         """Save current filter parameters to session."""
         filter_params = self._get_filter_params(request)
@@ -177,6 +208,10 @@ class TaskFilterView(CustomPermissions, FilterView):
 
         # If sort parameter exists
         if 'sort' in request.GET:
+            return False
+
+        # If completion parameter exists
+        if 'completion' in request.GET:
             return False
 
         # Check if saved filter exists (context-aware)
@@ -241,6 +276,15 @@ class TaskFilterView(CustomPermissions, FilterView):
         # Prefetch ManyToMany and reverse relations
         qs = qs.prefetch_related('labels', 'executors', 'notes__author')
 
+        # Completion toggle: hide finished tasks by default. An explicit
+        # status filter (GET or saved) wins over the toggle.
+        if not self._status_filter_active():
+            completion = self._get_completion_param()
+            if completion == 'active':
+                qs = qs.exclude(status__is_completed=True)
+            elif completion == 'done':
+                qs = qs.filter(status__is_completed=True)
+
         # Apply distinct and ordering
         return qs.distinct().order_by(sort)
 
@@ -277,6 +321,10 @@ class TaskFilterView(CustomPermissions, FilterView):
         context['current_sort_label'] = SORT_OPTIONS.get(
             current_sort, SORT_OPTIONS[DEFAULT_SORT])
         context['sort_options'] = SORT_OPTIONS
+
+        # Completion toggle for template
+        context['current_completion'] = self._get_completion_param()
+        context['status_filter_active'] = self._status_filter_active()
 
         query_params = self.request.GET.copy()
         query_params.pop('page', None)

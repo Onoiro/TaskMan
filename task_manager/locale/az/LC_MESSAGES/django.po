@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-12 22:56+0300\n"
+"POT-Creation-Date: 2026-09-15 17:02+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -146,7 +146,7 @@ msgid "Content"
 msgstr "Məzmun"
 
 #: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:71
-#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:412
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
@@ -161,7 +161,7 @@ msgstr "Komanda"
 msgid "Task"
 msgstr "Tapşırıq"
 
-#: notes/models.py:65 notifications/models.py:78 statuses/models.py:58
+#: notes/models.py:65 notifications/models.py:78 statuses/models.py:66
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -181,7 +181,7 @@ msgstr "Qeyd"
 #: notes/models.py:75 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:362
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:395
 msgid "Notes"
 msgstr "Qeydlər"
 
@@ -434,51 +434,62 @@ msgstr "Rəng"
 msgid "Choose status color"
 msgstr "Status rəngini seçin"
 
-#: statuses/models.py:67
+#: statuses/forms.py:39 statuses/models.py:58
+#: templates/statuses/statuses_create_form.html:69
+msgid "Final status"
+msgstr "Son status"
+
+#: statuses/forms.py:43 statuses/models.py:60
+#: templates/statuses/statuses_create_form.html:72
+#: templates/statuses/statuses_list.html:65
+msgid "Tasks with a final status are hidden from the default task list"
+msgstr "Son statuslu tapşırıqlar standart siyahıda gizlədilir"
+
+#: statuses/models.py:75
 msgid "New"
 msgstr "Yeni"
 
-#: statuses/models.py:68
+#: statuses/models.py:76
 msgid "Task has been created but not yet started"
 msgstr "Tapşırıq yaradılıb, lakin hələ başlanmayıb"
 
-#: statuses/models.py:73
+#: statuses/models.py:81
 msgid "In Progress"
 msgstr "İcradadır"
 
-#: statuses/models.py:74
+#: statuses/models.py:82
 msgid "Task is currently being worked on"
 msgstr "Hazırda tapşırıq üzərində iş gedir"
 
-#: statuses/models.py:78
+#: statuses/models.py:86
 msgid "On Hold"
 msgstr "Gözləmədə"
 
-#: statuses/models.py:79
+#: statuses/models.py:87
 msgid "Task is temporarily paused"
 msgstr "Tapşırıq müvəqqəti dayandırılıb"
 
-#: statuses/models.py:83
+#: statuses/models.py:91
 msgid "Completed"
 msgstr "Tamamlandı"
 
-#: statuses/models.py:84
+#: statuses/models.py:92
 msgid "Task has been finished successfully"
 msgstr "Tapşırıq uğurla tamamlandı"
 
-#: statuses/models.py:88
+#: statuses/models.py:97
 msgid "Cancelled"
 msgstr "Ləğv edildi"
 
-#: statuses/models.py:89
+#: statuses/models.py:98
 msgid "Task was abandoned or deemed unnecessary"
 msgstr "Tapşırıq dayandırılıb və ya artıq lazım deyil"
 
-#: statuses/models.py:93
+#: statuses/models.py:103
 msgid "Blocked"
 msgstr "Bloklandı"
 
-#: statuses/models.py:95
+#: statuses/models.py:105
 msgid "Task cannot proceed due to external dependencies"
 msgstr "Xarici asılılıqlar səbəbindən tapşırıq davam etdirilə bilmir"
 
@@ -512,7 +523,7 @@ msgstr "Tapşırığın adı..."
 msgid "Status"
 msgstr "Status"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:416
+#: tasks/filters.py:40 templates/tasks/task_filter.html:456
 #: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:106 templates/user/user_detail.html:132
 msgid "Executor"
@@ -524,8 +535,8 @@ msgstr "İcraçı"
 msgid "Labels"
 msgstr "Etiketlər"
 
-#: tasks/filters.py:53 templates/tasks/task_filter.html:118
-#: templates/tasks/task_filter.html:177
+#: tasks/filters.py:53 templates/tasks/task_filter.html:142
+#: templates/tasks/task_filter.html:201
 msgid "My tasks"
 msgstr "Mənim tapşırıqlarım"
 
@@ -537,7 +548,7 @@ msgstr "Tarixdən"
 msgid "To"
 msgstr "Tarixədək"
 
-#: tasks/filters.py:80 templates/tasks/task_filter.html:229
+#: tasks/filters.py:80 templates/tasks/task_filter.html:253
 msgid "Has checklist"
 msgstr "Yoxlama siyahısı var"
 
@@ -550,7 +561,8 @@ msgid "Updated by"
 msgstr "Yeniləyən"
 
 #: tasks/models.py:91 templates/tasks/task_create_form.html:25
-#: templates/tasks/task_update.html:81
+#: templates/tasks/task_filter.html:434 templates/tasks/task_update.html:49
+#: templates/tasks/task_update.html:87
 msgid "Deadline"
 msgstr "Son tarix"
 
@@ -566,63 +578,63 @@ msgstr "Tamamlandı"
 msgid "Position"
 msgstr "Mövqe"
 
-#: tasks/views.py:54 templates/privacy_policy.html:9
+#: tasks/views.py:55 templates/privacy_policy.html:9
 #: templates/terms_of_service.html:9
 msgid "Last updated"
 msgstr "Son yenilənmə"
 
-#: tasks/views.py:55
+#: tasks/views.py:56
 msgid "First updated"
 msgstr "Ən əvvəl yenilənənlər"
 
-#: tasks/views.py:56
+#: tasks/views.py:57
 msgid "Newest first"
 msgstr "Əvvəl yenilər"
 
-#: tasks/views.py:57
+#: tasks/views.py:58
 msgid "Oldest first"
 msgstr "Əvvəl köhnələr"
 
-#: tasks/views.py:58
+#: tasks/views.py:59
 msgid "Name A→Z"
 msgstr "Ad A→Z"
 
-#: tasks/views.py:59
+#: tasks/views.py:60
 msgid "Name Z→A"
 msgstr "Ad Z→A"
 
-#: tasks/views.py:75
+#: tasks/views.py:80
 msgid "Task can only be deleted by its author or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi və ya komanda administratoru silə bilər."
 
-#: tasks/views.py:93 tasks/views.py:408
+#: tasks/views.py:98 tasks/views.py:456
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Tapşırığı yalnız onun müəllifi, icraçıları və ya komanda administratoru "
 "dəyişə bilər."
 
-#: tasks/views.py:165
+#: tasks/views.py:196
 msgid "Filter saved as default"
 msgstr "Filtr standart olaraq yadda saxlanıldı"
 
-#: tasks/views.py:291
+#: tasks/views.py:339
 msgid "Task created successfully"
 msgstr "Tapşırıq uğurla yaradıldı"
 
-#: tasks/views.py:355
+#: tasks/views.py:403
 msgid "Task updated successfully"
 msgstr "Tapşırıq uğurla yeniləndi"
 
-#: tasks/views.py:395
+#: tasks/views.py:443
 msgid "Task deleted successfully"
 msgstr "Tapşırıq uğurla silindi"
 
-#: tasks/views.py:439
+#: tasks/views.py:487
 msgid "Text is required"
 msgstr "Mətn tələb olunur"
 
-#: tasks/views.py:443
+#: tasks/views.py:491
 msgid "Text must be 300 characters or less"
 msgstr "Mətn 300 simvoldan çox olmamalıdır"
 
@@ -1128,12 +1140,12 @@ msgstr "Dil dəstəyi"
 
 #: templates/labels/labels_create.html:9
 #: templates/tasks/task_create_form.html:59
-#: templates/tasks/task_update.html:188
+#: templates/tasks/task_update.html:194
 msgid "Create label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
-#: templates/statuses/statuses_create_form.html:69
+#: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:78
 #: templates/teams/team_create_form.html:28
 msgid "Create"
@@ -1145,11 +1157,11 @@ msgstr "Yarat"
 #: templates/notes/note_confirm_delete.html:37
 #: templates/notes/note_detail.html:83 templates/notes/note_form.html:130
 #: templates/notes/note_form.html:134 templates/notes/note_form.html:184
-#: templates/statuses/statuses_create_form.html:72
+#: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
 #: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:214
+#: templates/tasks/task_update.html:220
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
 #: templates/teams/team_join_form.html:31
@@ -1189,7 +1201,7 @@ msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:71 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:413
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:453
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1209,7 +1221,7 @@ msgstr "Etiket yarat"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
 #: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:334 templates/tasks/task_filter.html:374
+#: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Yaradılıb"
@@ -1229,16 +1241,16 @@ msgstr "Etiket"
 
 #: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:211
+#: templates/tasks/task_filter.html:310 templates/tasks/task_update.html:217
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Yadda saxla"
 
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
-#: templates/statuses/statuses_list.html:71
+#: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:145 templates/tasks/task_update.html:219
-#: templates/tasks/task_update.html:359 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:151 templates/tasks/task_update.html:225
+#: templates/tasks/task_update.html:365 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Sil"
@@ -1325,8 +1337,8 @@ msgstr "Başlıqsız qeyd"
 msgid "Personal"
 msgstr "Şəxsi"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:334
-#: templates/tasks/task_filter.html:381 templates/tasks/task_update.html:36
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:367
+#: templates/tasks/task_filter.html:414 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Yenilənib"
 
@@ -1334,7 +1346,7 @@ msgstr "Yenilənib"
 msgid "Loading content..."
 msgstr "Məzmun yüklənir..."
 
-#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:68
+#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Redaktə et"
@@ -1602,15 +1614,15 @@ msgstr "Statusu sil"
 msgid "New status"
 msgstr "Yeni status"
 
-#: templates/statuses/statuses_list.html:85
+#: templates/statuses/statuses_list.html:90
 msgid "No statuses found"
 msgstr "Status yoxdur"
 
-#: templates/statuses/statuses_list.html:86
+#: templates/statuses/statuses_list.html:91
 msgid "Create your first status to organize tasks"
 msgstr "Tapşırıqları təşkil etmək üçün ilk statusunuzu yaradın"
 
-#: templates/statuses/statuses_list.html:87
+#: templates/statuses/statuses_list.html:92
 msgid "Create Status"
 msgstr "Status yarat"
 
@@ -1627,10 +1639,19 @@ msgid "Try adjusting filters or create a new task"
 msgstr "Filtrləri tənzimləyin və ya yeni tapşırıq yaradın"
 
 #: templates/tasks/partials/empty_state.html:12
+msgid "Completed tasks are hidden by default"
+msgstr "Tamamlanmış tapşırıqlar standart olaraq gizlədilir"
+
+#: templates/tasks/partials/empty_state.html:15
+#: templates/tasks/task_filter.html:81
+msgid "Show all tasks"
+msgstr "Bütün tapşırıqları göstər"
+
+#: templates/tasks/partials/empty_state.html:19
 msgid "Reset filters"
 msgstr "Filtrləri sıfırla"
 
-#: templates/tasks/partials/empty_state.html:16
+#: templates/tasks/partials/empty_state.html:23
 msgid "Create Task"
 msgstr "Tapşırıq yarat"
 
@@ -1638,39 +1659,39 @@ msgstr "Tapşırıq yarat"
 msgid "Create task"
 msgstr "Tapşırıq yarat"
 
-#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:84
+#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
 #, fuzzy
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
 msgstr "Sürətli tapşırıq yaratma"
 
-#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:85
+#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "8 saatdan sonra"
 
-#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:86
+#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "1 gündən sonra"
 
-#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:87
+#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "3 gündən sonra"
 
-#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:88
+#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "21 gündən sonra"
 
-#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:90
+#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Son tarixi təmizlə"
 
 #: templates/tasks/task_create_form.html:46
-#: templates/tasks/task_update.html:174
+#: templates/tasks/task_update.html:180
 msgid "Add checklist"
 msgstr "Yoxlama siyahısı əlavə et"
 
 #: templates/tasks/task_create_form.html:68
-#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:197
+#: templates/tasks/task_filter.html:262 templates/tasks/task_update.html:203
 msgid "Hold Ctrl/Cmd to select multiple items"
 msgstr "Bir neçə seçmək üçün Ctrl / Cmd düyməsini basın"
 
@@ -1698,82 +1719,94 @@ msgstr "Tam görünüş"
 msgid "Simple view"
 msgstr "Sadə görünüş"
 
-#: templates/tasks/task_filter.html:76
+#: templates/tasks/task_filter.html:70
+msgid "Overridden by status filter"
+msgstr "Status filtri ilə əvəz edilib"
+
+#: templates/tasks/task_filter.html:75
+msgid "Show completed tasks"
+msgstr "Tamamlanmış tapşırıqları göstər"
+
+#: templates/tasks/task_filter.html:86
+msgid "Show active tasks"
+msgstr "Aktiv tapşırıqları göstər"
+
+#: templates/tasks/task_filter.html:100
 msgid "Default filter is active"
 msgstr "Standart filtr aktivdir"
 
-#: templates/tasks/task_filter.html:78
+#: templates/tasks/task_filter.html:102
 msgid "Default"
 msgstr "Standart"
 
-#: templates/tasks/task_filter.html:122
+#: templates/tasks/task_filter.html:146
 msgid "Assigned to me"
 msgstr "Mənə təyin edilib"
 
-#: templates/tasks/task_filter.html:134
+#: templates/tasks/task_filter.html:158
 msgid "Who"
 msgstr "Kim"
 
-#: templates/tasks/task_filter.html:146 templates/tasks/task_filter.html:163
-#: templates/tasks/task_filter.html:199 templates/tasks/task_filter.html:215
+#: templates/tasks/task_filter.html:170 templates/tasks/task_filter.html:187
+#: templates/tasks/task_filter.html:223 templates/tasks/task_filter.html:239
 msgid "Exclude"
 msgstr "İstisna et"
 
-#: templates/tasks/task_filter.html:178
+#: templates/tasks/task_filter.html:202
 msgid "author or executor"
 msgstr "müəllif və ya icraçı"
 
-#: templates/tasks/task_filter.html:188
+#: templates/tasks/task_filter.html:212
 msgid "What"
 msgstr "Nə"
 
-#: templates/tasks/task_filter.html:247
+#: templates/tasks/task_filter.html:271
 msgid "When"
 msgstr "Nə vaxt"
 
-#: templates/tasks/task_filter.html:282
+#: templates/tasks/task_filter.html:309
 msgid "Save as default"
 msgstr "Standart kimi yadda saxla"
 
-#: templates/tasks/task_filter.html:291
+#: templates/tasks/task_filter.html:318
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: templates/tasks/task_filter.html:295
+#: templates/tasks/task_filter.html:322
 msgid "Apply"
 msgstr "Tətbiq et"
 
-#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:401
-#: templates/tasks/task_update.html:50
+#: templates/tasks/task_filter.html:351 templates/tasks/task_filter.html:440
+#: templates/tasks/task_update.html:55
 msgid "Time left: "
 msgstr "Qalan vaxt: "
 
-#: templates/tasks/task_filter.html:320 templates/tasks/task_filter.html:402
-#: templates/tasks/task_update.html:51
+#: templates/tasks/task_filter.html:352 templates/tasks/task_filter.html:441
+#: templates/tasks/task_update.html:56
 msgid "Overdue"
 msgstr "Gecikmiş"
 
-#: templates/tasks/task_filter.html:367 templates/tasks/task_update.html:110
+#: templates/tasks/task_filter.html:400 templates/tasks/task_update.html:116
 msgid "Checklist"
 msgstr "Yoxlama siyahısı"
 
-#: templates/tasks/task_filter.html:441 templates/tasks/task_filter.html:448
+#: templates/tasks/task_filter.html:481 templates/tasks/task_filter.html:488
 msgid "Previous"
 msgstr "Əvvəlki"
 
-#: templates/tasks/task_filter.html:468 templates/tasks/task_filter.html:475
+#: templates/tasks/task_filter.html:508 templates/tasks/task_filter.html:515
 msgid "Next"
 msgstr "Növbəti"
 
-#: templates/tasks/task_update.html:155
+#: templates/tasks/task_update.html:161
 msgid "Add a checklist item"
 msgstr "Çeklist elementi əlavə edin"
 
-#: templates/tasks/task_update.html:160
+#: templates/tasks/task_update.html:166
 msgid "Add item..."
 msgstr "Bənd əlavə et..."
 
-#: templates/tasks/task_update.html:447
+#: templates/tasks/task_update.html:453
 msgid "Delete this item?"
 msgstr "Bu bənd silinsin?"
 

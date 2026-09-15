@@ -64,6 +64,30 @@
                 </a>
             {% endif %}
 
+            <!-- Completion toggle (active → done → all) -->
+            {% if current_completion == 'active' %}
+                {% if status_filter_active %}
+                <span class="btn btn-sm btn-outline-secondary completion-btn is-disabled" title="{% trans 'Overridden by status filter' %}">
+                    <i class="bi bi-check2-circle"></i>
+                </span>
+                {% else %}
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'completion' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}completion=done"
+                class="btn btn-sm btn-outline-secondary completion-btn" title="{% trans 'Show completed tasks' %}">
+                    <i class="bi bi-check2-circle"></i>
+                </a>
+                {% endif %}
+            {% elif current_completion == 'done' %}
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'completion' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}completion=all"
+                class="btn btn-sm btn-success completion-btn" title="{% trans 'Show all tasks' %}">
+                    <i class="bi bi-check-circle-fill"></i>
+                </a>
+            {% else %}
+                <a href="?{% for key, values in request.GET.lists %}{% if key != 'completion' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}completion=active"
+                class="btn btn-sm btn-outline-secondary completion-btn" title="{% trans 'Show active tasks' %}">
+                    <i class="bi bi-circle-half"></i>
+                </a>
+            {% endif %}
+
             <!-- Filter toggle button -->
             {% if request.GET.show_filter %}
                 <a href="?{% for key, values in request.GET.lists %}{% if key != 'show_filter' %}{% for value in values %}{{ key }}={{ value }}&{% endfor %}{% endif %}{% endfor %}" 
@@ -267,6 +291,9 @@
                 {% if request.GET.view_mode %}
                 <input type="hidden" name="view_mode" value="{{ request.GET.view_mode }}">
                 {% endif %}
+                {% if current_completion and current_completion != 'active' %}
+                <input type="hidden" name="completion" value="{{ current_completion }}">
+                {% endif %}
 
                 <!-- Action bar -->
                 <div class="filter-actions mt-3 pt-3 border-top">
@@ -314,11 +341,17 @@
                         <span class="text-truncate">{{ obj.name }}</span>
                         <span class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
                             {% if obj.deadline %}
-                            <span class="deadline-timer small"
-                                  data-deadline="{{ obj.deadline|date:'c' }}"
-                                  data-left-text="{% trans 'Time left: ' %}"
-                                  data-overdue-text="{% trans 'Overdue' %}">
-                            </span>
+                                {% if obj.status.is_completed %}
+                                <span class="badge border bg-body text-success small">
+                                    <i class="bi bi-check2 me-1"></i>{{ obj.deadline|date:"d.m.y H:i" }}
+                                </span>
+                                {% else %}
+                                <span class="deadline-timer small"
+                                      data-deadline="{{ obj.deadline|date:'c' }}"
+                                      data-left-text="{% trans 'Time left: ' %}"
+                                      data-overdue-text="{% trans 'Overdue' %}">
+                                </span>
+                                {% endif %}
                             {% endif %}
                             {% if obj.notes_count > 0 %}
                             <span class="text-muted small">
@@ -396,12 +429,19 @@
                                     {{ obj.status.name }}
                                 </span>
                                 {% if obj.deadline %}
-                                <span class="badge deadline-timer border bg-body"
-                                      data-deadline="{{ obj.deadline|date:'c' }}"
-                                      data-left-text="{% trans 'Time left: ' %}"
-                                      data-overdue-text="{% trans 'Overdue' %}">
-                                    <i class="bi bi-hourglass-split me-1"></i><span class="deadline-text"></span>
-                                </span>
+                                    {% if obj.status.is_completed %}
+                                    <span class="badge border bg-body text-success"
+                                          title="{% trans 'Deadline' %}">
+                                        <i class="bi bi-check2 me-1"></i>{{ obj.deadline|date:"d.m.y H:i" }}
+                                    </span>
+                                    {% else %}
+                                    <span class="badge deadline-timer border bg-body"
+                                          data-deadline="{{ obj.deadline|date:'c' }}"
+                                          data-left-text="{% trans 'Time left: ' %}"
+                                          data-overdue-text="{% trans 'Overdue' %}">
+                                        <i class="bi bi-hourglass-split me-1"></i><span class="deadline-text"></span>
+                                    </span>
+                                    {% endif %}
                                 {% endif %}
                                 {% for label in obj.labels.all %}
                                 <span class="badge bg-body-tertiary text-body border fw-normal">{{ label.name }}</span>

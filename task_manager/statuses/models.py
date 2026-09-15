@@ -53,6 +53,14 @@ class Status(models.Model):
         default='#6B7280',
         blank=True
     )
+    is_completed = models.BooleanField(
+        default=False,
+        verbose_name=_('Final status'),
+        help_text=_(
+            'Tasks with a final status are hidden from the default '
+            'task list'
+        ),
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Created at')
@@ -82,12 +90,14 @@ class Status(models.Model):
             {
                 'name': _("Completed"),
                 'description': _("Task has been finished successfully"),
-                'color': '#10B981'  # Green
+                'color': '#10B981',  # Green
+                'is_completed': True
             },
             {
                 'name': _("Cancelled"),
                 'description': _("Task was abandoned or deemed unnecessary"),
-                'color': '#9CA3AF'  # Dim Gray
+                'color': '#9CA3AF',  # Dim Gray
+                'is_completed': True
             },
             {
                 'name': _("Blocked"),
@@ -103,6 +113,7 @@ class Status(models.Model):
                 name=status_data['name'],
                 description=status_data['description'],
                 color=status_data['color'],
+                is_completed=status_data.get('is_completed', False),
                 creator=user,
                 team=team
             )
