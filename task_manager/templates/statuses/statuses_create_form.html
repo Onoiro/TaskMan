@@ -59,6 +59,19 @@
                                       rows="3"
                                       placeholder="{% trans 'Optional' %}">{{ form.description.value|default:'' }}</textarea>
                         </div>
+                        <div class="form-check mb-2">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   name="is_completed"
+                                   id="id_is_completed"
+                                   {% if form.is_completed.value %}checked{% endif %}>
+                            <label class="form-check-label" for="id_is_completed">
+                                {% trans "Final status" %}
+                            </label>
+                            <div class="form-text">
+                                {% trans "Tasks with a final status are hidden from the default task list" %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 

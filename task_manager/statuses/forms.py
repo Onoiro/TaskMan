@@ -8,7 +8,7 @@ class StatusForm(forms.ModelForm):
 
     class Meta:
         model = Status
-        fields = ['name', 'description', 'color']
+        fields = ['name', 'description', 'color', 'is_completed']
 
     name = forms.CharField(
         label=_('Name'),
@@ -33,4 +33,14 @@ class StatusForm(forms.ModelForm):
             'style': 'width: 60px; height: 40px;'
         }),
         help_text=_('Choose status color')
+    )
+
+    is_completed = forms.BooleanField(
+        label=_('Final status'),
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        help_text=_(
+            'Tasks with a final status are hidden from the default '
+            'task list'
+        )
     )

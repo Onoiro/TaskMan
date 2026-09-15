@@ -16,7 +16,7 @@ TaskMan is a web application designed to manage tasks individually or in teams (
 - **Task Management**: Create tasks with detailed information including title and description
 - **Team-Based Isolation**: All task-related entities (executors, statuses, labels) are isolated by team membership
 - **Task Assignment**: Assign tasks to team members only*
-- **Custom Task Status**: Create and manage custom task statuses (e.g., To Do, In Progress, Done) within your team with custom color for each status
+- **Custom Task Status**: Create and manage custom task statuses (e.g., To Do, In Progress, Done) within your team with custom color for each status; any status can be marked as final (completed tasks are hidden from the default list with a 3-state toggle: active / completed / all, and the deadline countdown is frozen for completed tasks)
 - **Labels**: Organize tasks with custom labels created by team members
 - **Notes**: Create text notes with title and content, optionally linked to tasks; available in both individual and team modes with full markdown support and live preview
 - **Advanced Filtering**: Filter tasks by executors, statuses, and labels - all scoped to your team

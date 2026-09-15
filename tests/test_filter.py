@@ -1587,3 +1587,157 @@ class TaskTestCase(TestCase):
                 set(result.values_list('id', flat=True)),
                 set(filtered_tasks.values_list('id', flat=True))
             )
+
+
+class CompletionToggleTestCase(TestCase):
+    """Completion toggle: default hides finished tasks, 3 states,
+    explicit status filter wins over the toggle."""
+
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json",
+                "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_labels.json"
+                ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='he')  # id=12
+        self.c = Client()
+        self.c.force_login(self.user)
+
+        membership = TeamMembership.objects.filter(user=self.user).first()
+        self.team = membership.team if membership else None
+        if self.team:
+            session = self.c.session
+            session['active_team_uuid'] = str(self.team.uuid)
+            session.save()
+
+        # A task with a final status must exist in the fixture scope
+        final_status = Status.objects.filter(
+            team=self.team
+        ).first()
+        final_status.is_completed = True
+        final_status.save()
+        self.final_status = final_status
+
+    def _final_task(self):
+        """Create a task with the final status for the current scope."""
+        if self.team:
+            return Task.objects.create(
+                name='finished task',
+                status=self.final_status,
+                team=self.team,
+                author=self.user,
+                deadline='2030-01-01 12:00'
+            )
+        return Task.objects.create(
+            name='finished task',
+            status=self.final_status,
+            author=self.user,
+            deadline='2030-01-01 12:00'
+        )
+
+    def _list_ids(self):
+        response = self.c.get(reverse('tasks:tasks-list'))
+        self.assertEqual(response.status_code, 200)
+        return set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+
+    def test_default_hides_completed_tasks(self):
+        task = self._final_task()
+        self.assertNotIn(task.id, self._list_ids())
+
+    def test_completion_done_shows_only_completed(self):
+        task = self._final_task()
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'completion': 'done'})
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        self.assertIn(task.id, ids)
+        for t in Task.objects.filter(id__in=ids):
+            self.assertTrue(t.status.is_completed)
+
+    def test_completion_all_shows_everything(self):
+        task = self._final_task()
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'completion': 'all'})
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        self.assertIn(task.id, ids)
+
+    def test_invalid_completion_falls_back_to_active(self):
+        task = self._final_task()
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'completion': 'nonsense'})
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        self.assertNotIn(task.id, ids)
+
+    def test_explicit_status_filter_wins_over_toggle(self):
+        task = self._final_task()
+        response = self.c.get(reverse('tasks:tasks-list'), {
+            'status': self.final_status.id,
+            'completion': 'active',
+        })
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        self.assertIn(task.id, ids)
+        self.assertTrue(response.context['status_filter_active'])
+
+    def test_completion_not_saved_as_default_filter(self):
+        self._final_task()
+        # Apply filter with completion param — completion is a service
+        # param and must not be persisted to the saved filter
+        self.c.get(reverse('tasks:tasks-list'), {
+            'completion': 'done',
+            'save_as_default': '1',
+        })
+        filter_key, _ = _get_filter_session_keys(
+            self.c.session, self.team)
+        saved = self.c.session.get(filter_key, {})
+        self.assertNotIn('completion', saved)
+
+    def test_saved_filter_applied_even_without_completion_param(self):
+        self._final_task()
+        # Saved status filter takes priority over the default toggle
+        filter_key, enabled_key = _get_filter_session_keys(
+            self.c.session, self.team)
+        session = self.c.session
+        session[filter_key] = {'status': [str(self.final_status.id)]}
+        session[enabled_key] = True
+        session.save()
+
+        response = self.c.get(reverse('tasks:tasks-list'))
+        # The view redirects to apply the saved filter, then renders it
+        response = self.c.get(response.get('Location'))
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        self.assertTrue(response.context['status_filter_active'])
+        for t in Task.objects.filter(id__in=ids):
+            self.assertEqual(t.status.id, self.final_status.id)
+
+    def test_deadline_data_not_mutated(self):
+        task = self._final_task()
+        deadline_before = Task.objects.get(pk=task.pk).deadline
+        self.c.get(reverse('tasks:tasks-list'))
+        self.c.get(reverse('tasks:tasks-list'), {'completion': 'done'})
+        self.c.get(reverse('tasks:tasks-list'), {'completion': 'all'})
+        self.assertEqual(
+            Task.objects.get(pk=task.pk).deadline,
+            deadline_before
+        )
+
+    def test_completed_task_deadline_has_no_countdown(self):
+        self._final_task()
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'completion': 'done'})
+        content = response.content.decode()
+        # No live countdown element for the completed task
+        self.assertNotIn('data-deadline', content)

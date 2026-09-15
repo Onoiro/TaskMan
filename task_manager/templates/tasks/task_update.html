@@ -45,12 +45,18 @@
                         {% endif %}
                         {% if object.deadline %}
                         <div class="d-flex flex-wrap gap-2 align-items-center text-muted small mt-1">
+                            {% if object.status.is_completed %}
+                            <span class="text-success" title="{% trans 'Deadline' %}">
+                                <i class="bi bi-check2 me-1"></i>{{ object.deadline|date:"d.m.y H:i" }}
+                            </span>
+                            {% else %}
                             <span class="deadline-timer"
                                   data-deadline="{{ object.deadline|date:'c' }}"
                                   data-left-text="{% trans 'Time left: ' %}"
                                   data-overdue-text="{% trans 'Overdue' %}">
                                 <i class="bi bi-hourglass-split me-1"></i><span class="deadline-text"></span>
                             </span>
+                            {% endif %}
                         </div>
                         {% endif %}
                         <!-- Middle row: status (left), labels (right) -->

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-12 22:56+0300\n"
+"POT-Creation-Date: 2026-09-15 17:02+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -148,7 +148,7 @@ msgid "Content"
 msgstr "Мундариҷа"
 
 #: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:71
-#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:412
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
@@ -163,7 +163,7 @@ msgstr "Даста"
 msgid "Task"
 msgstr "Вазифа"
 
-#: notes/models.py:65 notifications/models.py:78 statuses/models.py:58
+#: notes/models.py:65 notifications/models.py:78 statuses/models.py:66
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -183,7 +183,7 @@ msgstr "Эзоҳ"
 #: notes/models.py:75 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:362
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:395
 msgid "Notes"
 msgstr "Эзоҳҳо"
 
@@ -435,51 +435,62 @@ msgstr "Ранг"
 msgid "Choose status color"
 msgstr "Ранги ҳолатро интихоб кунед"
 
-#: statuses/models.py:67
+#: statuses/forms.py:39 statuses/models.py:58
+#: templates/statuses/statuses_create_form.html:69
+msgid "Final status"
+msgstr "Ҳолати ниҳоӣ"
+
+#: statuses/forms.py:43 statuses/models.py:60
+#: templates/statuses/statuses_create_form.html:72
+#: templates/statuses/statuses_list.html:65
+msgid "Tasks with a final status are hidden from the default task list"
+msgstr "Вазифаҳои бо ҳолати ниҳоӣ аз рӯйхати пешфарз пинҳон карда мешаванд"
+
+#: statuses/models.py:75
 msgid "New"
 msgstr "Нав"
 
-#: statuses/models.py:68
+#: statuses/models.py:76
 msgid "Task has been created but not yet started"
 msgstr "Вазифа эҷод шуд, аммо ҳанӯз оғоз нашудааст"
 
-#: statuses/models.py:73
+#: statuses/models.py:81
 msgid "In Progress"
 msgstr "Дар раванди иҷро"
 
-#: statuses/models.py:74
+#: statuses/models.py:82
 msgid "Task is currently being worked on"
 msgstr "Дар болои вазифа ҳоло кор рафта истодааст"
 
-#: statuses/models.py:78
+#: statuses/models.py:86
 msgid "On Hold"
 msgstr "Дар таваққуф"
 
-#: statuses/models.py:79
+#: statuses/models.py:87
 msgid "Task is temporarily paused"
 msgstr "Вазифа муваққатан боздошта шудааст"
 
-#: statuses/models.py:83
+#: statuses/models.py:91
 msgid "Completed"
 msgstr "Анҷом ёфтааст"
 
-#: statuses/models.py:84
+#: statuses/models.py:92
 msgid "Task has been finished successfully"
 msgstr "Вазифа бомуваффақият иҷро шуд"
 
-#: statuses/models.py:88
+#: statuses/models.py:97
 msgid "Cancelled"
 msgstr "Бекор шудааст"
 
-#: statuses/models.py:89
+#: statuses/models.py:98
 msgid "Task was abandoned or deemed unnecessary"
 msgstr "Вазифа бекор карда шуд ё дигар лозим нест"
 
-#: statuses/models.py:93
+#: statuses/models.py:103
 msgid "Blocked"
 msgstr "Масдуд шудааст"
 
-#: statuses/models.py:95
+#: statuses/models.py:105
 msgid "Task cannot proceed due to external dependencies"
 msgstr "Иҷрои вазифа аз сабаби вобастагиҳои беруна имконнопазир аст"
 
@@ -513,7 +524,7 @@ msgstr "Номи вазифа..."
 msgid "Status"
 msgstr "Ҳолат"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:416
+#: tasks/filters.py:40 templates/tasks/task_filter.html:456
 #: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:106 templates/user/user_detail.html:132
 msgid "Executor"
@@ -525,8 +536,8 @@ msgstr "Иҷрокунанда"
 msgid "Labels"
 msgstr "Барчаспҳо"
 
-#: tasks/filters.py:53 templates/tasks/task_filter.html:118
-#: templates/tasks/task_filter.html:177
+#: tasks/filters.py:53 templates/tasks/task_filter.html:142
+#: templates/tasks/task_filter.html:201
 msgid "My tasks"
 msgstr "Вазифаҳои ман"
 
@@ -538,7 +549,7 @@ msgstr "Аз"
 msgid "To"
 msgstr "То"
 
-#: tasks/filters.py:80 templates/tasks/task_filter.html:229
+#: tasks/filters.py:80 templates/tasks/task_filter.html:253
 msgid "Has checklist"
 msgstr "Рӯйхати санҷиш дорад"
 
@@ -551,7 +562,8 @@ msgid "Updated by"
 msgstr "Кӣ нав кард"
 
 #: tasks/models.py:91 templates/tasks/task_create_form.html:25
-#: templates/tasks/task_update.html:81
+#: templates/tasks/task_filter.html:434 templates/tasks/task_update.html:49
+#: templates/tasks/task_update.html:87
 msgid "Deadline"
 msgstr "Мӯҳлат"
 
@@ -567,62 +579,62 @@ msgstr "Иҷро шуд"
 msgid "Position"
 msgstr "Мавқеъ"
 
-#: tasks/views.py:54 templates/privacy_policy.html:9
+#: tasks/views.py:55 templates/privacy_policy.html:9
 #: templates/terms_of_service.html:9
 msgid "Last updated"
 msgstr "Ба наздикӣ навшуда"
 
-#: tasks/views.py:55
+#: tasks/views.py:56
 msgid "First updated"
 msgstr "Аввал онҳое, ки пештар нав шудаанд"
 
-#: tasks/views.py:56
+#: tasks/views.py:57
 msgid "Newest first"
 msgstr "Аввал навҳо"
 
-#: tasks/views.py:57
+#: tasks/views.py:58
 msgid "Oldest first"
 msgstr "Аввал кӯҳнатарҳо"
 
-#: tasks/views.py:58
+#: tasks/views.py:59
 msgid "Name A→Z"
 msgstr "Ном A→Z"
 
-#: tasks/views.py:59
+#: tasks/views.py:60
 msgid "Name Z→A"
 msgstr "Ном Z→A"
 
-#: tasks/views.py:75
+#: tasks/views.py:80
 msgid "Task can only be deleted by its author or team admin."
 msgstr "Вазифаро танҳо муаллифи он ё мудири даста метавонад ҳазф кунад."
 
-#: tasks/views.py:93 tasks/views.py:408
+#: tasks/views.py:98 tasks/views.py:456
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
 "Вазифаро танҳо муаллифи он, иҷрокунандагон ё мудири даста метавонад тағйир "
 "диҳад."
 
-#: tasks/views.py:165
+#: tasks/views.py:196
 msgid "Filter saved as default"
 msgstr "Филтр ҳамчун пешфарз сабт шуд"
 
-#: tasks/views.py:291
+#: tasks/views.py:339
 msgid "Task created successfully"
 msgstr "Вазифа бомуваффақият эҷод шуд"
 
-#: tasks/views.py:355
+#: tasks/views.py:403
 msgid "Task updated successfully"
 msgstr "Вазифа бомуваффақият тағйир дода шуд"
 
-#: tasks/views.py:395
+#: tasks/views.py:443
 msgid "Task deleted successfully"
 msgstr "Вазифа бомуваффақият ҳазф шуд"
 
-#: tasks/views.py:439
+#: tasks/views.py:487
 msgid "Text is required"
 msgstr "Матн ҳатмист"
 
-#: tasks/views.py:443
+#: tasks/views.py:491
 msgid "Text must be 300 characters or less"
 msgstr "Матн бояд аз 300 аломат зиёд набошад"
 
@@ -1132,12 +1144,12 @@ msgstr "Дастгирии забонҳо"
 
 #: templates/labels/labels_create.html:9
 #: templates/tasks/task_create_form.html:59
-#: templates/tasks/task_update.html:188
+#: templates/tasks/task_update.html:194
 msgid "Create label"
 msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
-#: templates/statuses/statuses_create_form.html:69
+#: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:78
 #: templates/teams/team_create_form.html:28
 msgid "Create"
@@ -1149,11 +1161,11 @@ msgstr "Эҷод кардан"
 #: templates/notes/note_confirm_delete.html:37
 #: templates/notes/note_detail.html:83 templates/notes/note_form.html:130
 #: templates/notes/note_form.html:134 templates/notes/note_form.html:184
-#: templates/statuses/statuses_create_form.html:72
+#: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
 #: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:214
+#: templates/tasks/task_update.html:220
 #: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
 #: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
 #: templates/teams/team_join_form.html:31
@@ -1193,7 +1205,7 @@ msgstr "Барчаспи нав"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:71 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:413
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:453
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1213,7 +1225,7 @@ msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
 #: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:334 templates/tasks/task_filter.html:374
+#: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Эҷод шудааст"
@@ -1233,16 +1245,16 @@ msgstr "Барчасп"
 
 #: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:283 templates/tasks/task_update.html:211
+#: templates/tasks/task_filter.html:310 templates/tasks/task_update.html:217
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Сабт кардан"
 
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
-#: templates/statuses/statuses_list.html:71
+#: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:145 templates/tasks/task_update.html:219
-#: templates/tasks/task_update.html:359 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:151 templates/tasks/task_update.html:225
+#: templates/tasks/task_update.html:365 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Ҳазф"
@@ -1329,8 +1341,8 @@ msgstr "Ёддошти беном"
 msgid "Personal"
 msgstr "Шахсӣ"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:334
-#: templates/tasks/task_filter.html:381 templates/tasks/task_update.html:36
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:367
+#: templates/tasks/task_filter.html:414 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Навсозӣ шудааст"
 
@@ -1338,7 +1350,7 @@ msgstr "Навсозӣ шудааст"
 msgid "Loading content..."
 msgstr "Боргирии мундариҷа..."
 
-#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:68
+#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Таҳрир"
@@ -1607,15 +1619,15 @@ msgstr "Ҳазфи ҳолат"
 msgid "New status"
 msgstr "Ҳолати нав"
 
-#: templates/statuses/statuses_list.html:85
+#: templates/statuses/statuses_list.html:90
 msgid "No statuses found"
 msgstr "Ҳолатҳо ёфт нашуданд"
 
-#: templates/statuses/statuses_list.html:86
+#: templates/statuses/statuses_list.html:91
 msgid "Create your first status to organize tasks"
 msgstr "Барои ташкили вазифаҳо аввалин ҳолати худро эҷод кунед"
 
-#: templates/statuses/statuses_list.html:87
+#: templates/statuses/statuses_list.html:92
 msgid "Create Status"
 msgstr "Эҷоди ҳолат"
 
@@ -1632,10 +1644,19 @@ msgid "Try adjusting filters or create a new task"
 msgstr "Филтрҳоро тағйир диҳед ё вазифаи нав эҷод кунед"
 
 #: templates/tasks/partials/empty_state.html:12
+msgid "Completed tasks are hidden by default"
+msgstr "Вазифаҳои анҷомёфта ба таври пешфарз пинҳонанд"
+
+#: templates/tasks/partials/empty_state.html:15
+#: templates/tasks/task_filter.html:81
+msgid "Show all tasks"
+msgstr "Ҳамаи вазифаҳоро нишон диҳед"
+
+#: templates/tasks/partials/empty_state.html:19
 msgid "Reset filters"
 msgstr "Филтрҳоро барқарор кунед"
 
-#: templates/tasks/partials/empty_state.html:16
+#: templates/tasks/partials/empty_state.html:23
 msgid "Create Task"
 msgstr "Эҷоди вазифа"
 
@@ -1643,39 +1664,39 @@ msgstr "Эҷоди вазифа"
 msgid "Create task"
 msgstr "Эҷоди вазифа"
 
-#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:84
+#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
 #, fuzzy
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
 msgstr "Эҷоди зуди вазифаҳо"
 
-#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:85
+#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "дар 8 соат"
 
-#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:86
+#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "дар 1 рӯз"
 
-#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:87
+#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "дар 3 рӯз"
 
-#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:88
+#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "дар 21 рӯз"
 
-#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:90
+#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Тоза кардани мӯҳлат"
 
 #: templates/tasks/task_create_form.html:46
-#: templates/tasks/task_update.html:174
+#: templates/tasks/task_update.html:180
 msgid "Add checklist"
 msgstr "Илова кардани рӯйхати санҷиш"
 
 #: templates/tasks/task_create_form.html:68
-#: templates/tasks/task_filter.html:238 templates/tasks/task_update.html:197
+#: templates/tasks/task_filter.html:262 templates/tasks/task_update.html:203
 msgid "Hold Ctrl/Cmd to select multiple items"
 msgstr "Барои интихоби якчанд Ctrl/Cmd-ро пахш кунед"
 
@@ -1703,82 +1724,94 @@ msgstr "Намоиши пурра"
 msgid "Simple view"
 msgstr "Намоиши сода"
 
-#: templates/tasks/task_filter.html:76
+#: templates/tasks/task_filter.html:70
+msgid "Overridden by status filter"
+msgstr "Аз ҳисоби филтри ҳолат иваз карда шудааст"
+
+#: templates/tasks/task_filter.html:75
+msgid "Show completed tasks"
+msgstr "Вазифаҳои анҷомёфтаро нишон диҳед"
+
+#: templates/tasks/task_filter.html:86
+msgid "Show active tasks"
+msgstr "Вазифаҳои фаъолро нишон диҳед"
+
+#: templates/tasks/task_filter.html:100
 msgid "Default filter is active"
 msgstr "Филтри пешфарз фаъол аст"
 
-#: templates/tasks/task_filter.html:78
+#: templates/tasks/task_filter.html:102
 msgid "Default"
 msgstr "Пешфарз"
 
-#: templates/tasks/task_filter.html:122
+#: templates/tasks/task_filter.html:146
 msgid "Assigned to me"
 msgstr "Ба ман таъин шудааст"
 
-#: templates/tasks/task_filter.html:134
+#: templates/tasks/task_filter.html:158
 msgid "Who"
 msgstr "Кӣ"
 
-#: templates/tasks/task_filter.html:146 templates/tasks/task_filter.html:163
-#: templates/tasks/task_filter.html:199 templates/tasks/task_filter.html:215
+#: templates/tasks/task_filter.html:170 templates/tasks/task_filter.html:187
+#: templates/tasks/task_filter.html:223 templates/tasks/task_filter.html:239
 msgid "Exclude"
 msgstr "Истисно кардан"
 
-#: templates/tasks/task_filter.html:178
+#: templates/tasks/task_filter.html:202
 msgid "author or executor"
 msgstr "муаллиф ё иҷрокунанда"
 
-#: templates/tasks/task_filter.html:188
+#: templates/tasks/task_filter.html:212
 msgid "What"
 msgstr "Чӣ"
 
-#: templates/tasks/task_filter.html:247
+#: templates/tasks/task_filter.html:271
 msgid "When"
 msgstr "Кай"
 
-#: templates/tasks/task_filter.html:282
+#: templates/tasks/task_filter.html:309
 msgid "Save as default"
 msgstr "Ҳамчун пешфарз сабт кардан"
 
-#: templates/tasks/task_filter.html:291
+#: templates/tasks/task_filter.html:318
 msgid "Reset"
 msgstr "Барқарор кардан"
 
-#: templates/tasks/task_filter.html:295
+#: templates/tasks/task_filter.html:322
 msgid "Apply"
 msgstr "Татбиқ кардан"
 
-#: templates/tasks/task_filter.html:319 templates/tasks/task_filter.html:401
-#: templates/tasks/task_update.html:50
+#: templates/tasks/task_filter.html:351 templates/tasks/task_filter.html:440
+#: templates/tasks/task_update.html:55
 msgid "Time left: "
 msgstr "Бақимонда: "
 
-#: templates/tasks/task_filter.html:320 templates/tasks/task_filter.html:402
-#: templates/tasks/task_update.html:51
+#: templates/tasks/task_filter.html:352 templates/tasks/task_filter.html:441
+#: templates/tasks/task_update.html:56
 msgid "Overdue"
 msgstr "Дертар шуд"
 
-#: templates/tasks/task_filter.html:367 templates/tasks/task_update.html:110
+#: templates/tasks/task_filter.html:400 templates/tasks/task_update.html:116
 msgid "Checklist"
 msgstr "Рӯйхати санҷиш"
 
-#: templates/tasks/task_filter.html:441 templates/tasks/task_filter.html:448
+#: templates/tasks/task_filter.html:481 templates/tasks/task_filter.html:488
 msgid "Previous"
 msgstr "Гузашта"
 
-#: templates/tasks/task_filter.html:468 templates/tasks/task_filter.html:475
+#: templates/tasks/task_filter.html:508 templates/tasks/task_filter.html:515
 msgid "Next"
 msgstr "Баъдӣ"
 
-#: templates/tasks/task_update.html:155
+#: templates/tasks/task_update.html:161
 msgid "Add a checklist item"
 msgstr "Унсури чеклистро илова кунед"
 
-#: templates/tasks/task_update.html:160
+#: templates/tasks/task_update.html:166
 msgid "Add item..."
 msgstr "Илова кардани банд..."
 
-#: templates/tasks/task_update.html:447
+#: templates/tasks/task_update.html:453
 msgid "Delete this item?"
 msgstr "Ин банд ҳазф шавад?"
 

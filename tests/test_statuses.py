@@ -559,3 +559,73 @@ class StatusDefaultCreationTestCase(TestCase):
         # check descriptions are not empty
         for status in created_statuses:
             self.assertTrue(status.description)
+
+    def test_default_final_statuses_flags(self):
+        """Only Completed and Cancelled are marked as final."""
+        Status.create_default_statuses_for_user(self.user)
+
+        final = Status.objects.filter(
+            creator=self.user,
+            is_completed=True
+        ).values_list('name', flat=True)
+        self.assertEqual(
+            sorted(final),
+            ['Cancelled', 'Completed']
+        )
+
+        non_final = Status.objects.filter(
+            creator=self.user,
+            is_completed=False
+        ).values_list('name', flat=True)
+        self.assertEqual(
+            sorted(non_final),
+            ['Blocked', 'In Progress', 'New', 'On Hold']
+        )
+
+
+class StatusBackfillMigrationTestCase(TestCase):
+    """Data migration marks existing translated statuses as final."""
+
+    def test_backfill_marks_translated_completed_statuses(self):
+        user = User.objects.create_user(
+            username='test_user',
+            password='testpass123'
+        )
+        import importlib
+        from django.apps import apps as real_apps
+        from django.utils.translation import activate, deactivate
+        migration_module = importlib.import_module(
+            'task_manager.statuses.migrations.0005_backfill_final_statuses'
+        )
+
+        backfill = migration_module.backfill_final_statuses
+        # Names are stored per-locale: exercise backfill for each locale
+        for lang in ('en', 'ru', 'tg', 'az', 'ky'):
+            activate(lang)
+            Status.create_default_statuses_for_user(user)
+        deactivate()
+
+        # Simulate statuses created before the migration existed
+        Status.objects.filter(creator=user).update(is_completed=False)
+
+        backfill(real_apps, None)
+
+        for name in ('Completed', 'Завершена', 'Отменена',
+                     'Анҷом ёфтааст', 'Tamamlandı'):
+            self.assertTrue(
+                Status.objects.filter(
+                    creator=user,
+                    name=name,
+                    is_completed=True
+                ).exists(),
+                f'status "{name}" must be final after backfill'
+            )
+
+        # custom statuses with similar names must stay untouched
+        custom = Status.objects.create(
+            name='Completed?',
+            creator=user
+        )
+        self.assertFalse(
+            Status.objects.get(pk=custom.pk).is_completed
+        )
