@@ -64,6 +64,27 @@
                     <!-- ✅ Correct data passing to JS via json_script -->
                     {{ object.content|default:''|json_script:"note-content-data" }}
 
+                    <!-- Attached images gallery -->
+                    {% if object.images.all %}
+                    <div class="note-images mb-4">
+                        <div class="text-muted small mb-2">
+                            <i class="bi bi-images"></i>
+                            {% trans "Images" %}
+                        </div>
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2">
+                            {% for image in object.images.all %}
+                            <div class="col">
+                                <img src="{% url 'notes:note-image-detail' object.uuid image.pk %}"
+                                     alt="{% trans 'Image' %} {{ forloop.counter }}"
+                                     class="img-fluid rounded border w-100 note-gallery-thumb"
+                                     loading="lazy"
+                                     style="cursor: pointer; object-fit: cover; aspect-ratio: 1;">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
                     <!-- Footer: Author -->
                     <div class="d-flex align-items-center gap-2 pt-3 border-top">
                         <i class="bi bi-person-circle text-muted fs-4"></i>
@@ -171,6 +192,19 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error rendering markdown:', e);
         contentDiv.textContent = markdownText;
     }
+
+    // Gallery thumbnails open the same modal as inline images
+    document.querySelectorAll('.note-gallery-thumb').forEach((img) => {
+        img.addEventListener('click', function() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            if (modal && modalImg) {
+                modalImg.src = this.src;
+                modalImg.alt = this.alt || '';
+                new bootstrap.Modal(modal).show();
+            }
+        });
+    });
 });
 </script>
 

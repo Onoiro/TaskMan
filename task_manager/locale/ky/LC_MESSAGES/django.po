@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 17:02+0300\n"
+"POT-Creation-Date: 2026-09-16 18:34+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Kyrgyz\n"
@@ -41,11 +41,11 @@ msgstr "Маселени же сунушту баяндап бериңиз..."
 msgid "Name"
 msgstr "Аты"
 
-#: labels/models.py:24 notes/models.py:28 statuses/models.py:26
+#: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
 msgstr ""
 "Тамгалар, сандар, боштуктар жана -_.,!? белгилери гана уруксат. <, >, #, & "
 "белгилерине уруксат берилбейт."
@@ -70,8 +70,8 @@ msgstr "Тегди өчүрүү мүмкүн эмес, анткени ал ко�
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way — "
-"we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
 msgstr ""
 "Сиз сервисти активдүү колдонуп жатасыз! %(resource)s үчүн лимитке (%(max)s) "
 "жеттиңиз. Мындан ары керек болбой калган нерселерди өчүрүп көрүңүз. "
@@ -114,6 +114,12 @@ msgid "team notes"
 msgstr "командалык эскертүүлөр"
 
 #: limit_service.py:45
+#, fuzzy
+#| msgid "Insert Image"
+msgid "note images"
+msgstr "Сүрөт киргизүү"
+
+#: limit_service.py:46
 msgid "checklist items"
 msgstr "текшерүү тизмесинин пункттары"
 
@@ -136,32 +142,32 @@ msgstr "Жеке режимде эскертүүнү командалык тап
 msgid "You can only attach notes to your own tasks."
 msgstr "Эскертүүлөрдү өзүңүздүн тапшырмаларыңызга гана тиркей аласыз."
 
-#: notes/models.py:23 templates/notes/note_form.html:64
+#: notes/models.py:24 templates/notes/note_form.html:64
 msgid "Title"
 msgstr "Аталышы"
 
-#: notes/models.py:37 templates/notes/note_form.html:78
+#: notes/models.py:38 templates/notes/note_form.html:78
 #: templates/terms_of_service.html:33
 msgid "Content"
 msgstr "Мазмуну"
 
-#: notes/models.py:45 tasks/filters.py:33 templates/notes/note_detail.html:71
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:92
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
 msgstr "Автор"
 
-#: notes/models.py:53 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47
+#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Команда"
 
-#: notes/models.py:61 tasks/models.py:140
+#: notes/models.py:62 tasks/models.py:140
 msgid "Task"
 msgstr "Тапшырма"
 
-#: notes/models.py:65 notifications/models.py:78 statuses/models.py:66
+#: notes/models.py:66 notifications/models.py:78 statuses/models.py:66
 #: tasks/models.py:73 teams/models.py:43 teams/models.py:136
 #: templates/labels/labels_update.html:54
 #: templates/statuses/statuses_update.html:58
@@ -169,41 +175,90 @@ msgstr "Тапшырма"
 msgid "Created at"
 msgstr "Түзүлгөн күнү"
 
-#: notes/models.py:69 tasks/models.py:78
+#: notes/models.py:70 tasks/models.py:78
 msgid "Updated at"
 msgstr "Жаңыртылган күнү"
 
-#: notes/models.py:74 templates/feedback.html:28
+#: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
 #: templates/notes/note_form.html:25
 msgid "Note"
 msgstr "Эскертүү"
 
-#: notes/models.py:75 templates/base.html:130 templates/base.html:155
+#: notes/models.py:76 templates/base.html:130 templates/base.html:155
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
 #: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:395
 msgid "Notes"
 msgstr "Эскертүүлөр"
 
-#: notes/views.py:51
+#: notes/models.py:104 templates/notes/note_detail.html:78
+#: templates/notes/note_form.html:149
+#, fuzzy
+#| msgid "Image URL"
+msgid "Image"
+msgstr "Сүрөттүн URL-дареги"
+
+#: notes/models.py:108
+msgid "Order"
+msgstr "Тартиби"
+
+#: notes/models.py:112
+#| msgid "Updated at"
+msgid "Uploaded at"
+msgstr "Жүктөлгөн күнү"
+
+#: notes/models.py:117
+msgid "Note image"
+msgstr "Белгинин сүрөтү"
+
+#: notes/models.py:118
+#| msgid "Notes"
+msgid "Note images"
+msgstr "Белги сүрөттөрү"
+
+#: notes/views.py:54
 msgid "Note created successfully"
 msgstr "Эскертүү ийгиликтүү түзүлдү"
 
-#: notes/views.py:120
+#: notes/views.py:148 notes/views.py:384
 msgid "Note can only be edited by its author or team admin."
 msgstr "Эскертүүнү анын автору же команда админи гана өзгөртө алат."
 
-#: notes/views.py:142
+#: notes/views.py:170
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Эскертүүнү анын автору же команда админи гана өчүрө алат."
 
-#: notes/views.py:158
+#: notes/views.py:186
 msgid "Note updated successfully"
 msgstr "Эскертүү ийгиликтүү жаңыртылды"
 
-#: notes/views.py:214
+#: notes/views.py:270
 msgid "Note deleted successfully"
 msgstr "Эскертүү ийгиликтүү өчүрүлдү"
+
+#: notes/views.py:307
+#, python-format
+msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr "«%(name)s» сүрөтү өтө чоң. Максималдуу өлчөмү — %(max)s МБ."
+
+#: notes/views.py:314
+#, python-format
+msgid ""
+"Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
+"WebP."
+msgstr ""
+"«%(name)s» сүрөтүнүн форматы колдоого алынбайт. Уруксат берилген форматтар: "
+"JPEG, PNG, GIF, WebP."
+
+#: notes/views.py:321 notes/views.py:324
+#, python-format
+msgid "Image '%(name)s' is corrupted or not a valid image."
+msgstr "«%(name)s» файлы бузулган же сүрөт эмес."
+
+#: notes/views.py:367
+#| msgid "Label deleted successfully"
+msgid "Image deleted successfully"
+msgstr "Сүрөт ийгиликтүү өчүрүлдү"
 
 #: notifications/models.py:9
 msgid "Task assigned"
@@ -266,7 +321,8 @@ msgid "Message"
 msgstr "Билдирүү"
 
 #: notifications/models.py:51
-msgid "Legacy field. Use message_key and message_params for new notifications."
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
 "Эскирген талаа. Жаңы билдирмелер үчүн message_key жана message_params'ты "
 "колдонуңуз."
@@ -373,7 +429,8 @@ msgid "You don't have permissions to modify another user."
 msgstr "Башка колдонуучуну өзгөртүүгө укугуңуз жок."
 
 #: permissions.py:40
-msgid "You don't have permissions to modify this. Only team admin can do this."
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
 msgstr "Муну өзгөртүүгө укугуңуз жок. Муну команда админи гана жасай алат."
 
 #: permissions.py:65
@@ -381,8 +438,8 @@ msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
 msgstr ""
-"Команданын мүчөлөрүн башкарууга укугуңуз жок. Муну команда админи гана жасай "
-"алат."
+"Команданын мүчөлөрүн башкарууга укугуңуз жок. Муну команда админи гана жасай"
+" алат."
 
 #: permissions.py:74
 msgid "You cannot change your own role in the team."
@@ -850,8 +907,8 @@ msgstr "Командадагы мүчөлүк табылган жок."
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this "
-"team."
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
 msgstr ""
 "Сиз командадан чыга албайсыз, анткени бул командадагы тапшырмалардын автору "
 "же аткаруучусусуз."
@@ -1024,8 +1081,8 @@ msgstr "Кененирээк"
 msgid "Go back"
 msgstr "Артка кайтуу"
 
-#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:63
+#: templates/base.html:430 templates/feedback.html:7
+#: templates/feedback.html:12 views.py:63
 msgid "Feedback"
 msgstr "Кайтарым байланыш"
 
@@ -1052,8 +1109,8 @@ msgid ""
 "Your message will be sent to developers via Telegram. We will reply to the "
 "contact you provide."
 msgstr ""
-"Билдирүүңүз Telegram аркылуу иштеп чыгуучуларга жөнөтүлөт. Биз сиз көрсөткөн "
-"байланыш аркылуу жооп беребиз."
+"Билдирүүңүз Telegram аркылуу иштеп чыгуучуларга жөнөтүлөт. Биз сиз көрсөткөн"
+" байланыш аркылуу жооп беребиз."
 
 #: templates/feedback.html:51
 msgid "Telegram opened! Send your message there."
@@ -1140,7 +1197,7 @@ msgstr "Тил колдоосу"
 msgid "Create label"
 msgstr "Тег түзүү"
 
-#: templates/labels/labels_create.html:15 templates/notes/note_form.html:125
+#: templates/labels/labels_create.html:15 templates/notes/note_form.html:177
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:78
 #: templates/teams/team_create_form.html:28
@@ -1151,16 +1208,16 @@ msgstr "Түзүү"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:83 templates/notes/note_form.html:130
-#: templates/notes/note_form.html:134 templates/notes/note_form.html:184
+#: templates/notes/note_detail.html:104 templates/notes/note_form.html:182
+#: templates/notes/note_form.html:186 templates/notes/note_form.html:236
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:220
-#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:81
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:220
+#: templates/teams/team_create_form.html:31
+#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
+#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1196,7 +1253,7 @@ msgid "New label"
 msgstr "Жаңы тег"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:71 templates/notes/note_form.html:43
+#: templates/notes/note_detail.html:92 templates/notes/note_form.html:43
 #: templates/notes/note_list.html:74 templates/tasks/task_filter.html:453
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
@@ -1216,7 +1273,8 @@ msgid "Create Label"
 msgstr "Тег түзүү"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27
+#: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1235,14 +1293,15 @@ msgstr "Түзүүчү"
 msgid "Label"
 msgstr "Тег"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:123
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:175
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:310 templates/tasks/task_update.html:217
 #: templates/user/user_update.html:13
 msgid "Save"
 msgstr "Сактоо"
 
-#: templates/labels/labels_update.html:71 templates/notes/note_form.html:141
+#: templates/labels/labels_update.html:71 templates/notes/note_form.html:157
+#: templates/notes/note_form.html:158 templates/notes/note_form.html:193
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:151 templates/tasks/task_update.html:225
@@ -1342,7 +1401,13 @@ msgstr "Жаңыртылган"
 msgid "Loading content..."
 msgstr "Мазмун жүктөлүүдө..."
 
-#: templates/notes/note_detail.html:80 templates/statuses/statuses_list.html:73
+#: templates/notes/note_detail.html:72 templates/notes/note_form.html:119
+#| msgid "Image URL"
+msgid "Images"
+msgstr "Сүрөттөр"
+
+#: templates/notes/note_detail.html:101
+#: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Өзгөртүү"
@@ -1364,7 +1429,7 @@ msgid "Enter note content... Use Markdown for formatting."
 msgstr ""
 "Эскертүүнүн мазмунун киргизиңиз... Форматтоо үчүн Markdown'ду колдонуңуз."
 
-#: templates/notes/note_form.html:95 templates/notes/note_form.html:180
+#: templates/notes/note_form.html:95 templates/notes/note_form.html:232
 msgid "Preview"
 msgstr "Алдын ала көрүү"
 
@@ -1372,27 +1437,40 @@ msgstr "Алдын ала көрүү"
 msgid "Markdown supported:"
 msgstr "Markdown колдоого алынат:"
 
-#: templates/notes/note_form.html:157
+#: templates/notes/note_form.html:129
+#, python-format
+msgid ""
+"Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
+"WebP)."
+msgstr ""
+"Ар бир белги үчүн %(max_count)s сүрөткө чейин, ар бири %(max_mb)s МБ ашпаган"
+" (JPEG, PNG, GIF, WebP)."
+
+#: templates/notes/note_form.html:142
+msgid "Attached images"
+msgstr "Тиркелген сүрөттөр"
+
+#: templates/notes/note_form.html:209
 msgid "Insert Image"
 msgstr "Сүрөт киргизүү"
 
-#: templates/notes/note_form.html:159
+#: templates/notes/note_form.html:211
 msgid "Close"
 msgstr "Жабуу"
 
-#: templates/notes/note_form.html:164
+#: templates/notes/note_form.html:216
 msgid "Image URL"
 msgstr "Сүрөттүн URL-дареги"
 
-#: templates/notes/note_form.html:173
+#: templates/notes/note_form.html:225
 msgid "Description (alt text)"
 msgstr "Сүрөттөмө (alt-текст)"
 
-#: templates/notes/note_form.html:178
+#: templates/notes/note_form.html:230
 msgid "Image description"
 msgstr "Сүрөттүн сүрөттөмөсү"
 
-#: templates/notes/note_form.html:187
+#: templates/notes/note_form.html:239
 msgid "Insert"
 msgstr "Киргизүү"
 
@@ -1576,8 +1654,8 @@ msgstr "Байланыш"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback "
-"form or at:"
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
 msgstr ""
 "Эгер бул купуялуулук саясаты боюнча суроолоруңуз болсо, биз менен кайтарым "
 "байланыш формасы аркылуу же төмөнкү дарек боюнча байланышыңыз:"
@@ -1591,8 +1669,8 @@ msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."
 msgstr ""
-"Биз бул саясатты жаңырта алабыз. Өзгөртүүлөр ушул баракчага жаңыртылган дата "
-"менен жарыяланат."
+"Биз бул саясатты жаңырта алабыз. Өзгөртүүлөр ушул баракчага жаңыртылган дата"
+" менен жарыяланат."
 
 #: templates/statuses/statuses_create_form.html:16
 msgid "Create status"
@@ -1644,11 +1722,11 @@ msgstr "Аткарылган тапшырмалар демейки бойдон 
 msgid "Show all tasks"
 msgstr "Бардык тапшырмаларды көрсөт"
 
-#: templates/tasks/partials/empty_state.html:19
+#: templates/tasks/partials/empty_state.html:20
 msgid "Reset filters"
 msgstr "Чыпкаларды тазалоо"
 
-#: templates/tasks/partials/empty_state.html:23
+#: templates/tasks/partials/empty_state.html:24
 msgid "Create Task"
 msgstr "Тапшырма түзүү"
 
@@ -1656,29 +1734,35 @@ msgstr "Тапшырма түзүү"
 msgid "Create task"
 msgstr "Тапшырма түзүү"
 
-#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
+#: templates/tasks/task_create_form.html:28
+#: templates/tasks/task_update.html:90
 #, fuzzy
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
 msgstr "Тапшырманы тез түзүү"
 
-#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
+#: templates/tasks/task_create_form.html:29
+#: templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "8 сааттан кийин"
 
-#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
+#: templates/tasks/task_create_form.html:30
+#: templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "1 күндөн кийин"
 
-#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
+#: templates/tasks/task_create_form.html:31
+#: templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "3 күндөн кийин"
 
-#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
+#: templates/tasks/task_create_form.html:32
+#: templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "21 күндөн кийин"
 
-#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
+#: templates/tasks/task_create_form.html:34
+#: templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Мөөнөттү тазалоо"
 
@@ -2098,7 +2182,8 @@ msgstr "Командага кошулуу (милдеттүү эмес)"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work individually"
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
 msgstr ""
 "Бар командага кошулуу үчүн команданын атын киргизиңиз, же жеке иштөө үчүн "
 "бош калтырыңыз."
@@ -2172,8 +2257,8 @@ msgstr "Сиз системадан чыктыңыз"
 #~ msgstr "Бир нече үчүн Ctrl/Cmd"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name "
-#~ "and password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
+#~ "password below."
 #~ msgstr ""
 #~ "Эгер сизде чакыруу шилтемеси болсо, аны жогору жакка чаптаңыз. Болбосо, "
 #~ "төмөн жакка команданын атын жана сырсөзүн киргизиңиз."

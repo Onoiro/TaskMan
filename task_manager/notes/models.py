@@ -1,3 +1,4 @@
+import os
 import uuid
 
 from django.db import models
@@ -78,3 +79,48 @@ class Note(models.Model):
         if self.title:
             return self.title
         return f"Note {self.id}"
+
+
+def note_image_upload_to(instance, filename):
+    """Store images in a per-note directory named by note uuid."""
+    ext = os.path.splitext(filename)[1].lower()
+    return f"notes/{instance.note.uuid}/{uuid.uuid4()}{ext}"
+
+
+class NoteImage(models.Model):
+    # Upload limits shared by forms, views and tests
+    MAX_IMAGE_SIZE_MB = 5
+    ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+
+    id = models.AutoField(primary_key=True)
+    note = models.ForeignKey(
+        Note,
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name=_('Note')
+    )
+    image = models.ImageField(
+        upload_to=note_image_upload_to,
+        verbose_name=_('Image')
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name=_('Order')
+    )
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Uploaded at')
+    )
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = _('Note image')
+        verbose_name_plural = _('Note images')
+
+    def __str__(self):
+        return f"Image {self.id} for note {self.note_id}"
+
+    def delete(self, *args, **kwargs):
+        # Remove the file from storage along with the DB record
+        self.image.delete(save=False)
+        return super().delete(*args, **kwargs)
