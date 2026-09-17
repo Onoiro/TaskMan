@@ -16,3 +16,4 @@ pip-delete-this-directory.txt
 .mypy_cache
 Dockerfile
 todo.txt
+media

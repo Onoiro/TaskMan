@@ -42,6 +42,7 @@ class LimitService:
         'team_labels': _('team labels'),
         'personal_notes': _('personal notes'),
         'team_notes': _('team notes'),
+        'note_images': _('note images'),
         'checklist_items': _('checklist items'),
     }
 
@@ -230,6 +231,23 @@ class LimitService:
             allowed=allowed,
             current=current,
             maximum=max_notes,
+            message=message
+        )
+
+    def can_add_note_images(self, note, additional: int) -> LimitCheckResult:
+        """Check if more images can be attached to a note."""
+        current = note.images.count()
+        max_images = self.limits.max_note_images
+
+        allowed = current + additional <= max_images
+        message = ""
+        if not allowed:
+            message = self._get_limit_message('note_images', max_images)
+
+        return LimitCheckResult(
+            allowed=allowed,
+            current=current,
+            maximum=max_images,
             message=message
         )
 

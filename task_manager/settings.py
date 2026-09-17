@@ -250,6 +250,11 @@ STATIC_URL = '/static/'
 # Additional locations where Django will search for static files
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
+# User-uploaded files (note images). Served through a private view,
+# never directly via MEDIA_URL.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Storage configuration for static and media files
 STORAGES = {
     "default": {

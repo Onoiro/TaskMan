@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
 
-            <form method="post" class="h-100 d-flex flex-column">
+            <form method="post" enctype="multipart/form-data" class="h-100 d-flex flex-column">
                 {% csrf_token %}
 
                 <!-- Meta information block -->
@@ -112,6 +112,58 @@
 
                         <!-- Task field -->
                         {% bootstrap_field form.task show_help_text=True %}
+
+                        <!-- Images upload -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-1" for="id_images">
+                                {% trans "Images" %}
+                            </label>
+                            <input type="file"
+                                   class="form-control"
+                                   name="images"
+                                   id="id_images"
+                                   accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp"
+                                   multiple>
+                            <div class="form-text">
+                                <i class="bi bi-image"></i>
+                                {% blocktrans trimmed with max_mb=5 max_count=10 %}
+                                Up to {{ max_count }} images per note, {{ max_mb }} MB each (JPEG, PNG, GIF, WebP).
+                                {% endblocktrans %}
+                            </div>
+                            <!-- Previews of newly selected files -->
+                            <div id="image-upload-previews"
+                                 class="row row-cols-3 row-cols-sm-4 g-2 mt-2 d-none"></div>
+                        </div>
+
+                        <!-- Existing images (edit mode) -->
+                        {% if object.pk and object.images.all %}
+                        <div class="mb-3">
+                            <span class="form-label small text-muted mb-1 d-block">
+                                {% trans "Attached images" %}
+                            </span>
+                            <div class="row row-cols-3 row-cols-sm-4 g-2">
+                                {% for image in object.images.all %}
+                                <div class="col" id="existing-image-{{ image.pk }}">
+                                    <div class="position-relative">
+                                        <img src="{% url 'notes:note-image-detail' object.uuid image.pk %}"
+                                             alt="{{ object.title|default:_('Note') }} — {{ forloop.counter }}"
+                                             class="img-fluid rounded border"
+                                             loading="lazy">
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
+                                                data-delete-image
+                                                data-delete-url="{% url 'notes:note-image-delete' image.pk %}"
+                                                data-image-id="existing-image-{{ image.pk }}"
+                                                aria-label="{% trans 'Delete' %}"
+                                                title="{% trans 'Delete' %}">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -261,6 +313,49 @@ document.addEventListener('DOMContentLoaded', function() {
             preview.style.display = 'none';
         });
     }
+
+    // Previews of newly selected image files
+    const imageInput = document.getElementById('id_images');
+    const previewsRow = document.getElementById('image-upload-previews');
+    if (imageInput && previewsRow) {
+        imageInput.addEventListener('change', function() {
+            previewsRow.innerHTML = '';
+            previewsRow.classList.toggle('d-none', this.files.length === 0);
+            Array.from(this.files).forEach((file) => {
+                if (!file.type.startsWith('image/')) return;
+                const col = document.createElement('div');
+                col.className = 'col';
+                const img = document.createElement('img');
+                img.className = 'img-fluid rounded border';
+                img.alt = file.name;
+                img.loading = 'lazy';
+                img.src = URL.createObjectURL(file);
+                col.appendChild(img);
+                previewsRow.appendChild(col);
+            });
+        });
+    }
+
+    // Delete existing images without leaving the form
+    document.querySelectorAll('[data-delete-image]').forEach((btn) => {
+        btn.addEventListener('click', function() {
+            const url = this.dataset.deleteUrl;
+            const imageId = this.dataset.imageId;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector(
+                        '[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    const el = document.getElementById(imageId);
+                    if (el) el.remove();
+                }
+            }).catch(() => {});
+        });
+    });
 });
 </script>
 {% endblock %}
