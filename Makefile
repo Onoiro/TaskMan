@@ -256,16 +256,20 @@ d-push-backup:
 
 # full cycle: build, start, migrate, static, clean up, check
 deploy:
-	mkdir -p staticfiles
-	mkdir -p backups
-	$(DC) build
-	$(DC) up -d
-	sleep 5
-	$(DC) exec django-web python manage.py migrate
-	$(DC) exec django-web python manage.py collectstatic --no-input --clear
+        mkdir -p staticfiles
+        mkdir -p backups
+        mkdir -p media
+        $(DC) build
+        $(DC) up -d
+        sleep 5
+        $(DC) exec django-web python manage.py migrate
+        $(DC) exec django-web python manage.py collectstatic --no-input --clear
 
-	@echo "=== Make rights on static files for Nginx ==="
-	chmod -R o+rX staticfiles/
+        @echo "=== Make rights on static files for Nginx ==="
+        chmod -R o+rX staticfiles/
+
+        @echo "=== Make rights on uploaded media files ==="
+        chmod -R o+rX media/
 
 	@echo "=== Restart Django to reload staticfiles manifest ==="
 	$(DC) restart django-web
