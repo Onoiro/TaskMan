@@ -47,7 +47,42 @@ class NoteListView(CustomPermissions, ListView):
         return context
 
 
-class NoteCreateView(SuccessMessageMixin, CreateView):
+class NoteImagesMixin:
+    """Shared logic for attaching uploaded images to a note."""
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self._attach_images(form.instance)
+        return response
+
+    def _attach_images(self, note):
+        """Validate and save uploaded images for the note."""
+        files = self.request.FILES.getlist('images')
+        if not files:
+            return
+
+        service = LimitService(self.request.user)
+        result = service.can_add_note_images(note, len(files))
+        if not result.allowed:
+            messages.warning(self.request, result.message)
+            return
+
+        order = note.images.count()
+        for uploaded_file in files:
+            error = validate_image_upload(uploaded_file)
+            if error:
+                messages.error(self.request, error)
+                continue
+            NoteImage.objects.create(
+                note=note,
+                image=uploaded_file,
+                order=order
+            )
+            order += 1
+
+
+class NoteCreateView(NoteImagesMixin, SuccessMessageMixin, CreateView):
+
     model = Note
     form_class = NoteForm
     template_name = 'notes/note_form.html'
@@ -80,34 +115,7 @@ class NoteCreateView(SuccessMessageMixin, CreateView):
         team = getattr(self.request, 'active_team', None)
         if team:
             form.instance.team = team
-        response = super().form_valid(form)
-        self._attach_images(form.instance)
-        return response
-
-    def _attach_images(self, note):
-        """Validate and save uploaded images for the note."""
-        files = self.request.FILES.getlist('images')
-        if not files:
-            return
-
-        service = LimitService(self.request.user)
-        result = service.can_add_note_images(note, len(files))
-        if not result.allowed:
-            messages.warning(self.request, result.message)
-            return
-
-        order = note.images.count()
-        for uploaded_file in files:
-            error = validate_image_upload(uploaded_file)
-            if error:
-                messages.error(self.request, error)
-                continue
-            NoteImage.objects.create(
-                note=note,
-                image=uploaded_file,
-                order=order
-            )
-            order += 1
+        return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -178,6 +186,7 @@ class NoteDeletePermissionMixin:
 
 class NoteUpdateView(
     NoteUpdatePermissionMixin,
+    NoteImagesMixin,
     CustomPermissions,
     SuccessMessageMixin,
     UpdateView
@@ -212,36 +221,6 @@ class NoteUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self._attach_images(form.instance)
-        return response
-
-    def _attach_images(self, note):
-        """Validate and save uploaded images for the note."""
-        files = self.request.FILES.getlist('images')
-        if not files:
-            return
-
-        service = LimitService(self.request.user)
-        result = service.can_add_note_images(note, len(files))
-        if not result.allowed:
-            messages.warning(self.request, result.message)
-            return
-
-        order = note.images.count()
-        for uploaded_file in files:
-            error = validate_image_upload(uploaded_file)
-            if error:
-                messages.error(self.request, error)
-                continue
-            NoteImage.objects.create(
-                note=note,
-                image=uploaded_file,
-                order=order
-            )
-            order += 1
 
 
 class NoteDetailView(CustomPermissions, DetailView):

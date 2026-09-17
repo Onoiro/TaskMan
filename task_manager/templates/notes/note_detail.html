@@ -75,7 +75,7 @@
                             {% for image in object.images.all %}
                             <div class="col">
                                 <img src="{% url 'notes:note-image-detail' object.uuid image.pk %}"
-                                     alt="{% trans 'Image' %} {{ forloop.counter }}"
+                                     alt="{{ object.title|default:_('Note') }} — {{ forloop.counter }}"
                                      class="img-fluid rounded border w-100 note-gallery-thumb"
                                      loading="lazy"
                                      style="cursor: pointer; object-fit: cover; aspect-ratio: 1;">
