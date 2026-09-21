@@ -238,9 +238,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
         # auto login after creating user
         login(self.request, user)
 
-        # Set flag to redirect to tasks list on first visit
-        self.request.session['redirect_after_login'] = True
-
         # Check if user joined via invite
         invite_code = self.request.GET.get('invite_code')
         if invite_code:

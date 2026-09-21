@@ -41,23 +41,10 @@ class IndexViewTestCase(TestCase):
         response = self.client.get(reverse('index'))
         self.assertRedirects(response, reverse('tasks:tasks-list'))
 
-    def test_index_shows_for_authenticated_after_redirect(self):
-        # After first redirect, authenticated user can see index page
-        # This simulates clicking on logo/TaskMan link in navbar
-        self.client.login(username='testuser', password='testpass123')
-        # First visit triggers redirect to tasks
-        self.client.get(reverse('index'))
-        # Second visit should show index page (user clicked logo)
-        response = self.client.get(reverse('index'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'index.html')
-
-    def test_index_no_redirect_without_session_flag(self):
-        # Authenticated user without redirect flag sees index page
-        # This simulates direct navigation to index (not after login)
+    def test_index_always_redirects_authenticated_to_tasks(self):
+        # Authenticated user is always redirected to tasks list,
+        # not only on the first visit after login
         self.client.force_login(self.user)
-        # Ensure session flag is not set
-        self.client.session['redirect_after_login'] = False
-        response = self.client.get(reverse('index'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'index.html')
+        for __ in range(2):
+            response = self.client.get(reverse('index'))
+            self.assertRedirects(response, reverse('tasks:tasks-list'))

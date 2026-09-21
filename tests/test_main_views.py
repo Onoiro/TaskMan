@@ -137,57 +137,19 @@ class MainViewsTestCase(TestCase):
         self.assertTemplateUsed(response, 'index.html')
         self.assertIn('taskman', response.context)
 
-    def test_index_view_authenticated_no_redirect_flag(self):
-        """Test index page for authenticated user without redirect flag."""
-        user = User.objects.create_user(
-            username='test_index_user',
-            password='password123'
-        )
-        self.c.force_login(user)
-
-        # Ensure redirect_after_login flag is NOT set
-        self.c.session['redirect_after_login'] = False
-        self.c.session.save()
-
-        response = self.c.get(reverse('index'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'index.html')
-
-    def test_index_view_authenticated_with_redirect_flag(self):
-        """Test index page redirects to tasks when flag is set."""
+    def test_index_view_authenticated_redirects_to_tasks(self):
+        """Test index page always redirects authenticated user to tasks."""
         user = User.objects.create_user(
             username='test_redirect_user',
             password='password123'
         )
         self.c.force_login(user)
 
-        # Set redirect_after_login flag
-        session = self.c.session
-        session['redirect_after_login'] = True
-        session.save()
-
         response = self.c.get(reverse('index'))
 
         # Should redirect to tasks list
         self.assertEqual(response.status_code, 302)
         self.assertIn('tasks', response.url)
-
-    def test_index_view_clears_redirect_flag(self):
-        """Test that redirect flag is cleared after redirect."""
-        user = User.objects.create_user(
-            username='test_flag_clear_user',
-            password='password123'
-        )
-        self.c.force_login(user)
-        session = self.c.session
-        session['redirect_after_login'] = True
-        session.save()
-
-        self.c.get(reverse('index'), follow=True)
-
-        # Check flag was cleared
-        self.assertFalse(self.c.session.get('redirect_after_login'))
 
 
 class UserLoginLogoutViewsTestCase(TestCase):
@@ -200,8 +162,8 @@ class UserLoginLogoutViewsTestCase(TestCase):
         )
         self.c = Client()
 
-    def test_user_login_view_success_sets_redirect_flag(self):
-        """Test successful login sets redirect_after_login flag."""
+    def test_user_login_view_success(self):
+        """Test successful login redirects and shows success message."""
         # Get the login page first to obtain CSRF token
         login_page = self.c.get(reverse('login'))
         csrf_token = login_page.context['csrf_token']
@@ -217,8 +179,6 @@ class UserLoginLogoutViewsTestCase(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        # Check redirect flag was set
-        self.assertTrue(self.c.session.get('redirect_after_login'))
 
         # Check success message
         messages = list(get_messages(response.wsgi_request))

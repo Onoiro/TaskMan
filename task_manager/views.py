@@ -17,12 +17,9 @@ def trigger_error(request):
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
-        # Redirect authenticated users to tasks list only on first login
-        # The flag is set in UserLoginView after successful login
-        if request.user.is_authenticated and \
-           request.session.get('redirect_after_login', False):
-            # Clear the flag so next click on logo shows index page
-            request.session['redirect_after_login'] = False
+        # Authenticated users are always redirected to tasks list:
+        # working with tasks is the primary use case of the app
+        if request.user.is_authenticated:
             return redirect('tasks:tasks-list')
         content = {
             'taskman': _("TaskMan"),
@@ -40,9 +37,6 @@ class UserLoginView(LoginView):
 
     def form_valid(self, form: AuthenticationForm):
         messages.success(self.request, _("You successfully logged in"))
-        # Set flag to redirect to tasks list on first visit after login
-        # This allows user to access index page by clicking logo later
-        self.request.session['redirect_after_login'] = True
         return super().form_valid(form)
 
 
