@@ -4,6 +4,7 @@ from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from django import forms
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class TaskForm(forms.ModelForm):
@@ -25,6 +26,9 @@ class TaskForm(forms.ModelForm):
         # depending on the user and their team.
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
+        # Placeholder differs from the label: it hints what to type
+        self.fields['name'].widget.attrs['placeholder'] = _(
+            'Enter task name')
         self.fields['deadline'].required = False
         # datetime-local requires ISO format (T separator, no localized
         # formats), otherwise the browser silently drops the initial

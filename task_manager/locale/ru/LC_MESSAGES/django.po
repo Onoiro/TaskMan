@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 18:34+0300\n"
+"POT-Creation-Date: 2026-09-21 17:38+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -13,7 +13,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: forms.py:8
 msgid "Specify the subject:"
@@ -44,8 +46,8 @@ msgstr "Название"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
-" #, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
 msgstr ""
 "Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
 "не разрешены."
@@ -70,12 +72,12 @@ msgstr "Невозможно удалить метку, потому что он
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way —"
-" we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way — "
+"we're working on it!"
 msgstr ""
-"Вы активно используете сервис! Достигнут лимит для ресурса «%(resource)s» "
-"(%(max)s). Попробуйте удалить то, что вам больше не нужно. TaskMan Pro без "
-"ограничений уже в разработке — мы над этим работаем!"
+"Вы активно используете сервис! Достигнут лимит для ресурса "
+"«%(resource)s» (%(max)s). Попробуйте удалить то, что вам больше не нужно. "
+"TaskMan Pro без ограничений уже в разработке — мы над этим работаем!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -158,8 +160,8 @@ msgstr "Содержимое"
 msgid "Author"
 msgstr "Автор"
 
-#: notes/models.py:54 tasks/models.py:47
-#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
+#: templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Команда"
 
@@ -180,7 +182,8 @@ msgid "Updated at"
 msgstr "Дата обновления"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_form.html:25
+#: templates/notes/note_detail.html:78 templates/notes/note_form.html:25
+#: templates/notes/note_form.html:149
 msgid "Note"
 msgstr "Заметка"
 
@@ -191,8 +194,7 @@ msgstr "Заметка"
 msgid "Notes"
 msgstr "Заметки"
 
-#: notes/models.py:104 templates/notes/note_detail.html:78
-#: templates/notes/note_form.html:149
+#: notes/models.py:104
 #, fuzzy
 #| msgid "Image URL"
 msgid "Image"
@@ -214,33 +216,33 @@ msgstr "Изображение заметки"
 msgid "Note images"
 msgstr "Изображения заметок"
 
-#: notes/views.py:54
+#: notes/views.py:89
 msgid "Note created successfully"
 msgstr "Заметка успешно создана"
 
-#: notes/views.py:148 notes/views.py:384
+#: notes/views.py:158 notes/views.py:367
 msgid "Note can only be edited by its author or team admin."
 msgstr "Заметку может изменить только ее автор или администратор команды."
 
-#: notes/views.py:170
+#: notes/views.py:180
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Заметку может удалить только ее автор или администратор команды."
 
-#: notes/views.py:186
+#: notes/views.py:197
 msgid "Note updated successfully"
 msgstr "Заметка успешно изменена"
 
-#: notes/views.py:270
+#: notes/views.py:253
 msgid "Note deleted successfully"
 msgstr "Заметка успешно удалена"
 
-#: notes/views.py:307
+#: notes/views.py:290
 #, python-format
 msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
 msgstr ""
 "Изображение «%(name)s» слишком большое. Максимальный размер — %(max)s МБ."
 
-#: notes/views.py:314
+#: notes/views.py:297
 #, python-format
 msgid ""
 "Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
@@ -249,12 +251,12 @@ msgstr ""
 "Формат изображения «%(name)s» не поддерживается. Допустимые форматы: JPEG, "
 "PNG, GIF, WebP."
 
-#: notes/views.py:321 notes/views.py:324
+#: notes/views.py:304 notes/views.py:307
 #, python-format
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "Файл «%(name)s» поврежден или не является изображением."
 
-#: notes/views.py:367
+#: notes/views.py:350
 #, fuzzy
 #| msgid "Label deleted successfully"
 msgid "Image deleted successfully"
@@ -321,8 +323,7 @@ msgid "Message"
 msgstr "Сообщение"
 
 #: notifications/models.py:51
-msgid ""
-"Legacy field. Use message_key and message_params for new notifications."
+msgid "Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
 "Устаревшее поле. Используйте message_key и message_params для новых "
 "уведомлений."
@@ -429,8 +430,7 @@ msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
 #: permissions.py:40
-msgid ""
-"You don't have permissions to modify this. Only team admin can do this."
+msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "У вас нет прав, чтобы изменить это. Это может сделать только администратор "
 "команды."
@@ -608,6 +608,10 @@ msgstr "По"
 msgid "Has checklist"
 msgstr "Есть чеклист"
 
+#: tasks/forms.py:31
+msgid "Enter task name"
+msgstr "Введите название задачи"
+
 #: tasks/models.py:58
 msgid "Executors"
 msgstr "Исполнители"
@@ -666,8 +670,7 @@ msgstr "Задачу может удалить только ее автор ил
 #: tasks/views.py:98 tasks/views.py:456
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
-"Задачу может изменить только ее автор, исполнители или администратор "
-"команды."
+"Задачу может изменить только ее автор, исполнители или администратор команды."
 
 #: tasks/views.py:196
 msgid "Filter saved as default"
@@ -911,8 +914,8 @@ msgstr "Участие в команде не найдено."
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this"
-" team."
+"You cannot exit the team because you are author or executor of tasks in this "
+"team."
 msgstr ""
 "Вы не можете покинуть команду, так как являетесь автором или исполнителем "
 "задач в этой команде."
@@ -926,7 +929,7 @@ msgstr "Команда успешно создана"
 msgid "You have successfully joined the team {team}"
 msgstr "Вы успешно присоединились к команде {team}"
 
-#: teams/views.py:468 user/views.py:262 user/views.py:306
+#: teams/views.py:468 user/views.py:259 user/views.py:303
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -987,7 +990,7 @@ msgstr "Пользователь {username} одобрен и теперь яв�
 msgid "User {username} membership has been set to pending."
 msgstr "Заявка пользователя {username} переведена в статус ожидания."
 
-#: templates/base.html:50 templates/base.html:82 views.py:28
+#: templates/base.html:50 templates/base.html:82 views.py:25
 msgid "TaskMan"
 msgstr "ТаскМан"
 
@@ -1086,8 +1089,8 @@ msgstr "Подробнее"
 msgid "Go back"
 msgstr "Назад"
 
-#: templates/base.html:430 templates/feedback.html:7
-#: templates/feedback.html:12 views.py:63
+#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:57
 msgid "Feedback"
 msgstr "Обратная связь"
 
@@ -1216,11 +1219,11 @@ msgstr "Создать"
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:81
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:220
-#: templates/teams/team_create_form.html:31
-#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
-#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:220
+#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
+#: templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1276,8 +1279,7 @@ msgid "Create Label"
 msgstr "Создать метку"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27
-#: templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1308,7 +1310,7 @@ msgstr "Сохранить"
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:151 templates/tasks/task_update.html:225
-#: templates/tasks/task_update.html:365 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:370 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Удалить"
@@ -1405,13 +1407,12 @@ msgid "Loading content..."
 msgstr "Загрузка содержимого..."
 
 #: templates/notes/note_detail.html:72 templates/notes/note_form.html:119
-#| msgid "Image URL"
 msgid "Images"
 msgstr "Изображения"
 
 #: templates/notes/note_detail.html:101
-#: templates/statuses/statuses_list.html:73
-#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
+#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
+#: templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Изменить"
 
@@ -1656,8 +1657,8 @@ msgstr "Контакты"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback"
-" form or at:"
+"If you have questions about this privacy policy, contact us via the feedback "
+"form or at:"
 msgstr ""
 "Если у вас есть вопросы по этой политике конфиденциальности, свяжитесь с "
 "нами через форму обратной связи или по адресу:"
@@ -1736,35 +1737,29 @@ msgstr "Создать задачу"
 msgid "Create task"
 msgstr "Создать задачу"
 
-#: templates/tasks/task_create_form.html:28
-#: templates/tasks/task_update.html:90
+#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
 #, fuzzy
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
 msgstr "Быстрый дедлайн"
 
-#: templates/tasks/task_create_form.html:29
-#: templates/tasks/task_update.html:91
+#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "через 8 часов"
 
-#: templates/tasks/task_create_form.html:30
-#: templates/tasks/task_update.html:92
+#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "через 1 день"
 
-#: templates/tasks/task_create_form.html:31
-#: templates/tasks/task_update.html:93
+#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "через 3 дня"
 
-#: templates/tasks/task_create_form.html:32
-#: templates/tasks/task_update.html:94
+#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "через 21 день"
 
-#: templates/tasks/task_create_form.html:34
-#: templates/tasks/task_update.html:96
+#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Убрать дедлайн"
 
@@ -1889,7 +1884,7 @@ msgstr "Добавьте элемент чеклиста"
 msgid "Add item..."
 msgstr "Добавить пункт"
 
-#: templates/tasks/task_update.html:453
+#: templates/tasks/task_update.html:458
 msgid "Delete this item?"
 msgstr "Удалить этот пункт?"
 
@@ -2088,8 +2083,8 @@ msgid ""
 "service. We may perform maintenance that temporarily affects availability."
 msgstr ""
 "Мы стремимся поддерживать высокую доступность, но не гарантируем "
-"бесперебойную работу сервиса. Мы можем проводить технические работы, которые"
-" временно влияют на доступность."
+"бесперебойную работу сервиса. Мы можем проводить технические работы, которые "
+"временно влияют на доступность."
 
 #: templates/terms_of_service.html:39
 msgid "Termination"
@@ -2185,8 +2180,7 @@ msgstr "Присоединиться к команде (необязательн
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work "
-"individually"
+"Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
 "Введите название команды, чтобы присоединиться к существующей команде, или "
 "оставьте поле пустым, чтобы работать индивидуально."
@@ -2206,8 +2200,8 @@ msgstr "Присоединиться к другой команде (необя�
 #: user/forms.py:168
 msgid "Enter team name to join another team, or leave empty"
 msgstr ""
-"Введите название команды, к которой хотите присоединиться, или оставьте поле"
-" пустым"
+"Введите название команды, к которой хотите присоединиться, или оставьте поле "
+"пустым"
 
 #: user/forms.py:203
 msgid "Team password is required when joining a team"
@@ -2217,28 +2211,27 @@ msgstr "Пароль команды обязателен при присоеди
 msgid "User created successfully"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: user/views.py:250
+#: user/views.py:247
 msgid "Welcome! Your account has been created and you have joined the team."
 msgstr "Добро пожаловать! Ваш аккаунт создан, и вы присоединились к команде."
 
-#: user/views.py:269
+#: user/views.py:266
 msgid "Welcome! You can create a team or work individually"
-msgstr ""
-"Добро пожаловать! Вы можете создать команду или работать индивидуально"
+msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
-#: user/views.py:284
+#: user/views.py:281
 msgid "User updated successfully"
 msgstr "Пользователь успешно изменён"
 
-#: user/views.py:330
+#: user/views.py:327
 msgid "User account has been deleted"
 msgstr "Аккаунт пользователя удалён"
 
-#: views.py:29
+#: views.py:26
 msgid "Personal. Family. Work."
 msgstr "Личное. Семья. Работа."
 
-#: views.py:30
+#: views.py:27
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -2246,15 +2239,15 @@ msgstr ""
 "Один планировщик для всего: от заметок и личных целей до семейных дел и "
 "командных проектов."
 
-#: views.py:33
+#: views.py:30
 msgid "Read more"
 msgstr "Подробнее"
 
-#: views.py:42
+#: views.py:39
 msgid "You successfully logged in"
 msgstr "Вы успешно вошли"
 
-#: views.py:52
+#: views.py:46
 msgid "You are logged out"
 msgstr "Вы вышли из системы"
 
@@ -2262,14 +2255,15 @@ msgstr "Вы вышли из системы"
 #~ msgstr "Ctrl/Cmd для нескольких"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
-#~ "password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name "
+#~ "and password below."
 #~ msgstr ""
 #~ "Если у вас есть ссылка-приглашение, вставьте её выше. Если ссылки нет, "
 #~ "введите название и пароль команды ниже."
 
 #~ msgid "Team name is required when not using invite link"
-#~ msgstr "Название команды обязательно, если не используется ссылка-приглашение"
+#~ msgstr ""
+#~ "Название команды обязательно, если не используется ссылка-приглашение"
 
 #~ msgid "Team password is required when not using invite link"
 #~ msgstr "Пароль команды обязателен, если не используется ссылка-приглашение"
