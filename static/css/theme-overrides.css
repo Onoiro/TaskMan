@@ -28,6 +28,10 @@
     /* Pending user card */
     --tm-pending-bg: #fffbf0;
     
+    /* Form card (create/edit pages) */
+    --tm-form-card-bg: #f1f3f5;
+    --tm-form-card-border: #dee2e6;
+    
     /* Messages - light theme colors */
     --tm-msg-success-bg: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     --tm-msg-success-border: #28a745;
@@ -67,6 +71,10 @@
     
     /* Pending user card */
     --tm-pending-bg: #3d3520;
+    
+    /* Form card (create/edit pages) */
+    --tm-form-card-bg: #2b3035;
+    --tm-form-card-border: #495057;
     
     /* Messages - dark theme colors */
     --tm-msg-success-bg: linear-gradient(135deg, #1e3a2f 0%, #1a332a 100%);
@@ -290,4 +298,26 @@
 [data-bs-theme="dark"] textarea.form-control:focus {
     background-color: var(--tm-bg-tertiary) !important;
     color: var(--bs-body-color) !important;
+}
+
+/* Form card - visually group input fields on create/edit pages */
+.card.form-card {
+    background-color: var(--tm-form-card-bg) !important;
+    border: 1px solid var(--tm-form-card-border) !important;
+}
+
+.card.form-card > .card-body {
+    background-color: transparent !important;
+}
+
+/* Textareas carry inline var(--tm-bg-tertiary) from templates;
+   body background keeps them readable against the tinted card */
+.card.form-card textarea.form-control,
+.card.form-card textarea.form-control:focus {
+    background-color: var(--bs-body-bg) !important;
+}
+
+/* Color picker input keeps its native look */
+.card.form-card input.form-control-color {
+    background-color: transparent !important;
 }
