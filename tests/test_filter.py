@@ -1741,3 +1741,97 @@ class CompletionToggleTestCase(TestCase):
         content = response.content.decode()
         # No live countdown element for the completed task
         self.assertNotIn('data-deadline', content)
+
+
+class HasDeadlineFilterTestCase(TestCase):
+    """Tests for the has_deadline filter (active deadline only)."""
+
+    fixtures = ["tests/fixtures/test_teams.json",
+                "tests/fixtures/test_users.json",
+                "tests/fixtures/test_teams_memberships.json",
+                "tests/fixtures/test_statuses.json",
+                "tests/fixtures/test_tasks.json",
+                "tests/fixtures/test_labels.json"
+                ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='he')  # id=12
+        self.c = Client()
+        self.c.force_login(self.user)
+
+        membership = TeamMembership.objects.filter(user=self.user).first()
+        self.team = membership.team if membership else None
+        if self.team:
+            session = self.c.session
+            session['active_team_uuid'] = str(self.team.uuid)
+            session.save()
+
+        self.active_status = Status.objects.get(name='at work')
+        final_status = Status.objects.filter(
+            team=self.team
+        ).first()
+        final_status.is_completed = True
+        final_status.save()
+        self.final_status = final_status
+
+    def _create_task(self, name, status, deadline=None):
+        kwargs = {
+            'name': name,
+            'status': status,
+            'author': self.user,
+        }
+        if self.team:
+            kwargs['team'] = self.team
+        if deadline:
+            kwargs['deadline'] = deadline
+        return Task.objects.create(**kwargs)
+
+    def _filtered_ids(self):
+        response = self.c.get(reverse('tasks:tasks-list'),
+                              {'has_deadline': 'on'})
+        self.assertEqual(response.status_code, 200)
+        return set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+
+    def test_has_deadline_returns_only_tasks_with_deadline(self):
+        with_deadline = self._create_task(
+            'with deadline', self.active_status,
+            deadline='2030-06-01 12:00'
+        )
+        self._create_task('without deadline', self.active_status)
+
+        ids = self._filtered_ids()
+        self.assertIn(with_deadline.id, ids)
+        for task in Task.objects.filter(id__in=ids):
+            self.assertIsNotNone(task.deadline)
+
+    def test_has_deadline_includes_overdue_tasks(self):
+        from django.utils import timezone
+        overdue = self._create_task(
+            'overdue task', self.active_status,
+            deadline=timezone.now() - timezone.timedelta(days=1)
+        )
+        self.assertIn(overdue.id, self._filtered_ids())
+
+    def test_has_deadline_excludes_completed_tasks(self):
+        finished = self._create_task(
+            'finished task', self.final_status,
+            deadline='2030-01-01 12:00'
+        )
+        self.assertNotIn(finished.id, self._filtered_ids())
+
+    def test_has_deadline_false_returns_all_active_tasks(self):
+        self._create_task('with deadline', self.active_status,
+                          deadline='2030-06-01 12:00')
+        response = self.c.get(reverse('tasks:tasks-list'))
+        ids = set(
+            response.context['filter'].qs.values_list('id', flat=True)
+        )
+        # Without the checkbox the list is unaffected by the filter:
+        # every non-final task is present, deadline or not
+        self.assertEqual(ids, set(
+            Task.objects.exclude(
+                status__is_completed=True
+            ).values_list('id', flat=True)
+        ))

@@ -601,6 +601,14 @@ msgstr "Чейин"
 msgid "Has checklist"
 msgstr "Текшерүү тизмеси бар"
 
+#: tasks/filters.py:89 templates/tasks/task_filter.html:285
+msgid "Has deadline"
+msgstr "Мөөнөтү бар"
+
+#: templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Активдүү мөөнөтү бар"
+
 #: tasks/forms.py:31
 msgid "Enter task name"
 msgstr "Тапшырманын атын киргизиңиз"

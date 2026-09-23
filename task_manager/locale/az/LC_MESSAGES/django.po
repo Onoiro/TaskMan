@@ -604,6 +604,14 @@ msgstr "Tarixədək"
 msgid "Has checklist"
 msgstr "Yoxlama siyahısı var"
 
+#: tasks/filters.py:89 templates/tasks/task_filter.html:285
+msgid "Has deadline"
+msgstr "Son tarixi var"
+
+#: templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Aktiv son tarixi var"
+
 #: tasks/forms.py:31
 msgid "Enter task name"
 msgstr "Tapşırığın adını daxil edin"

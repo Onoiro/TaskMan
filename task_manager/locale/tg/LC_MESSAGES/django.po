@@ -605,6 +605,14 @@ msgstr "То"
 msgid "Has checklist"
 msgstr "Рӯйхати санҷиш дорад"
 
+#: tasks/filters.py:89 templates/tasks/task_filter.html:285
+msgid "Has deadline"
+msgstr "Мӯҳлат дорад"
+
+#: templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Мӯҳлати фаъол дорад"
+
 #: tasks/forms.py:31
 msgid "Enter task name"
 msgstr "Номи вазифаро ворид кунед"

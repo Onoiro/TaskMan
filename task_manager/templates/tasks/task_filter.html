@@ -281,6 +281,17 @@
                                     {{ filter.form.created_before }}
                                 </div>
                             </div>
+
+                            <!-- Has active deadline checkbox -->
+                            <div class="filter-field">
+                                <div class="form-check mt-2">
+                                    {{ filter.form.has_deadline }}
+                                    <label class="form-check-label small" for="id_has_deadline">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        {% trans "Has active deadline" %}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

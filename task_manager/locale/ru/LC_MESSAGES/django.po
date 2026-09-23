@@ -608,6 +608,14 @@ msgstr "По"
 msgid "Has checklist"
 msgstr "Есть чеклист"
 
+#: tasks/filters.py:89 templates/tasks/task_filter.html:285
+msgid "Has deadline"
+msgstr "Есть дедлайн"
+
+#: templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Есть активный дедлайн"
+
 #: tasks/forms.py:31
 msgid "Enter task name"
 msgstr "Введите название задачи"

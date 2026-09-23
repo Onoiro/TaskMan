@@ -83,11 +83,19 @@ class TaskFilter(django_filters.FilterSet):
         label_suffix="",
     )
 
+    has_deadline = django_filters.BooleanFilter(
+        label=_('Has deadline'),
+        method='filter_has_deadline',
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label_suffix="",
+    )
+
     class Meta:
         model = Task
         fields = [
             'search', 'status', 'author', 'executors', 'labels',
             'my_tasks', 'created_after', 'created_before', 'has_checklist',
+            'has_deadline',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -154,6 +162,18 @@ class TaskFilter(django_filters.FilterSet):
     def filter_has_checklist(self, queryset, name, value):
         if value:
             return queryset.filter(checklist_items__isnull=False).distinct()
+        return queryset
+
+    def filter_has_deadline(self, queryset, name, value):
+        """Filter tasks with an active deadline.
+
+        Includes overdue tasks, but excludes tasks with a final status
+        (their deadline timer is frozen, so it is not "active").
+        """
+        if value:
+            return queryset.filter(
+                deadline__isnull=False
+            ).exclude(status__is_completed=True)
         return queryset
 
     def _is_excluded(self, param_name):
@@ -235,6 +255,15 @@ class TaskFilter(django_filters.FilterSet):
             return qs
         return qs.filter(checklist_items__isnull=False).distinct()
 
+    def _apply_has_deadline_filter(self, qs):
+        """Apply active deadline filter."""
+        has_deadline = self._get_filter_value('has_deadline')
+        if not has_deadline:
+            return qs
+        return qs.filter(
+            deadline__isnull=False
+        ).exclude(status__is_completed=True)
+
     def filter_queryset(self, queryset):
         """Override to handle exclude logic properly.
 
@@ -256,5 +285,6 @@ class TaskFilter(django_filters.FilterSet):
         qs = self._apply_my_tasks_filter(qs)
         qs = self._apply_date_filters(qs)
         qs = self._apply_has_checklist_filter(qs)
+        qs = self._apply_has_deadline_filter(qs)
 
         return qs
