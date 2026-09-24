@@ -10,7 +10,8 @@ By default, translates from English to all target languages except Russian.
 Supports two-stage translation workflow:
 
 1. EN -> RU: Developer translates Russian first, reviews and edits manually.
-2. RU -> AZ/KY/TG: Uses verified Russian as source for other languages.
+2. RU -> AZ/KY/TG/ES/ZH-HANS/KK: Uses verified Russian as source for
+   other languages.
 
 Environment variables:
 
@@ -18,18 +19,19 @@ Environment variables:
 - ``YANDEX_FOLDER_ID``: Yandex Cloud folder ID (required).
 - ``SKIP_LANGS``: Comma-separated list of languages to skip (default: ru).
 - ``TARGET_LANG``: Translate only this language (e.g., ``ru``).
-- ``FROM_RU=1``: Use Russian as source language for az/ky/tg translation.
+- ``FROM_RU=1``: Use Russian as source language for az/ky/tg/es/zh-hans/kk
+  translation.
 - ``DRY_RUN=1``: Show what would be translated without API calls.
 
 Usage::
 
-    # Default: translate all except Russian (EN -> AZ/KY/TG)
+    # Default: translate all except Russian (EN -> AZ/KY/TG/ES/ZH-HANS/KK)
     poetry run python scripts/translate_po.py
 
     # Translate only Russian (EN -> RU)
     TARGET_LANG=ru poetry run python scripts/translate_po.py
 
-    # Translate AZ/KY/TG from verified Russian (RU -> target)
+    # Translate AZ/KY/TG/ES/ZH-HANS/KK from verified Russian (RU -> target)
     FROM_RU=1 poetry run python scripts/translate_po.py
 
     # Dry run: preview without API calls
@@ -80,10 +82,18 @@ SUPPORTED_LANG_MAP = {
     "az": "az",
     "ky": "ky",
     "tg": "tg",
+    "es": "es",
+    "zh-hans": "zh",
+    "kk": "kk",
+}
+
+# Locale directory names (Django normalizes zh-hans to zh_Hans on disk).
+LOCALE_DIR_NAMES = {
+    "zh-hans": "zh_Hans",
 }
 
 # Languages to translate when FROM_RU=1 (source is always ru).
-FROM_RU_TARGETS = ["az", "ky", "tg"]
+FROM_RU_TARGETS = ["az", "ky", "tg", "es", "zh-hans", "kk"]
 
 # ---------------------------------------------------------------------------
 # Placeholder helpers
@@ -437,7 +447,7 @@ def process_po_file(lang_code, supported_codes, ru_dict=None):
         Dict with counts: ``{"translated": N, "skipped_warnings": M}``.
     """
     po_path = (
-        LOCALE_DIR / lang_code
+        LOCALE_DIR / LOCALE_DIR_NAMES.get(lang_code, lang_code)
         / "LC_MESSAGES" / "django.po"
     )
     if not po_path.exists():
@@ -533,7 +543,7 @@ def _translate_from_russian(entry_indices, ru_dict,
     Args:
         entry_indices: List of PO entries to translate.
         ru_dict: Dict of msgid -> Russian msgstr.
-        target_lang: Target language code (az, ky, or tg).
+        target_lang: Target language code (e.g. az, ky, tg, es, zh-hans, kk).
         supported_codes: Set of supported codes.
 
     Returns:
@@ -652,7 +662,7 @@ def _resolve_target_langs(available_langs):
         return [TARGET_LANG], None
 
     if FROM_RU:
-        # FROM_RU mode: translate az/ky/tg from Russian
+        # FROM_RU mode: translate az/ky/tg/es/zh-hans/kk from Russian
         target_langs = [
             lang for lang in FROM_RU_TARGETS if lang in available_langs
         ]
@@ -660,7 +670,7 @@ def _resolve_target_langs(available_langs):
         if not ru_dict:
             print("ERROR: Cannot build Russian dictionary. Aborting.")
             sys.exit(1)
-        print("FROM_RU mode: translating az/ky/tg from Russian.")
+        print("FROM_RU mode: translating targets from Russian.")
         return target_langs, ru_dict
 
     # Default mode: translate all available languages
@@ -682,7 +692,8 @@ def _collect_skipped_ids(target_langs, ru_dict):
     """
     all_skipped = []
     for lang in target_langs:
-        po_path = LOCALE_DIR / lang / "LC_MESSAGES" / "django.po"
+        locale_dir_name = LOCALE_DIR_NAMES.get(lang, lang)
+        po_path = LOCALE_DIR / locale_dir_name / "LC_MESSAGES" / "django.po"
         pob = polib.pofile(str(po_path))
         entries = collect_entries(pob)
         for entry, _ in entries:

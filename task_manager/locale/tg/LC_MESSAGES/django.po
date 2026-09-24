@@ -44,8 +44,8 @@ msgstr "Ном"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
 msgstr ""
 "Танҳо ҳарфҳо, рақамҳо, фосилаҳо ва аломатҳои -_.,!? иҷозат дода мешаванд. "
 "Аломатҳои <, >, #, & иҷозат дода намешаванд."
@@ -70,8 +70,8 @@ msgstr "Барчаспро ҳазф кардан мумкин нест, зеро
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way — "
-"we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
 msgstr ""
 "Шумо аз сервис фаъолона истифода мебаред! Ба маҳдудияти %(resource)s "
 "(%(max)s) расидед. Кӯшиш кунед он чиро, ки дигар лозим нест, ҳазф намоед. "
@@ -115,10 +115,9 @@ msgid "team notes"
 msgstr "эзоҳҳои даставӣ"
 
 #: limit_service.py:45
-#, fuzzy
 #| msgid "Insert Image"
 msgid "note images"
-msgstr "Дарҷ кардани тасвир"
+msgstr "Гузоштани тасвир"
 
 #: limit_service.py:46
 msgid "checklist items"
@@ -160,8 +159,8 @@ msgstr "Мундариҷа"
 msgid "Author"
 msgstr "Муаллиф"
 
-#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47
+#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Даста"
 
@@ -195,10 +194,9 @@ msgid "Notes"
 msgstr "Эзоҳҳо"
 
 #: notes/models.py:104
-#, fuzzy
 #| msgid "Image URL"
 msgid "Image"
-msgstr "URL-и тасвир"
+msgstr "Изображенияl тасвирҳо"
 
 #: notes/models.py:108
 msgid "Order"
@@ -320,7 +318,8 @@ msgid "Message"
 msgstr "Паём"
 
 #: notifications/models.py:51
-msgid "Legacy field. Use message_key and message_params for new notifications."
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
 "Майдони кӯҳнашуда. Барои огоҳиномаҳои нав аз message_key ва message_params "
 "истифода баред."
@@ -427,7 +426,8 @@ msgid "You don't have permissions to modify another user."
 msgstr "Шумо ҳуқуқи тағйир додани корбари дигарро надоред."
 
 #: permissions.py:40
-msgid "You don't have permissions to modify this. Only team admin can do this."
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "Шумо ҳуқуқи тағйир додани инро надоред. Инро танҳо мудири даста метавонад "
 "анҷом диҳад."
@@ -437,8 +437,8 @@ msgid ""
 "You don't have permissions to manage team members. Only team admin can do "
 "this."
 msgstr ""
-"Шумо ҳуқуқи идоракунии иштирокчиёни дастаро надоред. Инро танҳо мудири даста "
-"метавонад анҷом диҳад."
+"Шумо ҳуқуқи идоракунии иштирокчиёни дастаро надоред. Инро танҳо мудири даста"
+" метавонад анҷом диҳад."
 
 #: permissions.py:74
 msgid "You cannot change your own role in the team."
@@ -920,8 +920,8 @@ msgstr "Узвият дар даста ёфт нашуд."
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this "
-"team."
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
 msgstr ""
 "Шумо наметавонед аз даста хориҷ шавед, зеро шумо муаллиф ё иҷрокунандаи "
 "вазифаҳо дар ин даста ҳастед."
@@ -946,7 +946,8 @@ msgstr ""
 #: teams/views.py:520
 msgid "Invite link generated successfully. Scroll down to copy."
 msgstr ""
-"Истиноди даъват бомуваффақият сохта шуд. Барои нусхабардорӣ ба поён лағжонед."
+"Истиноди даъват бомуваффақият сохта шуд. Барои нусхабардорӣ ба поён "
+"лағжонед."
 
 #: teams/views.py:540
 msgid "Team has reached the maximum number of members"
@@ -1096,8 +1097,8 @@ msgstr "Муфассал"
 msgid "Go back"
 msgstr "Бозгашт"
 
-#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:57
+#: templates/base.html:430 templates/feedback.html:7
+#: templates/feedback.html:12 views.py:57
 msgid "Feedback"
 msgstr "Бозхӯрд"
 
@@ -1228,11 +1229,11 @@ msgstr "Эҷод кардан"
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:220
-#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:81
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:220
+#: templates/teams/team_create_form.html:31
+#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
+#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1288,7 +1289,8 @@ msgid "Create Label"
 msgstr "Эҷоди барчасп"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27
+#: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1420,8 +1422,8 @@ msgid "Images"
 msgstr "Тасвирҳо"
 
 #: templates/notes/note_detail.html:101
-#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:163
+#: templates/statuses/statuses_list.html:73
+#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Таҳрир"
 
@@ -1440,7 +1442,8 @@ msgstr "Эҷоди эзоҳ"
 #: templates/notes/note_form.html:89
 msgid "Enter note content... Use Markdown for formatting."
 msgstr ""
-"Мундариҷаи эзоҳро ворид кунед... Барои форматкунӣ аз Markdown истифода баред."
+"Мундариҷаи эзоҳро ворид кунед... Барои форматкунӣ аз Markdown истифода "
+"баред."
 
 #: templates/notes/note_form.html:95 templates/notes/note_form.html:232
 msgid "Preview"
@@ -1658,8 +1661,8 @@ msgid ""
 "Our service is not intended for children under 13. We do not knowingly "
 "collect data from children."
 msgstr ""
-"Сервиси мо барои кӯдакони то 13-сола пешбинӣ нашудааст. Мо огоҳона маълумоти "
-"кӯдаконро ҷамъ намекунем."
+"Сервиси мо барои кӯдакони то 13-сола пешбинӣ нашудааст. Мо огоҳона маълумоти"
+" кӯдаконро ҷамъ намекунем."
 
 #: templates/privacy_policy.html:61 templates/terms_of_service.html:45
 msgid "Contact"
@@ -1667,8 +1670,8 @@ msgstr "Тамос"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback "
-"form or at:"
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
 msgstr ""
 "Агар шумо дар бораи ин сиёсати махфият савол дошта бошед, бо мо тавассути "
 "шакли бозхӯрд ё бо суроғаи зерин тамос гиред:"
@@ -1747,29 +1750,34 @@ msgstr "Эҷоди вазифа"
 msgid "Create task"
 msgstr "Эҷоди вазифа"
 
-#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
-#, fuzzy
+#: templates/tasks/task_create_form.html:28
+#: templates/tasks/task_update.html:90
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
-msgstr "Эҷоди зуди вазифаҳо"
+msgstr "Мӯҳлати зуд"
 
-#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
+#: templates/tasks/task_create_form.html:29
+#: templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "дар 8 соат"
 
-#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
+#: templates/tasks/task_create_form.html:30
+#: templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "дар 1 рӯз"
 
-#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
+#: templates/tasks/task_create_form.html:31
+#: templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "дар 3 рӯз"
 
-#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
+#: templates/tasks/task_create_form.html:32
+#: templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "дар 21 рӯз"
 
-#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
+#: templates/tasks/task_create_form.html:34
+#: templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Тоза кардани мӯҳлат"
 
@@ -2190,7 +2198,8 @@ msgstr "Ҳамроҳ шудан ба даста (ихтиёрӣ)"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work individually"
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
 msgstr ""
 "Номи дастаро барои ҳамроҳ шудан ворид кунед ё барои кори инфиродӣ майдонро "
 "холӣ гузоред."
@@ -2263,11 +2272,11 @@ msgstr "Шумо аз система баромадед"
 #~ msgstr "Ctrl / Cmd барои якчанд"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name "
-#~ "and password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
+#~ "password below."
 #~ msgstr ""
-#~ "Агар шумо истиноди даъват дошта бошед, онро дар боло часбонед. Дар акси "
-#~ "ҳол, номи даста ва гузарвожаро дар поён ворид кунед."
+#~ "Агар шумо истиноди даъват дошта бошед, онро дар боло часбонед. Дар акси ҳол,"
+#~ " номи даста ва гузарвожаро дар поён ворид кунед."
 
 #~ msgid "Email address (optional)"
 #~ msgstr "Суроғаи почтаи электронӣ (ихтиёрӣ)"

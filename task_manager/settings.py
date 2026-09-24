@@ -209,7 +209,8 @@ LOGIN_REDIRECT_URL = 'tasks:tasks-list'
 LOGOUT_REDIRECT_URL = '/'
 
 # Internationalization
-# Supports 5 languages: English, Russian, Tajik, Azerbaijani, Kyrgyz
+# Supports 8 languages: English, Russian, Tajik, Azerbaijani, Kyrgyz,
+# Spanish, Simplified Chinese, Kazakh
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 # Default language code (can be overridden via environment variable)
@@ -222,6 +223,9 @@ LANGUAGES = [
     ('tg', _('Tajik')),
     ('az', _('Azerbaijani')),
     ('ky', _('Kyrgyz')),
+    ('es', _('Spanish')),
+    ('zh-hans', _('Simplified Chinese')),
+    ('kk', _('Kazakh')),
 ]
 
 # Path to locale files for translations

@@ -1,0 +1,2358 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-25 00:46+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: task_manager/forms.py:8
+msgid "Specify the subject:"
+msgstr "Тақырыпты көрсетіңіз:"
+
+#: task_manager/forms.py:11
+msgid "Bug, suggestion, etc."
+msgstr "Қате, ұсыныс және т. б."
+
+#: task_manager/forms.py:15
+msgid "* Your email or Telegram (@username):"
+msgstr "* Email немесе Telegram (@username):"
+
+#: task_manager/forms.py:22
+msgid "* Message:"
+msgstr "* Хабарлама:"
+
+#: task_manager/forms.py:25
+msgid "Describe your issue or suggestion..."
+msgstr "Мәселені немесе ұсынысты сипаттаңыз..."
+
+#: task_manager/labels/forms.py:13 task_manager/labels/forms.py:14
+#: task_manager/statuses/forms.py:14 task_manager/statuses/forms.py:15
+#: task_manager/statuses/models.py:21 task_manager/tasks/models.py:34
+#: task_manager/teams/models.py:22
+#: task_manager/templates/statuses/statuses_create_form.html:20
+msgid "Name"
+msgstr "Атауы"
+
+#: task_manager/labels/models.py:24 task_manager/notes/models.py:29
+#: task_manager/statuses/models.py:26 task_manager/tasks/models.py:28
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
+msgstr ""
+"Тек әріптер, сандар, бос орындар және -_.,!? таңбаларына рұқсат етіледі. <, "
+">, #, & таңбаларына рұқсат етілмейді."
+
+#: task_manager/labels/views.py:37
+msgid "Label created successfully"
+msgstr "Белгі сәтті жасалды"
+
+#: task_manager/labels/views.py:76
+msgid "Label updated successfully"
+msgstr "Белгі сәтті өзгертілді"
+
+#: task_manager/labels/views.py:100
+msgid "Label deleted successfully"
+msgstr "Белгі сәтті жойылды"
+
+#: task_manager/labels/views.py:123
+msgid "Cannot delete label because it is in use"
+msgstr "Белгіні жою мүмкін емес, себебі ол қолданыста"
+
+#: task_manager/limit_service.py:16
+#, python-format
+msgid ""
+"You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
+msgstr ""
+"Сіз қызметті белсенді пайдаланасыз! \"%(resource)s\" (%(max)s) ресурсы үшін "
+"лимитке қол жеткізілді. Енді қажет емес нәрсені алып тастауға тырысыңыз. "
+"TaskMan Pro-да шектеулер жоқ-біз онымен жұмыс істеп жатырмыз!"
+
+#: task_manager/limit_service.py:36
+msgid "teams"
+msgstr "командалар"
+
+#: task_manager/limit_service.py:37
+msgid "team members"
+msgstr "команда мүшелері"
+
+#: task_manager/limit_service.py:38
+msgid "tasks"
+msgstr "тапсырмалар"
+
+#: task_manager/limit_service.py:39
+msgid "personal statuses"
+msgstr "жеке күйлер"
+
+#: task_manager/limit_service.py:40
+msgid "team statuses"
+msgstr "команда күйлері"
+
+#: task_manager/limit_service.py:41
+msgid "personal labels"
+msgstr "жеке белгілер"
+
+#: task_manager/limit_service.py:42
+msgid "team labels"
+msgstr "команда белгілері"
+
+#: task_manager/limit_service.py:43
+msgid "personal notes"
+msgstr "жеке жазбалар"
+
+#: task_manager/limit_service.py:44
+msgid "team notes"
+msgstr "команда жазбалары"
+
+#: task_manager/limit_service.py:45
+msgid "note images"
+msgstr "жазба суреттері"
+
+#: task_manager/limit_service.py:46
+msgid "checklist items"
+msgstr "тексеру тізімі тармақтары"
+
+#: task_manager/notes/forms.py:34 task_manager/statuses/forms.py:25
+#: task_manager/teams/forms.py:29
+#: task_manager/templates/notes/note_form.html:72
+#: task_manager/templates/statuses/statuses_create_form.html:60
+#: task_manager/user/forms.py:15 task_manager/user/forms.py:16
+#: task_manager/user/forms.py:17
+msgid "Optional"
+msgstr "Міндетті емес"
+
+#: task_manager/notes/forms.py:58
+msgid "Task must be from the same team."
+msgstr "Тапсырма сол команданың болуы керек."
+
+#: task_manager/notes/forms.py:62
+msgid "Cannot attach note to team task in individual mode."
+msgstr "Жеке режимде команда тапсырмасына жазба тіркеуге болмайды."
+
+#: task_manager/notes/forms.py:64
+msgid "You can only attach notes to your own tasks."
+msgstr "Жазбаларды тек өз тапсырмаларыңызға ғана тіркеуге болады."
+
+#: task_manager/notes/models.py:24
+#: task_manager/templates/notes/note_form.html:64
+msgid "Title"
+msgstr "Тақырып"
+
+#: task_manager/notes/models.py:38
+#: task_manager/templates/notes/note_form.html:78
+#: task_manager/templates/terms_of_service.html:33
+msgid "Content"
+msgstr "Мазмұн"
+
+#: task_manager/notes/models.py:46 task_manager/tasks/filters.py:33
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:42
+#: task_manager/templates/tasks/task_filter.html:463
+#: task_manager/templates/tasks/task_update.html:23
+#: task_manager/templates/user/user_detail.html:80
+#: task_manager/templates/user/user_detail.html:103
+#: task_manager/templates/user/user_detail.html:129
+msgid "Author"
+msgstr "Автор"
+
+#: task_manager/notes/models.py:54 task_manager/tasks/models.py:47
+#: task_manager/templates/labels/labels_update.html:29
+#: task_manager/templates/notes/note_form.html:34
+msgid "Team"
+msgstr "Команда"
+
+#: task_manager/notes/models.py:62 task_manager/tasks/models.py:140
+msgid "Task"
+msgstr "Тапсырма"
+
+#: task_manager/notes/models.py:66 task_manager/notifications/models.py:78
+#: task_manager/statuses/models.py:66 task_manager/tasks/models.py:73
+#: task_manager/teams/models.py:43 task_manager/teams/models.py:136
+#: task_manager/templates/labels/labels_update.html:54
+#: task_manager/templates/statuses/statuses_update.html:58
+#: task_manager/templates/teams/team_detail.html:34
+#: task_manager/templates/teams/team_detail.html:61
+msgid "Created at"
+msgstr "Құрылған күні"
+
+#: task_manager/notes/models.py:70 task_manager/tasks/models.py:78
+msgid "Updated at"
+msgstr "Жаңартылған күні"
+
+#: task_manager/notes/models.py:75 task_manager/notes/models.py:100
+#: task_manager/templates/feedback.html:28
+#: task_manager/templates/notes/note_detail.html:78
+#: task_manager/templates/notes/note_form.html:25
+#: task_manager/templates/notes/note_form.html:149
+msgid "Note"
+msgstr "Жазба"
+
+#: task_manager/notes/models.py:76 task_manager/templates/base.html:130
+#: task_manager/templates/base.html:155
+#: task_manager/templates/includes/limits_usage.html:72
+#: task_manager/templates/includes/team_limits_usage.html:84
+#: task_manager/templates/notes/_task_notes.html:7
+#: task_manager/templates/tasks/task_filter.html:406
+msgid "Notes"
+msgstr "Жазбалар"
+
+#: task_manager/notes/models.py:104
+msgid "Image"
+msgstr "Сурет"
+
+#: task_manager/notes/models.py:108
+msgid "Order"
+msgstr "Реттілік"
+
+#: task_manager/notes/models.py:112
+msgid "Uploaded at"
+msgstr "Жүктелген күні"
+
+#: task_manager/notes/models.py:117
+msgid "Note image"
+msgstr "Жазба суреті"
+
+#: task_manager/notes/models.py:118
+msgid "Note images"
+msgstr "Жазба суреттері"
+
+#: task_manager/notes/views.py:89
+msgid "Note created successfully"
+msgstr "Жазба сәтті жасалды"
+
+#: task_manager/notes/views.py:158 task_manager/notes/views.py:367
+msgid "Note can only be edited by its author or team admin."
+msgstr "Жазбаны тек оның авторы немесе команда әкімшісі өңдей алады."
+
+#: task_manager/notes/views.py:180
+msgid "Note can only be deleted by its author or team admin."
+msgstr "Жазбаны тек оның авторы немесе команда әкімшісі жоя алады."
+
+#: task_manager/notes/views.py:197
+msgid "Note updated successfully"
+msgstr "Жазба сәтті өзгертілді"
+
+#: task_manager/notes/views.py:253
+msgid "Note deleted successfully"
+msgstr "Жазба сәтті жойылды"
+
+#: task_manager/notes/views.py:290
+#, python-format
+msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr "\"%(name)s\" суреті тым үлкен. Максималды мөлшері — %(max)s МБ."
+
+#: task_manager/notes/views.py:297
+#, python-format
+msgid ""
+"Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
+"WebP."
+msgstr ""
+"\"%(name)s\" сурет пішіміне қолдау көрсетілмейді. Жарамды форматтар: JPEG, "
+"PNG, GIF, WebP."
+
+#: task_manager/notes/views.py:304 task_manager/notes/views.py:307
+#, python-format
+msgid "Image '%(name)s' is corrupted or not a valid image."
+msgstr "\"%(name)s\" файлы бүлінген немесе сурет емес."
+
+#: task_manager/notes/views.py:350
+msgid "Image deleted successfully"
+msgstr "Сурет сәтті жойылды"
+
+#: task_manager/notifications/models.py:9
+msgid "Task assigned"
+msgstr "Тапсырма тағайындалды"
+
+#: task_manager/notifications/models.py:10
+msgid "Task unassigned"
+msgstr "Тапсырмадан орындаушы алынды"
+
+#: task_manager/notifications/models.py:12
+msgid "Task status changed"
+msgstr "Тапсырманың күйі өзгерді"
+
+#: task_manager/notifications/models.py:14
+msgid "Task completed"
+msgstr "Тапсырма аяқталды"
+
+#: task_manager/notifications/models.py:16
+msgid "Team join request"
+msgstr "Командаға қосылу өтініші"
+
+#: task_manager/notifications/models.py:19
+msgid "Team member joined"
+msgstr "Командаға жаңа мүше қосылды"
+
+#: task_manager/notifications/models.py:22
+msgid "Team request approved"
+msgstr "Қосылу өтініші мақұлданды"
+
+#: task_manager/notifications/models.py:25
+msgid "Team request rejected"
+msgstr "Қосылу өтініші қабылданбады"
+
+#: task_manager/notifications/models.py:28
+msgid "Team member removed"
+msgstr "Мүше командадан шығарылды"
+
+#: task_manager/notifications/models.py:31
+msgid "Team role changed"
+msgstr "Командадағы рөл өзгерді"
+
+#: task_manager/notifications/models.py:33
+msgid "Team invited"
+msgstr "Командаға шақыру"
+
+#: task_manager/notifications/models.py:34
+msgid "Team deleted"
+msgstr "Команда жойылды"
+
+#: task_manager/notifications/models.py:40
+msgid "Recipient"
+msgstr "Алушы"
+
+#: task_manager/notifications/models.py:45
+msgid "Notification type"
+msgstr "Хабарландыру түрі"
+
+#: task_manager/notifications/models.py:48
+msgid "Message"
+msgstr "Хабарлама"
+
+#: task_manager/notifications/models.py:51
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
+msgstr ""
+"Ескірген өріс. Жаңа хабарландырулар үшін message_key және message_params "
+"пайдаланыңыз."
+
+#: task_manager/notifications/models.py:58
+msgid "Message key"
+msgstr "Хабарлама кілті"
+
+#: task_manager/notifications/models.py:59
+msgid "Translation key for the message template."
+msgstr "Хабарлама үлгісінің аударма кілті."
+
+#: task_manager/notifications/models.py:64
+msgid "Message parameters"
+msgstr "Хабарлама параметрлері"
+
+#: task_manager/notifications/models.py:65
+msgid "JSON parameters for message template."
+msgstr "Хабарлама үлгісінің JSON параметрлері."
+
+#: task_manager/notifications/models.py:70
+msgid "Action URL"
+msgstr "Әрекет URL мекенжайы"
+
+#: task_manager/notifications/models.py:74
+msgid "Is read"
+msgstr "Оқылды"
+
+#: task_manager/notifications/models.py:89
+msgid "Notification"
+msgstr "Хабарландыру"
+
+#: task_manager/notifications/models.py:90
+#: task_manager/templates/notifications/_notification_bell.html:25
+msgid "Notifications"
+msgstr "Хабарландырулар"
+
+#: task_manager/notifications/services.py:46
+#, python-brace-format
+msgid "You have been assigned to task: {task_name}"
+msgstr "Сізге тапсырма тағайындалды: {task_name}"
+
+#: task_manager/notifications/services.py:67
+#, python-brace-format
+msgid "You have been removed from task: {task_name}"
+msgstr "Сіз {task_name} тапсырмасынан шығарылдыңыз"
+
+#: task_manager/notifications/services.py:81
+#, python-brace-format
+msgid "Status of task '{task_name}' has been changed"
+msgstr "'{task_name}' тапсырмасының күйі өзгерді"
+
+#: task_manager/notifications/services.py:113
+#, python-brace-format
+msgid "Task '{task_name}' has been completed"
+msgstr "'{task_name}' тапсырмасы аяқталды"
+
+#: task_manager/notifications/services.py:146
+#, python-brace-format
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username} '{team_name}' командасына қосылғысы келеді"
+
+#: task_manager/notifications/services.py:187
+#, python-brace-format
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username} '{team_name}' командасына қосылды"
+
+#: task_manager/notifications/services.py:214
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "'{team_name}' командасына қосылу өтінішіңіз мақұлданды"
+
+#: task_manager/notifications/services.py:235
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "'{team_name}' командасына қосылу өтінішіңіз қабылданбады"
+
+#: task_manager/notifications/services.py:260
+#, python-brace-format
+msgid "You have been removed from team '{team_name}'"
+msgstr "Сіз '{team_name}' командасынан шығарылдыңыз"
+
+#: task_manager/notifications/services.py:279
+#, python-brace-format
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "'{team_name}' командасындағы рөліңіз {role} болып өзгерді"
+
+#: task_manager/notifications/services.py:300
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "Сіз '{team_name}' командасына шақырылдыңыз"
+
+#: task_manager/notifications/services.py:320
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "'{team_name}' командасы жойылды"
+
+#: task_manager/permissions.py:7
+msgid "You are not authorized! Please login."
+msgstr "Сіз кірмегенсіз. Кіріңіз."
+
+#: task_manager/permissions.py:24
+msgid "You don't have permissions to modify another user."
+msgstr "Басқа пайдаланушыны өңдеуге құқығыңыз жоқ."
+
+#: task_manager/permissions.py:40
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
+msgstr "Мұны өңдеуге құқығыңыз жоқ. Мұны тек команда әкімшісі жасай алады."
+
+#: task_manager/permissions.py:65
+msgid ""
+"You don't have permissions to manage team members. Only team admin can do "
+"this."
+msgstr ""
+"Мүшелерді басқаруға құқығыңыз жоқ. Мұны тек команда әкімшісі жасай алады."
+
+#: task_manager/permissions.py:74
+msgid "You cannot change your own role in the team."
+msgstr "Командадағы өз рөліңізді өзгерте алмайсыз."
+
+#: task_manager/permissions.py:79
+msgid "Team membership not found."
+msgstr "Командаға мүшелік табылмады."
+
+#: task_manager/settings.py:221 task_manager/templates/index.html:67
+msgid "English"
+msgstr "Ағылшын"
+
+#: task_manager/settings.py:222 task_manager/templates/index.html:76
+msgid "Russian"
+msgstr "Орыс"
+
+#: task_manager/settings.py:223 task_manager/templates/index.html:85
+msgid "Tajik"
+msgstr "Тәжік"
+
+#: task_manager/settings.py:224 task_manager/templates/index.html:94
+msgid "Azerbaijani"
+msgstr "Әзірбайжан"
+
+#: task_manager/settings.py:225 task_manager/templates/index.html:103
+msgid "Kyrgyz"
+msgstr "Қырғыз"
+
+msgid "Spanish"
+msgstr "Испан"
+
+msgid "Simplified Chinese"
+msgstr "Қытайша (жеңілдетілген)"
+
+msgid "Kazakh"
+msgstr "Қазақша"
+
+#: task_manager/statuses/forms.py:19 task_manager/statuses/forms.py:22
+#: task_manager/statuses/models.py:48 task_manager/tasks/models.py:38
+#: task_manager/teams/forms.py:27 task_manager/teams/models.py:32
+#: task_manager/templates/statuses/statuses_create_form.html:54
+#: task_manager/templates/statuses/statuses_update.html:40
+#: task_manager/templates/teams/team_detail.html:25
+#: task_manager/templates/teams/team_detail.html:60
+#: task_manager/templates/user/user_detail.html:30
+#: task_manager/user/models.py:11
+msgid "Description"
+msgstr "Сипаттама"
+
+#: task_manager/statuses/forms.py:30
+#: task_manager/templates/statuses/statuses_create_form.html:40
+#: task_manager/templates/statuses/statuses_update.html:28
+#: task_manager/templates/statuses/statuses_update.html:59
+msgid "Color"
+msgstr "Түс"
+
+#: task_manager/statuses/forms.py:35
+#: task_manager/templates/statuses/statuses_create_form.html:49
+msgid "Choose status color"
+msgstr "Күй түсін таңдаңыз"
+
+#: task_manager/statuses/forms.py:39 task_manager/statuses/models.py:58
+#: task_manager/templates/statuses/statuses_create_form.html:69
+msgid "Final status"
+msgstr "Соңғы күй"
+
+#: task_manager/statuses/forms.py:43 task_manager/statuses/models.py:60
+#: task_manager/templates/statuses/statuses_create_form.html:72
+#: task_manager/templates/statuses/statuses_list.html:65
+msgid "Tasks with a final status are hidden from the default task list"
+msgstr "Соңғы күйі бар тапсырмалар әдепкі тізімнен жасырылады"
+
+#: task_manager/statuses/models.py:75
+msgid "New"
+msgstr "Жаңа"
+
+#: task_manager/statuses/models.py:76
+msgid "Task has been created but not yet started"
+msgstr "Тапсырма жасалды, бірақ әлі басталмаған"
+
+#: task_manager/statuses/models.py:81
+msgid "In Progress"
+msgstr "Орындалуда"
+
+#: task_manager/statuses/models.py:82
+msgid "Task is currently being worked on"
+msgstr "Тапсырма қазір орындалуда"
+
+#: task_manager/statuses/models.py:86
+msgid "On Hold"
+msgstr "Күтуде"
+
+#: task_manager/statuses/models.py:87
+msgid "Task is temporarily paused"
+msgstr "Тапсырма уақытша тоқтатылған"
+
+#: task_manager/statuses/models.py:91
+msgid "Completed"
+msgstr "Аяқталды"
+
+#: task_manager/statuses/models.py:92
+msgid "Task has been finished successfully"
+msgstr "Тапсырма сәтті аяқталды"
+
+#: task_manager/statuses/models.py:97
+msgid "Cancelled"
+msgstr "Болдырылмады"
+
+#: task_manager/statuses/models.py:98
+msgid "Task was abandoned or deemed unnecessary"
+msgstr "Тапсырма тасталды немесе қажет емес деп танылды"
+
+#: task_manager/statuses/models.py:103
+msgid "Blocked"
+msgstr "Бұғатталған"
+
+#: task_manager/statuses/models.py:105
+msgid "Task cannot proceed due to external dependencies"
+msgstr "Сыртқы тәуелділіктерге байланысты тапсырманы жалғастыру мүмкін емес"
+
+#: task_manager/statuses/views.py:38
+msgid "Status created successfully"
+msgstr "Күй сәтті құрылды"
+
+#: task_manager/statuses/views.py:71
+msgid "Status updated successfully"
+msgstr "Күй сәтті өзгертілді"
+
+#: task_manager/statuses/views.py:80
+msgid "Status deleted successfully"
+msgstr "Күй сәтті жойылды"
+
+#: task_manager/statuses/views.py:90
+msgid "Cannot delete status because it is in use"
+msgstr "Күйді жою мүмкін емес, себебі ол қолданыста"
+
+#: task_manager/tasks/filters.py:15
+msgid "Search"
+msgstr "Іздеу"
+
+#: task_manager/tasks/filters.py:18
+msgid "Task name..."
+msgstr "Тапсырма атауы..."
+
+#: task_manager/tasks/filters.py:26 task_manager/tasks/models.py:52
+#: task_manager/templates/statuses/statuses_update.html:51
+#: task_manager/templates/teams/team_member_role_update.html:38
+msgid "Status"
+msgstr "Күй"
+
+#: task_manager/tasks/filters.py:40
+#: task_manager/templates/tasks/task_filter.html:467
+#: task_manager/templates/tasks/task_update.html:28
+#: task_manager/templates/user/user_detail.html:83
+#: task_manager/templates/user/user_detail.html:106
+#: task_manager/templates/user/user_detail.html:132
+msgid "Executor"
+msgstr "Орындаушы"
+
+#: task_manager/tasks/filters.py:47 task_manager/tasks/models.py:69
+#: task_manager/templates/base.html:125 task_manager/templates/base.html:152
+#: task_manager/templates/includes/limits_usage.html:56
+#: task_manager/templates/includes/team_limits_usage.html:66
+#: task_manager/templates/index.html:49
+msgid "Labels"
+msgstr "Белгілер"
+
+#: task_manager/tasks/filters.py:53
+#: task_manager/templates/tasks/task_filter.html:142
+#: task_manager/templates/tasks/task_filter.html:201
+msgid "My tasks"
+msgstr "Менің тапсырмаларым"
+
+#: task_manager/tasks/filters.py:61
+msgid "From"
+msgstr "Басталуы"
+
+#: task_manager/tasks/filters.py:71
+msgid "To"
+msgstr "Соңы"
+
+#: task_manager/tasks/filters.py:80
+#: task_manager/templates/tasks/task_filter.html:253
+msgid "Has checklist"
+msgstr "Тексеру тізімі бар"
+
+#: task_manager/tasks/filters.py:87
+msgid "Has deadline"
+msgstr "Мерзімі бар"
+
+#: task_manager/tasks/forms.py:31
+msgid "Enter task name"
+msgstr "Тапсырма атауын енгізіңіз"
+
+#: task_manager/tasks/models.py:58
+msgid "Executors"
+msgstr "Орындаушылар"
+
+#: task_manager/tasks/models.py:86
+msgid "Updated by"
+msgstr "Жаңартқан"
+
+#: task_manager/tasks/models.py:91
+#: task_manager/templates/tasks/task_create_form.html:25
+#: task_manager/templates/tasks/task_filter.html:445
+#: task_manager/templates/tasks/task_update.html:49
+#: task_manager/templates/tasks/task_update.html:87
+msgid "Deadline"
+msgstr "Мерзім"
+
+#: task_manager/tasks/models.py:144
+msgid "Text"
+msgstr "Мәтін"
+
+#: task_manager/tasks/models.py:148
+msgid "Done"
+msgstr "Орындалды"
+
+#: task_manager/tasks/models.py:152
+msgid "Position"
+msgstr "Реті"
+
+#: task_manager/tasks/views.py:55 task_manager/templates/privacy_policy.html:9
+#: task_manager/templates/terms_of_service.html:9
+msgid "Last updated"
+msgstr "Соңы жаңартылғаны"
+
+#: task_manager/tasks/views.py:56
+msgid "First updated"
+msgstr "Алғаш жаңартылғаны"
+
+#: task_manager/tasks/views.py:57
+msgid "Newest first"
+msgstr "Жаңалары алдымен"
+
+#: task_manager/tasks/views.py:58
+msgid "Oldest first"
+msgstr "Ескілері алдымен"
+
+#: task_manager/tasks/views.py:59
+msgid "Name A→Z"
+msgstr "Атауы A→Z"
+
+#: task_manager/tasks/views.py:60
+msgid "Name Z→A"
+msgstr "Атауы Z→A"
+
+#: task_manager/tasks/views.py:80
+msgid "Task can only be deleted by its author or team admin."
+msgstr "Тапсырманы тек авторы немесе команда әкімшісі жоя алады."
+
+#: task_manager/tasks/views.py:98 task_manager/tasks/views.py:456
+msgid "Task can only be updated by its author, executors or team admin."
+msgstr ""
+"Тапсырманы тек авторы, орындаушылары немесе команда әкімшісі өңдей алады."
+
+#: task_manager/tasks/views.py:196
+msgid "Filter saved as default"
+msgstr "Сүзгі әдепкі ретінде сақталды"
+
+#: task_manager/tasks/views.py:339
+msgid "Task created successfully"
+msgstr "Тапсырма сәтті жасалды"
+
+#: task_manager/tasks/views.py:403
+msgid "Task updated successfully"
+msgstr "Тапсырма сәтті өзгертілді"
+
+#: task_manager/tasks/views.py:443
+msgid "Task deleted successfully"
+msgstr "Тапсырма сәтті жойылды"
+
+#: task_manager/tasks/views.py:487
+msgid "Text is required"
+msgstr "Мәтінді енгізіңіз"
+
+#: task_manager/tasks/views.py:491
+msgid "Text must be 300 characters or less"
+msgstr "Мәтін 300 таңбадан аспауы керек"
+
+#: task_manager/teams/forms.py:35 task_manager/user/forms.py:22
+msgid "Password"
+msgstr "Құпиясөз"
+
+#: task_manager/teams/forms.py:37 task_manager/user/forms.py:24
+msgid "Your password must contain at least 8 characters."
+msgstr "Құпиясөзде кемінде 8 таңба болуы керек."
+
+#: task_manager/teams/forms.py:41 task_manager/user/forms.py:29
+msgid "Confirm password"
+msgstr "Құпиясөзді растаңыз"
+
+#: task_manager/teams/forms.py:43 task_manager/user/forms.py:31
+msgid "Please enter your password one more time"
+msgstr "Растау үшін құпиясөзді қайта енгізіңіз."
+
+#: task_manager/teams/forms.py:52 task_manager/teams/forms.py:55
+#: task_manager/user/forms.py:120 task_manager/user/forms.py:123
+msgid "Leave blank if you don't want to change password"
+msgstr "Құпиясөзді өзгерткіңіз келмесе, өрісті бос қалдырыңыз"
+
+#: task_manager/teams/forms.py:65 task_manager/user/forms.py:63
+msgid "Your password is too short. It must contain at least 8 characters."
+msgstr "Енгізілген құпиясөз тым қысқа. Кем дегенде 8 таңбадан тұруы керек."
+
+#: task_manager/teams/forms.py:79 task_manager/user/forms.py:79
+msgid "The entered passwords do not match."
+msgstr "Енгізілген құпиясөздер бірдей емес."
+
+#: task_manager/teams/forms.py:90 task_manager/user/forms.py:179
+msgid "Both password fields must be filled or both left blank"
+msgstr "Құпиясөздің екі өрісі де толтырылуы немесе екеуі де бос қалуы керек"
+
+#: task_manager/teams/forms.py:110
+#: task_manager/templates/teams/team_detail.html:93
+msgid "Invite link"
+msgstr "Шақыру сілтемесі"
+
+#: task_manager/teams/forms.py:114
+msgid "Paste invite link here"
+msgstr "Шақыру сілтемесін осында қойыңыз"
+
+#: task_manager/teams/forms.py:118
+msgid ""
+"If you have an invite link, paste it here. Otherwise, enter team name and "
+"password below."
+msgstr ""
+"Егер сізде шақыру сілтемесі болса, оны осы жерге қойыңыз. Егер сілтеме "
+"болмаса, төмендегі пәрменнің аты мен құпия сөзін енгізіңіз."
+
+#: task_manager/teams/forms.py:125
+#: task_manager/templates/teams/team_detail.html:59
+msgid "Team name"
+msgstr "Команда атауы"
+
+#: task_manager/teams/forms.py:129
+msgid "Enter team name"
+msgstr "Команда атауын енгізіңіз"
+
+#: task_manager/teams/forms.py:136 task_manager/teams/models.py:27
+#: task_manager/user/forms.py:44
+msgid "Team password"
+msgstr "Команданың құпия сөзі"
+
+#: task_manager/teams/forms.py:140
+msgid "Enter team password"
+msgstr "Команданың құпия сөзін енгізіңіз"
+
+#: task_manager/teams/forms.py:215 task_manager/teams/views.py:586
+msgid "Invalid or expired invite link"
+msgstr "Жарамсыз немесе мерзімі өткен шақыру сілтемесі"
+
+#: task_manager/teams/forms.py:234 task_manager/user/forms.py:212
+msgid "Team with this name does not exist"
+msgstr "Мұндай атаулы команда жоқ"
+
+#: task_manager/teams/forms.py:252 task_manager/teams/forms.py:291
+#: task_manager/user/forms.py:219
+msgid "Invalid team password"
+msgstr "Команданың құпия сөзі дұрыс емес"
+
+#: task_manager/teams/forms.py:272 task_manager/user/forms.py:237
+msgid "You already have a pending request to join this team"
+msgstr "Сізде бұл командаға қосылуға жіберілген өтініш бар"
+
+#: task_manager/teams/forms.py:273 task_manager/teams/views.py:619
+#: task_manager/user/forms.py:240
+msgid "You are already a member of this team"
+msgstr "Сіз бұл команданың мүшесісіз"
+
+#: task_manager/teams/forms.py:288
+msgid "Team does not exist"
+msgstr "Команда жоқ"
+
+#: task_manager/teams/forms.py:317
+msgid "Either provide an invite link or team name and password"
+msgstr "Шақыру сілтемесін немесе команда атауы мен құпиясөзді көрсетіңіз"
+
+#: task_manager/teams/forms.py:338
+msgid "Invalid role selected."
+msgstr "Жарамсыз рөл таңдалды."
+
+#: task_manager/teams/forms.py:347
+msgid "Invalid status selected."
+msgstr "Жарамсыз күй таңдалды."
+
+#: task_manager/teams/models.py:28
+msgid "Minimum length is 3 characters"
+msgstr "Ең қысқа ұзындық — 3 таңба"
+
+#: task_manager/teams/models.py:77 task_manager/user/forms.py:155
+msgid "Admin"
+msgstr "Әкімші"
+
+#: task_manager/teams/models.py:78 task_manager/user/forms.py:156
+msgid "Member"
+msgstr "Мүше"
+
+#: task_manager/teams/models.py:81
+#: task_manager/templates/user/user_list.html:57
+msgid "Pending"
+msgstr "Күтуде"
+
+#: task_manager/teams/models.py:82 task_manager/teams/models.py:174
+msgid "Active"
+msgstr "Белсенді"
+
+#: task_manager/teams/models.py:132
+msgid "Invite code"
+msgstr "Шақыру коды"
+
+#: task_manager/teams/models.py:139
+msgid "Expires at"
+msgstr "Мерзімі аяқталады"
+
+#: task_manager/teams/models.py:143
+msgid "Is used"
+msgstr "Пайдаланылды"
+
+#: task_manager/teams/models.py:151
+msgid "Used by"
+msgstr "Пайдаланушы"
+
+#: task_manager/teams/models.py:156
+msgid "Used at"
+msgstr "Пайдаланылған күні"
+
+#: task_manager/teams/models.py:160
+msgid "Max uses"
+msgstr "Пайдалану шегі"
+
+#: task_manager/teams/models.py:161
+msgid "Number of times invite can be used"
+msgstr "Шақыруды қанша рет пайдалануға болады"
+
+#: task_manager/teams/models.py:165
+msgid "Use count"
+msgstr "Пайдалану саны"
+
+#: task_manager/teams/models.py:169
+msgid "Team invite"
+msgstr "Командаға шақыру"
+
+#: task_manager/teams/models.py:170
+msgid "Team invites"
+msgstr "Командаға шақырулар"
+
+#: task_manager/teams/models.py:174
+msgid "Used"
+msgstr "Пайдаланылды"
+
+#: task_manager/teams/views.py:40
+msgid "Team not found"
+msgstr "Команда табылмады"
+
+#: task_manager/teams/views.py:67
+msgid "Switched to individual mode"
+msgstr "Жеке режимге ауыстырылды"
+
+#: task_manager/teams/views.py:79
+#, python-brace-format
+msgid "Switched to team: {team}"
+msgstr "Командаға ауыстырылды: {team}"
+
+#: task_manager/teams/views.py:177
+msgid "You are not a member of this team"
+msgstr "Сіз бұл команданың мүшесі емессіз"
+
+#: task_manager/teams/views.py:183
+msgid ""
+"Team administrators cannot leave the team. Please transfer admin rights to "
+"another member first."
+msgstr ""
+"Команда әкімшілері командадан шыға алмайды. Алдымен әкімші құқығын басқа "
+"мүшеге беріңіз."
+
+#: task_manager/teams/views.py:201
+msgid ""
+"You do not have rights to manage team members. This can only be done by the "
+"team administrator"
+msgstr ""
+"Топ мүшелерін басқаруға құқығыңыз жоқ. Мұны тек команда әкімшісі жасай "
+"алады."
+
+#: task_manager/teams/views.py:206
+msgid "User is not a member of this team"
+msgstr "Бұл пайдаланушы команданың мүшесі емес"
+
+#: task_manager/teams/views.py:283
+#, python-brace-format
+msgid "You have successfully left the team {team}"
+msgstr "Сіз {team} командасынан сәтті шықтыңыз"
+
+#: task_manager/teams/views.py:289
+#, python-brace-format
+msgid "User {username} has been removed from the team {team}"
+msgstr "{username} пайдаланушысы {team} командасынан шығарылды"
+
+#: task_manager/teams/views.py:303
+msgid "Team membership not found"
+msgstr "Командаға мүшелік табылмады"
+
+#: task_manager/teams/views.py:339
+msgid ""
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
+msgstr ""
+"Командадан шыға алмайсыз, себебі сіз бұл команданың тапсырмаларының авторы "
+"немесе орындаушысысыз."
+
+#: task_manager/teams/views.py:389
+msgid "Team created successfully"
+msgstr "Команда сәтті құрылды"
+
+#: task_manager/teams/views.py:451 task_manager/teams/views.py:661
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "Сіз {team} командасына сәтті қосылдыңыз"
+
+#: task_manager/teams/views.py:468 task_manager/user/views.py:259
+#: task_manager/user/views.py:303
+#, python-brace-format
+msgid ""
+"Your request to join team {team} has been sent. Waiting for admin approval."
+msgstr ""
+"{team} командасына қосылу өтінішіңіз жіберілді. Әкімші мақұлдауын күтіңіз."
+
+#: task_manager/teams/views.py:520
+msgid "Invite link generated successfully. Scroll down to copy."
+msgstr "Шақыру сілтемесі сәтті жасалды. Көшіру үшін төмен түсіңіз."
+
+#: task_manager/teams/views.py:540
+msgid "Team has reached the maximum number of members"
+msgstr "Команда мүшелер санының шегіне жетті"
+
+#: task_manager/teams/views.py:590 task_manager/teams/views.py:598
+msgid "Invite link has been used"
+msgstr "Шақыру сілтемесі бұрын пайдаланылған"
+
+#: task_manager/teams/views.py:594
+msgid "Invite link has expired"
+msgstr "Шақыру сілтемесінің мерзімі өткен"
+
+#: task_manager/teams/views.py:713
+msgid "Team updated successfully"
+msgstr "Команда сәтті өзгертілді"
+
+#: task_manager/teams/views.py:731
+msgid "Cannot delete a team because it has tasks."
+msgstr "Команданы жою мүмкін емес, өйткені оның тапсырмалары бар."
+
+#: task_manager/teams/views.py:739
+msgid "Cannot delete a team because it has other members."
+msgstr "Команданы жою мүмкін емес, себебі оның басқа мүшелері бар"
+
+#: task_manager/teams/views.py:748
+msgid "Team deleted successfully"
+msgstr "Команда сәтті жойылды"
+
+#: task_manager/teams/views.py:779
+#, python-brace-format
+msgid "User {username} has been promoted to team admin."
+msgstr "{username} пайдаланушысы команда әкімшісі болып тағайындалды."
+
+#: task_manager/teams/views.py:786
+#, python-brace-format
+msgid "User {username} has been demoted to team member."
+msgstr "{username} пайдаланушысы команда мүшесі болды."
+
+#: task_manager/teams/views.py:797
+#, python-brace-format
+msgid "User {username} has been approved and is now a member of the team."
+msgstr "{username} пайдаланушысы мақұлданды және енді команданың мүшесі."
+
+#: task_manager/teams/views.py:805
+#, python-brace-format
+msgid "User {username} membership has been set to pending."
+msgstr "{username} пайдаланушысының мүшелігі күту күйіне орнатылды."
+
+#: task_manager/templates/base.html:50 task_manager/templates/base.html:82
+#: task_manager/views.py:25
+msgid "TaskMan"
+msgstr "TaskMan"
+
+#: task_manager/templates/base.html:107
+msgid "Navigation"
+msgstr "Навигация"
+
+#: task_manager/templates/base.html:110 task_manager/templates/base.html:143
+msgid "Users"
+msgstr "Пайдаланушылар"
+
+#: task_manager/templates/base.html:115 task_manager/templates/base.html:146
+#: task_manager/templates/includes/limits_usage.html:8
+#: task_manager/templates/includes/team_limits_usage.html:30
+#: task_manager/templates/user/user_detail.html:76
+#: task_manager/templates/user/user_detail.html:99
+#: task_manager/templates/user/user_detail.html:125
+msgid "Tasks"
+msgstr "Тапсырмалар"
+
+#: task_manager/templates/base.html:120 task_manager/templates/base.html:149
+#: task_manager/templates/includes/limits_usage.html:40
+#: task_manager/templates/includes/team_limits_usage.html:48
+msgid "Statuses"
+msgstr "Күйлер"
+
+#: task_manager/templates/base.html:190
+msgid "Switch context"
+msgstr "Контекстті ауыстыру"
+
+#: task_manager/templates/base.html:198
+#: task_manager/templates/labels/labels_update.html:34
+msgid "Individual"
+msgstr "Жеке"
+
+#: task_manager/templates/base.html:225
+msgid "Profile"
+msgstr "Профиль"
+
+#: task_manager/templates/base.html:230
+msgid "New Team"
+msgstr "Жаңа команда"
+
+#: task_manager/templates/base.html:235
+#: task_manager/templates/teams/team_join_form.html:11
+msgid "Join Team"
+msgstr "Командаға қосылу"
+
+#: task_manager/templates/base.html:243
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Exit team"
+msgstr "Командадан шығу"
+
+#: task_manager/templates/base.html:253
+msgid "Logout"
+msgstr "Шығу"
+
+#: task_manager/templates/base.html:265 task_manager/templates/base.html:317
+msgid "Settings"
+msgstr "Параметрлер"
+
+#: task_manager/templates/base.html:269 task_manager/templates/base.html:321
+msgid "Theme"
+msgstr "Тақырып мәнері"
+
+#: task_manager/templates/base.html:272 task_manager/templates/base.html:324
+msgid "Light"
+msgstr "Ашық"
+
+#: task_manager/templates/base.html:275 task_manager/templates/base.html:329
+msgid "Dark"
+msgstr "Қараңғы"
+
+#: task_manager/templates/base.html:278 task_manager/templates/base.html:334
+msgid "Auto"
+msgstr "Авто"
+
+#: task_manager/templates/base.html:286 task_manager/templates/base.html:340
+msgid "Language"
+msgstr "Тіл"
+
+#: task_manager/templates/base.html:309 task_manager/templates/login.html:8
+msgid "Login"
+msgstr "Кіру"
+
+#: task_manager/templates/base.html:310
+#: task_manager/templates/user/user_create_form.html:11
+msgid "Signup"
+msgstr "Тіркелу"
+
+#: task_manager/templates/base.html:369
+msgid "You are approaching the free plan limits."
+msgstr "Сіз тегін жоспардың шектеулеріне жақындап қалдыңыз."
+
+#: task_manager/templates/base.html:372
+#: task_manager/templates/user/user_list.html:23
+msgid "Details"
+msgstr "Толығырақ"
+
+#: task_manager/templates/base.html:410
+msgid "Go back"
+msgstr "Артқа қайту"
+
+#: task_manager/templates/base.html:430 task_manager/templates/feedback.html:7
+#: task_manager/templates/feedback.html:12 task_manager/views.py:57
+msgid "Feedback"
+msgstr "Кері байланыс"
+
+#: task_manager/templates/base.html:432
+#: task_manager/templates/privacy_policy.html:4
+#: task_manager/templates/privacy_policy.html:8
+msgid "Privacy Policy"
+msgstr "Құпиялылық саясаты"
+
+#: task_manager/templates/base.html:434
+#: task_manager/templates/terms_of_service.html:4
+#: task_manager/templates/terms_of_service.html:8
+msgid "Terms of Service"
+msgstr "Пайдалану шарттары"
+
+#: task_manager/templates/feedback.html:13
+msgid "Found a bug or have a suggestion? Let us know!"
+msgstr "Қате таптыңыз ба немесе ұсынысыңыз бар ма? Бізге хабарлаңыз!"
+
+#: task_manager/templates/feedback.html:21
+msgid "Send"
+msgstr "Жіберу"
+
+#: task_manager/templates/feedback.html:28
+msgid ""
+"Your message will be sent to developers via Telegram. We will reply to the "
+"contact you provide."
+msgstr ""
+"Хабарламаңыз Telegram арқылы әзірлеушілерге жіберіледі. Сіз көрсеткен "
+"байланыс арқылы жауап береміз."
+
+#: task_manager/templates/feedback.html:51
+msgid "Telegram opened! Send your message there."
+msgstr "Telegram ашылды. Хабарламаңызды сонда жіберіңіз."
+
+#: task_manager/templates/includes/limits_usage.html:24
+#: task_manager/templates/user/user_detail.html:61
+msgid "Teams"
+msgstr "Командалар"
+
+#: task_manager/templates/includes/limits_usage.html:90
+msgid "Extended plan is already in development — more features coming soon!"
+msgstr "Кеңейтілген жоспар әзірленуде — жақында жаңа мүмкіндіктер қосылады!"
+
+#: task_manager/templates/includes/team_limits_usage.html:6
+msgid "Team Limits"
+msgstr "Команда шектеулері"
+
+#: task_manager/templates/includes/team_limits_usage.html:12
+#: task_manager/templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "Мүшелер"
+
+#: task_manager/templates/index.html:7
+msgid "Task Manager"
+msgstr "Тапсырма менеджері"
+
+#: task_manager/templates/index.html:20
+#: task_manager/templates/teams/team_join_invite.html:24
+msgid "Go to Tasks"
+msgstr "Тапсырмаларға өту"
+
+#: task_manager/templates/index.html:24
+msgid "Get Started"
+msgstr "Бастау"
+
+#: task_manager/templates/index.html:32
+msgid "Features"
+msgstr "Мүмкіндіктер"
+
+#: task_manager/templates/index.html:37
+msgid "Personal space and teams"
+msgstr "Жеке кеңістік және командалар"
+
+#: task_manager/templates/index.html:37
+msgid "Switch context in one click"
+msgstr "Контексті бір басумен ауыстырыңыз"
+
+#: task_manager/templates/index.html:41
+msgid "Quick Task Creation"
+msgstr "Тапсырманы жылдам жасау"
+
+#: task_manager/templates/index.html:41
+msgid "Title, description, assignee - done in seconds"
+msgstr "Тақырып, сипаттама, орындаушы — бірнеше секундта дайын"
+
+#: task_manager/templates/index.html:45
+msgid "Custom Statuses"
+msgstr "Теңшелетін күйлер"
+
+#: task_manager/templates/index.html:45
+msgid "New, In Progress, Done - or your own"
+msgstr "Жаңа, Орындалуда, Аяқталды — немесе өзіңіздікі"
+
+#: task_manager/templates/index.html:49
+msgid "Tag and filter tasks instantly"
+msgstr "Белгілерді бірден қосыңыз және тапсырмаларды сүзгілеңіз"
+
+#: task_manager/templates/index.html:53
+msgid "Any Device"
+msgstr "Кез келген құрылғы"
+
+#: task_manager/templates/index.html:53
+msgid "Works on desktop, tablet, and mobile"
+msgstr "Компьютерде, планшетте және смартфонда жұмыс істейді"
+
+#: task_manager/templates/index.html:58
+msgid "Language Support"
+msgstr "Тілдерді қолдау"
+
+#: task_manager/templates/labels/labels_create.html:9
+#: task_manager/templates/tasks/task_create_form.html:59
+#: task_manager/templates/tasks/task_update.html:194
+msgid "Create label"
+msgstr "Белгі жасау"
+
+#: task_manager/templates/labels/labels_create.html:19
+#: task_manager/templates/notes/note_form.html:177
+#: task_manager/templates/statuses/statuses_create_form.html:82
+#: task_manager/templates/tasks/task_create_form.html:78
+#: task_manager/templates/teams/team_create_form.html:28
+msgid "Create"
+msgstr "Жасау"
+
+#: task_manager/templates/labels/labels_create.html:22
+#: task_manager/templates/labels/labels_delete.html:23
+#: task_manager/templates/labels/labels_update.html:66
+#: task_manager/templates/notes/note_confirm_delete.html:37
+#: task_manager/templates/notes/note_detail.html:104
+#: task_manager/templates/notes/note_form.html:182
+#: task_manager/templates/notes/note_form.html:186
+#: task_manager/templates/notes/note_form.html:236
+#: task_manager/templates/statuses/statuses_create_form.html:85
+#: task_manager/templates/statuses/statuses_delete.html:23
+#: task_manager/templates/statuses/statuses_update.html:70
+#: task_manager/templates/tasks/task_create_form.html:81
+#: task_manager/templates/tasks/task_delete.html:23
+#: task_manager/templates/tasks/task_update.html:220
+#: task_manager/templates/teams/team_create_form.html:31
+#: task_manager/templates/teams/team_delete.html:22
+#: task_manager/templates/teams/team_detail.html:79
+#: task_manager/templates/teams/team_exit.html:28
+#: task_manager/templates/teams/team_join_form.html:31
+#: task_manager/templates/teams/team_member_role_update.html:55
+#: task_manager/templates/teams/team_update.html:29
+#: task_manager/templates/user/user_create_form.html:28
+#: task_manager/templates/user/user_delete.html:22
+#: task_manager/templates/user/user_detail.html:174
+#: task_manager/templates/user/user_update.html:20
+msgid "Cancel"
+msgstr "Бас тарту"
+
+#: task_manager/templates/labels/labels_delete.html:8
+msgid "Delete labels"
+msgstr "Белгілерді жою"
+
+#: task_manager/templates/labels/labels_delete.html:14
+msgid "Delete label"
+msgstr "Белгіні жою"
+
+#: task_manager/templates/labels/labels_delete.html:17
+#: task_manager/templates/statuses/statuses_delete.html:17
+#: task_manager/templates/tasks/task_delete.html:17
+#: task_manager/templates/teams/team_delete.html:17
+#: task_manager/templates/user/user_delete.html:17
+msgid "Are you sure you want to delete"
+msgstr "Жойғыңыз келетініне сенімдісіз бе"
+
+#: task_manager/templates/labels/labels_delete.html:20
+#: task_manager/templates/notes/note_confirm_delete.html:34
+#: task_manager/templates/statuses/statuses_delete.html:20
+#: task_manager/templates/tasks/task_delete.html:20
+#: task_manager/templates/teams/team_delete.html:19
+#: task_manager/templates/user/user_delete.html:19
+msgid "Yes, delete"
+msgstr "Иә, жою"
+
+#: task_manager/templates/labels/labels_list.html:14
+msgid "New label"
+msgstr "Жаңа белгі"
+
+#: task_manager/templates/labels/labels_list.html:57
+#: task_manager/templates/labels/labels_update.html:38
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:43
+#: task_manager/templates/notes/note_list.html:74
+#: task_manager/templates/tasks/task_filter.html:464
+#: task_manager/templates/tasks/task_update.html:25
+#: task_manager/templates/tasks/task_update.html:41
+#: task_manager/user/models.py:22
+msgid "Deleted user"
+msgstr "Жойылған пайдаланушы"
+
+#: task_manager/templates/labels/labels_list.html:70
+msgid "No labels found"
+msgstr "Белгілер жоқ"
+
+#: task_manager/templates/labels/labels_list.html:71
+msgid "Create your first label to organize tasks"
+msgstr "Тапсырмаларды реттеу үшін алғашқы белгіңізді жасаңыз"
+
+#: task_manager/templates/labels/labels_list.html:72
+msgid "Create Label"
+msgstr "Белгі жасау"
+
+#: task_manager/templates/labels/labels_update.html:22
+#: task_manager/templates/notes/note_detail.html:44
+#: task_manager/templates/notes/note_form.html:27
+#: task_manager/templates/statuses/statuses_update.html:20
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:418
+#: task_manager/templates/tasks/task_update.html:19
+msgid "Created"
+msgstr "Құрылды"
+
+#: task_manager/templates/labels/labels_update.html:33
+msgid "Individual mode"
+msgstr "Жеке режим"
+
+#: task_manager/templates/labels/labels_update.html:37
+#: task_manager/templates/statuses/statuses_update.html:36
+msgid "Creator"
+msgstr "Жасаушы"
+
+#: task_manager/templates/labels/labels_update.html:47
+msgid "Label"
+msgstr "Белгі"
+
+#: task_manager/templates/labels/labels_update.html:63
+#: task_manager/templates/notes/note_form.html:175
+#: task_manager/templates/statuses/statuses_update.html:67
+#: task_manager/templates/tasks/task_filter.html:321
+#: task_manager/templates/tasks/task_update.html:217
+#: task_manager/templates/user/user_update.html:17
+msgid "Save"
+msgstr "Сақтау"
+
+#: task_manager/templates/labels/labels_update.html:71
+#: task_manager/templates/notes/note_form.html:157
+#: task_manager/templates/notes/note_form.html:158
+#: task_manager/templates/notes/note_form.html:193
+#: task_manager/templates/statuses/statuses_list.html:76
+#: task_manager/templates/statuses/statuses_update.html:75
+#: task_manager/templates/tasks/task_update.html:151
+#: task_manager/templates/tasks/task_update.html:225
+#: task_manager/templates/tasks/task_update.html:370
+#: task_manager/templates/teams/team_update.html:34
+#: task_manager/templates/user/user_detail.html:180
+msgid "Delete"
+msgstr "Жою"
+
+#: task_manager/templates/limits/limits_info.html:14
+msgid "Plans & Limits"
+msgstr "Жоспарлар мен шектеулер"
+
+#: task_manager/templates/limits/limits_info.html:19
+msgid "Current Plan"
+msgstr "Ағымдағы жоспар"
+
+#: task_manager/templates/limits/limits_info.html:21
+msgid "Free"
+msgstr "Тегін"
+
+#: task_manager/templates/limits/limits_info.html:27
+msgid "Current Usage"
+msgstr "Ағымдағы пайдалану"
+
+#: task_manager/templates/limits/limits_info.html:35
+msgid "Extended Plan"
+msgstr "Кеңейтілген жоспар"
+
+#: task_manager/templates/limits/limits_info.html:37
+msgid "In Development"
+msgstr "Әзірленуде"
+
+#: task_manager/templates/limits/limits_info.html:43
+msgid "More teams"
+msgstr "Көбірек команда"
+
+#: task_manager/templates/limits/limits_info.html:47
+msgid "More team members"
+msgstr "Көбірек команда мүшесі"
+
+#: task_manager/templates/limits/limits_info.html:51
+msgid "Increased task limits"
+msgstr "Ұлғайтылған тапсырма шектеулері"
+
+#: task_manager/templates/limits/limits_info.html:55
+msgid "Priority support"
+msgstr "Басымды қолдау"
+
+#: task_manager/templates/limits/limits_info.html:66
+msgid "Stay tuned for updates!"
+msgstr "Жаңартуларды күтіңіз!"
+
+#: task_manager/templates/limits/limits_info.html:70
+msgid "Send Feedback"
+msgstr "Пікір жіберу"
+
+#: task_manager/templates/limits/limits_info.html:79
+msgid "Back"
+msgstr "Артқа"
+
+#: task_manager/templates/login.html:13
+msgid "Log in"
+msgstr "Кіру"
+
+#: task_manager/templates/notes/_task_notes.html:14
+msgid "Add note"
+msgstr "Жазба қосу"
+
+#: task_manager/templates/notes/_task_notes.html:42
+msgid "No notes for this task"
+msgstr "Бұл тапсырмаға жазбалар жоқ"
+
+#: task_manager/templates/notes/note_confirm_delete.html:6
+#: task_manager/templates/notes/note_confirm_delete.html:11
+msgid "Delete note"
+msgstr "Жазбаны жою"
+
+#: task_manager/templates/notes/note_confirm_delete.html:16
+msgid "Are you sure you want to delete this note?"
+msgstr "Бұл жазбаны жойғыңыз келетініне сенімдісіз бе?"
+
+#: task_manager/templates/notes/note_detail.html:23
+msgid "Untitled Note"
+msgstr "Атауысыз жазба"
+
+#: task_manager/templates/notes/note_detail.html:32
+#: task_manager/templates/notes/note_form.html:39
+#: task_manager/templates/notes/note_list.html:69
+msgid "Personal"
+msgstr "Жеке"
+
+#: task_manager/templates/notes/note_detail.html:48
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:425
+#: task_manager/templates/tasks/task_update.html:36
+msgid "Updated"
+msgstr "Жаңартылды"
+
+#: task_manager/templates/notes/note_detail.html:60
+msgid "Loading content..."
+msgstr "Мазмұн жүктелуде..."
+
+#: task_manager/templates/notes/note_detail.html:72
+#: task_manager/templates/notes/note_form.html:119
+msgid "Images"
+msgstr "Суреттер"
+
+#: task_manager/templates/notes/note_detail.html:101
+#: task_manager/templates/statuses/statuses_list.html:73
+#: task_manager/templates/teams/team_update.html:26
+#: task_manager/templates/user/user_detail.html:163
+msgid "Edit"
+msgstr "Өзгерту"
+
+#: task_manager/templates/notes/note_form.html:38
+msgid "Personal note"
+msgstr "Жеке жазба"
+
+#: task_manager/templates/notes/note_form.html:55
+msgid "Edit note"
+msgstr "Жазбаны өңдеу"
+
+#: task_manager/templates/notes/note_form.html:57
+msgid "Create note"
+msgstr "Жазба жасау"
+
+#: task_manager/templates/notes/note_form.html:89
+msgid "Enter note content... Use Markdown for formatting."
+msgstr "Жазба мәтінін енгізіңіз... Пішімдеу үшін Markdown пайдаланыңыз."
+
+#: task_manager/templates/notes/note_form.html:95
+#: task_manager/templates/notes/note_form.html:232
+msgid "Preview"
+msgstr "Алдын ала қарау"
+
+#: task_manager/templates/notes/note_form.html:104
+msgid "Markdown supported:"
+msgstr "Markdown қолдауы бар:"
+
+#: task_manager/templates/notes/note_form.html:129
+#, python-format
+msgid ""
+"Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
+"WebP)."
+msgstr ""
+"Бір жазбаға %(max_count)s суретке дейін, әрқайсысы %(max_mb)s МБ (JPEG, PNG,"
+" GIF, WebP)."
+
+#: task_manager/templates/notes/note_form.html:142
+msgid "Attached images"
+msgstr "Тіркелген суреттер"
+
+#: task_manager/templates/notes/note_form.html:209
+msgid "Insert Image"
+msgstr "Сурет кірістіру"
+
+#: task_manager/templates/notes/note_form.html:211
+msgid "Close"
+msgstr "Жабу"
+
+#: task_manager/templates/notes/note_form.html:216
+msgid "Image URL"
+msgstr "Сурет URL-і"
+
+#: task_manager/templates/notes/note_form.html:225
+msgid "Description (alt text)"
+msgstr "Сипаттама (alt мәтіні)"
+
+#: task_manager/templates/notes/note_form.html:230
+msgid "Image description"
+msgstr "Сурет сипаттамасы"
+
+#: task_manager/templates/notes/note_form.html:239
+msgid "Insert"
+msgstr "Кірістіру"
+
+#: task_manager/templates/notes/note_list.html:12
+msgid "New note"
+msgstr "Жаңа жазба"
+
+#: task_manager/templates/notes/note_list.html:85
+msgid "No notes found"
+msgstr "Жазбалар жоқ"
+
+#: task_manager/templates/notes/note_list.html:86
+msgid "Create your first note to save important information"
+msgstr "Маңызды ақпаратты сақтау үшін алғашқы жазбаңызды жасаңыз"
+
+#: task_manager/templates/notes/note_list.html:87
+msgid "Create Note"
+msgstr "Жазба жасау"
+
+#: task_manager/templates/notifications/_notification_bell.html:6
+#: task_manager/templates/notifications/_notification_bell.html:119
+#: task_manager/templates/notifications/_notification_bell.html:165
+msgid "No notifications"
+msgstr "Хабарландырулар жоқ"
+
+#: task_manager/templates/notifications/_notification_bell.html:29
+msgid "Mark all as read"
+msgstr "Барлығын оқылды деп белгілеу"
+
+#: task_manager/templates/notifications/_notification_bell.html:69
+#: task_manager/templates/tasks/task_update.html:39
+msgid "ago"
+msgstr "бұрын"
+
+#: task_manager/templates/notifications/_notification_bell.html:75
+msgid "Mark as read"
+msgstr "Оқылды деп белгілеу"
+
+#: task_manager/templates/notifications/_notification_bell.html:86
+msgid "Showing last 10 notifications"
+msgstr "Соңғы 10 хабарландыру көрсетілген"
+
+#: task_manager/templates/privacy_policy.html:11
+msgid "Data We Collect"
+msgstr "Біз жинайтын деректер"
+
+#: task_manager/templates/privacy_policy.html:12
+msgid "When you register, we collect:"
+msgstr "Тіркелу кезінде біз мыналарды жинаймыз:"
+
+#: task_manager/templates/privacy_policy.html:14
+#: task_manager/templates/user/user_detail.html:152
+msgid "Username"
+msgstr "Пайдаланушы аты"
+
+#: task_manager/templates/privacy_policy.html:15
+msgid "First and last name (optional)"
+msgstr "Аты-жөні (міндетті емес)"
+
+#: task_manager/templates/privacy_policy.html:16
+msgid "Password (stored in encrypted form)"
+msgstr "Құпиясөз (шифрланған түрде сақталады)"
+
+#: task_manager/templates/privacy_policy.html:19
+msgid "When you use the service, we store:"
+msgstr "Қызметті пайдалану кезінде біз мыналарды сақтаймыз:"
+
+#: task_manager/templates/privacy_policy.html:21
+msgid "Tasks, notes, labels and statuses you create"
+msgstr "Сіз жасаған тапсырмалар, жазбалар, белгілер және күйлер"
+
+#: task_manager/templates/privacy_policy.html:22
+msgid "Team membership information"
+msgstr "Командаға мүшелік туралы ақпарат"
+
+#: task_manager/templates/privacy_policy.html:25
+msgid "How We Use Your Data"
+msgstr "Біз деректеріңізді қалай пайдаланамыз"
+
+#: task_manager/templates/privacy_policy.html:27
+msgid "To provide the task management service"
+msgstr "Тапсырмаларды басқару қызметін ұсыну үшін"
+
+#: task_manager/templates/privacy_policy.html:28
+msgid "To authenticate you and protect your account"
+msgstr "Сізді аутентификациялау және тіркелгіңізді қорғау үшін"
+
+#: task_manager/templates/privacy_policy.html:29
+msgid "To enable team collaboration features"
+msgstr "Командамен бірге жұмыс мүмкіндіктерін қосу үшін"
+
+#: task_manager/templates/privacy_policy.html:32
+msgid "Data Sharing"
+msgstr "Деректерді бөлісу"
+
+#: task_manager/templates/privacy_policy.html:33
+msgid ""
+"We do not sell, trade, or share your personal data with third parties, "
+"except:"
+msgstr ""
+"Біз жеке деректеріңізді сатпаймыз, айырбастамаймыз және үшінші тұлғаларға "
+"бермейміз, мына жағдайлардан басқа:"
+
+#: task_manager/templates/privacy_policy.html:35
+msgid "Within your teams - other team members can see tasks assigned to them"
+msgstr ""
+"Команда ішінде — басқа мүшелер өздеріне тағайындалған тапсырмаларды көре "
+"алады"
+
+#: task_manager/templates/privacy_policy.html:36
+msgid "When required by law"
+msgstr "Заң талап еткен кезде"
+
+#: task_manager/templates/privacy_policy.html:39
+msgid "Data Storage and Security"
+msgstr "Деректерді сақтау және қауіпсіздік"
+
+#: task_manager/templates/privacy_policy.html:40
+msgid ""
+"Your data is stored on secure servers. We use HTTPS encryption for all "
+"connections. Passwords are hashed and never stored in plain text."
+msgstr ""
+"Деректеріңіз қауіпсіз серверлерде сақталады. Барлық қосылымдарда HTTPS "
+"шифрлеуін пайдаланамыз. Құпиясөздер хэштеледі және ешқашан ашық мәтінде "
+"сақталмайды."
+
+#: task_manager/templates/privacy_policy.html:42
+msgid "Your Rights"
+msgstr "Сіздің құқықтарыңыз"
+
+#: task_manager/templates/privacy_policy.html:43
+msgid "You can:"
+msgstr "Сіз мұны жасай аласыз:"
+
+#: task_manager/templates/privacy_policy.html:45
+msgid "View and edit your profile information at any time"
+msgstr "Профиль ақпаратын кез келген уақытта қарау және өңдеу"
+
+#: task_manager/templates/privacy_policy.html:46
+msgid "Delete your account and all associated data"
+msgstr "Тіркелгіңізді және онымен байланысты барлық деректерді жою"
+
+#: task_manager/templates/privacy_policy.html:47
+msgid "Export your data by contacting us"
+msgstr "Бізбен байланысу арқылы деректеріңізді экспорттау"
+
+#: task_manager/templates/privacy_policy.html:50
+msgid "Cookies"
+msgstr "Cookie файлдары"
+
+#: task_manager/templates/privacy_policy.html:51
+msgid "We use essential cookies for:"
+msgstr "Біз қажетті cookie файлдарын пайдаланамыз:"
+
+#: task_manager/templates/privacy_policy.html:53
+msgid "Session management (keeping you logged in)"
+msgstr "Сессияны басқару (жүйеде қалу үшін)"
+
+#: task_manager/templates/privacy_policy.html:54
+msgid "CSRF protection (security)"
+msgstr "CSRF қорғанысы (қауіпсіздік)"
+
+#: task_manager/templates/privacy_policy.html:55
+msgid "Language preference"
+msgstr "Тіл таңдауын сақтау"
+
+#: task_manager/templates/privacy_policy.html:58
+msgid "Children's Privacy"
+msgstr "Балалардың құпиялылығы"
+
+#: task_manager/templates/privacy_policy.html:59
+msgid ""
+"Our service is not intended for children under 13. We do not knowingly "
+"collect data from children."
+msgstr ""
+"Қызметіміз 13 жасқа толмаған балаларға арналмаған. Біз балалардың деректерін"
+" саналы түрде жинамаймыз."
+
+#: task_manager/templates/privacy_policy.html:61
+#: task_manager/templates/terms_of_service.html:45
+msgid "Contact"
+msgstr "Байланыс"
+
+#: task_manager/templates/privacy_policy.html:62
+msgid ""
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
+msgstr ""
+"Құпиялылық саясаты туралы сұрақтарыңыз болса, кері байланыс формасы арқылы "
+"хабарласыңыз:"
+
+#: task_manager/templates/privacy_policy.html:65
+msgid "Changes"
+msgstr "Өзгерістер"
+
+#: task_manager/templates/privacy_policy.html:66
+msgid ""
+"We may update this policy. Changes will be posted on this page with an "
+"updated date."
+msgstr ""
+"Бұл саясатты жаңартуымыз мүмкін. Өзгерістер осы бетте жаңартылған күнімен "
+"жарияланады."
+
+#: task_manager/templates/statuses/statuses_create_form.html:16
+msgid "Create status"
+msgstr "Күй жасау"
+
+#: task_manager/templates/statuses/statuses_create_form.html:29
+msgid "Enter status name..."
+msgstr "Күй атауын енгізіңіз..."
+
+#: task_manager/templates/statuses/statuses_delete.html:8
+#: task_manager/templates/statuses/statuses_delete.html:14
+msgid "Delete status"
+msgstr "Күйді жою"
+
+#: task_manager/templates/statuses/statuses_list.html:14
+msgid "New status"
+msgstr "Жаңа күй"
+
+#: task_manager/templates/statuses/statuses_list.html:90
+msgid "No statuses found"
+msgstr "Күйлер жоқ"
+
+#: task_manager/templates/statuses/statuses_list.html:91
+msgid "Create your first status to organize tasks"
+msgstr "Тапсырмаларды реттеу үшін алғашқы күйіңізді жасаңыз"
+
+#: task_manager/templates/statuses/statuses_list.html:92
+msgid "Create Status"
+msgstr "Күй жасау"
+
+#: task_manager/templates/statuses/statuses_update.html:41
+msgid "Has description"
+msgstr "Сипаттамасы бар"
+
+#: task_manager/templates/tasks/partials/empty_state.html:8
+msgid "No tasks found"
+msgstr "Тапсырмалар жоқ"
+
+#: task_manager/templates/tasks/partials/empty_state.html:9
+msgid "Try adjusting filters or create a new task"
+msgstr "Сүзгілерді өзгертіп көріңіз немесе жаңа тапсырма жасаңыз"
+
+#: task_manager/templates/tasks/partials/empty_state.html:12
+msgid "Completed tasks are hidden by default"
+msgstr "Аяқталған тапсырмалар әдепкі бойынша жасырылады"
+
+#: task_manager/templates/tasks/partials/empty_state.html:15
+#: task_manager/templates/tasks/task_filter.html:81
+msgid "Show all tasks"
+msgstr "Барлық тапсырмаларды көрсету"
+
+#: task_manager/templates/tasks/partials/empty_state.html:20
+msgid "Reset filters"
+msgstr "Сүзгілерді ысырып тастау"
+
+#: task_manager/templates/tasks/partials/empty_state.html:24
+msgid "Create Task"
+msgstr "Тапсырма жасау"
+
+#: task_manager/templates/tasks/task_create_form.html:11
+msgid "Create task"
+msgstr "Тапсырма жасау"
+
+#: task_manager/templates/tasks/task_create_form.html:28
+#: task_manager/templates/tasks/task_update.html:90
+msgid "Quick deadline"
+msgstr "Жылдам мерзім"
+
+#: task_manager/templates/tasks/task_create_form.html:29
+#: task_manager/templates/tasks/task_update.html:91
+msgid "in 8 hours"
+msgstr "8 сағаттан кейін"
+
+#: task_manager/templates/tasks/task_create_form.html:30
+#: task_manager/templates/tasks/task_update.html:92
+msgid "in 1 day"
+msgstr "1 күннен кейін"
+
+#: task_manager/templates/tasks/task_create_form.html:31
+#: task_manager/templates/tasks/task_update.html:93
+msgid "in 3 days"
+msgstr "3 күннен кейін"
+
+#: task_manager/templates/tasks/task_create_form.html:32
+#: task_manager/templates/tasks/task_update.html:94
+msgid "in 21 days"
+msgstr "21 күннен кейін"
+
+#: task_manager/templates/tasks/task_create_form.html:34
+#: task_manager/templates/tasks/task_update.html:96
+msgid "Clear deadline"
+msgstr "Мерзімді өшіру"
+
+#: task_manager/templates/tasks/task_create_form.html:46
+#: task_manager/templates/tasks/task_update.html:180
+msgid "Add checklist"
+msgstr "Тексеру тізімін қосу"
+
+#: task_manager/templates/tasks/task_create_form.html:68
+#: task_manager/templates/tasks/task_filter.html:262
+#: task_manager/templates/tasks/task_update.html:203
+msgid "Hold Ctrl/Cmd to select multiple items"
+msgstr "Бірнеше таңдау үшін Ctrl/Cmd пернесін ұстап тұрыңыз"
+
+#: task_manager/templates/tasks/task_delete.html:8
+#: task_manager/templates/tasks/task_delete.html:14
+msgid "Delete task"
+msgstr "Тапсырманы жою"
+
+#: task_manager/templates/tasks/task_filter.html:13
+msgid "New task"
+msgstr "Жаңа тапсырма"
+
+#: task_manager/templates/tasks/task_filter.html:32
+msgid "Sort"
+msgstr "Сұрыптау"
+
+#: task_manager/templates/tasks/task_filter.html:37
+msgid "Sort by"
+msgstr "Сұрыптау критерийі"
+
+#: task_manager/templates/tasks/task_filter.html:57
+msgid "Full view"
+msgstr "Толық көрініс"
+
+#: task_manager/templates/tasks/task_filter.html:62
+msgid "Simple view"
+msgstr "Ықшам көрініс"
+
+#: task_manager/templates/tasks/task_filter.html:70
+msgid "Overridden by status filter"
+msgstr "Күй сүзгісімен үстінен жазылады"
+
+#: task_manager/templates/tasks/task_filter.html:75
+msgid "Show completed tasks"
+msgstr "Аяқталған тапсырмаларды көрсету"
+
+#: task_manager/templates/tasks/task_filter.html:86
+msgid "Show active tasks"
+msgstr "Белсенді тапсырмаларды көрсету"
+
+#: task_manager/templates/tasks/task_filter.html:100
+msgid "Default filter is active"
+msgstr "Әдепкі сүзгі қосылған"
+
+#: task_manager/templates/tasks/task_filter.html:102
+msgid "Default"
+msgstr "Әдепкі"
+
+#: task_manager/templates/tasks/task_filter.html:146
+msgid "Assigned to me"
+msgstr "Маған тағайындалған"
+
+#: task_manager/templates/tasks/task_filter.html:158
+msgid "Who"
+msgstr "Кім"
+
+#: task_manager/templates/tasks/task_filter.html:170
+#: task_manager/templates/tasks/task_filter.html:187
+#: task_manager/templates/tasks/task_filter.html:223
+#: task_manager/templates/tasks/task_filter.html:239
+msgid "Exclude"
+msgstr "Шығару"
+
+#: task_manager/templates/tasks/task_filter.html:202
+msgid "author or executor"
+msgstr "автор немесе орындаушы"
+
+#: task_manager/templates/tasks/task_filter.html:212
+msgid "What"
+msgstr "Не"
+
+#: task_manager/templates/tasks/task_filter.html:271
+msgid "When"
+msgstr "Қашан"
+
+#: task_manager/templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Белсенді мерзімі бар"
+
+#: task_manager/templates/tasks/task_filter.html:320
+msgid "Save as default"
+msgstr "Әдепкі ретінде сақтау"
+
+#: task_manager/templates/tasks/task_filter.html:329
+msgid "Reset"
+msgstr "Ысырып тастау"
+
+#: task_manager/templates/tasks/task_filter.html:333
+msgid "Apply"
+msgstr "Қолдану"
+
+#: task_manager/templates/tasks/task_filter.html:362
+#: task_manager/templates/tasks/task_filter.html:451
+#: task_manager/templates/tasks/task_update.html:55
+msgid "Time left: "
+msgstr "Қалған уақыт: "
+
+#: task_manager/templates/tasks/task_filter.html:363
+#: task_manager/templates/tasks/task_filter.html:452
+#: task_manager/templates/tasks/task_update.html:56
+msgid "Overdue"
+msgstr "Мерзімі өткен"
+
+#: task_manager/templates/tasks/task_filter.html:411
+#: task_manager/templates/tasks/task_update.html:116
+msgid "Checklist"
+msgstr "Тексеру тізімі"
+
+#: task_manager/templates/tasks/task_filter.html:492
+#: task_manager/templates/tasks/task_filter.html:499
+msgid "Previous"
+msgstr "Алдыңғы"
+
+#: task_manager/templates/tasks/task_filter.html:519
+#: task_manager/templates/tasks/task_filter.html:526
+msgid "Next"
+msgstr "Келесі"
+
+#: task_manager/templates/tasks/task_update.html:161
+msgid "Add a checklist item"
+msgstr "Тексеру тізіміне тармақ қосу"
+
+#: task_manager/templates/tasks/task_update.html:166
+msgid "Add item..."
+msgstr "Тармақ қосу..."
+
+#: task_manager/templates/tasks/task_update.html:458
+msgid "Delete this item?"
+msgstr "Бұл тармақ жойылсын ба?"
+
+#: task_manager/templates/teams/team_create_form.html:11
+msgid "Create Team"
+msgstr "Команда құру"
+
+#: task_manager/templates/teams/team_delete.html:8
+#: task_manager/templates/user/user_delete.html:8
+#: task_manager/templates/user/user_delete.html:14
+msgid "Delete user"
+msgstr "Пайдаланушыны жою"
+
+#: task_manager/templates/teams/team_delete.html:14
+msgid "Delete team"
+msgstr "Команданы жою"
+
+#: task_manager/templates/teams/team_detail.html:14
+msgid "Team details"
+msgstr "Команда туралы"
+
+#: task_manager/templates/teams/team_detail.html:26
+msgid "No description"
+msgstr "Сипаттама жоқ"
+
+#: task_manager/templates/teams/team_detail.html:69
+#: task_manager/templates/teams/team_update.html:16
+msgid "Edit Team"
+msgstr "Команданы өңдеу"
+
+#: task_manager/templates/teams/team_detail.html:74
+msgid "Generate Invite Link"
+msgstr "Шақыру сілтемесін жасау"
+
+#: task_manager/templates/teams/team_detail.html:89
+msgid "Invite Link Generated"
+msgstr "Шақыру сілтемесі жасалды"
+
+#: task_manager/templates/teams/team_detail.html:91
+msgid "Copy the link below to share it:"
+msgstr "Бөлісу үшін төмендегі сілтемені көшіріңіз:"
+
+#: task_manager/templates/teams/team_detail.html:100
+msgid "Copy"
+msgstr "Көшіру"
+
+#: task_manager/templates/teams/team_detail.html:105
+msgid "This link is single-use and expires in 7 days."
+msgstr "Бұл сілтеме бір рет қолданылады және 7 күнде мерзімі аяқталады."
+
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Remove team member"
+msgstr "Мүшені командадан шығару"
+
+#: task_manager/templates/teams/team_exit.html:20
+msgid "Are you sure you want to exit the team"
+msgstr "Командадан шыққыңыз келетініне сенімдісіз бе"
+
+#: task_manager/templates/teams/team_exit.html:22
+#, python-format
+msgid ""
+"Are you sure you want to remove user %(username)s from the team "
+"%(team_name)s?"
+msgstr ""
+"%(username)s пайдаланушысын %(team_name)s командасынан шығарғыңыз келетініне"
+" сенімдісіз бе?"
+
+#: task_manager/templates/teams/team_exit.html:25
+msgid "Yes, exit"
+msgstr "Иә, шығу"
+
+#: task_manager/templates/teams/team_join_form.html:28
+msgid "Join"
+msgstr "Қосылу"
+
+#: task_manager/templates/teams/team_join_invite.html:11
+msgid "Join Team via Invite"
+msgstr "Шақыру арқылы командаға қосылу"
+
+#: task_manager/templates/teams/team_join_invite.html:15
+#, python-format
+msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
+msgstr "Сіз <strong>%(team_name)s</strong> командасына сәтті қосылдыңыз."
+
+#: task_manager/templates/teams/team_join_invite.html:28
+msgid "Home"
+msgstr "Басты бет"
+
+#: task_manager/templates/teams/team_member_role_update.html:10
+msgid "Manage Team Member"
+msgstr "Команда мүшесін басқару"
+
+#: task_manager/templates/teams/team_member_role_update.html:14
+msgid "You are managing membership for"
+msgstr "Сіз мүшелікті басқарасыз:"
+
+#: task_manager/templates/teams/team_member_role_update.html:15
+msgid "in team"
+msgstr "командасында"
+
+#: task_manager/templates/teams/team_member_role_update.html:22
+msgid "Role"
+msgstr "Рөл"
+
+#: task_manager/templates/teams/team_member_role_update.html:58
+msgid "Save Changes"
+msgstr "Өзгерістерді сақтау"
+
+#: task_manager/templates/teams/team_member_role_update.html:67
+msgid "Are you sure you want to remove this user from the team?"
+msgstr "Бұл пайдаланушыны командадан шығарғыңыз келетініне сенімдісіз бе?"
+
+#: task_manager/templates/teams/team_member_role_update.html:70
+msgid "Remove from team"
+msgstr "Командадан шығару"
+
+#: task_manager/templates/terms_of_service.html:11
+msgid "Acceptance of Terms"
+msgstr "Шарттарды қабылдау"
+
+#: task_manager/templates/terms_of_service.html:12
+msgid ""
+"By using TaskMan, you agree to these terms. If you disagree, please do not "
+"use the service."
+msgstr ""
+"TaskMan қызметін пайдалану арқылы сіз осы шарттармен келісесіз. "
+"Келіспесеңіз, қызметті пайдаланбаңыз."
+
+#: task_manager/templates/terms_of_service.html:14
+msgid "Description of Service"
+msgstr "Қызмет сипаттамасы"
+
+#: task_manager/templates/terms_of_service.html:15
+msgid ""
+"TaskMan is a web application for task management, available for individual "
+"use and team collaboration."
+msgstr ""
+"TaskMan — жеке пайдалануға және командамен бірге жұмысқа арналған "
+"тапсырмаларды басқару веб-қосымшасы."
+
+#: task_manager/templates/terms_of_service.html:17
+msgid "User Account"
+msgstr "Пайдаланушы тіркелгісі"
+
+#: task_manager/templates/terms_of_service.html:19
+msgid "You are responsible for maintaining the security of your account"
+msgstr "Сіз тіркелгіңіздің қауіпсіздігіне жауап бересіз"
+
+#: task_manager/templates/terms_of_service.html:20
+msgid "You must provide accurate information during registration"
+msgstr "Тіркелу кезінде дәл ақпарат көрсетуіңіз керек"
+
+#: task_manager/templates/terms_of_service.html:21
+msgid "You must not create accounts for automated use without permission"
+msgstr "Рұқсатсыз автоматтандырылған пайдалану үшін тіркелгі жасауға болмайды"
+
+#: task_manager/templates/terms_of_service.html:24
+msgid "Acceptable Use"
+msgstr "Рұқсат етілген пайдалану"
+
+#: task_manager/templates/terms_of_service.html:25
+msgid "You agree not to:"
+msgstr "Сіз келісесіз, мыналарды жасамайсыз:"
+
+#: task_manager/templates/terms_of_service.html:27
+msgid "Use the service for any illegal purpose"
+msgstr "Қызметті заңсыз мақсатта пайдалану"
+
+#: task_manager/templates/terms_of_service.html:28
+msgid "Attempt to gain unauthorized access to the service"
+msgstr "Қызметке рұқсатсыз кіруге тырысу"
+
+#: task_manager/templates/terms_of_service.html:29
+msgid "Interfere with the proper operation of the service"
+msgstr "Қызметтің қалыпты жұмысына кедергі жасау"
+
+#: task_manager/templates/terms_of_service.html:30
+msgid "Upload malicious content"
+msgstr "Зиянды мазмұн жүктеу"
+
+#: task_manager/templates/terms_of_service.html:34
+msgid ""
+"You retain ownership of the content you create. We do not claim any rights "
+"to your tasks, notes, or other data."
+msgstr ""
+"Сіз жасаған мазмұнға меншік құқығын сақтайсыз. Біз сіздің тапсырмаларыңызға,"
+" жазбаларыңызға немесе басқа деректеріңізге ешқандай құқықты талап етпейміз."
+
+#: task_manager/templates/terms_of_service.html:36
+msgid "Service Availability"
+msgstr "Қызметтің қолжетімділігі"
+
+#: task_manager/templates/terms_of_service.html:37
+msgid ""
+"We strive to maintain high availability but do not guarantee uninterrupted "
+"service. We may perform maintenance that temporarily affects availability."
+msgstr ""
+"Біз жоғары қолжетімділікті сақтауға тырысамыз, бірақ қызметтің үздіксіз "
+"жұмыс істеуіне кепілдік бермейміз. Біз қол жетімділікке уақытша әсер ететін "
+"техникалық жұмыстарды жүргізе аламыз."
+
+#: task_manager/templates/terms_of_service.html:39
+msgid "Termination"
+msgstr "Тоқтату"
+
+#: task_manager/templates/terms_of_service.html:40
+msgid ""
+"We reserve the right to suspend or terminate accounts that violate these "
+"terms."
+msgstr ""
+"Біз осы шарттарды бұзатын тіркелгілерді тоқтату немесе жою құқығын "
+"сақтаймыз."
+
+#: task_manager/templates/terms_of_service.html:42
+msgid "Limitation of Liability"
+msgstr "Жауапкершілікті шектеу"
+
+#: task_manager/templates/terms_of_service.html:43
+msgid ""
+"TaskMan is provided 'as is'. We are not liable for any data loss or damages "
+"arising from the use of the service."
+msgstr ""
+"TaskMan «сол күйінде» ұсынылады. Қызметті пайдаланудан болған деректер "
+"жоғалуына немесе залалға жауап бермейміз."
+
+#: task_manager/templates/user/user_create_form.html:25
+msgid "Sign up"
+msgstr "Тіркелу"
+
+#: task_manager/templates/user/user_detail.html:14
+msgid "User details"
+msgstr "Пайдаланушы туралы"
+
+#: task_manager/templates/user/user_detail.html:25
+#: task_manager/templates/user/user_detail.html:153
+msgid "Full name"
+msgstr "Толық аты-жөні"
+
+#: task_manager/templates/user/user_detail.html:39
+#: task_manager/templates/user/user_detail.html:154
+msgid "Date joined"
+msgstr "Тіркелген күні"
+
+#: task_manager/templates/user/user_detail.html:48
+#: task_manager/templates/user/user_detail.html:155
+msgid "Last login"
+msgstr "Соңғы кіруі"
+
+#: task_manager/templates/user/user_detail.html:54
+msgid "Never"
+msgstr "Ешқашан"
+
+#: task_manager/templates/user/user_detail.html:138
+msgid "No teams"
+msgstr "Командалар жоқ"
+
+#: task_manager/templates/user/user_detail.html:169
+msgid "Change Role"
+msgstr "Рөлді өзгерту"
+
+#: task_manager/templates/user/user_list.html:16
+msgid "Current Team"
+msgstr "Ағымдағы команда"
+
+#: task_manager/templates/user/user_list.html:41
+msgid "Pending approval"
+msgstr "Мақұлдауды күтуде"
+
+#: task_manager/templates/user/user_list.html:67
+msgid "Review"
+msgstr "Қарау"
+
+#: task_manager/templates/user/user_list.html:125
+msgid "Not in team"
+msgstr "Командада емес"
+
+#: task_manager/templates/user/user_list.html:140
+msgid "No users found"
+msgstr "Пайдаланушылар жоқ"
+
+#: task_manager/templates/user/user_list.html:141
+msgid "No users available"
+msgstr "Қолжетімді пайдаланушылар жоқ"
+
+#: task_manager/templates/user/user_update.html:8
+msgid "Edit user"
+msgstr "Пайдаланушыны өңдеу"
+
+#: task_manager/user/admin.py:54
+msgid "Additional Info"
+msgstr "Қосымша ақпарат"
+
+#: task_manager/user/forms.py:36
+msgid "Join team (optional)"
+msgstr "Командаға қосылу (міндетті емес)"
+
+#: task_manager/user/forms.py:38
+msgid ""
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
+msgstr ""
+"Бар командаға қосылу үшін команда атауын енгізіңіз немесе жеке жұмыс істеу "
+"үшін өрісті бос қалдырыңыз"
+
+#: task_manager/user/forms.py:46
+msgid "Required if joining a team"
+msgstr "Командаға қосылғанда қажет"
+
+#: task_manager/user/forms.py:139
+msgid "Current teams"
+msgstr "Ағымдағы командалар"
+
+#: task_manager/user/forms.py:166
+msgid "Join another team (optional)"
+msgstr "Басқа командаға қосылу (міндетті емес)"
+
+#: task_manager/user/forms.py:168
+msgid "Enter team name to join another team, or leave empty"
+msgstr ""
+"Басқа командаға қосылу үшін команда атауын енгізіңіз немесе өрісті бос "
+"қалдырыңыз"
+
+#: task_manager/user/forms.py:203
+msgid "Team password is required when joining a team"
+msgstr "Командаға қосылғанда команданың құпиясөзі қажет"
+
+#: task_manager/user/views.py:212
+msgid "User created successfully"
+msgstr "Пайдаланушы сәтті құрылды"
+
+#: task_manager/user/views.py:247
+msgid "Welcome! Your account has been created and you have joined the team."
+msgstr "Қош келдіңіз! Тіркелгіңіз жасалды және сіз командаға қосылдыңыз."
+
+#: task_manager/user/views.py:266
+msgid "Welcome! You can create a team or work individually"
+msgstr "Қош келдіңіз! Команда құра аласыз немесе жеке жұмыс істей аласыз"
+
+#: task_manager/user/views.py:281
+msgid "User updated successfully"
+msgstr "Пайдаланушы сәтті өзгертілді"
+
+#: task_manager/user/views.py:327
+msgid "User account has been deleted"
+msgstr "Пайдаланушы тіркелгісі жойылды"
+
+#: task_manager/views.py:26
+msgid "Personal. Family. Work."
+msgstr "Жеке. Отбасы. Жұмыс."
+
+#: task_manager/views.py:27
+msgid ""
+"One planner for everything: from notes and personal goals to family tasks "
+"and team projects."
+msgstr ""
+"Барлығына арналған бір жоспарлағыш: жазбалардан және жеке мақсаттардан "
+"отбасылық тапсырмалар мен командалық жобаларға дейін."
+
+#: task_manager/views.py:30
+msgid "Read more"
+msgstr "Толығырақ"
+
+#: task_manager/views.py:39
+msgid "You successfully logged in"
+msgstr "Сіз сәтті кірдіңіз"
+
+#: task_manager/views.py:46
+msgid "You are logged out"
+msgstr "Сіз жүйеден шықтыңыз"

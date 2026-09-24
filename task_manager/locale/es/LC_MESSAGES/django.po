@@ -1,0 +1,2374 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-25 00:46+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: task_manager/forms.py:8
+msgid "Specify the subject:"
+msgstr "Especifique el tema:"
+
+#: task_manager/forms.py:11
+msgid "Bug, suggestion, etc."
+msgstr "Bug, propuesta, etc."
+
+#: task_manager/forms.py:15
+msgid "* Your email or Telegram (@username):"
+msgstr "* Su correo electrónico o Telegram (@username):"
+
+#: task_manager/forms.py:22
+msgid "* Message:"
+msgstr "* Mensaje:"
+
+#: task_manager/forms.py:25
+msgid "Describe your issue or suggestion..."
+msgstr "Describa el problema o la sugerencia..."
+
+#: task_manager/labels/forms.py:13 task_manager/labels/forms.py:14
+#: task_manager/statuses/forms.py:14 task_manager/statuses/forms.py:15
+#: task_manager/statuses/models.py:21 task_manager/tasks/models.py:34
+#: task_manager/teams/models.py:22
+#: task_manager/templates/statuses/statuses_create_form.html:20
+msgid "Name"
+msgstr "Nombre"
+
+#: task_manager/labels/models.py:24 task_manager/notes/models.py:29
+#: task_manager/statuses/models.py:26 task_manager/tasks/models.py:28
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
+msgstr ""
+"Solo se permiten letras, números, espacios y caracteres -_.,!?. Los "
+"caracteres <,>,#, & no están permitidos."
+
+#: task_manager/labels/views.py:37
+msgid "Label created successfully"
+msgstr "Etiqueta creada correctamente"
+
+#: task_manager/labels/views.py:76
+msgid "Label updated successfully"
+msgstr "Etiqueta modificada con éxito"
+
+#: task_manager/labels/views.py:100
+msgid "Label deleted successfully"
+msgstr "Etiqueta eliminada correctamente"
+
+#: task_manager/labels/views.py:123
+msgid "Cannot delete label because it is in use"
+msgstr "No se puede eliminar la etiqueta porque se usa"
+
+#: task_manager/limit_service.py:16
+#, python-format
+msgid ""
+"You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
+msgstr ""
+"¡Eres un usuario activo! Se ha alcanzado el límite del recurso "
+"\"%(resource)s\" (%(max)s). Intenta eliminar lo que ya no "
+"necesitas. TaskMan Pro ilimitado ya está en desarrollo — ¡estamos trabajando"
+" en ello!"
+
+#: task_manager/limit_service.py:36
+msgid "teams"
+msgstr "equipos"
+
+#: task_manager/limit_service.py:37
+msgid "team members"
+msgstr "miembros del equipo"
+
+#: task_manager/limit_service.py:38
+msgid "tasks"
+msgstr "tareas"
+
+#: task_manager/limit_service.py:39
+msgid "personal statuses"
+msgstr "Estados personales"
+
+#: task_manager/limit_service.py:40
+msgid "team statuses"
+msgstr "estado del equipo"
+
+#: task_manager/limit_service.py:41
+msgid "personal labels"
+msgstr "etiquetas personales"
+
+#: task_manager/limit_service.py:42
+msgid "team labels"
+msgstr "etiquetas de comando"
+
+#: task_manager/limit_service.py:43
+msgid "personal notes"
+msgstr "notas personales"
+
+#: task_manager/limit_service.py:44
+msgid "team notes"
+msgstr "notas de equipo"
+
+#: task_manager/limit_service.py:45
+msgid "note images"
+msgstr "Insertar imagen"
+
+#: task_manager/limit_service.py:46
+msgid "checklist items"
+msgstr "artículos de la lista de verificación"
+
+#: task_manager/notes/forms.py:34 task_manager/statuses/forms.py:25
+#: task_manager/teams/forms.py:29
+#: task_manager/templates/notes/note_form.html:72
+#: task_manager/templates/statuses/statuses_create_form.html:60
+#: task_manager/user/forms.py:15 task_manager/user/forms.py:16
+#: task_manager/user/forms.py:17
+msgid "Optional"
+msgstr "Opcional"
+
+#: task_manager/notes/forms.py:58
+msgid "Task must be from the same team."
+msgstr "La tarea debe pertenecer al mismo equipo."
+
+#: task_manager/notes/forms.py:62
+msgid "Cannot attach note to team task in individual mode."
+msgstr "No puede adjuntar una nota a una tarea de equipo en modo individual."
+
+#: task_manager/notes/forms.py:64
+msgid "You can only attach notes to your own tasks."
+msgstr "Solo puede adjuntar notas a sus tareas."
+
+#: task_manager/notes/models.py:24
+#: task_manager/templates/notes/note_form.html:64
+msgid "Title"
+msgstr "Título"
+
+#: task_manager/notes/models.py:38
+#: task_manager/templates/notes/note_form.html:78
+#: task_manager/templates/terms_of_service.html:33
+msgid "Content"
+msgstr "Contenido"
+
+#: task_manager/notes/models.py:46 task_manager/tasks/filters.py:33
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:42
+#: task_manager/templates/tasks/task_filter.html:463
+#: task_manager/templates/tasks/task_update.html:23
+#: task_manager/templates/user/user_detail.html:80
+#: task_manager/templates/user/user_detail.html:103
+#: task_manager/templates/user/user_detail.html:129
+msgid "Author"
+msgstr "Autor"
+
+#: task_manager/notes/models.py:54 task_manager/tasks/models.py:47
+#: task_manager/templates/labels/labels_update.html:29
+#: task_manager/templates/notes/note_form.html:34
+msgid "Team"
+msgstr "Equipo"
+
+#: task_manager/notes/models.py:62 task_manager/tasks/models.py:140
+msgid "Task"
+msgstr "Tarea"
+
+#: task_manager/notes/models.py:66 task_manager/notifications/models.py:78
+#: task_manager/statuses/models.py:66 task_manager/tasks/models.py:73
+#: task_manager/teams/models.py:43 task_manager/teams/models.py:136
+#: task_manager/templates/labels/labels_update.html:54
+#: task_manager/templates/statuses/statuses_update.html:58
+#: task_manager/templates/teams/team_detail.html:34
+#: task_manager/templates/teams/team_detail.html:61
+msgid "Created at"
+msgstr "Fecha de creación"
+
+#: task_manager/notes/models.py:70 task_manager/tasks/models.py:78
+msgid "Updated at"
+msgstr "Fecha de actualización"
+
+#: task_manager/notes/models.py:75 task_manager/notes/models.py:100
+#: task_manager/templates/feedback.html:28
+#: task_manager/templates/notes/note_detail.html:78
+#: task_manager/templates/notes/note_form.html:25
+#: task_manager/templates/notes/note_form.html:149
+msgid "Note"
+msgstr "Nota"
+
+#: task_manager/notes/models.py:76 task_manager/templates/base.html:130
+#: task_manager/templates/base.html:155
+#: task_manager/templates/includes/limits_usage.html:72
+#: task_manager/templates/includes/team_limits_usage.html:84
+#: task_manager/templates/notes/_task_notes.html:7
+#: task_manager/templates/tasks/task_filter.html:406
+msgid "Notes"
+msgstr "Notas"
+
+#: task_manager/notes/models.py:104
+msgid "Image"
+msgstr "URL de la imagen"
+
+#: task_manager/notes/models.py:108
+msgid "Order"
+msgstr "Orden"
+
+#: task_manager/notes/models.py:112
+msgid "Uploaded at"
+msgstr "Fecha de carga"
+
+#: task_manager/notes/models.py:117
+msgid "Note image"
+msgstr "Imagen de la nota"
+
+#: task_manager/notes/models.py:118
+msgid "Note images"
+msgstr "Imágenes de notas"
+
+#: task_manager/notes/views.py:89
+msgid "Note created successfully"
+msgstr "Nota creada correctamente"
+
+#: task_manager/notes/views.py:158 task_manager/notes/views.py:367
+msgid "Note can only be edited by its author or team admin."
+msgstr "Solo el autor o el administrador del equipo pueden modificar la nota."
+
+#: task_manager/notes/views.py:180
+msgid "Note can only be deleted by its author or team admin."
+msgstr "Solo el autor o el administrador del equipo pueden eliminar una nota."
+
+#: task_manager/notes/views.py:197
+msgid "Note updated successfully"
+msgstr "Nota modificada con éxito"
+
+#: task_manager/notes/views.py:253
+msgid "Note deleted successfully"
+msgstr "Nota eliminada con éxito"
+
+#: task_manager/notes/views.py:290
+#, python-format
+msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr ""
+"La imagen \"%(name)s\" es demasiado grande. El tamaño máximo es %(max)s "
+"MB."
+
+#: task_manager/notes/views.py:297
+#, python-format
+msgid ""
+"Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
+"WebP."
+msgstr ""
+"El formato de imagen \"%(name) s\" no es compatible. Formatos válidos: JPEG,"
+" PNG, GIF, WebP."
+
+#: task_manager/notes/views.py:304 task_manager/notes/views.py:307
+#, python-format
+msgid "Image '%(name)s' is corrupted or not a valid image."
+msgstr "El archivo \"%(name) s\" está dañado o no es una imagen."
+
+#: task_manager/notes/views.py:350
+msgid "Image deleted successfully"
+msgstr "Imagen eliminada con éxito"
+
+#: task_manager/notifications/models.py:9
+msgid "Task assigned"
+msgstr "Tarea asignada"
+
+#: task_manager/notifications/models.py:10
+msgid "Task unassigned"
+msgstr "Desasignación de la tarea"
+
+#: task_manager/notifications/models.py:12
+msgid "Task status changed"
+msgstr "Estado de la tarea cambiado"
+
+#: task_manager/notifications/models.py:14
+msgid "Task completed"
+msgstr "Tarea completada"
+
+#: task_manager/notifications/models.py:16
+msgid "Team join request"
+msgstr "Solicitud para unirse al equipo"
+
+#: task_manager/notifications/models.py:19
+msgid "Team member joined"
+msgstr "Nuevo miembro del equipo"
+
+#: task_manager/notifications/models.py:22
+msgid "Team request approved"
+msgstr "Solicitud de equipo aprobada"
+
+#: task_manager/notifications/models.py:25
+msgid "Team request rejected"
+msgstr "Solicitud de equipo rechazada"
+
+#: task_manager/notifications/models.py:28
+msgid "Team member removed"
+msgstr "Miembro eliminado del equipo"
+
+#: task_manager/notifications/models.py:31
+msgid "Team role changed"
+msgstr "Cambio de rol en el equipo"
+
+#: task_manager/notifications/models.py:33
+msgid "Team invited"
+msgstr "Invitación al equipo"
+
+#: task_manager/notifications/models.py:34
+msgid "Team deleted"
+msgstr "Comando eliminado"
+
+#: task_manager/notifications/models.py:40
+msgid "Recipient"
+msgstr "Destinatario"
+
+#: task_manager/notifications/models.py:45
+msgid "Notification type"
+msgstr "Tipo de notificación"
+
+#: task_manager/notifications/models.py:48
+msgid "Message"
+msgstr "Mensaje"
+
+#: task_manager/notifications/models.py:51
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
+msgstr ""
+"Campo obsoleto. Use message_key y message_params para nuevas notificaciones."
+
+#: task_manager/notifications/models.py:58
+msgid "Message key"
+msgstr "Clave de mensaje"
+
+#: task_manager/notifications/models.py:59
+msgid "Translation key for the message template."
+msgstr "Clave de traducción para la plantilla de mensaje."
+
+#: task_manager/notifications/models.py:64
+msgid "Message parameters"
+msgstr "Opciones de mensaje"
+
+#: task_manager/notifications/models.py:65
+msgid "JSON parameters for message template."
+msgstr "JSON-parámetros para la plantilla de mensaje."
+
+#: task_manager/notifications/models.py:70
+msgid "Action URL"
+msgstr "URL de acción"
+
+#: task_manager/notifications/models.py:74
+msgid "Is read"
+msgstr "Leer"
+
+#: task_manager/notifications/models.py:89
+msgid "Notification"
+msgstr "Notificación"
+
+#: task_manager/notifications/models.py:90
+#: task_manager/templates/notifications/_notification_bell.html:25
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: task_manager/notifications/services.py:46
+#, python-brace-format
+msgid "You have been assigned to task: {task_name}"
+msgstr "Se le ha asignado una tarea: {task_name}"
+
+#: task_manager/notifications/services.py:67
+#, python-brace-format
+msgid "You have been removed from task: {task_name}"
+msgstr "Estás desconectado de la tarea: {task_name}"
+
+#: task_manager/notifications/services.py:81
+#, python-brace-format
+msgid "Status of task '{task_name}' has been changed"
+msgstr "El estado de la tarea '{task_name} ' ha cambiado"
+
+#: task_manager/notifications/services.py:113
+#, python-brace-format
+msgid "Task '{task_name}' has been completed"
+msgstr "Tarea' {task_name} ' completada"
+
+#: task_manager/notifications/services.py:146
+#, python-brace-format
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username} quiere unirse al comando ' {team_name}'"
+
+#: task_manager/notifications/services.py:187
+#, python-brace-format
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username} se unió al equipo ' {team_name}'"
+
+#: task_manager/notifications/services.py:214
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "Su solicitud para unirse al equipo '{team_name} ' está aprobada"
+
+#: task_manager/notifications/services.py:235
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "Su solicitud para unirse al equipo '{team_name}' ha sido rechazada"
+
+#: task_manager/notifications/services.py:260
+#, python-brace-format
+msgid "You have been removed from team '{team_name}'"
+msgstr "Se ha eliminado del comando ' {team_name}'"
+
+#: task_manager/notifications/services.py:279
+#, python-brace-format
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "Su función en el comando '{team_name} ' ha cambiado a {role}"
+
+#: task_manager/notifications/services.py:300
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "Estás invitado al comando ' {team_name}'"
+
+#: task_manager/notifications/services.py:320
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "Comando' {team_name} ' eliminado"
+
+#: task_manager/permissions.py:7
+msgid "You are not authorized! Please login."
+msgstr "No está autorizado. Por favor, inicie sesión."
+
+#: task_manager/permissions.py:24
+msgid "You don't have permissions to modify another user."
+msgstr "No tiene permisos para cambiar a otro usuario."
+
+#: task_manager/permissions.py:40
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
+msgstr ""
+"No tienes derecho a cambiar eso. Solo el administrador del equipo puede "
+"hacer esto."
+
+#: task_manager/permissions.py:65
+msgid ""
+"You don't have permissions to manage team members. Only team admin can do "
+"this."
+msgstr ""
+"No tienes derechos para controlar a los miembros del equipo. Solo el "
+"administrador del equipo puede hacer esto."
+
+#: task_manager/permissions.py:74
+msgid "You cannot change your own role in the team."
+msgstr "No puedes cambiar tu rol en el equipo."
+
+#: task_manager/permissions.py:79
+msgid "Team membership not found."
+msgstr "No se encontró participación en el equipo."
+
+#: task_manager/settings.py:221 task_manager/templates/index.html:67
+msgid "English"
+msgstr "Inglés"
+
+#: task_manager/settings.py:222 task_manager/templates/index.html:76
+msgid "Russian"
+msgstr "Rusa"
+
+#: task_manager/settings.py:223 task_manager/templates/index.html:85
+msgid "Tajik"
+msgstr "Tadzhika"
+
+#: task_manager/settings.py:224 task_manager/templates/index.html:94
+msgid "Azerbaijani"
+msgstr "Azerí"
+
+#: task_manager/settings.py:225 task_manager/templates/index.html:103
+msgid "Kyrgyz"
+msgstr "Kirguís"
+
+msgid "Spanish"
+msgstr "Español"
+
+msgid "Simplified Chinese"
+msgstr "Chino simplificado"
+
+msgid "Kazakh"
+msgstr "Kazajo"
+
+#: task_manager/statuses/forms.py:19 task_manager/statuses/forms.py:22
+#: task_manager/statuses/models.py:48 task_manager/tasks/models.py:38
+#: task_manager/teams/forms.py:27 task_manager/teams/models.py:32
+#: task_manager/templates/statuses/statuses_create_form.html:54
+#: task_manager/templates/statuses/statuses_update.html:40
+#: task_manager/templates/teams/team_detail.html:25
+#: task_manager/templates/teams/team_detail.html:60
+#: task_manager/templates/user/user_detail.html:30
+#: task_manager/user/models.py:11
+msgid "Description"
+msgstr "Descripción"
+
+#: task_manager/statuses/forms.py:30
+#: task_manager/templates/statuses/statuses_create_form.html:40
+#: task_manager/templates/statuses/statuses_update.html:28
+#: task_manager/templates/statuses/statuses_update.html:59
+msgid "Color"
+msgstr "Color"
+
+#: task_manager/statuses/forms.py:35
+#: task_manager/templates/statuses/statuses_create_form.html:49
+msgid "Choose status color"
+msgstr "Seleccione un color de estado"
+
+#: task_manager/statuses/forms.py:39 task_manager/statuses/models.py:58
+#: task_manager/templates/statuses/statuses_create_form.html:69
+msgid "Final status"
+msgstr "Estado final"
+
+#: task_manager/statuses/forms.py:43 task_manager/statuses/models.py:60
+#: task_manager/templates/statuses/statuses_create_form.html:72
+#: task_manager/templates/statuses/statuses_list.html:65
+msgid "Tasks with a final status are hidden from the default task list"
+msgstr ""
+"Las tareas con estado final se ocultan de la lista de tareas predeterminada"
+
+#: task_manager/statuses/models.py:75
+msgid "New"
+msgstr "Nueva"
+
+#: task_manager/statuses/models.py:76
+msgid "Task has been created but not yet started"
+msgstr "Tarea establecida pero aún no iniciada"
+
+#: task_manager/statuses/models.py:81
+msgid "In Progress"
+msgstr "En el trabajo"
+
+#: task_manager/statuses/models.py:82
+msgid "Task is currently being worked on"
+msgstr "La tarea se está ejecutando actualmente"
+
+#: task_manager/statuses/models.py:86
+msgid "On Hold"
+msgstr "En pausa"
+
+#: task_manager/statuses/models.py:87
+msgid "Task is temporarily paused"
+msgstr "Tarea suspendida temporalmente"
+
+#: task_manager/statuses/models.py:91
+msgid "Completed"
+msgstr "Completada"
+
+#: task_manager/statuses/models.py:92
+msgid "Task has been finished successfully"
+msgstr "Tarea completada con éxito"
+
+#: task_manager/statuses/models.py:97
+msgid "Cancelled"
+msgstr "Inválido"
+
+#: task_manager/statuses/models.py:98
+msgid "Task was abandoned or deemed unnecessary"
+msgstr "La tarea ha sido cancelada o ya no es relevante"
+
+#: task_manager/statuses/models.py:103
+msgid "Blocked"
+msgstr "Bloqueado"
+
+#: task_manager/statuses/models.py:105
+msgid "Task cannot proceed due to external dependencies"
+msgstr "La tarea no se puede realizar debido a factores externos"
+
+#: task_manager/statuses/views.py:38
+msgid "Status created successfully"
+msgstr "Estado creado con éxito"
+
+#: task_manager/statuses/views.py:71
+msgid "Status updated successfully"
+msgstr "Estado cambiado con éxito"
+
+#: task_manager/statuses/views.py:80
+msgid "Status deleted successfully"
+msgstr "Estado eliminado con éxito"
+
+#: task_manager/statuses/views.py:90
+msgid "Cannot delete status because it is in use"
+msgstr "No se puede eliminar el estado porque está en uso"
+
+#: task_manager/tasks/filters.py:15
+msgid "Search"
+msgstr "Búsqueda"
+
+#: task_manager/tasks/filters.py:18
+msgid "Task name..."
+msgstr "Nombre de la tarea..."
+
+#: task_manager/tasks/filters.py:26 task_manager/tasks/models.py:52
+#: task_manager/templates/statuses/statuses_update.html:51
+#: task_manager/templates/teams/team_member_role_update.html:38
+msgid "Status"
+msgstr "Estatus"
+
+#: task_manager/tasks/filters.py:40
+#: task_manager/templates/tasks/task_filter.html:467
+#: task_manager/templates/tasks/task_update.html:28
+#: task_manager/templates/user/user_detail.html:83
+#: task_manager/templates/user/user_detail.html:106
+#: task_manager/templates/user/user_detail.html:132
+msgid "Executor"
+msgstr "Ejecutante"
+
+#: task_manager/tasks/filters.py:47 task_manager/tasks/models.py:69
+#: task_manager/templates/base.html:125 task_manager/templates/base.html:152
+#: task_manager/templates/includes/limits_usage.html:56
+#: task_manager/templates/includes/team_limits_usage.html:66
+#: task_manager/templates/index.html:49
+msgid "Labels"
+msgstr "Etiquetas"
+
+#: task_manager/tasks/filters.py:53
+#: task_manager/templates/tasks/task_filter.html:142
+#: task_manager/templates/tasks/task_filter.html:201
+msgid "My tasks"
+msgstr "Mis tareas"
+
+#: task_manager/tasks/filters.py:61
+msgid "From"
+msgstr "Con"
+
+#: task_manager/tasks/filters.py:71
+msgid "To"
+msgstr "Po"
+
+#: task_manager/tasks/filters.py:80
+#: task_manager/templates/tasks/task_filter.html:253
+msgid "Has checklist"
+msgstr "Hay una lista de verificación"
+
+#: task_manager/tasks/filters.py:87
+msgid "Has deadline"
+msgstr "Hay una fecha límite"
+
+#: task_manager/tasks/forms.py:31
+msgid "Enter task name"
+msgstr "Introduzca el nombre de la tarea"
+
+#: task_manager/tasks/models.py:58
+msgid "Executors"
+msgstr "Ejecutantes"
+
+#: task_manager/tasks/models.py:86
+msgid "Updated by"
+msgstr "Quién actualizado"
+
+#: task_manager/tasks/models.py:91
+#: task_manager/templates/tasks/task_create_form.html:25
+#: task_manager/templates/tasks/task_filter.html:445
+#: task_manager/templates/tasks/task_update.html:49
+#: task_manager/templates/tasks/task_update.html:87
+msgid "Deadline"
+msgstr "Fecha límite"
+
+#: task_manager/tasks/models.py:144
+msgid "Text"
+msgstr "Texto"
+
+#: task_manager/tasks/models.py:148
+msgid "Done"
+msgstr "Sí"
+
+#: task_manager/tasks/models.py:152
+msgid "Position"
+msgstr "Posición"
+
+#: task_manager/tasks/views.py:55 task_manager/templates/privacy_policy.html:9
+#: task_manager/templates/terms_of_service.html:9
+msgid "Last updated"
+msgstr "Última actualización"
+
+#: task_manager/tasks/views.py:56
+msgid "First updated"
+msgstr "Primero actualizado hace mucho tiempo"
+
+#: task_manager/tasks/views.py:57
+msgid "Newest first"
+msgstr "Primero los nuevos"
+
+#: task_manager/tasks/views.py:58
+msgid "Oldest first"
+msgstr "Primero los viejos"
+
+#: task_manager/tasks/views.py:59
+msgid "Name A→Z"
+msgstr "Título A→Z"
+
+#: task_manager/tasks/views.py:60
+msgid "Name Z→A"
+msgstr "Nombre Z→A"
+
+#: task_manager/tasks/views.py:80
+msgid "Task can only be deleted by its author or team admin."
+msgstr ""
+"Solo el autor o el administrador del equipo pueden eliminar una tarea."
+
+#: task_manager/tasks/views.py:98 task_manager/tasks/views.py:456
+msgid "Task can only be updated by its author, executors or team admin."
+msgstr ""
+"Solo el autor, los ejecutores o el administrador del equipo pueden modificar"
+" una tarea."
+
+#: task_manager/tasks/views.py:196
+msgid "Filter saved as default"
+msgstr "Filtro guardado por defecto"
+
+#: task_manager/tasks/views.py:339
+msgid "Task created successfully"
+msgstr "Tarea creada con éxito"
+
+#: task_manager/tasks/views.py:403
+msgid "Task updated successfully"
+msgstr "Tarea modificada con éxito"
+
+#: task_manager/tasks/views.py:443
+msgid "Task deleted successfully"
+msgstr "Tarea eliminada con éxito"
+
+#: task_manager/tasks/views.py:487
+msgid "Text is required"
+msgstr "Introduzca el texto"
+
+#: task_manager/tasks/views.py:491
+msgid "Text must be 300 characters or less"
+msgstr "El texto no debe exceder los 300 caracteres"
+
+#: task_manager/teams/forms.py:35 task_manager/user/forms.py:22
+msgid "Password"
+msgstr "Contraseña"
+
+#: task_manager/teams/forms.py:37 task_manager/user/forms.py:24
+msgid "Your password must contain at least 8 characters."
+msgstr "La contraseña debe tener al menos 8 caracteres."
+
+#: task_manager/teams/forms.py:41 task_manager/user/forms.py:29
+msgid "Confirm password"
+msgstr "Confirmar contraseña"
+
+#: task_manager/teams/forms.py:43 task_manager/user/forms.py:31
+msgid "Please enter your password one more time"
+msgstr "Para confirmar, introduzca la contraseña de nuevo."
+
+#: task_manager/teams/forms.py:52 task_manager/teams/forms.py:55
+#: task_manager/user/forms.py:120 task_manager/user/forms.py:123
+msgid "Leave blank if you don't want to change password"
+msgstr "Deje el campo en blanco si no desea cambiar la contraseña"
+
+#: task_manager/teams/forms.py:65 task_manager/user/forms.py:63
+msgid "Your password is too short. It must contain at least 8 characters."
+msgstr ""
+"La contraseña introducida es demasiado corta. Debe contener al menos 8 "
+"caracteres."
+
+#: task_manager/teams/forms.py:79 task_manager/user/forms.py:79
+msgid "The entered passwords do not match."
+msgstr "Las contraseñas introducidas no coinciden."
+
+#: task_manager/teams/forms.py:90 task_manager/user/forms.py:179
+msgid "Both password fields must be filled or both left blank"
+msgstr "Ambos campos de contraseña deben completarse o dejarse en blanco"
+
+#: task_manager/teams/forms.py:110
+#: task_manager/templates/teams/team_detail.html:93
+msgid "Invite link"
+msgstr "Enlace de invitación"
+
+#: task_manager/teams/forms.py:114
+msgid "Paste invite link here"
+msgstr "Inserte el enlace de invitación aquí"
+
+#: task_manager/teams/forms.py:118
+msgid ""
+"If you have an invite link, paste it here. Otherwise, enter team name and "
+"password below."
+msgstr ""
+"Si tiene un enlace de invitación, péguelo aquí. Si no hay un enlace, ingrese"
+" el nombre y la contraseña del comando a continuación."
+
+#: task_manager/teams/forms.py:125
+#: task_manager/templates/teams/team_detail.html:59
+msgid "Team name"
+msgstr "Nombre del equipo"
+
+#: task_manager/teams/forms.py:129
+msgid "Enter team name"
+msgstr "Introduzca el nombre del equipo"
+
+#: task_manager/teams/forms.py:136 task_manager/teams/models.py:27
+#: task_manager/user/forms.py:44
+msgid "Team password"
+msgstr "Contraseña del comando"
+
+#: task_manager/teams/forms.py:140
+msgid "Enter team password"
+msgstr "Introduzca la contraseña del comando"
+
+#: task_manager/teams/forms.py:215 task_manager/teams/views.py:586
+msgid "Invalid or expired invite link"
+msgstr "Enlace de invitación inválido o caducado"
+
+#: task_manager/teams/forms.py:234 task_manager/user/forms.py:212
+msgid "Team with this name does not exist"
+msgstr "No existe un equipo con ese nombre"
+
+#: task_manager/teams/forms.py:252 task_manager/teams/forms.py:291
+#: task_manager/user/forms.py:219
+msgid "Invalid team password"
+msgstr "Contraseña de comando incorrecta"
+
+#: task_manager/teams/forms.py:272 task_manager/user/forms.py:237
+msgid "You already have a pending request to join this team"
+msgstr "Ya tiene una solicitud no confirmada para unirse a este equipo"
+
+#: task_manager/teams/forms.py:273 task_manager/teams/views.py:619
+#: task_manager/user/forms.py:240
+msgid "You are already a member of this team"
+msgstr "Ya eres miembro de este equipo"
+
+#: task_manager/teams/forms.py:288
+msgid "Team does not exist"
+msgstr "El comando no existe"
+
+#: task_manager/teams/forms.py:317
+msgid "Either provide an invite link or team name and password"
+msgstr ""
+"Especifique el enlace de invitación o el nombre y la contraseña del equipo"
+
+#: task_manager/teams/forms.py:338
+msgid "Invalid role selected."
+msgstr "Se ha seleccionado un rol no válido."
+
+#: task_manager/teams/forms.py:347
+msgid "Invalid status selected."
+msgstr "Se ha seleccionado un estado no válido."
+
+#: task_manager/teams/models.py:28
+msgid "Minimum length is 3 characters"
+msgstr "Longitud mínima — 3 caracteres"
+
+#: task_manager/teams/models.py:77 task_manager/user/forms.py:155
+msgid "Admin"
+msgstr "Administrador"
+
+#: task_manager/teams/models.py:78 task_manager/user/forms.py:156
+msgid "Member"
+msgstr "Participante"
+
+#: task_manager/teams/models.py:81
+#: task_manager/templates/user/user_list.html:57
+msgid "Pending"
+msgstr "En espera"
+
+#: task_manager/teams/models.py:82 task_manager/teams/models.py:174
+msgid "Active"
+msgstr "Activo"
+
+#: task_manager/teams/models.py:132
+msgid "Invite code"
+msgstr "Código de invitación"
+
+#: task_manager/teams/models.py:139
+msgid "Expires at"
+msgstr "Válido hasta"
+
+#: task_manager/teams/models.py:143
+msgid "Is used"
+msgstr "Usado"
+
+#: task_manager/teams/models.py:151
+msgid "Used by"
+msgstr "Por quién se utiliza"
+
+#: task_manager/teams/models.py:156
+msgid "Used at"
+msgstr "Fecha de uso"
+
+#: task_manager/teams/models.py:160
+msgid "Max uses"
+msgstr "Límite de uso"
+
+#: task_manager/teams/models.py:161
+msgid "Number of times invite can be used"
+msgstr "Cuántas veces se puede usar una invitación"
+
+#: task_manager/teams/models.py:165
+msgid "Use count"
+msgstr "Número de usos"
+
+#: task_manager/teams/models.py:169
+msgid "Team invite"
+msgstr "Invitación al equipo"
+
+#: task_manager/teams/models.py:170
+msgid "Team invites"
+msgstr "Invitaciones al equipo"
+
+#: task_manager/teams/models.py:174
+msgid "Used"
+msgstr "Usado"
+
+#: task_manager/teams/views.py:40
+msgid "Team not found"
+msgstr "Comando no encontrado"
+
+#: task_manager/teams/views.py:67
+msgid "Switched to individual mode"
+msgstr "Cambiado al modo individual"
+
+#: task_manager/teams/views.py:79
+#, python-brace-format
+msgid "Switched to team: {team}"
+msgstr "Cambiado al comando: {team}"
+
+#: task_manager/teams/views.py:177
+msgid "You are not a member of this team"
+msgstr "Usted no es miembro de este equipo"
+
+#: task_manager/teams/views.py:183
+msgid ""
+"Team administrators cannot leave the team. Please transfer admin rights to "
+"another member first."
+msgstr ""
+"Los administradores del equipo no pueden abandonar el equipo. Primero, "
+"transfiera los derechos de administrador a otro miembro."
+
+#: task_manager/teams/views.py:201
+msgid ""
+"You do not have rights to manage team members. This can only be done by the "
+"team administrator"
+msgstr ""
+"No tienes derechos para controlar a los miembros del equipo. Solo el "
+"administrador del equipo puede hacer esto."
+
+#: task_manager/teams/views.py:206
+msgid "User is not a member of this team"
+msgstr "El usuario no es miembro de este equipo"
+
+#: task_manager/teams/views.py:283
+#, python-brace-format
+msgid "You have successfully left the team {team}"
+msgstr "Has abandonado con éxito el equipo {team}"
+
+#: task_manager/teams/views.py:289
+#, python-brace-format
+msgid "User {username} has been removed from the team {team}"
+msgstr "El usuario {username} se ha eliminado del equipo {team}."
+
+#: task_manager/teams/views.py:303
+msgid "Team membership not found"
+msgstr "No se encontró participación en el equipo."
+
+#: task_manager/teams/views.py:339
+msgid ""
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
+msgstr ""
+"No puedes dejar un equipo porque eres el autor o el ejecutor de las tareas "
+"en ese equipo."
+
+#: task_manager/teams/views.py:389
+msgid "Team created successfully"
+msgstr "Comando creado con éxito"
+
+#: task_manager/teams/views.py:451 task_manager/teams/views.py:661
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "Se ha Unido con éxito al equipo {team}"
+
+#: task_manager/teams/views.py:468 task_manager/user/views.py:259
+#: task_manager/user/views.py:303
+#, python-brace-format
+msgid ""
+"Your request to join team {team} has been sent. Waiting for admin approval."
+msgstr ""
+"Su solicitud para unirse al equipo {team} ha sido enviada. Espere la "
+"aprobación del administrador."
+
+#: task_manager/teams/views.py:520
+msgid "Invite link generated successfully. Scroll down to copy."
+msgstr ""
+"El enlace de invitación se ha creado correctamente. Desplácese hacia abajo "
+"para copiar."
+
+#: task_manager/teams/views.py:540
+msgid "Team has reached the maximum number of members"
+msgstr "El equipo alcanzó el máximo número de participantes"
+
+#: task_manager/teams/views.py:590 task_manager/teams/views.py:598
+msgid "Invite link has been used"
+msgstr "El enlace de invitación ya está en uso"
+
+#: task_manager/teams/views.py:594
+msgid "Invite link has expired"
+msgstr "El enlace de invitación ha caducado"
+
+#: task_manager/teams/views.py:713
+msgid "Team updated successfully"
+msgstr "Comando modificado con éxito"
+
+#: task_manager/teams/views.py:731
+msgid "Cannot delete a team because it has tasks."
+msgstr "No se puede eliminar el comando porque tiene tareas."
+
+#: task_manager/teams/views.py:739
+msgid "Cannot delete a team because it has other members."
+msgstr "No se puede eliminar un comando porque hay otros miembros en él"
+
+#: task_manager/teams/views.py:748
+msgid "Team deleted successfully"
+msgstr "Comando eliminado con éxito"
+
+#: task_manager/teams/views.py:779
+#, python-brace-format
+msgid "User {username} has been promoted to team admin."
+msgstr "El usuario {username} es el administrador del equipo."
+
+#: task_manager/teams/views.py:786
+#, python-brace-format
+msgid "User {username} has been demoted to team member."
+msgstr "El usuario {username} se convirtió en miembro del equipo."
+
+#: task_manager/teams/views.py:797
+#, python-brace-format
+msgid "User {username} has been approved and is now a member of the team."
+msgstr "El usuario {username} ha sido aprobado y ahora es miembro del equipo."
+
+#: task_manager/teams/views.py:805
+#, python-brace-format
+msgid "User {username} membership has been set to pending."
+msgstr ""
+"La solicitud de usuario {username} se ha convertido en estado de espera."
+
+#: task_manager/templates/base.html:50 task_manager/templates/base.html:82
+#: task_manager/views.py:25
+msgid "TaskMan"
+msgstr "Tuskman"
+
+#: task_manager/templates/base.html:107
+msgid "Navigation"
+msgstr "Navegación"
+
+#: task_manager/templates/base.html:110 task_manager/templates/base.html:143
+msgid "Users"
+msgstr "Usuarios"
+
+#: task_manager/templates/base.html:115 task_manager/templates/base.html:146
+#: task_manager/templates/includes/limits_usage.html:8
+#: task_manager/templates/includes/team_limits_usage.html:30
+#: task_manager/templates/user/user_detail.html:76
+#: task_manager/templates/user/user_detail.html:99
+#: task_manager/templates/user/user_detail.html:125
+msgid "Tasks"
+msgstr "Tareas"
+
+#: task_manager/templates/base.html:120 task_manager/templates/base.html:149
+#: task_manager/templates/includes/limits_usage.html:40
+#: task_manager/templates/includes/team_limits_usage.html:48
+msgid "Statuses"
+msgstr "Estatus"
+
+#: task_manager/templates/base.html:190
+msgid "Switch context"
+msgstr "Cambiar contexto"
+
+#: task_manager/templates/base.html:198
+#: task_manager/templates/labels/labels_update.html:34
+msgid "Individual"
+msgstr "Individual"
+
+#: task_manager/templates/base.html:225
+msgid "Profile"
+msgstr "Perfil"
+
+#: task_manager/templates/base.html:230
+msgid "New Team"
+msgstr "Nuevo equipo"
+
+#: task_manager/templates/base.html:235
+#: task_manager/templates/teams/team_join_form.html:11
+msgid "Join Team"
+msgstr "Unirse al equipo"
+
+#: task_manager/templates/base.html:243
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Exit team"
+msgstr "Abandonar el equipo"
+
+#: task_manager/templates/base.html:253
+msgid "Logout"
+msgstr "Salir"
+
+#: task_manager/templates/base.html:265 task_manager/templates/base.html:317
+msgid "Settings"
+msgstr "Ajustes"
+
+#: task_manager/templates/base.html:269 task_manager/templates/base.html:321
+msgid "Theme"
+msgstr "Tema"
+
+#: task_manager/templates/base.html:272 task_manager/templates/base.html:324
+msgid "Light"
+msgstr "Luminosa"
+
+#: task_manager/templates/base.html:275 task_manager/templates/base.html:329
+msgid "Dark"
+msgstr "Oscura"
+
+#: task_manager/templates/base.html:278 task_manager/templates/base.html:334
+msgid "Auto"
+msgstr "Auto"
+
+#: task_manager/templates/base.html:286 task_manager/templates/base.html:340
+msgid "Language"
+msgstr "Idioma"
+
+#: task_manager/templates/base.html:309 task_manager/templates/login.html:8
+msgid "Login"
+msgstr "Entrada"
+
+#: task_manager/templates/base.html:310
+#: task_manager/templates/user/user_create_form.html:11
+msgid "Signup"
+msgstr "Registro"
+
+#: task_manager/templates/base.html:369
+msgid "You are approaching the free plan limits."
+msgstr "Te estás acercando a los límites del plan gratuito."
+
+#: task_manager/templates/base.html:372
+#: task_manager/templates/user/user_list.html:23
+msgid "Details"
+msgstr "Detallado"
+
+#: task_manager/templates/base.html:410
+msgid "Go back"
+msgstr "Atrás"
+
+#: task_manager/templates/base.html:430 task_manager/templates/feedback.html:7
+#: task_manager/templates/feedback.html:12 task_manager/views.py:57
+msgid "Feedback"
+msgstr "Realimentación"
+
+#: task_manager/templates/base.html:432
+#: task_manager/templates/privacy_policy.html:4
+#: task_manager/templates/privacy_policy.html:8
+msgid "Privacy Policy"
+msgstr "Política de privacidad"
+
+#: task_manager/templates/base.html:434
+#: task_manager/templates/terms_of_service.html:4
+#: task_manager/templates/terms_of_service.html:8
+msgid "Terms of Service"
+msgstr "Condiciones de uso"
+
+#: task_manager/templates/feedback.html:13
+msgid "Found a bug or have a suggestion? Let us know!"
+msgstr "¿Has encontrado un error o tienes una sugerencia? ¡Háganoslo saber!"
+
+#: task_manager/templates/feedback.html:21
+msgid "Send"
+msgstr "Enviar"
+
+#: task_manager/templates/feedback.html:28
+msgid ""
+"Your message will be sent to developers via Telegram. We will reply to the "
+"contact you provide."
+msgstr ""
+"El mensaje se enviará a los desarrolladores a través de Telegram. "
+"Responderemos al contacto especificado."
+
+#: task_manager/templates/feedback.html:51
+msgid "Telegram opened! Send your message there."
+msgstr "Telegram está abierto. Envía un mensaje allí."
+
+#: task_manager/templates/includes/limits_usage.html:24
+#: task_manager/templates/user/user_detail.html:61
+msgid "Teams"
+msgstr "Equipos"
+
+#: task_manager/templates/includes/limits_usage.html:90
+msgid "Extended plan is already in development — more features coming soon!"
+msgstr ""
+"El plan avanzado ya está en desarrollo — ¡más características llegarán "
+"pronto!"
+
+#: task_manager/templates/includes/team_limits_usage.html:6
+msgid "Team Limits"
+msgstr "Límites del equipo"
+
+#: task_manager/templates/includes/team_limits_usage.html:12
+#: task_manager/templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "Miembros"
+
+#: task_manager/templates/index.html:7
+msgid "Task Manager"
+msgstr "Administrador de tareas"
+
+#: task_manager/templates/index.html:20
+#: task_manager/templates/teams/team_join_invite.html:24
+msgid "Go to Tasks"
+msgstr "Ir a tareas"
+
+#: task_manager/templates/index.html:24
+msgid "Get Started"
+msgstr "Comenzar"
+
+#: task_manager/templates/index.html:32
+msgid "Features"
+msgstr "Posibilidad"
+
+#: task_manager/templates/index.html:37
+msgid "Personal space and teams"
+msgstr "Espacio personal y equipos"
+
+#: task_manager/templates/index.html:37
+msgid "Switch context in one click"
+msgstr "Cambie el contexto con un solo clic"
+
+#: task_manager/templates/index.html:41
+msgid "Quick Task Creation"
+msgstr "Fecha límite rápida"
+
+#: task_manager/templates/index.html:41
+msgid "Title, description, assignee - done in seconds"
+msgstr "Título, descripción, artista-y la tarea creada en segundos"
+
+#: task_manager/templates/index.html:45
+msgid "Custom Statuses"
+msgstr "Estados personalizados"
+
+#: task_manager/templates/index.html:45
+msgid "New, In Progress, Done - or your own"
+msgstr "Nuevo, en el trabajo, Completado-o su propio"
+
+#: task_manager/templates/index.html:49
+msgid "Tag and filter tasks instantly"
+msgstr "Agregue etiquetas y filtre tareas al instante"
+
+#: task_manager/templates/index.html:53
+msgid "Any Device"
+msgstr "Cualquier dispositivo"
+
+#: task_manager/templates/index.html:53
+msgid "Works on desktop, tablet, and mobile"
+msgstr "Funciona en computadora, tableta y Teléfono inteligente"
+
+#: task_manager/templates/index.html:58
+msgid "Language Support"
+msgstr "Soporte de idiomas"
+
+#: task_manager/templates/labels/labels_create.html:9
+#: task_manager/templates/tasks/task_create_form.html:59
+#: task_manager/templates/tasks/task_update.html:194
+msgid "Create label"
+msgstr "Crear etiqueta"
+
+#: task_manager/templates/labels/labels_create.html:19
+#: task_manager/templates/notes/note_form.html:177
+#: task_manager/templates/statuses/statuses_create_form.html:82
+#: task_manager/templates/tasks/task_create_form.html:78
+#: task_manager/templates/teams/team_create_form.html:28
+msgid "Create"
+msgstr "Crear"
+
+#: task_manager/templates/labels/labels_create.html:22
+#: task_manager/templates/labels/labels_delete.html:23
+#: task_manager/templates/labels/labels_update.html:66
+#: task_manager/templates/notes/note_confirm_delete.html:37
+#: task_manager/templates/notes/note_detail.html:104
+#: task_manager/templates/notes/note_form.html:182
+#: task_manager/templates/notes/note_form.html:186
+#: task_manager/templates/notes/note_form.html:236
+#: task_manager/templates/statuses/statuses_create_form.html:85
+#: task_manager/templates/statuses/statuses_delete.html:23
+#: task_manager/templates/statuses/statuses_update.html:70
+#: task_manager/templates/tasks/task_create_form.html:81
+#: task_manager/templates/tasks/task_delete.html:23
+#: task_manager/templates/tasks/task_update.html:220
+#: task_manager/templates/teams/team_create_form.html:31
+#: task_manager/templates/teams/team_delete.html:22
+#: task_manager/templates/teams/team_detail.html:79
+#: task_manager/templates/teams/team_exit.html:28
+#: task_manager/templates/teams/team_join_form.html:31
+#: task_manager/templates/teams/team_member_role_update.html:55
+#: task_manager/templates/teams/team_update.html:29
+#: task_manager/templates/user/user_create_form.html:28
+#: task_manager/templates/user/user_delete.html:22
+#: task_manager/templates/user/user_detail.html:174
+#: task_manager/templates/user/user_update.html:20
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: task_manager/templates/labels/labels_delete.html:8
+msgid "Delete labels"
+msgstr "Eliminación de etiquetas"
+
+#: task_manager/templates/labels/labels_delete.html:14
+msgid "Delete label"
+msgstr "Eliminar una etiqueta"
+
+#: task_manager/templates/labels/labels_delete.html:17
+#: task_manager/templates/statuses/statuses_delete.html:17
+#: task_manager/templates/tasks/task_delete.html:17
+#: task_manager/templates/teams/team_delete.html:17
+#: task_manager/templates/user/user_delete.html:17
+msgid "Are you sure you want to delete"
+msgstr "¿Estás seguro de que quieres eliminar"
+
+#: task_manager/templates/labels/labels_delete.html:20
+#: task_manager/templates/notes/note_confirm_delete.html:34
+#: task_manager/templates/statuses/statuses_delete.html:20
+#: task_manager/templates/tasks/task_delete.html:20
+#: task_manager/templates/teams/team_delete.html:19
+#: task_manager/templates/user/user_delete.html:19
+msgid "Yes, delete"
+msgstr "Sí, borrar"
+
+#: task_manager/templates/labels/labels_list.html:14
+msgid "New label"
+msgstr "Nueva etiqueta"
+
+#: task_manager/templates/labels/labels_list.html:57
+#: task_manager/templates/labels/labels_update.html:38
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:43
+#: task_manager/templates/notes/note_list.html:74
+#: task_manager/templates/tasks/task_filter.html:464
+#: task_manager/templates/tasks/task_update.html:25
+#: task_manager/templates/tasks/task_update.html:41
+#: task_manager/user/models.py:22
+msgid "Deleted user"
+msgstr "Usuario remoto"
+
+#: task_manager/templates/labels/labels_list.html:70
+msgid "No labels found"
+msgstr "No hay etiquetas"
+
+#: task_manager/templates/labels/labels_list.html:71
+msgid "Create your first label to organize tasks"
+msgstr "Cree la primera etiqueta para organizar las tareas más fácilmente"
+
+#: task_manager/templates/labels/labels_list.html:72
+msgid "Create Label"
+msgstr "Crear etiqueta"
+
+#: task_manager/templates/labels/labels_update.html:22
+#: task_manager/templates/notes/note_detail.html:44
+#: task_manager/templates/notes/note_form.html:27
+#: task_manager/templates/statuses/statuses_update.html:20
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:418
+#: task_manager/templates/tasks/task_update.html:19
+msgid "Created"
+msgstr "Creado"
+
+#: task_manager/templates/labels/labels_update.html:33
+msgid "Individual mode"
+msgstr "Modo individual"
+
+#: task_manager/templates/labels/labels_update.html:37
+#: task_manager/templates/statuses/statuses_update.html:36
+msgid "Creator"
+msgstr "Creador"
+
+#: task_manager/templates/labels/labels_update.html:47
+msgid "Label"
+msgstr "Etiqueta"
+
+#: task_manager/templates/labels/labels_update.html:63
+#: task_manager/templates/notes/note_form.html:175
+#: task_manager/templates/statuses/statuses_update.html:67
+#: task_manager/templates/tasks/task_filter.html:321
+#: task_manager/templates/tasks/task_update.html:217
+#: task_manager/templates/user/user_update.html:17
+msgid "Save"
+msgstr "Guardar"
+
+#: task_manager/templates/labels/labels_update.html:71
+#: task_manager/templates/notes/note_form.html:157
+#: task_manager/templates/notes/note_form.html:158
+#: task_manager/templates/notes/note_form.html:193
+#: task_manager/templates/statuses/statuses_list.html:76
+#: task_manager/templates/statuses/statuses_update.html:75
+#: task_manager/templates/tasks/task_update.html:151
+#: task_manager/templates/tasks/task_update.html:225
+#: task_manager/templates/tasks/task_update.html:370
+#: task_manager/templates/teams/team_update.html:34
+#: task_manager/templates/user/user_detail.html:180
+msgid "Delete"
+msgstr "Eliminar"
+
+#: task_manager/templates/limits/limits_info.html:14
+msgid "Plans & Limits"
+msgstr "Planes y límites"
+
+#: task_manager/templates/limits/limits_info.html:19
+msgid "Current Plan"
+msgstr "Plan actual"
+
+#: task_manager/templates/limits/limits_info.html:21
+msgid "Free"
+msgstr "Gratuito"
+
+#: task_manager/templates/limits/limits_info.html:27
+msgid "Current Usage"
+msgstr "Uso actual"
+
+#: task_manager/templates/limits/limits_info.html:35
+msgid "Extended Plan"
+msgstr "Plan ampliado"
+
+#: task_manager/templates/limits/limits_info.html:37
+msgid "In Development"
+msgstr "En desarrollo"
+
+#: task_manager/templates/limits/limits_info.html:43
+msgid "More teams"
+msgstr "Más equipos"
+
+#: task_manager/templates/limits/limits_info.html:47
+msgid "More team members"
+msgstr "Más participantes en el equipo"
+
+#: task_manager/templates/limits/limits_info.html:51
+msgid "Increased task limits"
+msgstr "Límites de tareas aumentados"
+
+#: task_manager/templates/limits/limits_info.html:55
+msgid "Priority support"
+msgstr "Apoyo prioritario"
+
+#: task_manager/templates/limits/limits_info.html:66
+msgid "Stay tuned for updates!"
+msgstr "¡Estad atentos!"
+
+#: task_manager/templates/limits/limits_info.html:70
+msgid "Send Feedback"
+msgstr "Enviar comentarios"
+
+#: task_manager/templates/limits/limits_info.html:79
+msgid "Back"
+msgstr "Atrás"
+
+#: task_manager/templates/login.html:13
+msgid "Log in"
+msgstr "Entrar"
+
+#: task_manager/templates/notes/_task_notes.html:14
+msgid "Add note"
+msgstr "Añadir una nota"
+
+#: task_manager/templates/notes/_task_notes.html:42
+msgid "No notes for this task"
+msgstr "No hay notas para esta tarea"
+
+#: task_manager/templates/notes/note_confirm_delete.html:6
+#: task_manager/templates/notes/note_confirm_delete.html:11
+msgid "Delete note"
+msgstr "Eliminar una nota"
+
+#: task_manager/templates/notes/note_confirm_delete.html:16
+msgid "Are you sure you want to delete this note?"
+msgstr "¿Está seguro de que desea eliminar esta nota"
+
+#: task_manager/templates/notes/note_detail.html:23
+msgid "Untitled Note"
+msgstr "Nota sin título"
+
+#: task_manager/templates/notes/note_detail.html:32
+#: task_manager/templates/notes/note_form.html:39
+#: task_manager/templates/notes/note_list.html:69
+msgid "Personal"
+msgstr "Personal"
+
+#: task_manager/templates/notes/note_detail.html:48
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:425
+#: task_manager/templates/tasks/task_update.html:36
+msgid "Updated"
+msgstr "Novedoso"
+
+#: task_manager/templates/notes/note_detail.html:60
+msgid "Loading content..."
+msgstr "Carga de contenido..."
+
+#: task_manager/templates/notes/note_detail.html:72
+#: task_manager/templates/notes/note_form.html:119
+msgid "Images"
+msgstr "Imagenes"
+
+#: task_manager/templates/notes/note_detail.html:101
+#: task_manager/templates/statuses/statuses_list.html:73
+#: task_manager/templates/teams/team_update.html:26
+#: task_manager/templates/user/user_detail.html:163
+msgid "Edit"
+msgstr "Editar"
+
+#: task_manager/templates/notes/note_form.html:38
+msgid "Personal note"
+msgstr "Nota personal"
+
+#: task_manager/templates/notes/note_form.html:55
+msgid "Edit note"
+msgstr "Cambiar una nota"
+
+#: task_manager/templates/notes/note_form.html:57
+msgid "Create note"
+msgstr "Crear una nota"
+
+#: task_manager/templates/notes/note_form.html:89
+msgid "Enter note content... Use Markdown for formatting."
+msgstr "Escriba el texto de la nota... Use Markdown para formatear."
+
+#: task_manager/templates/notes/note_form.html:95
+#: task_manager/templates/notes/note_form.html:232
+msgid "Preview"
+msgstr "Vista previa"
+
+#: task_manager/templates/notes/note_form.html:104
+msgid "Markdown supported:"
+msgstr "Compatible Con Markdown:"
+
+#: task_manager/templates/notes/note_form.html:129
+#, python-format
+msgid ""
+"Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
+"WebP)."
+msgstr ""
+"Hasta %(mx_count)s imágenes por nota, cada uno como máximo % (max_mb)s MB "
+"(JPEG, PNG, GIF, WebP)."
+
+#: task_manager/templates/notes/note_form.html:142
+msgid "Attached images"
+msgstr "Imágenes adjuntas"
+
+#: task_manager/templates/notes/note_form.html:209
+msgid "Insert Image"
+msgstr "Insertar imagen"
+
+#: task_manager/templates/notes/note_form.html:211
+msgid "Close"
+msgstr "Cerrar"
+
+#: task_manager/templates/notes/note_form.html:216
+msgid "Image URL"
+msgstr "URL de la imagen"
+
+#: task_manager/templates/notes/note_form.html:225
+msgid "Description (alt text)"
+msgstr "Descripción (texto alt)"
+
+#: task_manager/templates/notes/note_form.html:230
+msgid "Image description"
+msgstr "Descripción de la imagen"
+
+#: task_manager/templates/notes/note_form.html:239
+msgid "Insert"
+msgstr "Insertar"
+
+#: task_manager/templates/notes/note_list.html:12
+msgid "New note"
+msgstr "Nueva nota"
+
+#: task_manager/templates/notes/note_list.html:85
+msgid "No notes found"
+msgstr "No hay notas"
+
+#: task_manager/templates/notes/note_list.html:86
+msgid "Create your first note to save important information"
+msgstr "Crea una primera nota para guardar información importante"
+
+#: task_manager/templates/notes/note_list.html:87
+msgid "Create Note"
+msgstr "Crear una nota"
+
+#: task_manager/templates/notifications/_notification_bell.html:6
+#: task_manager/templates/notifications/_notification_bell.html:119
+#: task_manager/templates/notifications/_notification_bell.html:165
+msgid "No notifications"
+msgstr "No hay notificaciones"
+
+#: task_manager/templates/notifications/_notification_bell.html:29
+msgid "Mark all as read"
+msgstr "Marcar todo como leído"
+
+#: task_manager/templates/notifications/_notification_bell.html:69
+#: task_manager/templates/tasks/task_update.html:39
+msgid "ago"
+msgstr "atrás"
+
+#: task_manager/templates/notifications/_notification_bell.html:75
+msgid "Mark as read"
+msgstr "Marcar como leído"
+
+#: task_manager/templates/notifications/_notification_bell.html:86
+msgid "Showing last 10 notifications"
+msgstr "Mostrando las últimas 10 notificaciones"
+
+#: task_manager/templates/privacy_policy.html:11
+msgid "Data We Collect"
+msgstr "Qué datos recopilamos"
+
+#: task_manager/templates/privacy_policy.html:12
+msgid "When you register, we collect:"
+msgstr "Al registrarse, recopilamos:"
+
+#: task_manager/templates/privacy_policy.html:14
+#: task_manager/templates/user/user_detail.html:152
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: task_manager/templates/privacy_policy.html:15
+msgid "First and last name (optional)"
+msgstr "Nombre y apellido (opcional)"
+
+#: task_manager/templates/privacy_policy.html:16
+msgid "Password (stored in encrypted form)"
+msgstr "Contraseña (almacenada en forma cifrada)"
+
+#: task_manager/templates/privacy_policy.html:19
+msgid "When you use the service, we store:"
+msgstr "Al utilizar el Servicio, almacenamos:"
+
+#: task_manager/templates/privacy_policy.html:21
+msgid "Tasks, notes, labels and statuses you create"
+msgstr "Tareas, notas, etiquetas y Estados que ha creado"
+
+#: task_manager/templates/privacy_policy.html:22
+msgid "Team membership information"
+msgstr "Información sobre la participación en equipos"
+
+#: task_manager/templates/privacy_policy.html:25
+msgid "How We Use Your Data"
+msgstr "Cómo utilizamos sus datos"
+
+#: task_manager/templates/privacy_policy.html:27
+msgid "To provide the task management service"
+msgstr "Para proporcionar un Servicio de gestión de tareas"
+
+#: task_manager/templates/privacy_policy.html:28
+msgid "To authenticate you and protect your account"
+msgstr "Para autenticar y proteger tu cuenta"
+
+#: task_manager/templates/privacy_policy.html:29
+msgid "To enable team collaboration features"
+msgstr "Para las funciones de interacción en equipo"
+
+#: task_manager/templates/privacy_policy.html:32
+msgid "Data Sharing"
+msgstr "TD"
+
+#: task_manager/templates/privacy_policy.html:33
+msgid ""
+"We do not sell, trade, or share your personal data with third parties, "
+"except:"
+msgstr ""
+"No vendemos, intercambiamos ni transferimos sus datos personales a terceros,"
+" a menos que:"
+
+#: task_manager/templates/privacy_policy.html:35
+msgid "Within your teams - other team members can see tasks assigned to them"
+msgstr ""
+"Dentro de sus equipos — otros miembros del equipo pueden ver las tareas "
+"asignadas a ellos"
+
+#: task_manager/templates/privacy_policy.html:36
+msgid "When required by law"
+msgstr "Cuando lo requiera la ley"
+
+#: task_manager/templates/privacy_policy.html:39
+msgid "Data Storage and Security"
+msgstr "Almacenamiento de datos y seguridad"
+
+#: task_manager/templates/privacy_policy.html:40
+msgid ""
+"Your data is stored on secure servers. We use HTTPS encryption for all "
+"connections. Passwords are hashed and never stored in plain text."
+msgstr ""
+"Sus datos se almacenan en servidores seguros. Para todas las conexiones, "
+"utilizamos el cifrado HTTPS. Las contraseñas son hash y nunca se almacenan "
+"en texto claro."
+
+#: task_manager/templates/privacy_policy.html:42
+msgid "Your Rights"
+msgstr "Sus derechos"
+
+#: task_manager/templates/privacy_policy.html:43
+msgid "You can:"
+msgstr "Usted puede:"
+
+#: task_manager/templates/privacy_policy.html:45
+msgid "View and edit your profile information at any time"
+msgstr "Ver y editar los datos de su perfil en cualquier momento"
+
+#: task_manager/templates/privacy_policy.html:46
+msgid "Delete your account and all associated data"
+msgstr "Eliminar su cuenta y todos los datos relacionados"
+
+#: task_manager/templates/privacy_policy.html:47
+msgid "Export your data by contacting us"
+msgstr "Exportar sus datos poniéndose en contacto con nosotros"
+
+#: task_manager/templates/privacy_policy.html:50
+msgid "Cookies"
+msgstr "Cookies"
+
+#: task_manager/templates/privacy_policy.html:51
+msgid "We use essential cookies for:"
+msgstr "Utilizamos las cookies necesarias para:"
+
+#: task_manager/templates/privacy_policy.html:53
+msgid "Session management (keeping you logged in)"
+msgstr "Gestión de la sesión (para que permanezca conectado)"
+
+#: task_manager/templates/privacy_policy.html:54
+msgid "CSRF protection (security)"
+msgstr "Protección CSRF (seguridad)"
+
+#: task_manager/templates/privacy_policy.html:55
+msgid "Language preference"
+msgstr "Guardar preferencias de idioma"
+
+#: task_manager/templates/privacy_policy.html:58
+msgid "Children's Privacy"
+msgstr "Privacidad de los niños"
+
+#: task_manager/templates/privacy_policy.html:59
+msgid ""
+"Our service is not intended for children under 13. We do not knowingly "
+"collect data from children."
+msgstr ""
+"Nuestro Servicio no está dirigido a niños menores de 13 años. A sabiendas, "
+"no recopilamos datos de niños."
+
+#: task_manager/templates/privacy_policy.html:61
+#: task_manager/templates/terms_of_service.html:45
+msgid "Contact"
+msgstr "Contactos"
+
+#: task_manager/templates/privacy_policy.html:62
+msgid ""
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
+msgstr ""
+"Si tiene preguntas sobre esta política de privacidad, Contáctenos a través "
+"del formulario de comentarios o en:"
+
+#: task_manager/templates/privacy_policy.html:65
+msgid "Changes"
+msgstr "Cambios"
+
+#: task_manager/templates/privacy_policy.html:66
+msgid ""
+"We may update this policy. Changes will be posted on this page with an "
+"updated date."
+msgstr ""
+"Podemos actualizar esta política. Los cambios se publicarán en esta página "
+"con la fecha actualizada."
+
+#: task_manager/templates/statuses/statuses_create_form.html:16
+msgid "Create status"
+msgstr "Crear estado"
+
+#: task_manager/templates/statuses/statuses_create_form.html:29
+msgid "Enter status name..."
+msgstr "Introduzca un nombre de estado..."
+
+#: task_manager/templates/statuses/statuses_delete.html:8
+#: task_manager/templates/statuses/statuses_delete.html:14
+msgid "Delete status"
+msgstr "Eliminar estado"
+
+#: task_manager/templates/statuses/statuses_list.html:14
+msgid "New status"
+msgstr "Nuevo estatus"
+
+#: task_manager/templates/statuses/statuses_list.html:90
+msgid "No statuses found"
+msgstr "No hay estado"
+
+#: task_manager/templates/statuses/statuses_list.html:91
+msgid "Create your first status to organize tasks"
+msgstr "Cree el primer estado para organizar las tareas más fácilmente"
+
+#: task_manager/templates/statuses/statuses_list.html:92
+msgid "Create Status"
+msgstr "Crear estado"
+
+#: task_manager/templates/statuses/statuses_update.html:41
+msgid "Has description"
+msgstr "Hay una descripción"
+
+#: task_manager/templates/tasks/partials/empty_state.html:8
+msgid "No tasks found"
+msgstr "No hay tareas"
+
+#: task_manager/templates/tasks/partials/empty_state.html:9
+msgid "Try adjusting filters or create a new task"
+msgstr "Intente cambiar los filtros o crear una nueva tarea"
+
+#: task_manager/templates/tasks/partials/empty_state.html:12
+msgid "Completed tasks are hidden by default"
+msgstr "Las tareas completadas están ocultas de forma predeterminada"
+
+#: task_manager/templates/tasks/partials/empty_state.html:15
+#: task_manager/templates/tasks/task_filter.html:81
+msgid "Show all tasks"
+msgstr "Mostrar todas las tareas"
+
+#: task_manager/templates/tasks/partials/empty_state.html:20
+msgid "Reset filters"
+msgstr "Restablecer filtros"
+
+#: task_manager/templates/tasks/partials/empty_state.html:24
+msgid "Create Task"
+msgstr "Crear una tarea"
+
+#: task_manager/templates/tasks/task_create_form.html:11
+msgid "Create task"
+msgstr "Crear una tarea"
+
+#: task_manager/templates/tasks/task_create_form.html:28
+#: task_manager/templates/tasks/task_update.html:90
+msgid "Quick deadline"
+msgstr "Fecha límite rápida"
+
+#: task_manager/templates/tasks/task_create_form.html:29
+#: task_manager/templates/tasks/task_update.html:91
+msgid "in 8 hours"
+msgstr "en 8 horas"
+
+#: task_manager/templates/tasks/task_create_form.html:30
+#: task_manager/templates/tasks/task_update.html:92
+msgid "in 1 day"
+msgstr "en 1 día"
+
+#: task_manager/templates/tasks/task_create_form.html:31
+#: task_manager/templates/tasks/task_update.html:93
+msgid "in 3 days"
+msgstr "en 3 días"
+
+#: task_manager/templates/tasks/task_create_form.html:32
+#: task_manager/templates/tasks/task_update.html:94
+msgid "in 21 days"
+msgstr "en 21 días"
+
+#: task_manager/templates/tasks/task_create_form.html:34
+#: task_manager/templates/tasks/task_update.html:96
+msgid "Clear deadline"
+msgstr "Eliminar la fecha límite"
+
+#: task_manager/templates/tasks/task_create_form.html:46
+#: task_manager/templates/tasks/task_update.html:180
+msgid "Add checklist"
+msgstr "Añadir lista de verificación"
+
+#: task_manager/templates/tasks/task_create_form.html:68
+#: task_manager/templates/tasks/task_filter.html:262
+#: task_manager/templates/tasks/task_update.html:203
+msgid "Hold Ctrl/Cmd to select multiple items"
+msgstr "Presione Ctrl / Cmd para seleccionar varios"
+
+#: task_manager/templates/tasks/task_delete.html:8
+#: task_manager/templates/tasks/task_delete.html:14
+msgid "Delete task"
+msgstr "Eliminar una tarea"
+
+#: task_manager/templates/tasks/task_filter.html:13
+msgid "New task"
+msgstr "Nuevo reto"
+
+#: task_manager/templates/tasks/task_filter.html:32
+msgid "Sort"
+msgstr "Clasificación"
+
+#: task_manager/templates/tasks/task_filter.html:37
+msgid "Sort by"
+msgstr "Ordenar por"
+
+#: task_manager/templates/tasks/task_filter.html:57
+msgid "Full view"
+msgstr "Vista completa"
+
+#: task_manager/templates/tasks/task_filter.html:62
+msgid "Simple view"
+msgstr "Vista simplificada"
+
+#: task_manager/templates/tasks/task_filter.html:70
+msgid "Overridden by status filter"
+msgstr "Anulado por filtro de estado"
+
+#: task_manager/templates/tasks/task_filter.html:75
+msgid "Show completed tasks"
+msgstr "Mostrar tareas completadas"
+
+#: task_manager/templates/tasks/task_filter.html:86
+msgid "Show active tasks"
+msgstr "Mostrar tareas activas"
+
+#: task_manager/templates/tasks/task_filter.html:100
+msgid "Default filter is active"
+msgstr "Filtro predeterminado activo"
+
+#: task_manager/templates/tasks/task_filter.html:102
+msgid "Default"
+msgstr "Por defecto"
+
+#: task_manager/templates/tasks/task_filter.html:146
+msgid "Assigned to me"
+msgstr "Asignado a mí"
+
+#: task_manager/templates/tasks/task_filter.html:158
+msgid "Who"
+msgstr "Alguien"
+
+#: task_manager/templates/tasks/task_filter.html:170
+#: task_manager/templates/tasks/task_filter.html:187
+#: task_manager/templates/tasks/task_filter.html:223
+#: task_manager/templates/tasks/task_filter.html:239
+msgid "Exclude"
+msgstr "Excluir"
+
+#: task_manager/templates/tasks/task_filter.html:202
+msgid "author or executor"
+msgstr "autor o ejecutor"
+
+#: task_manager/templates/tasks/task_filter.html:212
+msgid "What"
+msgstr "Que"
+
+#: task_manager/templates/tasks/task_filter.html:271
+msgid "When"
+msgstr "Cuando"
+
+#: task_manager/templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Hay una fecha límite activa"
+
+#: task_manager/templates/tasks/task_filter.html:320
+msgid "Save as default"
+msgstr "Guardar por defecto"
+
+#: task_manager/templates/tasks/task_filter.html:329
+msgid "Reset"
+msgstr "Borrar"
+
+#: task_manager/templates/tasks/task_filter.html:333
+msgid "Apply"
+msgstr "Aplicar"
+
+#: task_manager/templates/tasks/task_filter.html:362
+#: task_manager/templates/tasks/task_filter.html:451
+#: task_manager/templates/tasks/task_update.html:55
+msgid "Time left: "
+msgstr "Queda:"
+
+#: task_manager/templates/tasks/task_filter.html:363
+#: task_manager/templates/tasks/task_filter.html:452
+#: task_manager/templates/tasks/task_update.html:56
+msgid "Overdue"
+msgstr "Atrasado"
+
+#: task_manager/templates/tasks/task_filter.html:411
+#: task_manager/templates/tasks/task_update.html:116
+msgid "Checklist"
+msgstr "Lista de verificación"
+
+#: task_manager/templates/tasks/task_filter.html:492
+#: task_manager/templates/tasks/task_filter.html:499
+msgid "Previous"
+msgstr "Anterior"
+
+#: task_manager/templates/tasks/task_filter.html:519
+#: task_manager/templates/tasks/task_filter.html:526
+msgid "Next"
+msgstr "Siguiente"
+
+#: task_manager/templates/tasks/task_update.html:161
+msgid "Add a checklist item"
+msgstr "Agregue un elemento de lista de verificación"
+
+#: task_manager/templates/tasks/task_update.html:166
+msgid "Add item..."
+msgstr "Añadir párrafo"
+
+#: task_manager/templates/tasks/task_update.html:458
+msgid "Delete this item?"
+msgstr "Eliminar este elemento?"
+
+#: task_manager/templates/teams/team_create_form.html:11
+msgid "Create Team"
+msgstr "Crear un equipo"
+
+#: task_manager/templates/teams/team_delete.html:8
+#: task_manager/templates/user/user_delete.html:8
+#: task_manager/templates/user/user_delete.html:14
+msgid "Delete user"
+msgstr "Eliminar usuario"
+
+#: task_manager/templates/teams/team_delete.html:14
+msgid "Delete team"
+msgstr "Eliminar un comando"
+
+#: task_manager/templates/teams/team_detail.html:14
+msgid "Team details"
+msgstr "Datos del comando"
+
+#: task_manager/templates/teams/team_detail.html:26
+msgid "No description"
+msgstr "Sin descripción"
+
+#: task_manager/templates/teams/team_detail.html:69
+#: task_manager/templates/teams/team_update.html:16
+msgid "Edit Team"
+msgstr "Cambio de equipo"
+
+#: task_manager/templates/teams/team_detail.html:74
+msgid "Generate Invite Link"
+msgstr "Crear un enlace de invitación"
+
+#: task_manager/templates/teams/team_detail.html:89
+msgid "Invite Link Generated"
+msgstr "Enlace de invitación creado"
+
+#: task_manager/templates/teams/team_detail.html:91
+msgid "Copy the link below to share it:"
+msgstr "Copia el siguiente enlace para compartirlo:"
+
+#: task_manager/templates/teams/team_detail.html:100
+msgid "Copy"
+msgstr "Copiar"
+
+#: task_manager/templates/teams/team_detail.html:105
+msgid "This link is single-use and expires in 7 days."
+msgstr "Este enlace es único y válido por 7 días."
+
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Remove team member"
+msgstr "Excluir a un miembro del equipo"
+
+#: task_manager/templates/teams/team_exit.html:20
+msgid "Are you sure you want to exit the team"
+msgstr "¿Estás seguro de que quieres dejar el equipo?"
+
+#: task_manager/templates/teams/team_exit.html:22
+#, python-format
+msgid ""
+"Are you sure you want to remove user %(username)s from the team "
+"%(team_name)s?"
+msgstr ""
+"¿Está seguro de que desea excluir al usuario %(username) s del comando "
+"%(tam_name)s?"
+
+#: task_manager/templates/teams/team_exit.html:25
+msgid "Yes, exit"
+msgstr "Sí, salir"
+
+#: task_manager/templates/teams/team_join_form.html:28
+msgid "Join"
+msgstr "Unirse"
+
+#: task_manager/templates/teams/team_join_invite.html:11
+msgid "Join Team via Invite"
+msgstr "Únete al equipo por invitación"
+
+#: task_manager/templates/teams/team_join_invite.html:15
+#, python-format
+msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
+msgstr "Se ha Unido con éxito al comando <strong > %(team_name) s</strong>."
+
+#: task_manager/templates/teams/team_join_invite.html:28
+msgid "Home"
+msgstr "Cabeza"
+
+#: task_manager/templates/teams/team_member_role_update.html:10
+msgid "Manage Team Member"
+msgstr "Gestión de miembros del equipo"
+
+#: task_manager/templates/teams/team_member_role_update.html:14
+msgid "You are managing membership for"
+msgstr "Usted controla la participación del usuario"
+
+#: task_manager/templates/teams/team_member_role_update.html:15
+msgid "in team"
+msgstr "en el equipo"
+
+#: task_manager/templates/teams/team_member_role_update.html:22
+msgid "Role"
+msgstr "Rol"
+
+#: task_manager/templates/teams/team_member_role_update.html:58
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+#: task_manager/templates/teams/team_member_role_update.html:67
+msgid "Are you sure you want to remove this user from the team?"
+msgstr "¿Estás seguro de que quieres eliminar a este miembro del equipo?"
+
+#: task_manager/templates/teams/team_member_role_update.html:70
+msgid "Remove from team"
+msgstr "Excluir del comando"
+
+#: task_manager/templates/terms_of_service.html:11
+msgid "Acceptance of Terms"
+msgstr "Aceptación de las condiciones"
+
+#: task_manager/templates/terms_of_service.html:12
+msgid ""
+"By using TaskMan, you agree to these terms. If you disagree, please do not "
+"use the service."
+msgstr ""
+"Al usar Tuscman, aceptas estos términos y condiciones. Si no está de "
+"acuerdo, no utilice el Servicio."
+
+#: task_manager/templates/terms_of_service.html:14
+msgid "Description of Service"
+msgstr "Descripción del Servicio"
+
+#: task_manager/templates/terms_of_service.html:15
+msgid ""
+"TaskMan is a web application for task management, available for individual "
+"use and team collaboration."
+msgstr ""
+"Tuskman es una aplicación de gestión de tareas basada en la web disponible "
+"para uso individual y trabajo en equipo."
+
+#: task_manager/templates/terms_of_service.html:17
+msgid "User Account"
+msgstr "Cuenta de usuario"
+
+#: task_manager/templates/terms_of_service.html:19
+msgid "You are responsible for maintaining the security of your account"
+msgstr "Usted es responsable de la seguridad de su cuenta"
+
+#: task_manager/templates/terms_of_service.html:20
+msgid "You must provide accurate information during registration"
+msgstr "Al registrarse, debe proporcionar información confiable"
+
+#: task_manager/templates/terms_of_service.html:21
+msgid "You must not create accounts for automated use without permission"
+msgstr "No debe crear cuentas para uso automatizado sin permiso"
+
+#: task_manager/templates/terms_of_service.html:24
+msgid "Acceptable Use"
+msgstr "Uso permitido"
+
+#: task_manager/templates/terms_of_service.html:25
+msgid "You agree not to:"
+msgstr "Usted acepta no:"
+
+#: task_manager/templates/terms_of_service.html:27
+msgid "Use the service for any illegal purpose"
+msgstr "Utilizar el Servicio para fines ilegales"
+
+#: task_manager/templates/terms_of_service.html:28
+msgid "Attempt to gain unauthorized access to the service"
+msgstr "Intentar obtener acceso no autorizado al Servicio"
+
+#: task_manager/templates/terms_of_service.html:29
+msgid "Interfere with the proper operation of the service"
+msgstr "Perturbar el funcionamiento normal del Servicio"
+
+#: task_manager/templates/terms_of_service.html:30
+msgid "Upload malicious content"
+msgstr "Descargar contenido malicioso"
+
+#: task_manager/templates/terms_of_service.html:34
+msgid ""
+"You retain ownership of the content you create. We do not claim any rights "
+"to your tasks, notes, or other data."
+msgstr ""
+"Usted conserva la propiedad del contenido que ha creado. No reclamamos "
+"ningún derecho sobre sus tareas, notas u otros datos."
+
+#: task_manager/templates/terms_of_service.html:36
+msgid "Service Availability"
+msgstr "Disponibilidad del Servicio"
+
+#: task_manager/templates/terms_of_service.html:37
+msgid ""
+"We strive to maintain high availability but do not guarantee uninterrupted "
+"service. We may perform maintenance that temporarily affects availability."
+msgstr ""
+"Nos esforzamos por mantener una alta disponibilidad, pero no garantizamos el"
+" buen funcionamiento del Servicio. Podemos llevar a cabo trabajos técnicos "
+"que afectan temporalmente la disponibilidad."
+
+#: task_manager/templates/terms_of_service.html:39
+msgid "Termination"
+msgstr "Terminación del acceso"
+
+#: task_manager/templates/terms_of_service.html:40
+msgid ""
+"We reserve the right to suspend or terminate accounts that violate these "
+"terms."
+msgstr ""
+"Nos reservamos el derecho de suspender o eliminar cuentas que violen estos "
+"términos."
+
+#: task_manager/templates/terms_of_service.html:42
+msgid "Limitation of Liability"
+msgstr "Limitación de responsabilidad"
+
+#: task_manager/templates/terms_of_service.html:43
+msgid ""
+"TaskMan is provided 'as is'. We are not liable for any data loss or damages "
+"arising from the use of the service."
+msgstr ""
+"Tuskman se proporciona \"tal cual\". No seremos responsables por la pérdida "
+"de datos o cualquier daño que surja del uso del Servicio."
+
+#: task_manager/templates/user/user_create_form.html:25
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: task_manager/templates/user/user_detail.html:14
+msgid "User details"
+msgstr "Datos del usuario"
+
+#: task_manager/templates/user/user_detail.html:25
+#: task_manager/templates/user/user_detail.html:153
+msgid "Full name"
+msgstr "Nombre completo"
+
+#: task_manager/templates/user/user_detail.html:39
+#: task_manager/templates/user/user_detail.html:154
+msgid "Date joined"
+msgstr "Fecha de registro"
+
+#: task_manager/templates/user/user_detail.html:48
+#: task_manager/templates/user/user_detail.html:155
+msgid "Last login"
+msgstr "Última entrada"
+
+#: task_manager/templates/user/user_detail.html:54
+msgid "Never"
+msgstr "Nunca"
+
+#: task_manager/templates/user/user_detail.html:138
+msgid "No teams"
+msgstr "No hay comandos"
+
+#: task_manager/templates/user/user_detail.html:169
+msgid "Change Role"
+msgstr "Cambiar de rol"
+
+#: task_manager/templates/user/user_list.html:16
+msgid "Current Team"
+msgstr "Equipo actual"
+
+#: task_manager/templates/user/user_list.html:41
+msgid "Pending approval"
+msgstr "Pendiente de aprobación"
+
+#: task_manager/templates/user/user_list.html:67
+msgid "Review"
+msgstr "Examinar"
+
+#: task_manager/templates/user/user_list.html:125
+msgid "Not in team"
+msgstr "No en el equipo"
+
+#: task_manager/templates/user/user_list.html:140
+msgid "No users found"
+msgstr "No hay usuarios"
+
+#: task_manager/templates/user/user_list.html:141
+msgid "No users available"
+msgstr "No hay usuarios"
+
+#: task_manager/templates/user/user_update.html:8
+msgid "Edit user"
+msgstr "Cambio de usuario"
+
+#: task_manager/user/admin.py:54
+msgid "Additional Info"
+msgstr "Información complementaria"
+
+#: task_manager/user/forms.py:36
+msgid "Join team (optional)"
+msgstr "Unirse a un equipo (opcional)"
+
+#: task_manager/user/forms.py:38
+msgid ""
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
+msgstr ""
+"Escriba un nombre de equipo para unirse a un equipo existente o deje el "
+"campo en blanco para trabajar individualmente."
+
+#: task_manager/user/forms.py:46
+msgid "Required if joining a team"
+msgstr "Necesario al unirse a un equipo"
+
+#: task_manager/user/forms.py:139
+msgid "Current teams"
+msgstr "Equipos actuales"
+
+#: task_manager/user/forms.py:166
+msgid "Join another team (optional)"
+msgstr "Unirse a otro equipo (opcional)"
+
+#: task_manager/user/forms.py:168
+msgid "Enter team name to join another team, or leave empty"
+msgstr ""
+"Escriba el nombre del equipo al que desea unirse o deje el campo en blanco"
+
+#: task_manager/user/forms.py:203
+msgid "Team password is required when joining a team"
+msgstr "La contraseña del equipo es obligatoria al unirse al equipo"
+
+#: task_manager/user/views.py:212
+msgid "User created successfully"
+msgstr "Usuario registrado correctamente"
+
+#: task_manager/user/views.py:247
+msgid "Welcome! Your account has been created and you have joined the team."
+msgstr "¡Bienvenido! Tu cuenta ha sido creada y te has Unido al equipo."
+
+#: task_manager/user/views.py:266
+msgid "Welcome! You can create a team or work individually"
+msgstr "¡Bienvenido! Puede crear un equipo o trabajar individualmente"
+
+#: task_manager/user/views.py:281
+msgid "User updated successfully"
+msgstr "Usuario modificado con éxito"
+
+#: task_manager/user/views.py:327
+msgid "User account has been deleted"
+msgstr "Cuenta de usuario eliminada"
+
+#: task_manager/views.py:26
+msgid "Personal. Family. Work."
+msgstr "Personal. Familia. Trabajo."
+
+#: task_manager/views.py:27
+msgid ""
+"One planner for everything: from notes and personal goals to family tasks "
+"and team projects."
+msgstr ""
+"Un planificador para todo, desde notas y objetivos personales hasta asuntos "
+"familiares y proyectos de equipo."
+
+#: task_manager/views.py:30
+msgid "Read more"
+msgstr "Detallado"
+
+#: task_manager/views.py:39
+msgid "You successfully logged in"
+msgstr "Has iniciado sesión con éxito"
+
+#: task_manager/views.py:46
+msgid "You are logged out"
+msgstr "Estás desconectado"

@@ -202,7 +202,7 @@ msgstr "URL изображения"
 
 #: notes/models.py:108
 msgid "Order"
-msgstr ""
+msgstr "Порядок"
 
 #: notes/models.py:112
 msgid "Uploaded at"

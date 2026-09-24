@@ -32,6 +32,9 @@ The TaskMan application is available in multiple languages:
 - **Tajik**
 - **Azerbaijani**
 - **Kyrgyz**
+- **Spanish**
+- **Simplified Chinese**
+- **Kazakh**
 
 ## Requirements
 - **OS**: Linux (recommended)
@@ -220,7 +223,7 @@ make shell       # or make db-shell for Docker
 ```
 ### Internationalization
 
-The application supports 5 languages: English, Russian, Tajik, Azerbaijani, and Kyrgyz.
+The application supports 8 languages: English, Russian, Tajik, Azerbaijani, Kyrgyz, Spanish, Simplified Chinese, and Kazakh.
 Translations are automated using **Yandex Translate API** with a two-stage workflow for quality control.
 
 #### Why Two-Stage Translation?
@@ -228,7 +231,7 @@ Translations are automated using **Yandex Translate API** with a two-stage workf
 Machine translation services (including Yandex) translate strings without context - they don't know that these texts are for application users, buttons, labels, or messages. Therefore:
 
 1. **English → Russian**: You can verify and correct Russian translations manually (if you know Russian)
-2. **Russian → Tajik/Azerbaijani/Kyrgyz**: Once Russian is verified, use it as the source for translating to other languages
+2. **Russian → other languages**: Once Russian is verified, use it as the source for translating to other languages
 
 This ensures quality: you control the Russian translation, and other languages are translated from the verified Russian version.
 

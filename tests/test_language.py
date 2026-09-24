@@ -124,7 +124,7 @@ class LanguageSwitchOnIndexPageTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check that forms for each language exist
-        for lang_code in ['en', 'ru', 'tg', 'az', 'ky']:
+        for lang_code in ['en', 'ru', 'tg', 'az', 'ky', 'es', 'zh-hans', 'kk']:
             # Check hidden input with language code
             self.assertContains(
                 response,
@@ -201,6 +201,42 @@ class LanguageSwitchOnIndexPageTestCase(TestCase):
         )
 
         self.assertEqual(translation.get_language(), 'ky')
+
+    def test_clickable_language_es_switches_to_spanish(self):
+        """Test clicking Spanish language on index switches to Spanish."""
+        client = self._get_client()
+        client.post(
+            self.set_language_url,
+            {'language': 'es'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'es')
+
+    def test_clickable_language_zh_hans_switches_to_chinese(self):
+        """Test clicking Simplified Chinese on index switches to Chinese."""
+        client = self._get_client()
+        client.post(
+            self.set_language_url,
+            {'language': 'zh-hans'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'zh-hans')
+
+    def test_clickable_language_kk_switches_to_kazakh(self):
+        """Test clicking Kazakh language on index switches to Kazakh."""
+        client = self._get_client()
+        client.post(
+            self.set_language_url,
+            {'language': 'kk'},
+            HTTP_REFERER=self.index_url,
+            follow=True
+        )
+
+        self.assertEqual(translation.get_language(), 'kk')
 
     def test_clickable_language_csrf_token_present(self):
         """Test that CSRF token is present in language forms on index page."""
