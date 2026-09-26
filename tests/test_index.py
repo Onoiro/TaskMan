@@ -48,3 +48,11 @@ class IndexViewTestCase(TestCase):
         for __ in range(2):
             response = self.client.get(reverse('index'))
             self.assertRedirects(response, reverse('tasks:tasks-list'))
+
+    def test_index_logo_link_shows_landing_for_authenticated(self):
+        # The logo points to /?home=1 so that logged-in users
+        # can still reach the landing page explicitly
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('index'), {'home': '1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')

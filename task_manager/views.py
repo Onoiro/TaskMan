@@ -17,13 +17,14 @@ def trigger_error(request):
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
-        # Authenticated users are always redirected to tasks list:
-        # working with tasks is the primary use case of the app
-        if request.user.is_authenticated:
+        # Authenticated users are redirected to tasks list:
+        # working with tasks is the primary use case of the app.
+        # The logo links to /?home=1 so users can still reach
+        # the landing page explicitly.
+        if request.user.is_authenticated and 'home' not in request.GET:
             return redirect('tasks:tasks-list')
         content = {
             'taskman': _("TaskMan"),
-            'manage': _("Personal. Family. Work."),
             'description': _("One planner for everything:"
                              " from notes and personal goals"
                              " to family tasks and team projects."),

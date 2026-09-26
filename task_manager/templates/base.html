@@ -73,7 +73,9 @@
           <div class="container-fluid px-3 px-md-4"> <!-- container-fluid for more space -->
             
             <!-- 1. LOGO -->
-            <a class="navbar-brand d-flex align-items-center me-2 me-md-4" href="{% url 'index' %}">
+            <!-- ?home=1 lets authenticated users reach the landing page,
+                 otherwise IndexView redirects them to the tasks list. -->
+            <a class="navbar-brand d-flex align-items-center me-2 me-md-4" href="{% url 'index' %}?home=1">
               <img src="{% static 'icons/emodji.png' %}" alt="TaskMan" style="height: 28px; width: auto;">
 
               <!-- Text display logic:
@@ -288,9 +290,11 @@
                     {% get_available_languages as LANGUAGES %}
                     
                     <li>
-                        <div class="d-flex px-3 py-1 gap-2">
+                        <!-- Buttons wrap into rows of four: with 8+ languages
+                             a single row overflows and gets clipped on mobile. -->
+                        <div class="d-flex flex-wrap px-3 py-1 gap-1">
                             {% for lang_code, lang_name in LANGUAGES %}
-                            <form method="post" action="{% url 'set_language' %}" class="flex-fill">
+                            <form method="post" action="{% url 'set_language' %}" style="flex: 1 1 calc(25% - 0.25rem); min-width: 3.1rem;">
                                 {% csrf_token %}
                                 <input type="hidden" name="language" value="{{ lang_code }}" />
                                 <button type="submit" class="btn btn-sm w-100 {% if lang_code == CURRENT_LANGUAGE %}btn-primary{% else %}btn-outline-secondary{% endif %}">
