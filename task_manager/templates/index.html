@@ -103,6 +103,33 @@
             {% trans "Kyrgyz" %}
           </button>
         </form>
+        <form method="post" action="{% url 'set_language' %}" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="language" value="es">
+          <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <span class="me-1" role="img" aria-label="Spain Flag">🇪🇸</span>
+            <span aria-hidden="true" class="d-none">ES</span>
+            {% trans "Spanish" %}
+          </button>
+        </form>
+        <form method="post" action="{% url 'set_language' %}" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="language" value="zh-hans">
+          <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <span class="me-1" role="img" aria-label="China Flag">🇨🇳</span>
+            <span aria-hidden="true" class="d-none">ZH</span>
+            {% trans "Simplified Chinese" %}
+          </button>
+        </form>
+        <form method="post" action="{% url 'set_language' %}" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="language" value="kk">
+          <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <span class="me-1" role="img" aria-label="Kazakhstan Flag">🇰🇿</span>
+            <span aria-hidden="true" class="d-none">KK</span>
+            {% trans "Kazakh" %}
+          </button>
+        </form>
       </div>
 
     </div>

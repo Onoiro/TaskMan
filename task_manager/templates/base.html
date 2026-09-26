@@ -294,7 +294,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="language" value="{{ lang_code }}" />
                                 <button type="submit" class="btn btn-sm w-100 {% if lang_code == CURRENT_LANGUAGE %}btn-primary{% else %}btn-outline-secondary{% endif %}">
-                                    {{ lang_code|upper }}
+                                    {% if lang_code == 'zh-hans' %}ZH{% else %}{{ lang_code|upper }}{% endif %}
                                 </button>
                             </form>
                             {% endfor %}
@@ -346,7 +346,7 @@
                             {% csrf_token %}
                             <input type="hidden" name="language" value="{{ lang_code }}" />
                             <button type="submit" class="dropdown-item {% if lang_code == CURRENT_LANGUAGE %}active{% endif %}">
-                                {{ lang_name }} ({{ lang_code|upper }})
+                                {{ lang_name }} ({% if lang_code == 'zh-hans' %}ZH{% else %}{{ lang_code|upper }}{% endif %})
                             </button>
                         </form>
                     </li>

@@ -600,7 +600,7 @@ class StatusBackfillMigrationTestCase(TestCase):
 
         backfill = migration_module.backfill_final_statuses
         # Names are stored per-locale: exercise backfill for each locale
-        for lang in ('en', 'ru', 'tg', 'az', 'ky'):
+        for lang in ('en', 'ru', 'tg', 'az', 'ky', 'es', 'zh-hans', 'kk'):
             activate(lang)
             Status.create_default_statuses_for_user(user)
         deactivate()
@@ -611,7 +611,8 @@ class StatusBackfillMigrationTestCase(TestCase):
         backfill(real_apps, None)
 
         for name in ('Completed', 'Завершена', 'Отменена',
-                     'Анҷом ёфтааст', 'Tamamlandı'):
+                     'Анҷом ёфтааст', 'Tamamlandı',
+                     'Completada', '已完成', 'Аяқталды'):
             self.assertTrue(
                 Status.objects.filter(
                     creator=user,

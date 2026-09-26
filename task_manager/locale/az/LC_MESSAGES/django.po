@@ -44,11 +44,11 @@ msgstr "Ad"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
 msgstr ""
-"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <, "
-">, #, & simvollarına icazə verilmir."
+"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <,"
+" >, #, & simvollarına icazə verilmir."
 
 #: labels/views.py:37
 msgid "Label created successfully"
@@ -70,12 +70,12 @@ msgstr "Etiketi silmək mümkün deyil, çünki o istifadə olunur"
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way — "
-"we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
 msgstr ""
 "Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. "
-"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır "
-"— biz bunun üzərində işləyirik!"
+"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır"
+" — biz bunun üzərində işləyirik!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -114,10 +114,9 @@ msgid "team notes"
 msgstr "komanda qeydləri"
 
 #: limit_service.py:45
-#, fuzzy
 #| msgid "Insert Image"
 msgid "note images"
-msgstr "Şəkil əlavə et"
+msgstr "Şəkil daxil edin"
 
 #: limit_service.py:46
 msgid "checklist items"
@@ -158,8 +157,8 @@ msgstr "Məzmun"
 msgid "Author"
 msgstr "Müəllif"
 
-#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47
+#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Komanda"
 
@@ -193,10 +192,9 @@ msgid "Notes"
 msgstr "Qeydlər"
 
 #: notes/models.py:104
-#, fuzzy
 #| msgid "Image URL"
 msgid "Image"
-msgstr "Şəkil URL-i"
+msgstr "Şəkil URL"
 
 #: notes/models.py:108
 msgid "Order"
@@ -319,10 +317,11 @@ msgid "Message"
 msgstr "Mesaj"
 
 #: notifications/models.py:51
-msgid "Legacy field. Use message_key and message_params for new notifications."
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
-"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə "
-"edin."
+"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə"
+" edin."
 
 #: notifications/models.py:58
 msgid "Message key"
@@ -426,7 +425,8 @@ msgid "You don't have permissions to modify another user."
 msgstr "Başqa istifadəçini dəyişdirmək üçün icazəniz yoxdur."
 
 #: permissions.py:40
-msgid "You don't have permissions to modify this. Only team admin can do this."
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "Bunu dəyişdirmək üçün icazəniz yoxdur. Bunu yalnız komanda administratoru "
 "edə bilər."
@@ -919,8 +919,8 @@ msgstr "Komanda üzvlüyü tapılmadı."
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this "
-"team."
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
 msgstr ""
 "Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi "
 "və ya icraçısısınız."
@@ -1093,8 +1093,8 @@ msgstr "Ətraflı"
 msgid "Go back"
 msgstr "Geri qayıt"
 
-#: templates/base.html:430 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:57
+#: templates/base.html:430 templates/feedback.html:7
+#: templates/feedback.html:12 views.py:57
 msgid "Feedback"
 msgstr "Əks əlaqə"
 
@@ -1224,11 +1224,11 @@ msgstr "Yarat"
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:81 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:220
-#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:81
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:220
+#: templates/teams/team_create_form.html:31
+#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
+#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1284,7 +1284,8 @@ msgid "Create Label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27
+#: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1416,8 +1417,8 @@ msgid "Images"
 msgstr "Şəkillər"
 
 #: templates/notes/note_detail.html:101
-#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:163
+#: templates/statuses/statuses_list.html:73
+#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Redaktə et"
 
@@ -1435,7 +1436,8 @@ msgstr "Qeyd yarat"
 
 #: templates/notes/note_form.html:89
 msgid "Enter note content... Use Markdown for formatting."
-msgstr "Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
+msgstr ""
+"Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
 
 #: templates/notes/note_form.html:95 templates/notes/note_form.html:232
 msgid "Preview"
@@ -1662,8 +1664,8 @@ msgstr "Əlaqə"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback "
-"form or at:"
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
 msgstr ""
 "Bu məxfilik siyasəti ilə bağlı sualınız varsa, bizimlə əks əlaqə forması və "
 "ya aşağıdakı vasitə ilə əlaqə saxlayın:"
@@ -1742,29 +1744,34 @@ msgstr "Tapşırıq yarat"
 msgid "Create task"
 msgstr "Tapşırıq yarat"
 
-#: templates/tasks/task_create_form.html:28 templates/tasks/task_update.html:90
-#, fuzzy
+#: templates/tasks/task_create_form.html:28
+#: templates/tasks/task_update.html:90
 #| msgid "Quick Task Creation"
 msgid "Quick deadline"
-msgstr "Sürətli tapşırıq yaratma"
+msgstr "Sürətli son tarix"
 
-#: templates/tasks/task_create_form.html:29 templates/tasks/task_update.html:91
+#: templates/tasks/task_create_form.html:29
+#: templates/tasks/task_update.html:91
 msgid "in 8 hours"
 msgstr "8 saatdan sonra"
 
-#: templates/tasks/task_create_form.html:30 templates/tasks/task_update.html:92
+#: templates/tasks/task_create_form.html:30
+#: templates/tasks/task_update.html:92
 msgid "in 1 day"
 msgstr "1 gündən sonra"
 
-#: templates/tasks/task_create_form.html:31 templates/tasks/task_update.html:93
+#: templates/tasks/task_create_form.html:31
+#: templates/tasks/task_update.html:93
 msgid "in 3 days"
 msgstr "3 gündən sonra"
 
-#: templates/tasks/task_create_form.html:32 templates/tasks/task_update.html:94
+#: templates/tasks/task_create_form.html:32
+#: templates/tasks/task_update.html:94
 msgid "in 21 days"
 msgstr "21 gündən sonra"
 
-#: templates/tasks/task_create_form.html:34 templates/tasks/task_update.html:96
+#: templates/tasks/task_create_form.html:34
+#: templates/tasks/task_update.html:96
 msgid "Clear deadline"
 msgstr "Son tarixi təmizlə"
 
@@ -2185,7 +2192,8 @@ msgstr "Komandaya qoşul (istəyə bağlı)"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work individually"
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
 msgstr ""
 "Mövcud komandaya qoşulmaq üçün komanda adını daxil edin və ya fərdi işləmək "
 "üçün boş saxlayın"
@@ -2259,11 +2267,11 @@ msgstr "Siz sistemdən çıxdınız"
 #~ msgstr "Bir neçə üçün Ctrl / Cmd"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name "
-#~ "and password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
+#~ "password below."
 #~ msgstr ""
-#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
-#~ "komandanın adını və şifrəsini daxil edin."
+#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda komandanın"
+#~ " adını və şifrəsini daxil edin."
 
 #~ msgid "Email address (optional)"
 #~ msgstr "E-poçt ünvanı (istəyə bağlı)"

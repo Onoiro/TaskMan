@@ -1,0 +1,2302 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-25 00:46+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: task_manager/forms.py:8
+msgid "Specify the subject:"
+msgstr "指定主题:"
+
+#: task_manager/forms.py:11
+msgid "Bug, suggestion, etc."
+msgstr "Bug，建议等。"
+
+#: task_manager/forms.py:15
+msgid "* Your email or Telegram (@username):"
+msgstr "*您的电子邮件或电报（@username）:"
+
+#: task_manager/forms.py:22
+msgid "* Message:"
+msgstr "*讯息:"
+
+#: task_manager/forms.py:25
+msgid "Describe your issue or suggestion..."
+msgstr "描述问题或建议。.."
+
+#: task_manager/labels/forms.py:13 task_manager/labels/forms.py:14
+#: task_manager/statuses/forms.py:14 task_manager/statuses/forms.py:15
+#: task_manager/statuses/models.py:21 task_manager/tasks/models.py:34
+#: task_manager/teams/models.py:22
+#: task_manager/templates/statuses/statuses_create_form.html:20
+msgid "Name"
+msgstr "名称"
+
+#: task_manager/labels/models.py:24 task_manager/notes/models.py:29
+#: task_manager/statuses/models.py:26 task_manager/tasks/models.py:28
+msgid ""
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
+msgstr "只允许字母，数字，空格和符号-_。,!?. 不允许使用字符<、>、#和&。"
+
+#: task_manager/labels/views.py:37
+msgid "Label created successfully"
+msgstr "标签创建成功"
+
+#: task_manager/labels/views.py:76
+msgid "Label updated successfully"
+msgstr "标签已成功更改"
+
+#: task_manager/labels/views.py:100
+msgid "Label deleted successfully"
+msgstr "标签已成功删除"
+
+#: task_manager/labels/views.py:123
+msgid "Cannot delete label because it is in use"
+msgstr "无法删除标签，因为它正在使用"
+
+#: task_manager/limit_service.py:16
+#, python-format
+msgid ""
+"You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
+msgstr ""
+"您正在积极使用本服务！已达到资源 \"%(resource)s\"（%(max)s）的上限。"
+"请尝试删除不再需要的内容。无限版本的 TaskMan Pro 正在开发中——我们正在努力！"
+
+#: task_manager/limit_service.py:36
+msgid "teams"
+msgstr "团队"
+
+#: task_manager/limit_service.py:37
+msgid "team members"
+msgstr "小组成员"
+
+#: task_manager/limit_service.py:38
+msgid "tasks"
+msgstr "任务"
+
+#: task_manager/limit_service.py:39
+msgid "personal statuses"
+msgstr "个人状况"
+
+#: task_manager/limit_service.py:40
+msgid "team statuses"
+msgstr "团队状态"
+
+#: task_manager/limit_service.py:41
+msgid "personal labels"
+msgstr "个人标签"
+
+#: task_manager/limit_service.py:42
+msgid "team labels"
+msgstr "团队标签"
+
+#: task_manager/limit_service.py:43
+msgid "personal notes"
+msgstr "个人笔记"
+
+#: task_manager/limit_service.py:44
+msgid "team notes"
+msgstr "团队笔记"
+
+#: task_manager/limit_service.py:45
+msgid "note images"
+msgstr "笔记图片"
+
+#: task_manager/limit_service.py:46
+msgid "checklist items"
+msgstr "清单项"
+
+#: task_manager/notes/forms.py:34 task_manager/statuses/forms.py:25
+#: task_manager/teams/forms.py:29
+#: task_manager/templates/notes/note_form.html:72
+#: task_manager/templates/statuses/statuses_create_form.html:60
+#: task_manager/user/forms.py:15 task_manager/user/forms.py:16
+#: task_manager/user/forms.py:17
+msgid "Optional"
+msgstr "可选"
+
+#: task_manager/notes/forms.py:58
+msgid "Task must be from the same team."
+msgstr "任务必须属于同一个团队。"
+
+#: task_manager/notes/forms.py:62
+msgid "Cannot attach note to team task in individual mode."
+msgstr "个人模式下不能为团队任务附加笔记。"
+
+#: task_manager/notes/forms.py:64
+msgid "You can only attach notes to your own tasks."
+msgstr "只能为您的任务附加笔记。"
+
+#: task_manager/notes/models.py:24
+#: task_manager/templates/notes/note_form.html:64
+msgid "Title"
+msgstr "标题"
+
+#: task_manager/notes/models.py:38
+#: task_manager/templates/notes/note_form.html:78
+#: task_manager/templates/terms_of_service.html:33
+msgid "Content"
+msgstr "内容"
+
+#: task_manager/notes/models.py:46 task_manager/tasks/filters.py:33
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:42
+#: task_manager/templates/tasks/task_filter.html:463
+#: task_manager/templates/tasks/task_update.html:23
+#: task_manager/templates/user/user_detail.html:80
+#: task_manager/templates/user/user_detail.html:103
+#: task_manager/templates/user/user_detail.html:129
+msgid "Author"
+msgstr "作者"
+
+#: task_manager/notes/models.py:54 task_manager/tasks/models.py:47
+#: task_manager/templates/labels/labels_update.html:29
+#: task_manager/templates/notes/note_form.html:34
+msgid "Team"
+msgstr "团队"
+
+#: task_manager/notes/models.py:62 task_manager/tasks/models.py:140
+msgid "Task"
+msgstr "任务"
+
+#: task_manager/notes/models.py:66 task_manager/notifications/models.py:78
+#: task_manager/statuses/models.py:66 task_manager/tasks/models.py:73
+#: task_manager/teams/models.py:43 task_manager/teams/models.py:136
+#: task_manager/templates/labels/labels_update.html:54
+#: task_manager/templates/statuses/statuses_update.html:58
+#: task_manager/templates/teams/team_detail.html:34
+#: task_manager/templates/teams/team_detail.html:61
+msgid "Created at"
+msgstr "创建日期"
+
+#: task_manager/notes/models.py:70 task_manager/tasks/models.py:78
+msgid "Updated at"
+msgstr "更新日期"
+
+#: task_manager/notes/models.py:75 task_manager/notes/models.py:100
+#: task_manager/templates/feedback.html:28
+#: task_manager/templates/notes/note_detail.html:78
+#: task_manager/templates/notes/note_form.html:25
+#: task_manager/templates/notes/note_form.html:149
+msgid "Note"
+msgstr "笔记"
+
+#: task_manager/notes/models.py:76 task_manager/templates/base.html:130
+#: task_manager/templates/base.html:155
+#: task_manager/templates/includes/limits_usage.html:72
+#: task_manager/templates/includes/team_limits_usage.html:84
+#: task_manager/templates/notes/_task_notes.html:7
+#: task_manager/templates/tasks/task_filter.html:406
+msgid "Notes"
+msgstr "笔记"
+
+#: task_manager/notes/models.py:104
+msgid "Image"
+msgstr "图片"
+
+#: task_manager/notes/models.py:108
+msgid "Order"
+msgstr "排序"
+
+#: task_manager/notes/models.py:112
+msgid "Uploaded at"
+msgstr "上载日期"
+
+#: task_manager/notes/models.py:117
+msgid "Note image"
+msgstr "笔记的图像"
+
+#: task_manager/notes/models.py:118
+msgid "Note images"
+msgstr "笔记图像"
+
+#: task_manager/notes/views.py:89
+msgid "Note created successfully"
+msgstr "笔记创建成功"
+
+#: task_manager/notes/views.py:158 task_manager/notes/views.py:367
+msgid "Note can only be edited by its author or team admin."
+msgstr "笔记只能由其作者或团队管理员编辑。"
+
+#: task_manager/notes/views.py:180
+msgid "Note can only be deleted by its author or team admin."
+msgstr "笔记只能由其作者或团队管理员删除。"
+
+#: task_manager/notes/views.py:197
+msgid "Note updated successfully"
+msgstr "笔记更新成功"
+
+#: task_manager/notes/views.py:253
+msgid "Note deleted successfully"
+msgstr "笔记已删除"
+
+#: task_manager/notes/views.py:290
+#, python-format
+msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr "图片\"%(name)s\"过大。最大为 %(max)s MB。"
+
+#: task_manager/notes/views.py:297
+#, python-format
+msgid ""
+"Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
+"WebP."
+msgstr "不支持\"%(name)s\"的图片格式。允许的格式：JPEG、PNG、GIF、WebP。"
+
+#: task_manager/notes/views.py:304 task_manager/notes/views.py:307
+#, python-format
+msgid "Image '%(name)s' is corrupted or not a valid image."
+msgstr "\"%(name)s\"文件已损坏或不是有效的图片。"
+
+#: task_manager/notes/views.py:350
+msgid "Image deleted successfully"
+msgstr "图像已成功删除"
+
+#: task_manager/notifications/models.py:9
+msgid "Task assigned"
+msgstr "任务已分配"
+
+#: task_manager/notifications/models.py:10
+msgid "Task unassigned"
+msgstr "任务已取消分配"
+
+#: task_manager/notifications/models.py:12
+msgid "Task status changed"
+msgstr "任务状态已更改"
+
+#: task_manager/notifications/models.py:14
+msgid "Task completed"
+msgstr "任务已完成"
+
+#: task_manager/notifications/models.py:16
+msgid "Team join request"
+msgstr "加入团队申请"
+
+#: task_manager/notifications/models.py:19
+msgid "Team member joined"
+msgstr "新成员已加入团队"
+
+#: task_manager/notifications/models.py:22
+msgid "Team request approved"
+msgstr "加入申请已批准"
+
+#: task_manager/notifications/models.py:25
+msgid "Team request rejected"
+msgstr "加入申请已拒绝"
+
+#: task_manager/notifications/models.py:28
+msgid "Team member removed"
+msgstr "成员已从团队中移除"
+
+#: task_manager/notifications/models.py:31
+msgid "Team role changed"
+msgstr "团队角色已更改"
+
+#: task_manager/notifications/models.py:33
+msgid "Team invited"
+msgstr "团队邀请"
+
+#: task_manager/notifications/models.py:34
+msgid "Team deleted"
+msgstr "团队已删除"
+
+#: task_manager/notifications/models.py:40
+msgid "Recipient"
+msgstr "收件人"
+
+#: task_manager/notifications/models.py:45
+msgid "Notification type"
+msgstr "通知类型"
+
+#: task_manager/notifications/models.py:48
+msgid "Message"
+msgstr "消息"
+
+#: task_manager/notifications/models.py:51
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
+msgstr "过时的领域。 对新通知使用message_key和message_params。"
+
+#: task_manager/notifications/models.py:58
+msgid "Message key"
+msgstr "消息键"
+
+#: task_manager/notifications/models.py:59
+msgid "Translation key for the message template."
+msgstr "消息模板的翻译键。"
+
+#: task_manager/notifications/models.py:64
+msgid "Message parameters"
+msgstr "消息参数"
+
+#: task_manager/notifications/models.py:65
+msgid "JSON parameters for message template."
+msgstr "消息模板的 JSON 参数。"
+
+#: task_manager/notifications/models.py:70
+msgid "Action URL"
+msgstr "操作 URL"
+
+#: task_manager/notifications/models.py:74
+msgid "Is read"
+msgstr "已读"
+
+#: task_manager/notifications/models.py:89
+msgid "Notification"
+msgstr "通知"
+
+#: task_manager/notifications/models.py:90
+#: task_manager/templates/notifications/_notification_bell.html:25
+msgid "Notifications"
+msgstr "通知"
+
+#: task_manager/notifications/services.py:46
+#, python-brace-format
+msgid "You have been assigned to task: {task_name}"
+msgstr "您被分配了一个任务：{task_name}"
+
+#: task_manager/notifications/services.py:67
+#, python-brace-format
+msgid "You have been removed from task: {task_name}"
+msgstr "您已脱离任务：{task_name}"
+
+#: task_manager/notifications/services.py:81
+#, python-brace-format
+msgid "Status of task '{task_name}' has been changed"
+msgstr "任务'{task_name}'的状态已更改"
+
+#: task_manager/notifications/services.py:113
+#, python-brace-format
+msgid "Task '{task_name}' has been completed"
+msgstr "任务'{task_name}'已完成"
+
+#: task_manager/notifications/services.py:146
+#, python-brace-format
+msgid "{username} wants to join team '{team_name}'"
+msgstr "{username}想加入团队'{team_name}'"
+
+#: task_manager/notifications/services.py:187
+#, python-brace-format
+msgid "{username} has joined team '{team_name}'"
+msgstr "{username}加入团队'{team_name}'"
+
+#: task_manager/notifications/services.py:214
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been approved"
+msgstr "您加入'{team_name}'团队的申请已获批准"
+
+#: task_manager/notifications/services.py:235
+#, python-brace-format
+msgid "Your request to join team '{team_name}' has been rejected"
+msgstr "您加入'{team_name}'团队的申请已被拒绝"
+
+#: task_manager/notifications/services.py:260
+#, python-brace-format
+msgid "You have been removed from team '{team_name}'"
+msgstr "您已从\"{team_name}\"团队中删除"
+
+#: task_manager/notifications/services.py:279
+#, python-brace-format
+msgid "Your role in team '{team_name}' has been changed to {role}"
+msgstr "您在团队'{team_name}'中的角色已更改为{role}"
+
+#: task_manager/notifications/services.py:300
+#, python-brace-format
+msgid "You have been invited to join team '{team_name}'"
+msgstr "您被邀请加入'{team_name}'团队"
+
+#: task_manager/notifications/services.py:320
+#, python-brace-format
+msgid "Team '{team_name}' has been deleted"
+msgstr "'{team_name}'团队已被删除"
+
+#: task_manager/permissions.py:7
+msgid "You are not authorized! Please login."
+msgstr "您尚未登录。请先登录。"
+
+#: task_manager/permissions.py:24
+msgid "You don't have permissions to modify another user."
+msgstr "您无权修改其他用户。"
+
+#: task_manager/permissions.py:40
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
+msgstr "您无权修改此项。只有团队管理员可以操作。"
+
+#: task_manager/permissions.py:65
+msgid ""
+"You don't have permissions to manage team members. Only team admin can do "
+"this."
+msgstr "您无权管理团队成员。只有团队管理员可以操作。"
+
+#: task_manager/permissions.py:74
+msgid "You cannot change your own role in the team."
+msgstr "您无法更改您在团队中的角色。"
+
+#: task_manager/permissions.py:79
+msgid "Team membership not found."
+msgstr "未找到团队成员身份。"
+
+#: task_manager/settings.py:221 task_manager/templates/index.html:67
+msgid "English"
+msgstr "英语"
+
+#: task_manager/settings.py:222 task_manager/templates/index.html:76
+msgid "Russian"
+msgstr "俄语"
+
+#: task_manager/settings.py:223 task_manager/templates/index.html:85
+msgid "Tajik"
+msgstr "塔吉克语"
+
+#: task_manager/settings.py:224 task_manager/templates/index.html:94
+msgid "Azerbaijani"
+msgstr "阿塞拜疆语"
+
+#: task_manager/settings.py:225 task_manager/templates/index.html:103
+msgid "Kyrgyz"
+msgstr "吉尔吉斯"
+
+msgid "Spanish"
+msgstr "西班牙语"
+
+msgid "Simplified Chinese"
+msgstr "简体中文"
+
+msgid "Kazakh"
+msgstr "哈萨克语"
+
+#: task_manager/statuses/forms.py:19 task_manager/statuses/forms.py:22
+#: task_manager/statuses/models.py:48 task_manager/tasks/models.py:38
+#: task_manager/teams/forms.py:27 task_manager/teams/models.py:32
+#: task_manager/templates/statuses/statuses_create_form.html:54
+#: task_manager/templates/statuses/statuses_update.html:40
+#: task_manager/templates/teams/team_detail.html:25
+#: task_manager/templates/teams/team_detail.html:60
+#: task_manager/templates/user/user_detail.html:30
+#: task_manager/user/models.py:11
+msgid "Description"
+msgstr "描述"
+
+#: task_manager/statuses/forms.py:30
+#: task_manager/templates/statuses/statuses_create_form.html:40
+#: task_manager/templates/statuses/statuses_update.html:28
+#: task_manager/templates/statuses/statuses_update.html:59
+msgid "Color"
+msgstr "颜色"
+
+#: task_manager/statuses/forms.py:35
+#: task_manager/templates/statuses/statuses_create_form.html:49
+msgid "Choose status color"
+msgstr "选择状态颜色"
+
+#: task_manager/statuses/forms.py:39 task_manager/statuses/models.py:58
+#: task_manager/templates/statuses/statuses_create_form.html:69
+msgid "Final status"
+msgstr "最终状态"
+
+#: task_manager/statuses/forms.py:43 task_manager/statuses/models.py:60
+#: task_manager/templates/statuses/statuses_create_form.html:72
+#: task_manager/templates/statuses/statuses_list.html:65
+msgid "Tasks with a final status are hidden from the default task list"
+msgstr "默认情况下，具有最终状态的任务从任务列表中隐藏。"
+
+#: task_manager/statuses/models.py:75
+msgid "New"
+msgstr "新的"
+
+#: task_manager/statuses/models.py:76
+msgid "Task has been created but not yet started"
+msgstr "任务已创建，但尚未启动"
+
+#: task_manager/statuses/models.py:81
+msgid "In Progress"
+msgstr "进行中"
+
+#: task_manager/statuses/models.py:82
+msgid "Task is currently being worked on"
+msgstr "任务正在进行中"
+
+#: task_manager/statuses/models.py:86
+msgid "On Hold"
+msgstr "暂挂"
+
+#: task_manager/statuses/models.py:87
+msgid "Task is temporarily paused"
+msgstr "任务暂时暂停"
+
+#: task_manager/statuses/models.py:91
+msgid "Completed"
+msgstr "已完成"
+
+#: task_manager/statuses/models.py:92
+msgid "Task has been finished successfully"
+msgstr "任务顺利完成"
+
+#: task_manager/statuses/models.py:97
+msgid "Cancelled"
+msgstr "取消"
+
+#: task_manager/statuses/models.py:98
+msgid "Task was abandoned or deemed unnecessary"
+msgstr "任务已放弃或不再需要"
+
+#: task_manager/statuses/models.py:103
+msgid "Blocked"
+msgstr "受阻"
+
+#: task_manager/statuses/models.py:105
+msgid "Task cannot proceed due to external dependencies"
+msgstr "因外部依赖无法继续任务"
+
+#: task_manager/statuses/views.py:38
+msgid "Status created successfully"
+msgstr "状态已成功创建"
+
+#: task_manager/statuses/views.py:71
+msgid "Status updated successfully"
+msgstr "状态已成功更改"
+
+#: task_manager/statuses/views.py:80
+msgid "Status deleted successfully"
+msgstr "状态成功删除"
+
+#: task_manager/statuses/views.py:90
+msgid "Cannot delete status because it is in use"
+msgstr "无法删除状态，因为它正在使用"
+
+#: task_manager/tasks/filters.py:15
+msgid "Search"
+msgstr "搜索"
+
+#: task_manager/tasks/filters.py:18
+msgid "Task name..."
+msgstr "任务名称…"
+
+#: task_manager/tasks/filters.py:26 task_manager/tasks/models.py:52
+#: task_manager/templates/statuses/statuses_update.html:51
+#: task_manager/templates/teams/team_member_role_update.html:38
+msgid "Status"
+msgstr "状态"
+
+#: task_manager/tasks/filters.py:40
+#: task_manager/templates/tasks/task_filter.html:467
+#: task_manager/templates/tasks/task_update.html:28
+#: task_manager/templates/user/user_detail.html:83
+#: task_manager/templates/user/user_detail.html:106
+#: task_manager/templates/user/user_detail.html:132
+msgid "Executor"
+msgstr "执行人"
+
+#: task_manager/tasks/filters.py:47 task_manager/tasks/models.py:69
+#: task_manager/templates/base.html:125 task_manager/templates/base.html:152
+#: task_manager/templates/includes/limits_usage.html:56
+#: task_manager/templates/includes/team_limits_usage.html:66
+#: task_manager/templates/index.html:49
+msgid "Labels"
+msgstr "标签"
+
+#: task_manager/tasks/filters.py:53
+#: task_manager/templates/tasks/task_filter.html:142
+#: task_manager/templates/tasks/task_filter.html:201
+msgid "My tasks"
+msgstr "我的任务"
+
+#: task_manager/tasks/filters.py:61
+msgid "From"
+msgstr "从"
+
+#: task_manager/tasks/filters.py:71
+msgid "To"
+msgstr "到"
+
+#: task_manager/tasks/filters.py:80
+#: task_manager/templates/tasks/task_filter.html:253
+msgid "Has checklist"
+msgstr "有清单"
+
+#: task_manager/tasks/filters.py:87
+msgid "Has deadline"
+msgstr "有截止日期"
+
+#: task_manager/tasks/forms.py:31
+msgid "Enter task name"
+msgstr "输入任务名称"
+
+#: task_manager/tasks/models.py:58
+msgid "Executors"
+msgstr "执行人"
+
+#: task_manager/tasks/models.py:86
+msgid "Updated by"
+msgstr "更新者"
+
+#: task_manager/tasks/models.py:91
+#: task_manager/templates/tasks/task_create_form.html:25
+#: task_manager/templates/tasks/task_filter.html:445
+#: task_manager/templates/tasks/task_update.html:49
+#: task_manager/templates/tasks/task_update.html:87
+msgid "Deadline"
+msgstr "截止日期"
+
+#: task_manager/tasks/models.py:144
+msgid "Text"
+msgstr "文本"
+
+#: task_manager/tasks/models.py:148
+msgid "Done"
+msgstr "完成"
+
+#: task_manager/tasks/models.py:152
+msgid "Position"
+msgstr "排序"
+
+#: task_manager/tasks/views.py:55 task_manager/templates/privacy_policy.html:9
+#: task_manager/templates/terms_of_service.html:9
+msgid "Last updated"
+msgstr "最后更新"
+
+#: task_manager/tasks/views.py:56
+msgid "First updated"
+msgstr "最先更新"
+
+#: task_manager/tasks/views.py:57
+msgid "Newest first"
+msgstr "最新优先"
+
+#: task_manager/tasks/views.py:58
+msgid "Oldest first"
+msgstr "最旧优先"
+
+#: task_manager/tasks/views.py:59
+msgid "Name A→Z"
+msgstr "名称A→Z"
+
+#: task_manager/tasks/views.py:60
+msgid "Name Z→A"
+msgstr "名称Z→A"
+
+#: task_manager/tasks/views.py:80
+msgid "Task can only be deleted by its author or team admin."
+msgstr "任务只能由其作者或团队管理员删除。"
+
+#: task_manager/tasks/views.py:98 task_manager/tasks/views.py:456
+msgid "Task can only be updated by its author, executors or team admin."
+msgstr "任务只能由其作者、执行人或团队管理员更新。"
+
+#: task_manager/tasks/views.py:196
+msgid "Filter saved as default"
+msgstr "筛选已保存为默认"
+
+#: task_manager/tasks/views.py:339
+msgid "Task created successfully"
+msgstr "任务创建成功"
+
+#: task_manager/tasks/views.py:403
+msgid "Task updated successfully"
+msgstr "任务更新成功"
+
+#: task_manager/tasks/views.py:443
+msgid "Task deleted successfully"
+msgstr "任务已删除"
+
+#: task_manager/tasks/views.py:487
+msgid "Text is required"
+msgstr "请输入文本"
+
+#: task_manager/tasks/views.py:491
+msgid "Text must be 300 characters or less"
+msgstr "文本不得超过300个字符"
+
+#: task_manager/teams/forms.py:35 task_manager/user/forms.py:22
+msgid "Password"
+msgstr "密码"
+
+#: task_manager/teams/forms.py:37 task_manager/user/forms.py:24
+msgid "Your password must contain at least 8 characters."
+msgstr "密码必须至少包含8个字符。"
+
+#: task_manager/teams/forms.py:41 task_manager/user/forms.py:29
+msgid "Confirm password"
+msgstr "确认密码"
+
+#: task_manager/teams/forms.py:43 task_manager/user/forms.py:31
+msgid "Please enter your password one more time"
+msgstr "请再次输入密码以确认"
+
+#: task_manager/teams/forms.py:52 task_manager/teams/forms.py:55
+#: task_manager/user/forms.py:120 task_manager/user/forms.py:123
+msgid "Leave blank if you don't want to change password"
+msgstr "如果您不想更改密码，请将该字段留空。"
+
+#: task_manager/teams/forms.py:65 task_manager/user/forms.py:63
+msgid "Your password is too short. It must contain at least 8 characters."
+msgstr "密码太短，必须至少包含8个字符。"
+
+#: task_manager/teams/forms.py:79 task_manager/user/forms.py:79
+msgid "The entered passwords do not match."
+msgstr "两次输入的密码不一致。"
+
+#: task_manager/teams/forms.py:90 task_manager/user/forms.py:179
+msgid "Both password fields must be filled or both left blank"
+msgstr "两个密码字段必须同时填写或同时留空"
+
+#: task_manager/teams/forms.py:110
+#: task_manager/templates/teams/team_detail.html:93
+msgid "Invite link"
+msgstr "邀请链接"
+
+#: task_manager/teams/forms.py:114
+msgid "Paste invite link here"
+msgstr "在此粘贴邀请链接"
+
+#: task_manager/teams/forms.py:118
+msgid ""
+"If you have an invite link, paste it here. Otherwise, enter team name and "
+"password below."
+msgstr "如有邀请链接，请粘贴到此处。否则，请在下方输入团队名称和密码。"
+
+#: task_manager/teams/forms.py:125
+#: task_manager/templates/teams/team_detail.html:59
+msgid "Team name"
+msgstr "团队名称"
+
+#: task_manager/teams/forms.py:129
+msgid "Enter team name"
+msgstr "输入团队名称"
+
+#: task_manager/teams/forms.py:136 task_manager/teams/models.py:27
+#: task_manager/user/forms.py:44
+msgid "Team password"
+msgstr "团队的密码"
+
+#: task_manager/teams/forms.py:140
+msgid "Enter team password"
+msgstr "输入团队密码"
+
+#: task_manager/teams/forms.py:215 task_manager/teams/views.py:586
+msgid "Invalid or expired invite link"
+msgstr "邀请链接无效或已过期"
+
+#: task_manager/teams/forms.py:234 task_manager/user/forms.py:212
+msgid "Team with this name does not exist"
+msgstr "不存在该名称的团队。"
+
+#: task_manager/teams/forms.py:252 task_manager/teams/forms.py:291
+#: task_manager/user/forms.py:219
+msgid "Invalid team password"
+msgstr "团队密码无效"
+
+#: task_manager/teams/forms.py:272 task_manager/user/forms.py:237
+msgid "You already have a pending request to join this team"
+msgstr "您已有一个待处理的加入该团队的申请"
+
+#: task_manager/teams/forms.py:273 task_manager/teams/views.py:619
+#: task_manager/user/forms.py:240
+msgid "You are already a member of this team"
+msgstr "您已经是该团队的成员"
+
+#: task_manager/teams/forms.py:288
+msgid "Team does not exist"
+msgstr "团队不存在"
+
+#: task_manager/teams/forms.py:317
+msgid "Either provide an invite link or team name and password"
+msgstr "请提供邀请链接，或团队名称和密码"
+
+#: task_manager/teams/forms.py:338
+msgid "Invalid role selected."
+msgstr "所选角色无效。"
+
+#: task_manager/teams/forms.py:347
+msgid "Invalid status selected."
+msgstr "所选状态无效。"
+
+#: task_manager/teams/models.py:28
+msgid "Minimum length is 3 characters"
+msgstr "最小长度为3个字符"
+
+#: task_manager/teams/models.py:77 task_manager/user/forms.py:155
+msgid "Admin"
+msgstr "管理员"
+
+#: task_manager/teams/models.py:78 task_manager/user/forms.py:156
+msgid "Member"
+msgstr "成员"
+
+#: task_manager/teams/models.py:81
+#: task_manager/templates/user/user_list.html:57
+msgid "Pending"
+msgstr "等待中"
+
+#: task_manager/teams/models.py:82 task_manager/teams/models.py:174
+msgid "Active"
+msgstr "活跃"
+
+#: task_manager/teams/models.py:132
+msgid "Invite code"
+msgstr "邀请码"
+
+#: task_manager/teams/models.py:139
+msgid "Expires at"
+msgstr "过期时间"
+
+#: task_manager/teams/models.py:143
+msgid "Is used"
+msgstr "已使用"
+
+#: task_manager/teams/models.py:151
+msgid "Used by"
+msgstr "使用者"
+
+#: task_manager/teams/models.py:156
+msgid "Used at"
+msgstr "使用时间"
+
+#: task_manager/teams/models.py:160
+msgid "Max uses"
+msgstr "最大使用次数"
+
+#: task_manager/teams/models.py:161
+msgid "Number of times invite can be used"
+msgstr "邀请可使用的次数"
+
+#: task_manager/teams/models.py:165
+msgid "Use count"
+msgstr "已使用次数"
+
+#: task_manager/teams/models.py:169
+msgid "Team invite"
+msgstr "团队邀请"
+
+#: task_manager/teams/models.py:170
+msgid "Team invites"
+msgstr "团队邀请"
+
+#: task_manager/teams/models.py:174
+msgid "Used"
+msgstr "已使用"
+
+#: task_manager/teams/views.py:40
+msgid "Team not found"
+msgstr "未找到团队"
+
+#: task_manager/teams/views.py:67
+msgid "Switched to individual mode"
+msgstr "已切换到个人模式"
+
+#: task_manager/teams/views.py:79
+#, python-brace-format
+msgid "Switched to team: {team}"
+msgstr "已切换到团队：{team}"
+
+#: task_manager/teams/views.py:177
+msgid "You are not a member of this team"
+msgstr "您不是该团队的成员"
+
+#: task_manager/teams/views.py:183
+msgid ""
+"Team administrators cannot leave the team. Please transfer admin rights to "
+"another member first."
+msgstr "团队管理员不能离开团队。请先将管理员权限转让给其他成员。"
+
+#: task_manager/teams/views.py:201
+msgid ""
+"You do not have rights to manage team members. This can only be done by the "
+"team administrator"
+msgstr "您无权管理团队成员。 这只能由团队管理员完成。"
+
+#: task_manager/teams/views.py:206
+msgid "User is not a member of this team"
+msgstr "该用户不是此团队的成员"
+
+#: task_manager/teams/views.py:283
+#, python-brace-format
+msgid "You have successfully left the team {team}"
+msgstr "您已成功离开团队 {team}"
+
+#: task_manager/teams/views.py:289
+#, python-brace-format
+msgid "User {username} has been removed from the team {team}"
+msgstr "用户 {username} 已从团队 {team} 中移除"
+
+#: task_manager/teams/views.py:303
+msgid "Team membership not found"
+msgstr "没有发现团队的参与。"
+
+#: task_manager/teams/views.py:339
+msgid ""
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
+msgstr "您无法离开该团队，因为您是此团队中某些任务的作者或执行人。"
+
+#: task_manager/teams/views.py:389
+msgid "Team created successfully"
+msgstr "团队创建成功"
+
+#: task_manager/teams/views.py:451 task_manager/teams/views.py:661
+#, python-brace-format
+msgid "You have successfully joined the team {team}"
+msgstr "您已成功加入团队 {team}"
+
+#: task_manager/teams/views.py:468 task_manager/user/views.py:259
+#: task_manager/user/views.py:303
+#, python-brace-format
+msgid ""
+"Your request to join team {team} has been sent. Waiting for admin approval."
+msgstr "您加入团队 {team} 的申请已发送，等待管理员批准。"
+
+#: task_manager/teams/views.py:520
+msgid "Invite link generated successfully. Scroll down to copy."
+msgstr "邀请链接已生成，向下滚动即可复制。"
+
+#: task_manager/teams/views.py:540
+msgid "Team has reached the maximum number of members"
+msgstr "团队已达到成员数量上限"
+
+#: task_manager/teams/views.py:590 task_manager/teams/views.py:598
+msgid "Invite link has been used"
+msgstr "邀请链接已被使用"
+
+#: task_manager/teams/views.py:594
+msgid "Invite link has expired"
+msgstr "邀请链接已过期"
+
+#: task_manager/teams/views.py:713
+msgid "Team updated successfully"
+msgstr "团队更新成功"
+
+#: task_manager/teams/views.py:731
+msgid "Cannot delete a team because it has tasks."
+msgstr "无法删除团队，因为其中还有任务。"
+
+#: task_manager/teams/views.py:739
+msgid "Cannot delete a team because it has other members."
+msgstr "无法删除团队，因为其中还有其他成员。"
+
+#: task_manager/teams/views.py:748
+msgid "Team deleted successfully"
+msgstr "团队已删除"
+
+#: task_manager/teams/views.py:779
+#, python-brace-format
+msgid "User {username} has been promoted to team admin."
+msgstr "用户 {username} 已被提升为团队管理员。"
+
+#: task_manager/teams/views.py:786
+#, python-brace-format
+msgid "User {username} has been demoted to team member."
+msgstr "用户 {username} 已被降级为团队成员。"
+
+#: task_manager/teams/views.py:797
+#, python-brace-format
+msgid "User {username} has been approved and is now a member of the team."
+msgstr "用户 {username} 已获批准，现为团队成员。"
+
+#: task_manager/teams/views.py:805
+#, python-brace-format
+msgid "User {username} membership has been set to pending."
+msgstr "用户 {username} 的成员身份已设为等待中。"
+
+#: task_manager/templates/base.html:50 task_manager/templates/base.html:82
+#: task_manager/views.py:25
+msgid "TaskMan"
+msgstr "TaskMan"
+
+#: task_manager/templates/base.html:107
+msgid "Navigation"
+msgstr "导航"
+
+#: task_manager/templates/base.html:110 task_manager/templates/base.html:143
+msgid "Users"
+msgstr "用户"
+
+#: task_manager/templates/base.html:115 task_manager/templates/base.html:146
+#: task_manager/templates/includes/limits_usage.html:8
+#: task_manager/templates/includes/team_limits_usage.html:30
+#: task_manager/templates/user/user_detail.html:76
+#: task_manager/templates/user/user_detail.html:99
+#: task_manager/templates/user/user_detail.html:125
+msgid "Tasks"
+msgstr "任务"
+
+#: task_manager/templates/base.html:120 task_manager/templates/base.html:149
+#: task_manager/templates/includes/limits_usage.html:40
+#: task_manager/templates/includes/team_limits_usage.html:48
+msgid "Statuses"
+msgstr "状态"
+
+#: task_manager/templates/base.html:190
+msgid "Switch context"
+msgstr "切换上下文"
+
+#: task_manager/templates/base.html:198
+#: task_manager/templates/labels/labels_update.html:34
+msgid "Individual"
+msgstr "个人"
+
+#: task_manager/templates/base.html:225
+msgid "Profile"
+msgstr "个人资料"
+
+#: task_manager/templates/base.html:230
+msgid "New Team"
+msgstr "新团队"
+
+#: task_manager/templates/base.html:235
+#: task_manager/templates/teams/team_join_form.html:11
+msgid "Join Team"
+msgstr "加入队伍"
+
+#: task_manager/templates/base.html:243
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Exit team"
+msgstr "离开队伍"
+
+#: task_manager/templates/base.html:253
+msgid "Logout"
+msgstr "退出登录"
+
+#: task_manager/templates/base.html:265 task_manager/templates/base.html:317
+msgid "Settings"
+msgstr "设置"
+
+#: task_manager/templates/base.html:269 task_manager/templates/base.html:321
+msgid "Theme"
+msgstr "主题"
+
+#: task_manager/templates/base.html:272 task_manager/templates/base.html:324
+msgid "Light"
+msgstr "浅色"
+
+#: task_manager/templates/base.html:275 task_manager/templates/base.html:329
+msgid "Dark"
+msgstr "深色"
+
+#: task_manager/templates/base.html:278 task_manager/templates/base.html:334
+msgid "Auto"
+msgstr "自动"
+
+#: task_manager/templates/base.html:286 task_manager/templates/base.html:340
+msgid "Language"
+msgstr "语言"
+
+#: task_manager/templates/base.html:309 task_manager/templates/login.html:8
+msgid "Login"
+msgstr "登录"
+
+#: task_manager/templates/base.html:310
+#: task_manager/templates/user/user_create_form.html:11
+msgid "Signup"
+msgstr "注册"
+
+#: task_manager/templates/base.html:369
+msgid "You are approaching the free plan limits."
+msgstr "您即将达到免费计划的限制。"
+
+#: task_manager/templates/base.html:372
+#: task_manager/templates/user/user_list.html:23
+msgid "Details"
+msgstr "详情"
+
+#: task_manager/templates/base.html:410
+msgid "Go back"
+msgstr "返回"
+
+#: task_manager/templates/base.html:430 task_manager/templates/feedback.html:7
+#: task_manager/templates/feedback.html:12 task_manager/views.py:57
+msgid "Feedback"
+msgstr "反馈"
+
+#: task_manager/templates/base.html:432
+#: task_manager/templates/privacy_policy.html:4
+#: task_manager/templates/privacy_policy.html:8
+msgid "Privacy Policy"
+msgstr "隐私政策"
+
+#: task_manager/templates/base.html:434
+#: task_manager/templates/terms_of_service.html:4
+#: task_manager/templates/terms_of_service.html:8
+msgid "Terms of Service"
+msgstr "使用条款"
+
+#: task_manager/templates/feedback.html:13
+msgid "Found a bug or have a suggestion? Let us know!"
+msgstr "发现错误或有建议？请告诉我们！"
+
+#: task_manager/templates/feedback.html:21
+msgid "Send"
+msgstr "发送"
+
+#: task_manager/templates/feedback.html:28
+msgid ""
+"Your message will be sent to developers via Telegram. We will reply to the "
+"contact you provide."
+msgstr "您的消息将通过 Telegram 发送给开发者。我们会回复您提供的联系方式。"
+
+#: task_manager/templates/feedback.html:51
+msgid "Telegram opened! Send your message there."
+msgstr "Telegram 已打开。请在其中发送您的消息。"
+
+#: task_manager/templates/includes/limits_usage.html:24
+#: task_manager/templates/user/user_detail.html:61
+msgid "Teams"
+msgstr "团队"
+
+#: task_manager/templates/includes/limits_usage.html:90
+msgid "Extended plan is already in development — more features coming soon!"
+msgstr "扩展计划已在开发中——更多功能即将推出！"
+
+#: task_manager/templates/includes/team_limits_usage.html:6
+msgid "Team Limits"
+msgstr "团队限制"
+
+#: task_manager/templates/includes/team_limits_usage.html:12
+#: task_manager/templates/teams/team_detail.html:43
+msgid "Members"
+msgstr "成员"
+
+#: task_manager/templates/index.html:7
+msgid "Task Manager"
+msgstr "任务管理器"
+
+#: task_manager/templates/index.html:20
+#: task_manager/templates/teams/team_join_invite.html:24
+msgid "Go to Tasks"
+msgstr "转到任务"
+
+#: task_manager/templates/index.html:24
+msgid "Get Started"
+msgstr "开始"
+
+#: task_manager/templates/index.html:32
+msgid "Features"
+msgstr "功能"
+
+#: task_manager/templates/index.html:37
+msgid "Personal space and teams"
+msgstr "个人空间与团队"
+
+#: task_manager/templates/index.html:37
+msgid "Switch context in one click"
+msgstr "一键切换上下文"
+
+#: task_manager/templates/index.html:41
+msgid "Quick Task Creation"
+msgstr "快速创建任务"
+
+#: task_manager/templates/index.html:41
+msgid "Title, description, assignee - done in seconds"
+msgstr "标题、描述、执行人——几秒内完成"
+
+#: task_manager/templates/index.html:45
+msgid "Custom Statuses"
+msgstr "自定义状态"
+
+#: task_manager/templates/index.html:45
+msgid "New, In Progress, Done - or your own"
+msgstr "新建、进行中、完成——或自定义"
+
+#: task_manager/templates/index.html:49
+msgid "Tag and filter tasks instantly"
+msgstr "即时添加标签和筛选任务"
+
+#: task_manager/templates/index.html:53
+msgid "Any Device"
+msgstr "任何设备"
+
+#: task_manager/templates/index.html:53
+msgid "Works on desktop, tablet, and mobile"
+msgstr "适用于电脑、平板和手机"
+
+#: task_manager/templates/index.html:58
+msgid "Language Support"
+msgstr "语言支持"
+
+#: task_manager/templates/labels/labels_create.html:9
+#: task_manager/templates/tasks/task_create_form.html:59
+#: task_manager/templates/tasks/task_update.html:194
+msgid "Create label"
+msgstr "创建标签"
+
+#: task_manager/templates/labels/labels_create.html:19
+#: task_manager/templates/notes/note_form.html:177
+#: task_manager/templates/statuses/statuses_create_form.html:82
+#: task_manager/templates/tasks/task_create_form.html:78
+#: task_manager/templates/teams/team_create_form.html:28
+msgid "Create"
+msgstr "创建"
+
+#: task_manager/templates/labels/labels_create.html:22
+#: task_manager/templates/labels/labels_delete.html:23
+#: task_manager/templates/labels/labels_update.html:66
+#: task_manager/templates/notes/note_confirm_delete.html:37
+#: task_manager/templates/notes/note_detail.html:104
+#: task_manager/templates/notes/note_form.html:182
+#: task_manager/templates/notes/note_form.html:186
+#: task_manager/templates/notes/note_form.html:236
+#: task_manager/templates/statuses/statuses_create_form.html:85
+#: task_manager/templates/statuses/statuses_delete.html:23
+#: task_manager/templates/statuses/statuses_update.html:70
+#: task_manager/templates/tasks/task_create_form.html:81
+#: task_manager/templates/tasks/task_delete.html:23
+#: task_manager/templates/tasks/task_update.html:220
+#: task_manager/templates/teams/team_create_form.html:31
+#: task_manager/templates/teams/team_delete.html:22
+#: task_manager/templates/teams/team_detail.html:79
+#: task_manager/templates/teams/team_exit.html:28
+#: task_manager/templates/teams/team_join_form.html:31
+#: task_manager/templates/teams/team_member_role_update.html:55
+#: task_manager/templates/teams/team_update.html:29
+#: task_manager/templates/user/user_create_form.html:28
+#: task_manager/templates/user/user_delete.html:22
+#: task_manager/templates/user/user_detail.html:174
+#: task_manager/templates/user/user_update.html:20
+msgid "Cancel"
+msgstr "取消"
+
+#: task_manager/templates/labels/labels_delete.html:8
+msgid "Delete labels"
+msgstr "删除标签"
+
+#: task_manager/templates/labels/labels_delete.html:14
+msgid "Delete label"
+msgstr "删除标签"
+
+#: task_manager/templates/labels/labels_delete.html:17
+#: task_manager/templates/statuses/statuses_delete.html:17
+#: task_manager/templates/tasks/task_delete.html:17
+#: task_manager/templates/teams/team_delete.html:17
+#: task_manager/templates/user/user_delete.html:17
+msgid "Are you sure you want to delete"
+msgstr "您确定要删除吗"
+
+#: task_manager/templates/labels/labels_delete.html:20
+#: task_manager/templates/notes/note_confirm_delete.html:34
+#: task_manager/templates/statuses/statuses_delete.html:20
+#: task_manager/templates/tasks/task_delete.html:20
+#: task_manager/templates/teams/team_delete.html:19
+#: task_manager/templates/user/user_delete.html:19
+msgid "Yes, delete"
+msgstr "是，删除"
+
+#: task_manager/templates/labels/labels_list.html:14
+msgid "New label"
+msgstr "新标签"
+
+#: task_manager/templates/labels/labels_list.html:57
+#: task_manager/templates/labels/labels_update.html:38
+#: task_manager/templates/notes/note_detail.html:92
+#: task_manager/templates/notes/note_form.html:43
+#: task_manager/templates/notes/note_list.html:74
+#: task_manager/templates/tasks/task_filter.html:464
+#: task_manager/templates/tasks/task_update.html:25
+#: task_manager/templates/tasks/task_update.html:41
+#: task_manager/user/models.py:22
+msgid "Deleted user"
+msgstr "已删除的用户"
+
+#: task_manager/templates/labels/labels_list.html:70
+msgid "No labels found"
+msgstr "未找到标签"
+
+#: task_manager/templates/labels/labels_list.html:71
+msgid "Create your first label to organize tasks"
+msgstr "创建第一个标签来整理任务"
+
+#: task_manager/templates/labels/labels_list.html:72
+msgid "Create Label"
+msgstr "创建标签"
+
+#: task_manager/templates/labels/labels_update.html:22
+#: task_manager/templates/notes/note_detail.html:44
+#: task_manager/templates/notes/note_form.html:27
+#: task_manager/templates/statuses/statuses_update.html:20
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:418
+#: task_manager/templates/tasks/task_update.html:19
+msgid "Created"
+msgstr "创建时间"
+
+#: task_manager/templates/labels/labels_update.html:33
+msgid "Individual mode"
+msgstr "个人模式"
+
+#: task_manager/templates/labels/labels_update.html:37
+#: task_manager/templates/statuses/statuses_update.html:36
+msgid "Creator"
+msgstr "创建者"
+
+#: task_manager/templates/labels/labels_update.html:47
+msgid "Label"
+msgstr "标签"
+
+#: task_manager/templates/labels/labels_update.html:63
+#: task_manager/templates/notes/note_form.html:175
+#: task_manager/templates/statuses/statuses_update.html:67
+#: task_manager/templates/tasks/task_filter.html:321
+#: task_manager/templates/tasks/task_update.html:217
+#: task_manager/templates/user/user_update.html:17
+msgid "Save"
+msgstr "保存"
+
+#: task_manager/templates/labels/labels_update.html:71
+#: task_manager/templates/notes/note_form.html:157
+#: task_manager/templates/notes/note_form.html:158
+#: task_manager/templates/notes/note_form.html:193
+#: task_manager/templates/statuses/statuses_list.html:76
+#: task_manager/templates/statuses/statuses_update.html:75
+#: task_manager/templates/tasks/task_update.html:151
+#: task_manager/templates/tasks/task_update.html:225
+#: task_manager/templates/tasks/task_update.html:370
+#: task_manager/templates/teams/team_update.html:34
+#: task_manager/templates/user/user_detail.html:180
+msgid "Delete"
+msgstr "删除"
+
+#: task_manager/templates/limits/limits_info.html:14
+msgid "Plans & Limits"
+msgstr "计划及限制"
+
+#: task_manager/templates/limits/limits_info.html:19
+msgid "Current Plan"
+msgstr "现行计划"
+
+#: task_manager/templates/limits/limits_info.html:21
+msgid "Free"
+msgstr "免费"
+
+#: task_manager/templates/limits/limits_info.html:27
+msgid "Current Usage"
+msgstr "当前使用情况"
+
+#: task_manager/templates/limits/limits_info.html:35
+msgid "Extended Plan"
+msgstr "扩展计划"
+
+#: task_manager/templates/limits/limits_info.html:37
+msgid "In Development"
+msgstr "开发中"
+
+#: task_manager/templates/limits/limits_info.html:43
+msgid "More teams"
+msgstr "更多团队"
+
+#: task_manager/templates/limits/limits_info.html:47
+msgid "More team members"
+msgstr "更多团队成员"
+
+#: task_manager/templates/limits/limits_info.html:51
+msgid "Increased task limits"
+msgstr "更高的任务上限"
+
+#: task_manager/templates/limits/limits_info.html:55
+msgid "Priority support"
+msgstr "优先支持"
+
+#: task_manager/templates/limits/limits_info.html:66
+msgid "Stay tuned for updates!"
+msgstr "敬请期待更新！"
+
+#: task_manager/templates/limits/limits_info.html:70
+msgid "Send Feedback"
+msgstr "发送反馈"
+
+#: task_manager/templates/limits/limits_info.html:79
+msgid "Back"
+msgstr "返回"
+
+#: task_manager/templates/login.html:13
+msgid "Log in"
+msgstr "登录"
+
+#: task_manager/templates/notes/_task_notes.html:14
+msgid "Add note"
+msgstr "添加笔记"
+
+#: task_manager/templates/notes/_task_notes.html:42
+msgid "No notes for this task"
+msgstr "此任务暂无笔记"
+
+#: task_manager/templates/notes/note_confirm_delete.html:6
+#: task_manager/templates/notes/note_confirm_delete.html:11
+msgid "Delete note"
+msgstr "删除笔记"
+
+#: task_manager/templates/notes/note_confirm_delete.html:16
+msgid "Are you sure you want to delete this note?"
+msgstr "您确定要删除这条笔记吗？"
+
+#: task_manager/templates/notes/note_detail.html:23
+msgid "Untitled Note"
+msgstr "无标题笔记"
+
+#: task_manager/templates/notes/note_detail.html:32
+#: task_manager/templates/notes/note_form.html:39
+#: task_manager/templates/notes/note_list.html:69
+msgid "Personal"
+msgstr "个人"
+
+#: task_manager/templates/notes/note_detail.html:48
+#: task_manager/templates/tasks/task_filter.html:378
+#: task_manager/templates/tasks/task_filter.html:425
+#: task_manager/templates/tasks/task_update.html:36
+msgid "Updated"
+msgstr "已更新"
+
+#: task_manager/templates/notes/note_detail.html:60
+msgid "Loading content..."
+msgstr "正在加载内容…"
+
+#: task_manager/templates/notes/note_detail.html:72
+#: task_manager/templates/notes/note_form.html:119
+msgid "Images"
+msgstr "图像"
+
+#: task_manager/templates/notes/note_detail.html:101
+#: task_manager/templates/statuses/statuses_list.html:73
+#: task_manager/templates/teams/team_update.html:26
+#: task_manager/templates/user/user_detail.html:163
+msgid "Edit"
+msgstr "编辑"
+
+#: task_manager/templates/notes/note_form.html:38
+msgid "Personal note"
+msgstr "个人笔记"
+
+#: task_manager/templates/notes/note_form.html:55
+msgid "Edit note"
+msgstr "编辑笔记"
+
+#: task_manager/templates/notes/note_form.html:57
+msgid "Create note"
+msgstr "创建笔记"
+
+#: task_manager/templates/notes/note_form.html:89
+msgid "Enter note content... Use Markdown for formatting."
+msgstr "输入笔记内容…支持 Markdown 格式。"
+
+#: task_manager/templates/notes/note_form.html:95
+#: task_manager/templates/notes/note_form.html:232
+msgid "Preview"
+msgstr "预览"
+
+#: task_manager/templates/notes/note_form.html:104
+msgid "Markdown supported:"
+msgstr "支持 Markdown："
+
+#: task_manager/templates/notes/note_form.html:129
+#, python-format
+msgid ""
+"Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
+"WebP)."
+msgstr "每个音符最多可达%(mx_count)s的图像，每个不超过%(max_mb)S MB(JPEG、PNG、GIF、WebP)。"
+
+#: task_manager/templates/notes/note_form.html:142
+msgid "Attached images"
+msgstr "附件图片"
+
+#: task_manager/templates/notes/note_form.html:209
+msgid "Insert Image"
+msgstr "插入图片"
+
+#: task_manager/templates/notes/note_form.html:211
+msgid "Close"
+msgstr "关闭"
+
+#: task_manager/templates/notes/note_form.html:216
+msgid "Image URL"
+msgstr "图片 URL"
+
+#: task_manager/templates/notes/note_form.html:225
+msgid "Description (alt text)"
+msgstr "描述（替代文本）"
+
+#: task_manager/templates/notes/note_form.html:230
+msgid "Image description"
+msgstr "图片描述"
+
+#: task_manager/templates/notes/note_form.html:239
+msgid "Insert"
+msgstr "插入"
+
+#: task_manager/templates/notes/note_list.html:12
+msgid "New note"
+msgstr "新笔记"
+
+#: task_manager/templates/notes/note_list.html:85
+msgid "No notes found"
+msgstr "未找到笔记"
+
+#: task_manager/templates/notes/note_list.html:86
+msgid "Create your first note to save important information"
+msgstr "创建第一个笔记来保存重要信息"
+
+#: task_manager/templates/notes/note_list.html:87
+msgid "Create Note"
+msgstr "创建笔记"
+
+#: task_manager/templates/notifications/_notification_bell.html:6
+#: task_manager/templates/notifications/_notification_bell.html:119
+#: task_manager/templates/notifications/_notification_bell.html:165
+msgid "No notifications"
+msgstr "暂无通知"
+
+#: task_manager/templates/notifications/_notification_bell.html:29
+msgid "Mark all as read"
+msgstr "全部标为已读"
+
+#: task_manager/templates/notifications/_notification_bell.html:69
+#: task_manager/templates/tasks/task_update.html:39
+msgid "ago"
+msgstr "返回"
+
+#: task_manager/templates/notifications/_notification_bell.html:75
+msgid "Mark as read"
+msgstr "标为已读"
+
+#: task_manager/templates/notifications/_notification_bell.html:86
+msgid "Showing last 10 notifications"
+msgstr "显示最近10条通知"
+
+#: task_manager/templates/privacy_policy.html:11
+msgid "Data We Collect"
+msgstr "我们收集哪些数据？"
+
+#: task_manager/templates/privacy_policy.html:12
+msgid "When you register, we collect:"
+msgstr "注册时，我们收集:"
+
+#: task_manager/templates/privacy_policy.html:14
+#: task_manager/templates/user/user_detail.html:152
+msgid "Username"
+msgstr "用户名"
+
+#: task_manager/templates/privacy_policy.html:15
+msgid "First and last name (optional)"
+msgstr "名字和姓氏（可选）"
+
+#: task_manager/templates/privacy_policy.html:16
+msgid "Password (stored in encrypted form)"
+msgstr "密码（加密存储）"
+
+#: task_manager/templates/privacy_policy.html:19
+msgid "When you use the service, we store:"
+msgstr "使用服务时，我们存储:"
+
+#: task_manager/templates/privacy_policy.html:21
+msgid "Tasks, notes, labels and statuses you create"
+msgstr "您创建的任务、笔记、标签和状态"
+
+#: task_manager/templates/privacy_policy.html:22
+msgid "Team membership information"
+msgstr "团队成员身份信息"
+
+#: task_manager/templates/privacy_policy.html:25
+msgid "How We Use Your Data"
+msgstr "我们如何使用您的数据"
+
+#: task_manager/templates/privacy_policy.html:27
+msgid "To provide the task management service"
+msgstr "提供任务管理服务"
+
+#: task_manager/templates/privacy_policy.html:28
+msgid "To authenticate you and protect your account"
+msgstr "进行身份验证并保护您的账户"
+
+#: task_manager/templates/privacy_policy.html:29
+msgid "To enable team collaboration features"
+msgstr "启用团队协作功能"
+
+#: task_manager/templates/privacy_policy.html:32
+msgid "Data Sharing"
+msgstr "数据共享"
+
+#: task_manager/templates/privacy_policy.html:33
+msgid ""
+"We do not sell, trade, or share your personal data with third parties, "
+"except:"
+msgstr "我们不会向第三方出售、交易或共享您的个人数据，以下情况除外："
+
+#: task_manager/templates/privacy_policy.html:35
+msgid "Within your teams - other team members can see tasks assigned to them"
+msgstr "在您的团队中，其他团队成员可以看到他们分配的任务。"
+
+#: task_manager/templates/privacy_policy.html:36
+msgid "When required by law"
+msgstr "法律要求时"
+
+#: task_manager/templates/privacy_policy.html:39
+msgid "Data Storage and Security"
+msgstr "数据存储与安全"
+
+#: task_manager/templates/privacy_policy.html:40
+msgid ""
+"Your data is stored on secure servers. We use HTTPS encryption for all "
+"connections. Passwords are hashed and never stored in plain text."
+msgstr "您的数据存储在安全的服务器上。所有连接均使用 HTTPS 加密。密码经过哈希处理，绝不以明文存储。"
+
+#: task_manager/templates/privacy_policy.html:42
+msgid "Your Rights"
+msgstr "您的权利"
+
+#: task_manager/templates/privacy_policy.html:43
+msgid "You can:"
+msgstr "您可以："
+
+#: task_manager/templates/privacy_policy.html:45
+msgid "View and edit your profile information at any time"
+msgstr "随时查看和编辑您的个人资料"
+
+#: task_manager/templates/privacy_policy.html:46
+msgid "Delete your account and all associated data"
+msgstr "删除您的账户及所有相关数据"
+
+#: task_manager/templates/privacy_policy.html:47
+msgid "Export your data by contacting us"
+msgstr "联系我们以导出您的数据"
+
+#: task_manager/templates/privacy_policy.html:50
+msgid "Cookies"
+msgstr "曲奇饼"
+
+#: task_manager/templates/privacy_policy.html:51
+msgid "We use essential cookies for:"
+msgstr "我们使用必要的 Cookie 用于："
+
+#: task_manager/templates/privacy_policy.html:53
+msgid "Session management (keeping you logged in)"
+msgstr "会话管理（保持您的登录状态）"
+
+#: task_manager/templates/privacy_policy.html:54
+msgid "CSRF protection (security)"
+msgstr "CSRF 防护（安全）"
+
+#: task_manager/templates/privacy_policy.html:55
+msgid "Language preference"
+msgstr "语言偏好"
+
+#: task_manager/templates/privacy_policy.html:58
+msgid "Children's Privacy"
+msgstr "儿童隐私"
+
+#: task_manager/templates/privacy_policy.html:59
+msgid ""
+"Our service is not intended for children under 13. We do not knowingly "
+"collect data from children."
+msgstr "本服务不面向13岁以下儿童。我们不会有意收集儿童的数据。"
+
+#: task_manager/templates/privacy_policy.html:61
+#: task_manager/templates/terms_of_service.html:45
+msgid "Contact"
+msgstr "联系方式"
+
+#: task_manager/templates/privacy_policy.html:62
+msgid ""
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
+msgstr "如对本隐私政策有疑问，请通过反馈表单或以下方式联系我们："
+
+#: task_manager/templates/privacy_policy.html:65
+msgid "Changes"
+msgstr "变更"
+
+#: task_manager/templates/privacy_policy.html:66
+msgid ""
+"We may update this policy. Changes will be posted on this page with an "
+"updated date."
+msgstr "我们可能更新本政策。变更将连同更新日期一起发布在此页面。"
+
+#: task_manager/templates/statuses/statuses_create_form.html:16
+msgid "Create status"
+msgstr "创建状态"
+
+#: task_manager/templates/statuses/statuses_create_form.html:29
+msgid "Enter status name..."
+msgstr "输入状态名称…"
+
+#: task_manager/templates/statuses/statuses_delete.html:8
+#: task_manager/templates/statuses/statuses_delete.html:14
+msgid "Delete status"
+msgstr "删除状态"
+
+#: task_manager/templates/statuses/statuses_list.html:14
+msgid "New status"
+msgstr "新状态"
+
+#: task_manager/templates/statuses/statuses_list.html:90
+msgid "No statuses found"
+msgstr "未找到状态"
+
+#: task_manager/templates/statuses/statuses_list.html:91
+msgid "Create your first status to organize tasks"
+msgstr "创建第一个状态来整理任务"
+
+#: task_manager/templates/statuses/statuses_list.html:92
+msgid "Create Status"
+msgstr "创建状态"
+
+#: task_manager/templates/statuses/statuses_update.html:41
+msgid "Has description"
+msgstr "有描述"
+
+#: task_manager/templates/tasks/partials/empty_state.html:8
+msgid "No tasks found"
+msgstr "未找到任务"
+
+#: task_manager/templates/tasks/partials/empty_state.html:9
+msgid "Try adjusting filters or create a new task"
+msgstr "请调整筛选条件或创建新任务"
+
+#: task_manager/templates/tasks/partials/empty_state.html:12
+msgid "Completed tasks are hidden by default"
+msgstr "默认隐藏已完成的任务"
+
+#: task_manager/templates/tasks/partials/empty_state.html:15
+#: task_manager/templates/tasks/task_filter.html:81
+msgid "Show all tasks"
+msgstr "显示所有任务"
+
+#: task_manager/templates/tasks/partials/empty_state.html:20
+msgid "Reset filters"
+msgstr "重置筛选"
+
+#: task_manager/templates/tasks/partials/empty_state.html:24
+msgid "Create Task"
+msgstr "创建任务"
+
+#: task_manager/templates/tasks/task_create_form.html:11
+msgid "Create task"
+msgstr "创建任务"
+
+#: task_manager/templates/tasks/task_create_form.html:28
+#: task_manager/templates/tasks/task_update.html:90
+msgid "Quick deadline"
+msgstr "快速截止日期"
+
+#: task_manager/templates/tasks/task_create_form.html:29
+#: task_manager/templates/tasks/task_update.html:91
+msgid "in 8 hours"
+msgstr "8小时后"
+
+#: task_manager/templates/tasks/task_create_form.html:30
+#: task_manager/templates/tasks/task_update.html:92
+msgid "in 1 day"
+msgstr "1天后"
+
+#: task_manager/templates/tasks/task_create_form.html:31
+#: task_manager/templates/tasks/task_update.html:93
+msgid "in 3 days"
+msgstr "3天后"
+
+#: task_manager/templates/tasks/task_create_form.html:32
+#: task_manager/templates/tasks/task_update.html:94
+msgid "in 21 days"
+msgstr "21天后"
+
+#: task_manager/templates/tasks/task_create_form.html:34
+#: task_manager/templates/tasks/task_update.html:96
+msgid "Clear deadline"
+msgstr "清除截止日期"
+
+#: task_manager/templates/tasks/task_create_form.html:46
+#: task_manager/templates/tasks/task_update.html:180
+msgid "Add checklist"
+msgstr "添加清单"
+
+#: task_manager/templates/tasks/task_create_form.html:68
+#: task_manager/templates/tasks/task_filter.html:262
+#: task_manager/templates/tasks/task_update.html:203
+msgid "Hold Ctrl/Cmd to select multiple items"
+msgstr "按住 Ctrl/Cmd 可多选"
+
+#: task_manager/templates/tasks/task_delete.html:8
+#: task_manager/templates/tasks/task_delete.html:14
+msgid "Delete task"
+msgstr "删除任务"
+
+#: task_manager/templates/tasks/task_filter.html:13
+msgid "New task"
+msgstr "新任务"
+
+#: task_manager/templates/tasks/task_filter.html:32
+msgid "Sort"
+msgstr "排序"
+
+#: task_manager/templates/tasks/task_filter.html:37
+msgid "Sort by"
+msgstr "排序方式"
+
+#: task_manager/templates/tasks/task_filter.html:57
+msgid "Full view"
+msgstr "完整视图"
+
+#: task_manager/templates/tasks/task_filter.html:62
+msgid "Simple view"
+msgstr "简洁视图"
+
+#: task_manager/templates/tasks/task_filter.html:70
+msgid "Overridden by status filter"
+msgstr "被状态筛选覆盖"
+
+#: task_manager/templates/tasks/task_filter.html:75
+msgid "Show completed tasks"
+msgstr "显示已完成的任务"
+
+#: task_manager/templates/tasks/task_filter.html:86
+msgid "Show active tasks"
+msgstr "显示进行中的任务"
+
+#: task_manager/templates/tasks/task_filter.html:100
+msgid "Default filter is active"
+msgstr "默认筛选已启用"
+
+#: task_manager/templates/tasks/task_filter.html:102
+msgid "Default"
+msgstr "默认"
+
+#: task_manager/templates/tasks/task_filter.html:146
+msgid "Assigned to me"
+msgstr "分配给我的"
+
+#: task_manager/templates/tasks/task_filter.html:158
+msgid "Who"
+msgstr "谁"
+
+#: task_manager/templates/tasks/task_filter.html:170
+#: task_manager/templates/tasks/task_filter.html:187
+#: task_manager/templates/tasks/task_filter.html:223
+#: task_manager/templates/tasks/task_filter.html:239
+msgid "Exclude"
+msgstr "排除"
+
+#: task_manager/templates/tasks/task_filter.html:202
+msgid "author or executor"
+msgstr "作者或执行人"
+
+#: task_manager/templates/tasks/task_filter.html:212
+msgid "What"
+msgstr "什么"
+
+#: task_manager/templates/tasks/task_filter.html:271
+msgid "When"
+msgstr "何时"
+
+#: task_manager/templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "有生效中的截止日期"
+
+#: task_manager/templates/tasks/task_filter.html:320
+msgid "Save as default"
+msgstr "保存为默认"
+
+#: task_manager/templates/tasks/task_filter.html:329
+msgid "Reset"
+msgstr "重置"
+
+#: task_manager/templates/tasks/task_filter.html:333
+msgid "Apply"
+msgstr "应用"
+
+#: task_manager/templates/tasks/task_filter.html:362
+#: task_manager/templates/tasks/task_filter.html:451
+#: task_manager/templates/tasks/task_update.html:55
+msgid "Time left: "
+msgstr "剩余时间："
+
+#: task_manager/templates/tasks/task_filter.html:363
+#: task_manager/templates/tasks/task_filter.html:452
+#: task_manager/templates/tasks/task_update.html:56
+msgid "Overdue"
+msgstr "已逾期"
+
+#: task_manager/templates/tasks/task_filter.html:411
+#: task_manager/templates/tasks/task_update.html:116
+msgid "Checklist"
+msgstr "清单"
+
+#: task_manager/templates/tasks/task_filter.html:492
+#: task_manager/templates/tasks/task_filter.html:499
+msgid "Previous"
+msgstr "上一个"
+
+#: task_manager/templates/tasks/task_filter.html:519
+#: task_manager/templates/tasks/task_filter.html:526
+msgid "Next"
+msgstr "下一个"
+
+#: task_manager/templates/tasks/task_update.html:161
+msgid "Add a checklist item"
+msgstr "添加清单项"
+
+#: task_manager/templates/tasks/task_update.html:166
+msgid "Add item..."
+msgstr "添加项目…"
+
+#: task_manager/templates/tasks/task_update.html:458
+msgid "Delete this item?"
+msgstr "删除此项？"
+
+#: task_manager/templates/teams/team_create_form.html:11
+msgid "Create Team"
+msgstr "创建团队"
+
+#: task_manager/templates/teams/team_delete.html:8
+#: task_manager/templates/user/user_delete.html:8
+#: task_manager/templates/user/user_delete.html:14
+msgid "Delete user"
+msgstr "删除用户"
+
+#: task_manager/templates/teams/team_delete.html:14
+msgid "Delete team"
+msgstr "删除团队"
+
+#: task_manager/templates/teams/team_detail.html:14
+msgid "Team details"
+msgstr "团队详情"
+
+#: task_manager/templates/teams/team_detail.html:26
+msgid "No description"
+msgstr "暂无描述"
+
+#: task_manager/templates/teams/team_detail.html:69
+#: task_manager/templates/teams/team_update.html:16
+msgid "Edit Team"
+msgstr "编辑团队"
+
+#: task_manager/templates/teams/team_detail.html:74
+msgid "Generate Invite Link"
+msgstr "生成邀请链接"
+
+#: task_manager/templates/teams/team_detail.html:89
+msgid "Invite Link Generated"
+msgstr "邀请链接已生成"
+
+#: task_manager/templates/teams/team_detail.html:91
+msgid "Copy the link below to share it:"
+msgstr "复制下面的链接进行分享："
+
+#: task_manager/templates/teams/team_detail.html:100
+msgid "Copy"
+msgstr "复制"
+
+#: task_manager/templates/teams/team_detail.html:105
+msgid "This link is single-use and expires in 7 days."
+msgstr "此链接为一次性链接，7天后过期。"
+
+#: task_manager/templates/teams/team_exit.html:8
+#: task_manager/templates/teams/team_exit.html:15
+msgid "Remove team member"
+msgstr "移除团队成员"
+
+#: task_manager/templates/teams/team_exit.html:20
+msgid "Are you sure you want to exit the team"
+msgstr "您确定要退出该团队吗"
+
+#: task_manager/templates/teams/team_exit.html:22
+#, python-format
+msgid ""
+"Are you sure you want to remove user %(username)s from the team "
+"%(team_name)s?"
+msgstr "您确定要将用户 %(uername)s 从团队 %(tam_name)s 中移除吗？"
+
+#: task_manager/templates/teams/team_exit.html:25
+msgid "Yes, exit"
+msgstr "是，退出"
+
+#: task_manager/templates/teams/team_join_form.html:28
+msgid "Join"
+msgstr "加入"
+
+#: task_manager/templates/teams/team_join_invite.html:11
+msgid "Join Team via Invite"
+msgstr "通过邀请加入团队"
+
+#: task_manager/templates/teams/team_join_invite.html:15
+#, python-format
+msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
+msgstr "您已成功加入团队 <strong>%(tam_name)s</strong>。"
+
+#: task_manager/templates/teams/team_join_invite.html:28
+msgid "Home"
+msgstr "主页"
+
+#: task_manager/templates/teams/team_member_role_update.html:10
+msgid "Manage Team Member"
+msgstr "管理团队成员"
+
+#: task_manager/templates/teams/team_member_role_update.html:14
+msgid "You are managing membership for"
+msgstr "您正在管理成员身份："
+
+#: task_manager/templates/teams/team_member_role_update.html:15
+msgid "in team"
+msgstr "所在团队"
+
+#: task_manager/templates/teams/team_member_role_update.html:22
+msgid "Role"
+msgstr "角色"
+
+#: task_manager/templates/teams/team_member_role_update.html:58
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: task_manager/templates/teams/team_member_role_update.html:67
+msgid "Are you sure you want to remove this user from the team?"
+msgstr "您确定要将该成员从团队中移除吗？"
+
+#: task_manager/templates/teams/team_member_role_update.html:70
+msgid "Remove from team"
+msgstr "从团队移除"
+
+#: task_manager/templates/terms_of_service.html:11
+msgid "Acceptance of Terms"
+msgstr "接受条款"
+
+#: task_manager/templates/terms_of_service.html:12
+msgid ""
+"By using TaskMan, you agree to these terms. If you disagree, please do not "
+"use the service."
+msgstr "使用 TaskMan 即表示您同意这些条款。如不同意，请勿使用本服务。"
+
+#: task_manager/templates/terms_of_service.html:14
+msgid "Description of Service"
+msgstr "服务描述"
+
+#: task_manager/templates/terms_of_service.html:15
+msgid ""
+"TaskMan is a web application for task management, available for individual "
+"use and team collaboration."
+msgstr "TaskMan 是一款任务管理 Web 应用，支持个人使用和团队协作。"
+
+#: task_manager/templates/terms_of_service.html:17
+msgid "User Account"
+msgstr "用户账户"
+
+#: task_manager/templates/terms_of_service.html:19
+msgid "You are responsible for maintaining the security of your account"
+msgstr "您需负责维护自己账户的安全"
+
+#: task_manager/templates/terms_of_service.html:20
+msgid "You must provide accurate information during registration"
+msgstr "注册时必须提供准确的信息"
+
+#: task_manager/templates/terms_of_service.html:21
+msgid "You must not create accounts for automated use without permission"
+msgstr "未经许可，不得创建用于自动化用途的账户"
+
+#: task_manager/templates/terms_of_service.html:24
+msgid "Acceptable Use"
+msgstr "可接受的使用"
+
+#: task_manager/templates/terms_of_service.html:25
+msgid "You agree not to:"
+msgstr "您同意不会："
+
+#: task_manager/templates/terms_of_service.html:27
+msgid "Use the service for any illegal purpose"
+msgstr "将本服务用于任何非法目的"
+
+#: task_manager/templates/terms_of_service.html:28
+msgid "Attempt to gain unauthorized access to the service"
+msgstr "尝试未经授权访问本服务"
+
+#: task_manager/templates/terms_of_service.html:29
+msgid "Interfere with the proper operation of the service"
+msgstr "干扰本服务的正常运行"
+
+#: task_manager/templates/terms_of_service.html:30
+msgid "Upload malicious content"
+msgstr "上传恶意内容"
+
+#: task_manager/templates/terms_of_service.html:34
+msgid ""
+"You retain ownership of the content you create. We do not claim any rights "
+"to your tasks, notes, or other data."
+msgstr "您保留所创建内容的所有权。 我们对您的任务、笔记或其他数据不主张任何权利。"
+
+#: task_manager/templates/terms_of_service.html:36
+msgid "Service Availability"
+msgstr "服务可用性"
+
+#: task_manager/templates/terms_of_service.html:37
+msgid ""
+"We strive to maintain high availability but do not guarantee uninterrupted "
+"service. We may perform maintenance that temporarily affects availability."
+msgstr "我们努力保持高可用性，但我们不保证服务的不间断运行。 我们可能会进行暂时影响可用性的技术工作。"
+
+#: task_manager/templates/terms_of_service.html:39
+msgid "Termination"
+msgstr "终止"
+
+#: task_manager/templates/terms_of_service.html:40
+msgid ""
+"We reserve the right to suspend or terminate accounts that violate these "
+"terms."
+msgstr "我们保留暂停或终止违反本条款账户的权利。"
+
+#: task_manager/templates/terms_of_service.html:42
+msgid "Limitation of Liability"
+msgstr "责任限制"
+
+#: task_manager/templates/terms_of_service.html:43
+msgid ""
+"TaskMan is provided 'as is'. We are not liable for any data loss or damages "
+"arising from the use of the service."
+msgstr "TaskMan 按“原样”提供。对于因使用本服务导致的数据丢失或任何损害，我们概不负责。"
+
+#: task_manager/templates/user/user_create_form.html:25
+msgid "Sign up"
+msgstr "注册"
+
+#: task_manager/templates/user/user_detail.html:14
+msgid "User details"
+msgstr "用户详情"
+
+#: task_manager/templates/user/user_detail.html:25
+#: task_manager/templates/user/user_detail.html:153
+msgid "Full name"
+msgstr "全名"
+
+#: task_manager/templates/user/user_detail.html:39
+#: task_manager/templates/user/user_detail.html:154
+msgid "Date joined"
+msgstr "注册日期"
+
+#: task_manager/templates/user/user_detail.html:48
+#: task_manager/templates/user/user_detail.html:155
+msgid "Last login"
+msgstr "最后登录"
+
+#: task_manager/templates/user/user_detail.html:54
+msgid "Never"
+msgstr "从未"
+
+#: task_manager/templates/user/user_detail.html:138
+msgid "No teams"
+msgstr "暂无团队"
+
+#: task_manager/templates/user/user_detail.html:169
+msgid "Change Role"
+msgstr "更改角色"
+
+#: task_manager/templates/user/user_list.html:16
+msgid "Current Team"
+msgstr "当前团队"
+
+#: task_manager/templates/user/user_list.html:41
+msgid "Pending approval"
+msgstr "等待批准"
+
+#: task_manager/templates/user/user_list.html:67
+msgid "Review"
+msgstr "审核"
+
+#: task_manager/templates/user/user_list.html:125
+msgid "Not in team"
+msgstr "不在团队中"
+
+#: task_manager/templates/user/user_list.html:140
+msgid "No users found"
+msgstr "未找到用户"
+
+#: task_manager/templates/user/user_list.html:141
+msgid "No users available"
+msgstr "没有可选用户"
+
+#: task_manager/templates/user/user_update.html:8
+msgid "Edit user"
+msgstr "编辑用户"
+
+#: task_manager/user/admin.py:54
+msgid "Additional Info"
+msgstr "附加信息"
+
+#: task_manager/user/forms.py:36
+msgid "Join team (optional)"
+msgstr "加入团队（可选）"
+
+#: task_manager/user/forms.py:38
+msgid ""
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
+msgstr "输入团队名称以加入现有团队，留空则以个人模式工作"
+
+#: task_manager/user/forms.py:46
+msgid "Required if joining a team"
+msgstr "加入团队时必填"
+
+#: task_manager/user/forms.py:139
+msgid "Current teams"
+msgstr "当前团队"
+
+#: task_manager/user/forms.py:166
+msgid "Join another team (optional)"
+msgstr "加入其他团队（可选）"
+
+#: task_manager/user/forms.py:168
+msgid "Enter team name to join another team, or leave empty"
+msgstr "输入要加入的团队名称，留空则以个人模式工作"
+
+#: task_manager/user/forms.py:203
+msgid "Team password is required when joining a team"
+msgstr "加入团队时需要团队密码"
+
+#: task_manager/user/views.py:212
+msgid "User created successfully"
+msgstr "用户创建成功"
+
+#: task_manager/user/views.py:247
+msgid "Welcome! Your account has been created and you have joined the team."
+msgstr "欢迎！您的账户已创建并已加入团队。"
+
+#: task_manager/user/views.py:266
+msgid "Welcome! You can create a team or work individually"
+msgstr "欢迎！您可以创建团队或以个人模式工作"
+
+#: task_manager/user/views.py:281
+msgid "User updated successfully"
+msgstr "用户更新成功"
+
+#: task_manager/user/views.py:327
+msgid "User account has been deleted"
+msgstr "用户账户已删除"
+
+#: task_manager/views.py:26
+msgid "Personal. Family. Work."
+msgstr "个人、家庭、工作。"
+
+#: task_manager/views.py:27
+msgid ""
+"One planner for everything: from notes and personal goals to family tasks "
+"and team projects."
+msgstr "一个规划器搞定一切：从笔记和个人目标，到家庭事务和团队项目。"
+
+#: task_manager/views.py:30
+msgid "Read more"
+msgstr "了解更多"
+
+#: task_manager/views.py:39
+msgid "You successfully logged in"
+msgstr "您已成功登录"
+
+#: task_manager/views.py:46
+msgid "You are logged out"
+msgstr "您已退出登录"
