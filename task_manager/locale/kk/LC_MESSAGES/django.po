@@ -78,9 +78,9 @@ msgid ""
 "removing ones you no longer need. TaskMan Pro without limits is on its way —"
 " we're working on it!"
 msgstr ""
-"Сіз қызметті белсенді пайдаланасыз! \"%(resource)s\" (%(max)s) ресурсы үшін "
-"лимитке қол жеткізілді. Енді қажет емес нәрсені алып тастауға тырысыңыз. "
-"TaskMan Pro-да шектеулер жоқ-біз онымен жұмыс істеп жатырмыз!"
+"Сіз белсенді пайдаланушысыз! %(resource)s ресурсының лимитіне (%(max)s) "
+"жеттіңіз. Енді қажет емес нәрселерді алып тастап көріңіз. Шектеусіз TaskMan "
+"Pro жолда — біз оны әзірлеп жатырмыз!"
 
 #: task_manager/limit_service.py:36
 msgid "teams"
@@ -841,7 +841,7 @@ msgstr "Жарамсыз күй таңдалды."
 
 #: task_manager/teams/models.py:28
 msgid "Minimum length is 3 characters"
-msgstr "Ең қысқа ұзындық — 3 таңба"
+msgstr "Кемінде 3 таңба болуы керек"
 
 #: task_manager/teams/models.py:77 task_manager/user/forms.py:155
 msgid "Admin"
@@ -910,12 +910,12 @@ msgstr "Команда табылмады"
 
 #: task_manager/teams/views.py:67
 msgid "Switched to individual mode"
-msgstr "Жеке режимге ауыстырылды"
+msgstr "Жеке режимге ауыстыңыз"
 
 #: task_manager/teams/views.py:79
 #, python-brace-format
 msgid "Switched to team: {team}"
-msgstr "Командаға ауыстырылды: {team}"
+msgstr "Мына командаға ауыстыңыз: {team}"
 
 #: task_manager/teams/views.py:177
 msgid "You are not a member of this team"
@@ -926,8 +926,8 @@ msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
 msgstr ""
-"Команда әкімшілері командадан шыға алмайды. Алдымен әкімші құқығын басқа "
-"мүшеге беріңіз."
+"Команда әкімшілері командадан шыға алмайды. Алдымен әкімші құқықтарын басқа "
+"мүшеге табыстаңыз."
 
 #: task_manager/teams/views.py:201
 msgid ""
@@ -960,8 +960,8 @@ msgid ""
 "You cannot exit the team because you are author or executor of tasks in this"
 " team."
 msgstr ""
-"Командадан шыға алмайсыз, себебі сіз бұл команданың тапсырмаларының авторы "
-"немесе орындаушысысыз."
+"Командадан шыға алмайсыз, себебі осы командадағы тапсырмалардың авторы "
+"немесе орындаушысы болып табыласыз."
 
 #: task_manager/teams/views.py:389
 msgid "Team created successfully"
@@ -978,7 +978,8 @@ msgstr "Сіз {team} командасына сәтті қосылдыңыз"
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
 msgstr ""
-"{team} командасына қосылу өтінішіңіз жіберілді. Әкімші мақұлдауын күтіңіз."
+"{team} командасына қосылу өтінішіңіз жіберілді. Әкімшінің мақұлдауы "
+"күтілуде."
 
 #: task_manager/teams/views.py:520
 msgid "Invite link generated successfully. Scroll down to copy."
@@ -1002,11 +1003,11 @@ msgstr "Команда сәтті өзгертілді"
 
 #: task_manager/teams/views.py:731
 msgid "Cannot delete a team because it has tasks."
-msgstr "Команданы жою мүмкін емес, өйткені оның тапсырмалары бар."
+msgstr "Командада тапсырмалар болғандықтан, оны жою мүмкін емес."
 
 #: task_manager/teams/views.py:739
 msgid "Cannot delete a team because it has other members."
-msgstr "Команданы жою мүмкін емес, себебі оның басқа мүшелері бар"
+msgstr "Командада басқа мүшелер болғандықтан, оны жою мүмкін емес."
 
 #: task_manager/teams/views.py:748
 msgid "Team deleted successfully"
@@ -1030,7 +1031,7 @@ msgstr "{username} пайдаланушысы мақұлданды және ен
 #: task_manager/teams/views.py:805
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
-msgstr "{username} пайдаланушысының мүшелігі күту күйіне орнатылды."
+msgstr "{username} пайдаланушысының мүшелігі «күтуде» күйіне ауыстырылды."
 
 #: task_manager/templates/base.html:50 task_manager/templates/base.html:82
 #: task_manager/views.py:25
@@ -1236,7 +1237,7 @@ msgstr "Жаңа, Орындалуда, Аяқталды — немесе өзі
 
 #: task_manager/templates/index.html:49
 msgid "Tag and filter tasks instantly"
-msgstr "Белгілерді бірден қосыңыз және тапсырмаларды сүзгілеңіз"
+msgstr "Тапсырмаларға бірден белгі қойып, оларды сүзгілеңіз."
 
 #: task_manager/templates/index.html:53
 msgid "Any Device"
@@ -1528,7 +1529,7 @@ msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
 msgstr ""
-"Бір жазбаға %(max_count)s суретке дейін, әрқайсысы %(max_mb)s МБ (JPEG, PNG,"
+"Бір жазбада ең көбі %(max_count)s сурет, әрқайсысы %(max_mb)s МБ (JPEG, PNG,"
 " GIF, WebP)."
 
 #: task_manager/templates/notes/note_form.html:142
