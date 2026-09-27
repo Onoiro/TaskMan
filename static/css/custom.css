@@ -318,3 +318,14 @@ footer {
         background-color: rgba(0, 0, 0, 0.3);
     }
 }
+/* ===== Status select color indicator (task forms) ===== */
+
+/* Colored dot next to the status select, mirrors .status-dot
+   from the task list (12x12px, radius 2px) */
+.status-select-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    background-color: #dee2e6;
+}
