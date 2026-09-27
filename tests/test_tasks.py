@@ -700,6 +700,30 @@ class TaskTestCase(TestCase):
         # cleanup
         user_no_team.delete()
 
+    def test_create_task_form_status_options_have_colors(self):
+        """Status options render data-color attributes in create form."""
+        user_no_team = User.objects.create_user(
+            username='notinteam4',
+            password='testpass123'
+        )
+        Status.create_default_statuses_for_user(user_no_team)
+        self.c.force_login(user_no_team)
+
+        response = self.c.get(reverse('tasks:task-create'))
+
+        statuses = Status.objects.filter(
+            creator=user_no_team,
+            team__isnull=True
+        )
+        for status in statuses:
+            self.assertContains(
+                response,
+                f'data-color="{status.color}"'
+            )
+
+        # cleanup
+        user_no_team.delete()
+
     # ========== UPDATE TASK TESTS ==========
 
     def test_update_task_with_add_checklist_button(self):
@@ -743,6 +767,15 @@ class TaskTestCase(TestCase):
         response = self.c.get(
             reverse('tasks:task-update', args=[self.task.uuid]))
         self.assertEqual(response.status_code, 200)
+
+    def test_task_update_view_status_options_have_colors(self):
+        """Status options render data-color attributes in update form."""
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.uuid]))
+        self.assertContains(
+            response,
+            f'data-color="{self.task.status.color}"'
+        )
 
     def test_task_update_view_static_content(self):
         response = self.c.get(

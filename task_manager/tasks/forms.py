@@ -5,6 +5,7 @@ from task_manager.labels.models import Label
 from django import forms
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from task_manager.tasks.widgets import StatusSelectWidget
 
 
 class TaskForm(forms.ModelForm):
@@ -18,6 +19,9 @@ class TaskForm(forms.ModelForm):
             'labels',
             'deadline',
         ]
+        widgets = {
+            'status': StatusSelectWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         # The request object is added to the form
@@ -93,6 +97,17 @@ class TaskForm(forms.ModelForm):
             # user is executor in individual mode
             self.fields['executors'].initial = [user]
             self.fields['executors'].widget.attrs['readonly'] = True
+
+        # status colors must be collected after the queryset is
+        # filtered by team/individual mode, so the widget renders
+        # data-color only for statuses actually available in the form
+        status_widget = self.fields['status'].widget
+        if isinstance(status_widget, StatusSelectWidget):
+            status_widget.status_colors = {
+                status.pk: status.color
+                for status in self.fields['status'].queryset
+                if status.color
+            }
 
     def clean_deadline(self):
         deadline = self.cleaned_data.get('deadline')
