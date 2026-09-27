@@ -32,27 +32,55 @@
 <script>
 document.getElementById('feedback-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  
-  const subject = document.querySelector('[name="subject"]').value;
-  const contact = document.querySelector('[name="contact"]').value;
-  const message = document.querySelector('[name="message"]').value;
-  
-  const text = `Subject: ${subject}\nFrom: ${contact}\n\n${message}`;
-  const encodedText = encodeURIComponent(text);
-  
-  // Telegram direct link with pre-filled message
-  const telegramUrl = `https://t.me/AndreeBo?text=${encodedText}`;
-  
-  window.open(telegramUrl, '_blank');
-  
-  // Show success message
-  const alert = document.createElement('div');
-  alert.className = 'alert alert-success mt-3';
-  alert.innerHTML = '{% trans "Telegram opened! Send your message there." %}';
-  this.parentNode.insertBefore(alert, this.nextSibling);
-  
-  // Clear form
-  this.reset();
+
+  const form = this;
+  const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+  const subject = form.querySelector('[name="subject"]').value;
+  const contact = form.querySelector('[name="contact"]').value;
+  const message = form.querySelector('[name="message"]').value;
+
+  // Remove alerts from a previous submit attempt
+  form.querySelectorAll('.js-feedback-alert').forEach(el => el.remove());
+
+  fetch("{% url 'feedback' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,
+    },
+    body: JSON.stringify({subject, contact, message}),
+  })
+  .then(response => response.json().then(data => ({ok: response.ok, data})))
+  .then(({ok, data}) => {
+    const alert = document.createElement('div');
+    alert.className = 'js-feedback-alert alert mt-3 ';
+    if (ok && data.ok) {
+      alert.classList.add('alert-success');
+      alert.textContent = '{% trans "Message sent! We will reply to the contact you provided." %}';
+      form.reset();
+    } else if (data.error) {
+      alert.classList.add('alert-danger');
+      alert.textContent = data.error;
+      // Server-side sending failed: offer the direct Telegram link as fallback
+      const fallback = document.createElement('div');
+      fallback.className = 'js-feedback-alert mt-2';
+      const text = `Subject: ${subject}\nFrom: ${contact}\n\n${message}`;
+      fallback.innerHTML = '<a href="https://t.me/AndreeBo?text="'
+        + encodeURIComponent(text) + '" target="_blank" rel="noopener">'
+        + '{% trans "Or send it directly via Telegram" %}</a>';
+      alert.after(fallback);
+    } else {
+      alert.classList.add('alert-danger');
+      alert.textContent = '{% trans "Please fill in all required fields." %}';
+    }
+    form.parentNode.insertBefore(alert, form.nextSibling);
+  })
+  .catch(() => {
+    const alert = document.createElement('div');
+    alert.className = 'js-feedback-alert alert alert-danger mt-3';
+    alert.textContent = '{% trans "Failed to send message. Please try again later." %}';
+    form.parentNode.insertBefore(alert, form.nextSibling);
+  });
 });
 </script>
 {% endblock %}

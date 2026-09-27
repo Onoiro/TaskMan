@@ -1,12 +1,20 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views import View
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.http import JsonResponse
 from . import forms
 from .permissions import CustomPermissions
+from .telegram import send_feedback_to_telegram
+
+# Simple in-memory throttle: one feedback message per user per minute.
+# Good enough for a small app; a persistent store is not needed yet.
+FEEDBACK_THROTTLE_SECONDS = 60
+_feedback_last_sent = {}
 
 
 # use this path '/trigger-error' when need to check connect to rollbar
@@ -58,6 +66,35 @@ class FeedbackView(CustomPermissions, View):
             'title': _("Feedback"),
         }
         return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = forms.FeedbackForm(request.POST)
+        if not form.is_valid():
+            return JsonResponse({'ok': False, 'errors':
+                                 form.errors.get_json_data()}, status=400)
+
+        now = timezone.now()
+        last_sent = _feedback_last_sent.get(request.user.pk)
+        if last_sent and (now - last_sent).total_seconds() \
+                < FEEDBACK_THROTTLE_SECONDS:
+            return JsonResponse({
+                'ok': False,
+                'error': _("You are sending messages too often. "
+                           "Please wait a minute."),
+            }, status=429)
+
+        subject = form.cleaned_data['subject']
+        contact = form.cleaned_data['contact']
+        message = form.cleaned_data['message']
+        text = (f"Subject: {subject}\n"
+                f"From: {contact}\n\n"
+                f"{message}")
+
+        sent, error = send_feedback_to_telegram(text)
+        if not sent:
+            return JsonResponse({'ok': False, 'error': error}, status=502)
+        _feedback_last_sent[request.user.pk] = now
+        return JsonResponse({'ok': True})
 
 
 class LimitsInfoView(LoginRequiredMixin, View):

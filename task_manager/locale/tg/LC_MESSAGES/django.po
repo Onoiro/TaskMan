@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 17:38+0300\n"
+"POT-Creation-Date: 2026-09-28 00:16+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Tajik\n"
@@ -115,7 +115,6 @@ msgid "team notes"
 msgstr "эзоҳҳои даставӣ"
 
 #: limit_service.py:45
-#| msgid "Insert Image"
 msgid "note images"
 msgstr "Гузоштани тасвир"
 
@@ -153,7 +152,7 @@ msgid "Content"
 msgstr "Мундариҷа"
 
 #: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:92
-#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:452
+#: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
@@ -186,15 +185,14 @@ msgstr "Санаи навсозӣ"
 msgid "Note"
 msgstr "Эзоҳ"
 
-#: notes/models.py:76 templates/base.html:130 templates/base.html:155
+#: notes/models.py:76 templates/base.html:132 templates/base.html:157
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:395
+#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:406
 msgid "Notes"
 msgstr "Эзоҳҳо"
 
 #: notes/models.py:104
-#| msgid "Image URL"
 msgid "Image"
 msgstr "Изображенияl тасвирҳо"
 
@@ -448,25 +446,38 @@ msgstr "Шумо наметавонед нақши худро дар даста 
 msgid "Team membership not found."
 msgstr "Узвият дар даста ёфт нашуд."
 
-#: settings.py:220 templates/index.html:67
+#: settings.py:221 templates/index.html:66
 msgid "English"
 msgstr "Англисӣ"
 
-#: settings.py:221 templates/index.html:76
+#: settings.py:222 templates/index.html:75
 msgid "Russian"
 msgstr "Русӣ"
 
-#: settings.py:222 templates/index.html:85
+#: settings.py:223 templates/index.html:84
 msgid "Tajik"
 msgstr "Тоҷикӣ"
 
-#: settings.py:223 templates/index.html:94
+#: settings.py:224 templates/index.html:93
 msgid "Azerbaijani"
 msgstr "Озарбойҷонӣ"
 
-#: settings.py:224 templates/index.html:103
+#: settings.py:225 templates/index.html:102
 msgid "Kyrgyz"
 msgstr "Қирғизӣ"
+
+#: settings.py:226 templates/index.html:111
+msgid "Spanish"
+msgstr "Испанӣ"
+
+#: settings.py:227 templates/index.html:120
+#| msgid "Simple view"
+msgid "Simplified Chinese"
+msgstr "Хитоии соддакардашуда"
+
+#: settings.py:228 templates/index.html:129
+msgid "Kazakh"
+msgstr "Қазоқӣ"
 
 #: statuses/forms.py:19 statuses/forms.py:22 statuses/models.py:48
 #: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
@@ -576,15 +587,15 @@ msgstr "Номи вазифа..."
 msgid "Status"
 msgstr "Ҳолат"
 
-#: tasks/filters.py:40 templates/tasks/task_filter.html:456
+#: tasks/filters.py:40 templates/tasks/task_filter.html:467
 #: templates/tasks/task_update.html:28 templates/user/user_detail.html:83
 #: templates/user/user_detail.html:106 templates/user/user_detail.html:132
 msgid "Executor"
 msgstr "Иҷрокунанда"
 
-#: tasks/filters.py:47 tasks/models.py:69 templates/base.html:125
-#: templates/base.html:152 templates/includes/limits_usage.html:56
-#: templates/includes/team_limits_usage.html:66 templates/index.html:49
+#: tasks/filters.py:47 tasks/models.py:69 templates/base.html:127
+#: templates/base.html:154 templates/includes/limits_usage.html:56
+#: templates/includes/team_limits_usage.html:66 templates/index.html:48
 msgid "Labels"
 msgstr "Барчаспҳо"
 
@@ -605,15 +616,11 @@ msgstr "То"
 msgid "Has checklist"
 msgstr "Рӯйхати санҷиш дорад"
 
-#: tasks/filters.py:89 templates/tasks/task_filter.html:285
+#: tasks/filters.py:87
 msgid "Has deadline"
 msgstr "Мӯҳлат дорад"
 
-#: templates/tasks/task_filter.html:291
-msgid "Has active deadline"
-msgstr "Мӯҳлати фаъол дорад"
-
-#: tasks/forms.py:31
+#: tasks/forms.py:35
 msgid "Enter task name"
 msgstr "Номи вазифаро ворид кунед"
 
@@ -625,9 +632,9 @@ msgstr "Иҷрокунандагон"
 msgid "Updated by"
 msgstr "Кӣ нав кард"
 
-#: tasks/models.py:91 templates/tasks/task_create_form.html:25
-#: templates/tasks/task_filter.html:434 templates/tasks/task_update.html:49
-#: templates/tasks/task_update.html:87
+#: tasks/models.py:91 templates/tasks/task_create_form.html:35
+#: templates/tasks/task_filter.html:445 templates/tasks/task_update.html:49
+#: templates/tasks/task_update.html:97
 msgid "Deadline"
 msgstr "Мӯҳлат"
 
@@ -998,19 +1005,32 @@ msgstr "Корбар {username} тасдиқ шуд ва ҳоло узви да�
 msgid "User {username} membership has been set to pending."
 msgstr "Узвияти корбар {username} ба ҳолати интизорӣ гузаронида шуд."
 
-#: templates/base.html:50 templates/base.html:82 views.py:25
+#: telegram.py:31
+msgid "Feedback sending is not configured."
+msgstr "Ирсоли фикру мулоҳизаҳо танзим карда нашудааст."
+
+#: telegram.py:50
+msgid "Failed to send message to Telegram."
+msgstr "Ба Telegram паем фиристодан муяссар нашуд."
+
+#: telegram.py:53
+msgid "Failed to send message to Telegram. Please try again later."
+msgstr "Паем ба Telegram фиристода нашуд. Лутфан баъдтар такрор кунед."
+"Ба Telegram паем фиристодан муяссар нашуд. Лутфан баъдтар такрор кунед."
+
+#: templates/base.html:50 templates/base.html:84 views.py:35
 msgid "TaskMan"
 msgstr "TaskMan"
 
-#: templates/base.html:107
+#: templates/base.html:109
 msgid "Navigation"
 msgstr "Паймоиш"
 
-#: templates/base.html:110 templates/base.html:143
+#: templates/base.html:112 templates/base.html:145
 msgid "Users"
 msgstr "Корбарон"
 
-#: templates/base.html:115 templates/base.html:146
+#: templates/base.html:117 templates/base.html:148
 #: templates/includes/limits_usage.html:8
 #: templates/includes/team_limits_usage.html:30
 #: templates/user/user_detail.html:76 templates/user/user_detail.html:99
@@ -1018,96 +1038,96 @@ msgstr "Корбарон"
 msgid "Tasks"
 msgstr "Вазифаҳо"
 
-#: templates/base.html:120 templates/base.html:149
+#: templates/base.html:122 templates/base.html:151
 #: templates/includes/limits_usage.html:40
 #: templates/includes/team_limits_usage.html:48
 msgid "Statuses"
 msgstr "Ҳолатҳо"
 
-#: templates/base.html:190
+#: templates/base.html:192
 msgid "Switch context"
 msgstr "Иваз кардани контекст"
 
-#: templates/base.html:198 templates/labels/labels_update.html:34
+#: templates/base.html:200 templates/labels/labels_update.html:34
 msgid "Individual"
 msgstr "Инфиродӣ"
 
-#: templates/base.html:225
+#: templates/base.html:227
 msgid "Profile"
 msgstr "Профил"
 
-#: templates/base.html:230
+#: templates/base.html:232
 msgid "New Team"
 msgstr "Дастаи нав"
 
-#: templates/base.html:235 templates/teams/team_join_form.html:11
+#: templates/base.html:237 templates/teams/team_join_form.html:11
 msgid "Join Team"
 msgstr "Ба даста ҳамроҳ шудан"
 
-#: templates/base.html:243 templates/teams/team_exit.html:8
+#: templates/base.html:245 templates/teams/team_exit.html:8
 #: templates/teams/team_exit.html:15
 msgid "Exit team"
 msgstr "Тарк кардани даста"
 
-#: templates/base.html:253
+#: templates/base.html:255
 msgid "Logout"
 msgstr "Баромад"
 
-#: templates/base.html:265 templates/base.html:317
+#: templates/base.html:267 templates/base.html:321
 msgid "Settings"
 msgstr "Танзимот"
 
-#: templates/base.html:269 templates/base.html:321
+#: templates/base.html:271 templates/base.html:325
 msgid "Theme"
 msgstr "Мавзӯъ"
 
-#: templates/base.html:272 templates/base.html:324
+#: templates/base.html:274 templates/base.html:328
 msgid "Light"
 msgstr "Равшан"
 
-#: templates/base.html:275 templates/base.html:329
+#: templates/base.html:277 templates/base.html:333
 msgid "Dark"
 msgstr "Торик"
 
-#: templates/base.html:278 templates/base.html:334
+#: templates/base.html:280 templates/base.html:338
 msgid "Auto"
 msgstr "Худкор"
 
-#: templates/base.html:286 templates/base.html:340
+#: templates/base.html:288 templates/base.html:344
 msgid "Language"
 msgstr "Забон"
 
-#: templates/base.html:309 templates/login.html:8
+#: templates/base.html:313 templates/login.html:8
 msgid "Login"
 msgstr "Вуруд"
 
-#: templates/base.html:310 templates/user/user_create_form.html:11
+#: templates/base.html:314 templates/user/user_create_form.html:11
 msgid "Signup"
 msgstr "Бақайдгирӣ"
 
-#: templates/base.html:369
+#: templates/base.html:373
 msgid "You are approaching the free plan limits."
 msgstr "Шумо ба маҳдудиятҳои нақшаи ройгон наздик шуда истодаед."
 
-#: templates/base.html:372 templates/user/user_list.html:23
+#: templates/base.html:376 templates/user/user_list.html:23
 msgid "Details"
 msgstr "Муфассал"
 
-#: templates/base.html:410
+#: templates/base.html:414
 msgid "Go back"
 msgstr "Бозгашт"
 
-#: templates/base.html:430 templates/feedback.html:7
-#: templates/feedback.html:12 views.py:57
+#: templates/base.html:434 templates/feedback.html:7
+#: templates/feedback.html:12 views.py:66
 msgid "Feedback"
 msgstr "Бозхӯрд"
 
-#: templates/base.html:432 templates/privacy_policy.html:4
+#: templates/base.html:436 templates/privacy_policy.html:4
 #: templates/privacy_policy.html:8
 msgid "Privacy Policy"
 msgstr "Сиёсати махфият"
 
-#: templates/base.html:434 templates/terms_of_service.html:4
+#: templates/base.html:438 templates/terms_of_service.html:4
 #: templates/terms_of_service.html:8
 msgid "Terms of Service"
 msgstr "Шартҳои истифода"
@@ -1128,9 +1148,26 @@ msgstr ""
 "Паёми шумо тавассути Telegram ба таҳиягарон фиристода мешавад. Мо ба тамоси "
 "пешниҳодкардаи шумо ҷавоб медиҳем."
 
-#: templates/feedback.html:51
-msgid "Telegram opened! Send your message there."
-msgstr "Telegram кушода шуд! Паёми худро он ҷо ирсол кунед."
+#: templates/feedback.html:59
+#| msgid ""
+#| "Your message will be sent to developers via Telegram. We will reply to the "
+#| "contact you provide."
+msgid "Message sent! We will reply to the contact you provided."
+msgstr "Паем фиристода шуд! Мо ба контакте, ки нишон додед, ҷавоб медиҳем."
+"Паем фиристода шуд! Мо ба рақами тамосе, ки шумо нишон додаед, ҷавоб "
+"медиҳем."
+
+#: templates/feedback.html:70
+msgid "Or send it directly via Telegram"
+msgstr "Е онро мустақиман тавассути Telegram фиристед"
+
+#: templates/feedback.html:74
+msgid "Please fill in all required fields."
+msgstr "Лутфан ҳамаи майдонҳои заруриро пур кунед."
+
+#: templates/feedback.html:81
+msgid "Failed to send message. Please try again later."
+msgstr "Паем фиристода нашуд. Лутфан баъдтар такрор кунед."
 
 #: templates/includes/limits_usage.html:24 templates/user/user_detail.html:61
 msgid "Teams"
@@ -1155,72 +1192,72 @@ msgstr "Иштирокчиён"
 msgid "Task Manager"
 msgstr "Менеҷери вазифаҳо"
 
-#: templates/index.html:20 templates/teams/team_join_invite.html:24
+#: templates/index.html:19 templates/teams/team_join_invite.html:24
 msgid "Go to Tasks"
 msgstr "Ба вазифаҳо гузаред"
 
-#: templates/index.html:24
+#: templates/index.html:23
 msgid "Get Started"
 msgstr "Оғоз кунед"
 
-#: templates/index.html:32
+#: templates/index.html:31
 msgid "Features"
 msgstr "Имкониятҳо"
 
-#: templates/index.html:37
+#: templates/index.html:36
 msgid "Personal space and teams"
 msgstr "Фазои шахсӣ ва дастаҳо"
 
-#: templates/index.html:37
+#: templates/index.html:36
 msgid "Switch context in one click"
 msgstr "Контекстро бо як клик иваз кунед"
 
-#: templates/index.html:41
+#: templates/index.html:40
 msgid "Quick Task Creation"
 msgstr "Эҷоди зуди вазифаҳо"
 
-#: templates/index.html:41
+#: templates/index.html:40
 msgid "Title, description, assignee - done in seconds"
 msgstr "Ном, тавсиф, иҷрокунанда — вазифа дар чанд сония омода мешавад"
 
-#: templates/index.html:45
+#: templates/index.html:44
 msgid "Custom Statuses"
 msgstr "Ҳолатҳои фармоишӣ"
 
-#: templates/index.html:45
+#: templates/index.html:44
 msgid "New, In Progress, Done - or your own"
 msgstr "Нав, Дар раванди иҷро, Анҷом ёфтааст — ё ҳолатҳои худатон"
 
-#: templates/index.html:49
+#: templates/index.html:48
 msgid "Tag and filter tasks instantly"
 msgstr "Ба вазифаҳо фавран барчасп гузоред ва онҳоро филтр кунед"
 
-#: templates/index.html:53
+#: templates/index.html:52
 msgid "Any Device"
 msgstr "Ҳар гуна дастгоҳ"
 
-#: templates/index.html:53
+#: templates/index.html:52
 msgid "Works on desktop, tablet, and mobile"
 msgstr "Дар компютер, планшет ва смартфон кор мекунад"
 
-#: templates/index.html:58
+#: templates/index.html:57
 msgid "Language Support"
 msgstr "Дастгирии забонҳо"
 
 #: templates/labels/labels_create.html:9
-#: templates/tasks/task_create_form.html:59
-#: templates/tasks/task_update.html:194
+#: templates/tasks/task_create_form.html:69
+#: templates/tasks/task_update.html:204
 msgid "Create label"
 msgstr "Эҷоди барчасп"
 
-#: templates/labels/labels_create.html:15 templates/notes/note_form.html:177
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:177
 #: templates/statuses/statuses_create_form.html:82
-#: templates/tasks/task_create_form.html:78
+#: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
 msgid "Create"
 msgstr "Эҷод кардан"
 
-#: templates/labels/labels_create.html:18
+#: templates/labels/labels_create.html:22
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
@@ -1229,15 +1266,15 @@ msgstr "Эҷод кардан"
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:81
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:220
+#: templates/tasks/task_create_form.html:91
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:230
 #: templates/teams/team_create_form.html:31
 #: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
 #: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
-#: templates/user/user_update.html:16
+#: templates/user/user_update.html:20
 msgid "Cancel"
 msgstr "Бекор кардан"
 
@@ -1270,7 +1307,7 @@ msgstr "Барчаспи нав"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:92 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:453
+#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1291,7 +1328,7 @@ msgstr "Эҷоди барчасп"
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
 #: templates/notes/note_form.html:27
 #: templates/statuses/statuses_update.html:20
-#: templates/tasks/task_filter.html:367 templates/tasks/task_filter.html:407
+#: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
 #: templates/tasks/task_update.html:19
 msgid "Created"
 msgstr "Эҷод шудааст"
@@ -1311,8 +1348,8 @@ msgstr "Барчасп"
 
 #: templates/labels/labels_update.html:63 templates/notes/note_form.html:175
 #: templates/statuses/statuses_update.html:67
-#: templates/tasks/task_filter.html:310 templates/tasks/task_update.html:217
-#: templates/user/user_update.html:13
+#: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
+#: templates/user/user_update.html:17
 msgid "Save"
 msgstr "Сабт кардан"
 
@@ -1320,8 +1357,8 @@ msgstr "Сабт кардан"
 #: templates/notes/note_form.html:158 templates/notes/note_form.html:193
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
-#: templates/tasks/task_update.html:151 templates/tasks/task_update.html:225
-#: templates/tasks/task_update.html:370 templates/teams/team_update.html:34
+#: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
+#: templates/tasks/task_update.html:396 templates/teams/team_update.html:34
 #: templates/user/user_detail.html:180
 msgid "Delete"
 msgstr "Ҳазф"
@@ -1408,8 +1445,8 @@ msgstr "Ёддошти беном"
 msgid "Personal"
 msgstr "Шахсӣ"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:367
-#: templates/tasks/task_filter.html:414 templates/tasks/task_update.html:36
+#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:378
+#: templates/tasks/task_filter.html:425 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Навсозӣ шудааст"
 
@@ -1750,44 +1787,43 @@ msgstr "Эҷоди вазифа"
 msgid "Create task"
 msgstr "Эҷоди вазифа"
 
-#: templates/tasks/task_create_form.html:28
-#: templates/tasks/task_update.html:90
-#| msgid "Quick Task Creation"
+#: templates/tasks/task_create_form.html:38
+#: templates/tasks/task_update.html:100
 msgid "Quick deadline"
 msgstr "Мӯҳлати зуд"
 
-#: templates/tasks/task_create_form.html:29
-#: templates/tasks/task_update.html:91
+#: templates/tasks/task_create_form.html:39
+#: templates/tasks/task_update.html:101
 msgid "in 8 hours"
 msgstr "дар 8 соат"
 
-#: templates/tasks/task_create_form.html:30
-#: templates/tasks/task_update.html:92
+#: templates/tasks/task_create_form.html:40
+#: templates/tasks/task_update.html:102
 msgid "in 1 day"
 msgstr "дар 1 рӯз"
 
-#: templates/tasks/task_create_form.html:31
-#: templates/tasks/task_update.html:93
+#: templates/tasks/task_create_form.html:41
+#: templates/tasks/task_update.html:103
 msgid "in 3 days"
 msgstr "дар 3 рӯз"
 
-#: templates/tasks/task_create_form.html:32
-#: templates/tasks/task_update.html:94
+#: templates/tasks/task_create_form.html:42
+#: templates/tasks/task_update.html:104
 msgid "in 21 days"
 msgstr "дар 21 рӯз"
 
-#: templates/tasks/task_create_form.html:34
-#: templates/tasks/task_update.html:96
+#: templates/tasks/task_create_form.html:44
+#: templates/tasks/task_update.html:106
 msgid "Clear deadline"
 msgstr "Тоза кардани мӯҳлат"
 
-#: templates/tasks/task_create_form.html:46
-#: templates/tasks/task_update.html:180
+#: templates/tasks/task_create_form.html:56
+#: templates/tasks/task_update.html:190
 msgid "Add checklist"
 msgstr "Илова кардани рӯйхати санҷиш"
 
-#: templates/tasks/task_create_form.html:68
-#: templates/tasks/task_filter.html:262 templates/tasks/task_update.html:203
+#: templates/tasks/task_create_form.html:78
+#: templates/tasks/task_filter.html:262 templates/tasks/task_update.html:213
 msgid "Hold Ctrl/Cmd to select multiple items"
 msgstr "Барои интихоби якчанд Ctrl/Cmd-ро пахш кунед"
 
@@ -1860,49 +1896,53 @@ msgstr "Чӣ"
 msgid "When"
 msgstr "Кай"
 
-#: templates/tasks/task_filter.html:309
+#: templates/tasks/task_filter.html:291
+msgid "Has active deadline"
+msgstr "Мӯҳлати фаъол дорад"
+
+#: templates/tasks/task_filter.html:320
 msgid "Save as default"
 msgstr "Ҳамчун пешфарз сабт кардан"
 
-#: templates/tasks/task_filter.html:318
+#: templates/tasks/task_filter.html:329
 msgid "Reset"
 msgstr "Барқарор кардан"
 
-#: templates/tasks/task_filter.html:322
+#: templates/tasks/task_filter.html:333
 msgid "Apply"
 msgstr "Татбиқ кардан"
 
-#: templates/tasks/task_filter.html:351 templates/tasks/task_filter.html:440
+#: templates/tasks/task_filter.html:362 templates/tasks/task_filter.html:451
 #: templates/tasks/task_update.html:55
 msgid "Time left: "
 msgstr "Бақимонда: "
 
-#: templates/tasks/task_filter.html:352 templates/tasks/task_filter.html:441
+#: templates/tasks/task_filter.html:363 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:56
 msgid "Overdue"
 msgstr "Дертар шуд"
 
-#: templates/tasks/task_filter.html:400 templates/tasks/task_update.html:116
+#: templates/tasks/task_filter.html:411 templates/tasks/task_update.html:126
 msgid "Checklist"
 msgstr "Рӯйхати санҷиш"
 
-#: templates/tasks/task_filter.html:481 templates/tasks/task_filter.html:488
+#: templates/tasks/task_filter.html:492 templates/tasks/task_filter.html:499
 msgid "Previous"
 msgstr "Гузашта"
 
-#: templates/tasks/task_filter.html:508 templates/tasks/task_filter.html:515
+#: templates/tasks/task_filter.html:519 templates/tasks/task_filter.html:526
 msgid "Next"
 msgstr "Баъдӣ"
 
-#: templates/tasks/task_update.html:161
+#: templates/tasks/task_update.html:171
 msgid "Add a checklist item"
 msgstr "Унсури чеклистро илова кунед"
 
-#: templates/tasks/task_update.html:166
+#: templates/tasks/task_update.html:176
 msgid "Add item..."
 msgstr "Илова кардани банд..."
 
-#: templates/tasks/task_update.html:458
+#: templates/tasks/task_update.html:484
 msgid "Delete this item?"
 msgstr "Ин банд ҳазф шавад?"
 
@@ -2244,11 +2284,7 @@ msgstr "Корбар бомуваффақият тағйир дода шуд"
 msgid "User account has been deleted"
 msgstr "Ҳисоби корбар ҳазф шуд"
 
-#: views.py:26
-msgid "Personal. Family. Work."
-msgstr "Шахсӣ. Оила. Кор."
-
-#: views.py:27
+#: views.py:36
 msgid ""
 "One planner for everything: from notes and personal goals to family tasks "
 "and team projects."
@@ -2256,17 +2292,27 @@ msgstr ""
 "Як банақшагир барои ҳама чиз: аз қайдҳо ва ҳадафҳои шахсӣ то вазифаҳои "
 "оилавӣ ва лоиҳаҳои даставӣ."
 
-#: views.py:30
+#: views.py:39
 msgid "Read more"
 msgstr "Муфассал"
 
-#: views.py:39
+#: views.py:48
 msgid "You successfully logged in"
 msgstr "Шумо бомуваффақият ворид шудед"
 
-#: views.py:46
+#: views.py:55
 msgid "You are logged out"
 msgstr "Шумо аз система баромадед"
+
+#: views.py:82
+msgid "You are sending messages too often. Please wait a minute."
+msgstr "Шумо паемҳоро зуд-зуд мефиристед. Лутфан як дақиқа интизор шавед."
+
+#~ msgid "Telegram opened! Send your message there."
+#~ msgstr "Telegram кушода шуд! Паёми худро он ҷо ирсол кунед."
+
+#~ msgid "Personal. Family. Work."
+#~ msgstr "Шахсӣ. Оила. Кор."
 
 #~ msgid "Ctrl/Cmd for multiple"
 #~ msgstr "Ctrl / Cmd барои якчанд"
