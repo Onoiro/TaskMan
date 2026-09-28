@@ -4,10 +4,13 @@ from task_manager.tasks.models import Task
 from task_manager.user.models import User
 from task_manager.teams.models import Team
 from task_manager.statuses.models import Status
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client, RequestFactory, override_settings
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.messages import get_messages
+from django.utils.datastructures import MultiValueDict
+from tests.test_note_images import make_image_file, make_text_file
+import tempfile
 import uuid as uuid_module
 
 
@@ -854,6 +857,7 @@ class NoteViewsTestCase(TestCase):
         self.assertEqual(str(messages[0]), _('Note deleted successfully'))
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class NoteIntegrationTestCase(TestCase):
     """Integration tests for Notes with Tasks."""
 
@@ -976,6 +980,101 @@ class NoteIntegrationTestCase(TestCase):
         response = self.c.get(reverse('notes:note-create'))
         self.assertEqual(response.status_code, 200)
 
+    def test_create_textless_note_with_image(self):
+        """A note can be created with an image and no text."""
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-create'),
+            {'content': '', 'images': [make_image_file('photo.png')]},
+            follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        note = Note.objects.get(team=self.team)
+        self.assertEqual(note.content, '')
+        self.assertEqual(note.images.count(), 1)
+
+    def test_create_note_without_text_and_images_is_rejected(self):
+        """An empty note is not saved and the form reports the problem."""
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.post(
+            reverse('notes:note-create'),
+            {'content': ''},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Note.objects.exists())
+        self.assertContains(
+            response,
+            _("Add some text or attach at least one image.")
+        )
+
+    def test_textless_note_shown_with_placeholder_in_list(self):
+        """A textless note is marked as untitled in the note list."""
+        note = Note.objects.create(
+            title='',
+            content='',
+            author=self.user,
+            team=self.team
+        )
+        note.images.create(image=make_image_file('photo.png'), order=0)
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-list'))
+
+        self.assertContains(response, _("Untitled Note"))
+        self.assertContains(response, 'note-card-thumb')
+
+    def test_textless_note_detail_has_no_content_block(self):
+        """The detail page skips the empty markdown block."""
+        note = Note.objects.create(
+            title='',
+            content='',
+            author=self.user,
+            team=self.team
+        )
+        note.images.create(image=make_image_file('photo.png'), order=0)
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(reverse('notes:note-detail', args=[note.uuid]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'id="note-content"')
+        self.assertContains(response, 'note-gallery-thumb')
+
+    def test_textless_note_shown_in_task_notes_block(self):
+        """A textless note keeps a readable caption on the task page."""
+        note = Note.objects.create(
+            title='',
+            content='',
+            author=self.user,
+            team=self.team,
+            task=self.task
+        )
+        note.images.create(image=make_image_file('photo.png'), order=0)
+
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.uuid])
+        )
+
+        self.assertContains(response, _("Untitled Note"))
+
     def test_multiple_notes_for_same_task(self):
         """Test that multiple notes can be created for the same task."""
         note1 = Note.objects.create(
@@ -1015,6 +1114,7 @@ class NoteIntegrationTestCase(TestCase):
         self.assertContains(response, "Standalone Note")
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class NoteFormTestCase(TestCase):
     """Tests for NoteForm validation."""
 
@@ -1129,6 +1229,97 @@ class NoteFormTestCase(TestCase):
 
         result = form.clean_task()
         self.assertIsNone(result)
+
+    def _form(self, data, files=None, instance=None):
+        request = self.factory.post('/')
+        request.user = self.user
+        request.active_team = None
+        return NoteForm(
+            data=data,
+            files=MultiValueDict(files or {}),
+            instance=instance,
+            request=request
+        )
+
+    def test_form_rejects_note_without_text_and_images(self):
+        """A note needs text or at least one image."""
+        form = self._form({'content': ''})
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            _("Add some text or attach at least one image."),
+            form.non_field_errors()
+        )
+
+    def test_form_rejects_whitespace_only_content(self):
+        """Whitespace-only content counts as missing text."""
+        form = self._form({'content': '   \n  '})
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.non_field_errors())
+
+    def test_form_accepts_text_without_images(self):
+        """Text alone is still enough."""
+        form = self._form({'content': 'Some text'})
+        self.assertTrue(form.is_valid())
+
+    def test_form_accepts_textless_note_with_image(self):
+        """A note with an image does not need text."""
+        form = self._form(
+            {'content': ''},
+            files={'images': [make_image_file('photo.png')]}
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_form_rejects_textless_note_with_invalid_file(self):
+        """A rejected file cannot justify a textless note."""
+        form = self._form(
+            {'content': ''},
+            files={'images': [make_text_file('fake.png')]}
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            "fake.png", str(form.non_field_errors())
+        )
+
+    def test_form_rejects_textless_note_over_image_limit(self):
+        """Files beyond the image limit cannot justify a textless note."""
+        files = [make_image_file(f'{i}.png') for i in range(11)]
+        form = self._form({'content': ''}, files={'images': files})
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.non_field_errors())
+
+    def test_form_keeps_text_note_with_invalid_file(self):
+        """A file error must not block a note that has text."""
+        form = self._form(
+            {'content': 'Some text'},
+            files={'images': [make_text_file('fake.png')]}
+        )
+        self.assertTrue(form.is_valid())
+
+    def test_form_accepts_textless_update_when_images_exist(self):
+        """Existing images keep a note valid when its text is removed."""
+        note = Note.objects.create(
+            title='Note',
+            content='Content',
+            author=self.user,
+            team=None
+        )
+        note.images.create(image=make_image_file('photo.png'), order=0)
+
+        form = self._form({'content': ''}, instance=note)
+        self.assertTrue(form.is_valid())
+
+    def test_form_rejects_textless_update_without_images(self):
+        """Removing the last text from a textless note is not allowed."""
+        note = Note.objects.create(
+            title='Note',
+            content='Content',
+            author=self.user,
+            team=None
+        )
+
+        form = self._form({'content': ''}, instance=note)
+        self.assertFalse(form.is_valid())
+        self.assertTrue(form.non_field_errors())
 
 
 class NoteViewsEdgeCasesTestCase(TestCase):

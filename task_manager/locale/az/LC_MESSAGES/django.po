@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 00:16+0300\n"
+"POT-Creation-Date: 2026-09-29 01:06+0300\n"
 "PO-Revision-Date: 2026-04-04 23:17+0300\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -121,35 +121,39 @@ msgstr "Şəkil daxil edin"
 msgid "checklist items"
 msgstr "yoxlama siyahısı bəndləri"
 
-#: notes/forms.py:34 statuses/forms.py:25 teams/forms.py:29
-#: templates/notes/note_form.html:72
+#: notes/forms.py:36 statuses/forms.py:25 teams/forms.py:29
+#: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "İstəyə bağlı"
 
-#: notes/forms.py:58
+#: notes/forms.py:62
+msgid "Add some text or attach at least one image."
+msgstr "Mətn əlavə edin və ya ən azı bir şəkil əlavə edin."
+
+#: notes/forms.py:105
 msgid "Task must be from the same team."
 msgstr "Tapşırıq eyni komandaya aid olmalıdır."
 
-#: notes/forms.py:62
+#: notes/forms.py:109
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Fərdi rejimdə qeydi komanda tapşırığına əlavə etmək olmaz."
 
-#: notes/forms.py:64
+#: notes/forms.py:111
 msgid "You can only attach notes to your own tasks."
 msgstr "Qeydləri yalnız öz tapşırıqlarınıza əlavə edə bilərsiniz."
 
-#: notes/models.py:24 templates/notes/note_form.html:64
+#: notes/models.py:24 templates/notes/note_form.html:66
 msgid "Title"
 msgstr "Başlıq"
 
-#: notes/models.py:38 templates/notes/note_form.html:78
+#: notes/models.py:38 templates/notes/note_form.html:80
 #: templates/terms_of_service.html:33
 msgid "Content"
 msgstr "Məzmun"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:92
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:94
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -178,8 +182,8 @@ msgid "Updated at"
 msgstr "Yenilənmə tarixi"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:78 templates/notes/note_form.html:25
-#: templates/notes/note_form.html:149
+#: templates/notes/note_detail.html:80 templates/notes/note_form.html:25
+#: templates/notes/note_form.html:153
 msgid "Note"
 msgstr "Qeyd"
 
@@ -210,33 +214,12 @@ msgstr "Qeydin şəkli"
 msgid "Note images"
 msgstr "Qeyd şəkilləri"
 
-#: notes/views.py:89
-msgid "Note created successfully"
-msgstr "Qeyd uğurla yaradıldı"
-
-#: notes/views.py:158 notes/views.py:367
-msgid "Note can only be edited by its author or team admin."
-msgstr ""
-"Qeydi yalnız onun müəllifi və ya komanda administratoru redaktə edə bilər."
-
-#: notes/views.py:180
-msgid "Note can only be deleted by its author or team admin."
-msgstr "Qeydi yalnız onun müəllifi və ya komanda administratoru silə bilər."
-
-#: notes/views.py:197
-msgid "Note updated successfully"
-msgstr "Qeyd uğurla yeniləndi"
-
-#: notes/views.py:253
-msgid "Note deleted successfully"
-msgstr "Qeyd uğurla silindi"
-
-#: notes/views.py:290
+#: notes/validators.py:18
 #, python-format
 msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
 msgstr "«%(name)s» şəkli çox böyükdür. Maksimum ölçü — %(max)s MB."
 
-#: notes/views.py:297
+#: notes/validators.py:25
 #, python-format
 msgid ""
 "Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
@@ -245,12 +228,33 @@ msgstr ""
 "«%(name)s» şəklinin formatı dəstəklənmir. İcazə verilən formatlar: JPEG, "
 "PNG, GIF, WebP."
 
-#: notes/views.py:304 notes/views.py:307
+#: notes/validators.py:32 notes/validators.py:35
 #, python-format
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "«%(name)s» faylı zədələnib və ya şəkil deyil."
 
-#: notes/views.py:350
+#: notes/views.py:90
+msgid "Note created successfully"
+msgstr "Qeyd uğurla yaradıldı"
+
+#: notes/views.py:159 notes/views.py:334
+msgid "Note can only be edited by its author or team admin."
+msgstr ""
+"Qeydi yalnız onun müəllifi və ya komanda administratoru redaktə edə bilər."
+
+#: notes/views.py:181
+msgid "Note can only be deleted by its author or team admin."
+msgstr "Qeydi yalnız onun müəllifi və ya komanda administratoru silə bilər."
+
+#: notes/views.py:198
+msgid "Note updated successfully"
+msgstr "Qeyd uğurla yeniləndi"
+
+#: notes/views.py:254
+msgid "Note deleted successfully"
+msgstr "Qeyd uğurla silindi"
+
+#: notes/views.py:317
 msgid "Image deleted successfully"
 msgstr "Şəkil uğurla silindi"
 
@@ -470,7 +474,6 @@ msgid "Spanish"
 msgstr "İspan"
 
 #: settings.py:227 templates/index.html:120
-#| msgid "Simple view"
 msgid "Simplified Chinese"
 msgstr "Sadələşdirilmiş Çin"
 
@@ -1011,9 +1014,10 @@ msgstr "Telegram-a mesaj göndərmək mümkün olmayıb."
 
 #: telegram.py:53
 msgid "Failed to send message to Telegram. Please try again later."
-msgstr "Mesajı Telegram-a göndərmək mümkün olmadı. Xahiş edirəm daha sonra yenidən cəhd edin."
-"Telegram-a mesaj göndərmək mümkün olmayıb. Xahiş edirəm daha sonra yenidən "
-"cəhd edin."
+msgstr ""
+"Mesajı Telegram-a göndərmək mümkün olmadı. Xahiş edirəm daha sonra yenidən "
+"cəhd edin.Telegram-a mesaj göndərmək mümkün olmayıb. Xahiş edirəm daha sonra"
+" yenidən cəhd edin."
 
 #: templates/base.html:50 templates/base.html:84 views.py:35
 msgid "TaskMan"
@@ -1145,22 +1149,19 @@ msgstr ""
 "Mesajınız Telegram vasitəsilə tərtibatçılara göndəriləcək. Göstərdiyiniz "
 "əlaqə vasitəsilə cavab verəcəyik."
 
-#: templates/feedback.html:59
-#| msgid ""
-#| "Your message will be sent to developers via Telegram. We will reply to the "
-#| "contact you provide."
+#: templates/feedback.html:56
 msgid "Message sent! We will reply to the contact you provided."
 msgstr "Mesaj göndərildi! Göstərdiyiniz əlaqə nömrəsinə cavab verəcəyik."
 
-#: templates/feedback.html:70
+#: templates/feedback.html:67
 msgid "Or send it directly via Telegram"
 msgstr "Və ya birbaşa Telegram vasitəsilə göndərin"
 
-#: templates/feedback.html:74
+#: templates/feedback.html:71
 msgid "Please fill in all required fields."
 msgstr "Xahiş edirəm bütün tələb olunan sahələri doldurun."
 
-#: templates/feedback.html:81
+#: templates/feedback.html:78
 msgid "Failed to send message. Please try again later."
 msgstr "Mesaj göndərilə bilmədi. Xahiş edirəm daha sonra yenidən cəhd edin."
 
@@ -1244,7 +1245,7 @@ msgstr "Dil dəstəyi"
 msgid "Create label"
 msgstr "Etiket yarat"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:177
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:181
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1255,8 +1256,8 @@ msgstr "Yarat"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:104 templates/notes/note_form.html:182
-#: templates/notes/note_form.html:186 templates/notes/note_form.html:236
+#: templates/notes/note_detail.html:106 templates/notes/note_form.html:186
+#: templates/notes/note_form.html:190 templates/notes/note_form.html:240
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1300,8 +1301,8 @@ msgid "New label"
 msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:92 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:464
+#: templates/notes/note_detail.html:94 templates/notes/note_form.html:43
+#: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1340,15 +1341,15 @@ msgstr "Yaradan"
 msgid "Label"
 msgstr "Etiket"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:175
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:179
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
 msgid "Save"
 msgstr "Yadda saxla"
 
-#: templates/labels/labels_update.html:71 templates/notes/note_form.html:157
-#: templates/notes/note_form.html:158 templates/notes/note_form.html:193
+#: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
+#: templates/notes/note_form.html:162 templates/notes/note_form.html:197
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1417,7 +1418,12 @@ msgstr "Daxil ol"
 msgid "Add note"
 msgstr "Qeyd əlavə et"
 
-#: templates/notes/_task_notes.html:42
+#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:23
+#: templates/notes/note_list.html:55
+msgid "Untitled Note"
+msgstr "Başlıqsız qeyd"
+
+#: templates/notes/_task_notes.html:48
 msgid "No notes for this task"
 msgstr "Bu tapşırıq üçün qeyd yoxdur"
 
@@ -1430,12 +1436,8 @@ msgstr "Qeydi sil"
 msgid "Are you sure you want to delete this note?"
 msgstr "Bu qeydi silmək istədiyinizə əminsiniz?"
 
-#: templates/notes/note_detail.html:23
-msgid "Untitled Note"
-msgstr "Başlıqsız qeyd"
-
 #: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
-#: templates/notes/note_list.html:69
+#: templates/notes/note_list.html:83
 msgid "Personal"
 msgstr "Şəxsi"
 
@@ -1444,15 +1446,15 @@ msgstr "Şəxsi"
 msgid "Updated"
 msgstr "Yenilənib"
 
-#: templates/notes/note_detail.html:60
+#: templates/notes/note_detail.html:61
 msgid "Loading content..."
 msgstr "Məzmun yüklənir..."
 
-#: templates/notes/note_detail.html:72 templates/notes/note_form.html:119
+#: templates/notes/note_detail.html:74 templates/notes/note_form.html:123
 msgid "Images"
 msgstr "Şəkillər"
 
-#: templates/notes/note_detail.html:101
+#: templates/notes/note_detail.html:103
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
@@ -1470,20 +1472,24 @@ msgstr "Qeydi redaktə et"
 msgid "Create note"
 msgstr "Qeyd yarat"
 
-#: templates/notes/note_form.html:89
+#: templates/notes/note_form.html:90
 msgid "Enter note content... Use Markdown for formatting."
 msgstr ""
 "Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
 
-#: templates/notes/note_form.html:95 templates/notes/note_form.html:232
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:236
 msgid "Preview"
 msgstr "İlkin baxış"
 
-#: templates/notes/note_form.html:104
+#: templates/notes/note_form.html:105
 msgid "Markdown supported:"
 msgstr "Markdown dəstəklənir:"
 
-#: templates/notes/note_form.html:129
+#: templates/notes/note_form.html:113
+msgid "Text is optional if you attach at least one image."
+msgstr "Ən azı bir şəkil əlavə etsəniz, mətn isteğe bağlıdır."
+
+#: templates/notes/note_form.html:133
 #, python-format
 msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
@@ -1492,31 +1498,31 @@ msgstr ""
 "Hər qeyd üçün %(max_count)s şəkilə qədər, hər biri %(max_mb)s MB-dən çox "
 "olmamaqla (JPEG, PNG, GIF, WebP)."
 
-#: templates/notes/note_form.html:142
+#: templates/notes/note_form.html:146
 msgid "Attached images"
 msgstr "Əlavə olunmuş şəkillər"
 
-#: templates/notes/note_form.html:209
+#: templates/notes/note_form.html:213
 msgid "Insert Image"
 msgstr "Şəkil əlavə et"
 
-#: templates/notes/note_form.html:211
+#: templates/notes/note_form.html:215
 msgid "Close"
 msgstr "Bağla"
 
-#: templates/notes/note_form.html:216
+#: templates/notes/note_form.html:220
 msgid "Image URL"
 msgstr "Şəkil URL-i"
 
-#: templates/notes/note_form.html:225
+#: templates/notes/note_form.html:229
 msgid "Description (alt text)"
 msgstr "Təsvir (alt mətn)"
 
-#: templates/notes/note_form.html:230
+#: templates/notes/note_form.html:234
 msgid "Image description"
 msgstr "Şəklin təsviri"
 
-#: templates/notes/note_form.html:239
+#: templates/notes/note_form.html:243
 msgid "Insert"
 msgstr "Əlavə et"
 
@@ -1524,15 +1530,15 @@ msgstr "Əlavə et"
 msgid "New note"
 msgstr "Yeni qeyd"
 
-#: templates/notes/note_list.html:85
+#: templates/notes/note_list.html:101
 msgid "No notes found"
 msgstr "Qeyd yoxdur"
 
-#: templates/notes/note_list.html:86
+#: templates/notes/note_list.html:102
 msgid "Create your first note to save important information"
 msgstr "Vacib məlumatı saxlamaq üçün ilk qeydinizi yaradın"
 
-#: templates/notes/note_list.html:87
+#: templates/notes/note_list.html:103
 msgid "Create Note"
 msgstr "Qeyd yarat"
 

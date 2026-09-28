@@ -1,7 +1,9 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from task_manager.limit_service import LimitService
 from task_manager.notes.models import Note
+from task_manager.notes.validators import validate_image_upload
 from task_manager.tasks.models import Task
 
 
@@ -32,6 +34,51 @@ class NoteForm(forms.ModelForm):
         # Make task field not required
         self.fields['task'].required = False
         self.fields['task'].help_text = _("Optional")
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        content = (cleaned_data.get('content') or '').strip()
+        if content:
+            return cleaned_data
+
+        error = self._get_textless_note_error()
+        if error is not None:
+            raise forms.ValidationError(error)
+
+        return cleaned_data
+
+    def _get_textless_note_error(self):
+        """Return an error message when the textless note cannot be saved.
+
+        Text is optional only while the note keeps an image, so the files
+        have to pass both the format check and the plan limit.
+        """
+        if self.instance.pk and self.instance.images.exists():
+            return None
+
+        uploaded_files = self.files.getlist('images')
+        if not uploaded_files:
+            return _("Add some text or attach at least one image.")
+
+        for uploaded_file in uploaded_files:
+            error = validate_image_upload(uploaded_file)
+            if error is not None:
+                # Report the file problem instead of the missing text
+                return error
+
+        return self._get_image_limit_error(len(uploaded_files))
+
+    def _get_image_limit_error(self, valid_count):
+        """Return the plan limit message when the files do not fit."""
+        if self.request is None or not self.request.user.is_authenticated:
+            return None
+
+        service = LimitService(self.request.user)
+        result = service.can_add_note_images(self.instance, valid_count)
+        if not result.allowed:
+            return result.message
+        return None
 
     def clean_task(self):
         task = self.cleaned_data.get('task')

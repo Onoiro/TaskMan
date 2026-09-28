@@ -58,6 +58,8 @@
                             {% endif %}
                         </h1>
 
+                        {% bootstrap_form_errors form %}
+
                         <!-- Title field -->
                         <div class="mb-3">
                             <label class="form-label small text-muted mb-1" for="id_title">
@@ -74,7 +76,7 @@
 
                         <!-- Content field with Markdown editor -->
                         <div class="mb-3">
-                            <label class="form-label required-mark" for="id_content">
+                            <label class="form-label" for="id_content">
                                 {% trans "Content" %}
                             </label>
 
@@ -85,7 +87,6 @@
                                     <textarea class="form-control"
                                               name="content"
                                               id="id_content"
-                                              required
                                               placeholder="{% trans 'Enter note content... Use Markdown for formatting.' %}">{{ form.content.value|default:'' }}</textarea>
                                 </div>
 
@@ -107,6 +108,9 @@
                                 # heading,
                                 [link](url),
                                 ```code```
+                                <br>
+                                <i class="bi bi-info-circle"></i>
+                                {% trans "Text is optional if you attach at least one image." %}
                             </div>
                         </div>
 

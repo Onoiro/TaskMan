@@ -34,7 +34,7 @@ class Note(models.Model):
         ],
     )
     content = models.TextField(
-        blank=False,
+        blank=True,
         verbose_name=_('Content'),
         validators=[MaxLengthValidator(20000)]
     )

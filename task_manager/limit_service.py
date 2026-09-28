@@ -236,7 +236,8 @@ class LimitService:
 
     def can_add_note_images(self, note, additional: int) -> LimitCheckResult:
         """Check if more images can be attached to a note."""
-        current = note.images.count()
+        # An unsaved note has no images yet
+        current = note.images.count() if note.pk else 0
         max_images = self.limits.max_note_images
 
         allowed = current + additional <= max_images

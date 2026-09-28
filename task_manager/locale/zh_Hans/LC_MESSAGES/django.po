@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-28 00:16+0300\n"
+"POT-Creation-Date: 2026-09-29 01:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,8 @@ msgstr "名称"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
-"#, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
+" #, & are not allowed."
 msgstr "只允许字母，数字，空格和符号-_。,!?. 不允许使用字符<、>、#和&。"
 
 #: labels/views.py:37
@@ -71,11 +71,11 @@ msgstr "无法删除标签，因为它正在使用"
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way — "
-"we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way —"
+" we're working on it!"
 msgstr ""
-"您正在积极使用本服务！已达到资源 \"%(resource)s\"（%(max)s）的上限。请尝试删"
-"除不再需要的内容。无限版本的 TaskMan Pro 正在开发中——我们正在努力！"
+"您正在积极使用本服务！已达到资源 \"%(resource)s\"（%(max)s）的上限。请尝试删除不再需要的内容。无限版本的 TaskMan Pro"
+" 正在开发中——我们正在努力！"
 
 #: limit_service.py:36
 msgid "teams"
@@ -121,43 +121,47 @@ msgstr "笔记图片"
 msgid "checklist items"
 msgstr "清单项"
 
-#: notes/forms.py:34 statuses/forms.py:25 teams/forms.py:29
-#: templates/notes/note_form.html:72
+#: notes/forms.py:36 statuses/forms.py:25 teams/forms.py:29
+#: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "可选"
 
-#: notes/forms.py:58
+#: notes/forms.py:62
+msgid "Add some text or attach at least one image."
+msgstr "请添加文字或至少附加一张图片。"
+
+#: notes/forms.py:105
 msgid "Task must be from the same team."
 msgstr "任务必须属于同一个团队。"
 
-#: notes/forms.py:62
+#: notes/forms.py:109
 msgid "Cannot attach note to team task in individual mode."
 msgstr "个人模式下不能为团队任务附加笔记。"
 
-#: notes/forms.py:64
+#: notes/forms.py:111
 msgid "You can only attach notes to your own tasks."
 msgstr "只能为您的任务附加笔记。"
 
-#: notes/models.py:24 templates/notes/note_form.html:64
+#: notes/models.py:24 templates/notes/note_form.html:66
 msgid "Title"
 msgstr "标题"
 
-#: notes/models.py:38 templates/notes/note_form.html:78
+#: notes/models.py:38 templates/notes/note_form.html:80
 #: templates/terms_of_service.html:33
 msgid "Content"
 msgstr "内容"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:92
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:94
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
 msgid "Author"
 msgstr "作者"
 
-#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
-#: templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47
+#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
 msgid "Team"
 msgstr "团队"
 
@@ -178,8 +182,8 @@ msgid "Updated at"
 msgstr "更新日期"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:78 templates/notes/note_form.html:25
-#: templates/notes/note_form.html:149
+#: templates/notes/note_detail.html:80 templates/notes/note_form.html:25
+#: templates/notes/note_form.html:153
 msgid "Note"
 msgstr "笔记"
 
@@ -210,44 +214,44 @@ msgstr "笔记的图像"
 msgid "Note images"
 msgstr "笔记图像"
 
-#: notes/views.py:89
-msgid "Note created successfully"
-msgstr "笔记创建成功"
-
-#: notes/views.py:158 notes/views.py:367
-msgid "Note can only be edited by its author or team admin."
-msgstr "笔记只能由其作者或团队管理员编辑。"
-
-#: notes/views.py:180
-msgid "Note can only be deleted by its author or team admin."
-msgstr "笔记只能由其作者或团队管理员删除。"
-
-#: notes/views.py:197
-msgid "Note updated successfully"
-msgstr "笔记更新成功"
-
-#: notes/views.py:253
-msgid "Note deleted successfully"
-msgstr "笔记已删除"
-
-#: notes/views.py:290
+#: notes/validators.py:18
 #, python-format
 msgid "Image '%(name)s' is too large. Maximum size is %(max)s MB."
 msgstr "图片\"%(name)s\"过大。最大为 %(max)s MB。"
 
-#: notes/views.py:297
+#: notes/validators.py:25
 #, python-format
 msgid ""
 "Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
 "WebP."
 msgstr "不支持\"%(name)s\"的图片格式。允许的格式：JPEG、PNG、GIF、WebP。"
 
-#: notes/views.py:304 notes/views.py:307
+#: notes/validators.py:32 notes/validators.py:35
 #, python-format
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "\"%(name)s\"文件已损坏或不是有效的图片。"
 
-#: notes/views.py:350
+#: notes/views.py:90
+msgid "Note created successfully"
+msgstr "笔记创建成功"
+
+#: notes/views.py:159 notes/views.py:334
+msgid "Note can only be edited by its author or team admin."
+msgstr "笔记只能由其作者或团队管理员编辑。"
+
+#: notes/views.py:181
+msgid "Note can only be deleted by its author or team admin."
+msgstr "笔记只能由其作者或团队管理员删除。"
+
+#: notes/views.py:198
+msgid "Note updated successfully"
+msgstr "笔记更新成功"
+
+#: notes/views.py:254
+msgid "Note deleted successfully"
+msgstr "笔记已删除"
+
+#: notes/views.py:317
 msgid "Image deleted successfully"
 msgstr "图像已成功删除"
 
@@ -312,7 +316,8 @@ msgid "Message"
 msgstr "消息"
 
 #: notifications/models.py:51
-msgid "Legacy field. Use message_key and message_params for new notifications."
+msgid ""
+"Legacy field. Use message_key and message_params for new notifications."
 msgstr "过时的领域。 对新通知使用message_key和message_params。"
 
 #: notifications/models.py:58
@@ -417,7 +422,8 @@ msgid "You don't have permissions to modify another user."
 msgstr "您无权修改其他用户。"
 
 #: permissions.py:40
-msgid "You don't have permissions to modify this. Only team admin can do this."
+msgid ""
+"You don't have permissions to modify this. Only team admin can do this."
 msgstr "您无权修改此项。只有团队管理员可以操作。"
 
 #: permissions.py:65
@@ -905,8 +911,8 @@ msgstr "没有发现团队的参与。"
 
 #: teams/views.py:339
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this "
-"team."
+"You cannot exit the team because you are author or executor of tasks in this"
+" team."
 msgstr "您无法离开该团队，因为您是此团队中某些任务的作者或执行人。"
 
 #: teams/views.py:389
@@ -1087,8 +1093,8 @@ msgstr "详情"
 msgid "Go back"
 msgstr "返回"
 
-#: templates/base.html:434 templates/feedback.html:7 templates/feedback.html:12
-#: views.py:66
+#: templates/base.html:434 templates/feedback.html:7
+#: templates/feedback.html:12 views.py:66
 msgid "Feedback"
 msgstr "反馈"
 
@@ -1116,19 +1122,19 @@ msgid ""
 "contact you provide."
 msgstr "您的消息将通过 Telegram 发送给开发者。我们会回复您提供的联系方式。"
 
-#: templates/feedback.html:59
+#: templates/feedback.html:56
 msgid "Message sent! We will reply to the contact you provided."
 msgstr "消息已发送！我们将回复您提供的联系方式。"
 
-#: templates/feedback.html:70
+#: templates/feedback.html:67
 msgid "Or send it directly via Telegram"
 msgstr "或直接通过 Telegram 发送"
 
-#: templates/feedback.html:74
+#: templates/feedback.html:71
 msgid "Please fill in all required fields."
 msgstr "请填写所有必填字段。"
 
-#: templates/feedback.html:81
+#: templates/feedback.html:78
 msgid "Failed to send message. Please try again later."
 msgstr "消息发送失败。请稍后再试。"
 
@@ -1211,7 +1217,7 @@ msgstr "语言支持"
 msgid "Create label"
 msgstr "创建标签"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:177
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:181
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1222,16 +1228,16 @@ msgstr "创建"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:104 templates/notes/note_form.html:182
-#: templates/notes/note_form.html:186 templates/notes/note_form.html:236
+#: templates/notes/note_detail.html:106 templates/notes/note_form.html:186
+#: templates/notes/note_form.html:190 templates/notes/note_form.html:240
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:91 templates/tasks/task_delete.html:23
-#: templates/tasks/task_update.html:230
-#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
-#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
-#: templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:91
+#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:230
+#: templates/teams/team_create_form.html:31
+#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
+#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1267,8 +1273,8 @@ msgid "New label"
 msgstr "新标签"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:92 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:74 templates/tasks/task_filter.html:464
+#: templates/notes/note_detail.html:94 templates/notes/note_form.html:43
+#: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1287,7 +1293,8 @@ msgid "Create Label"
 msgstr "创建标签"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
-#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27
+#: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1306,15 +1313,15 @@ msgstr "创建者"
 msgid "Label"
 msgstr "标签"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:175
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:179
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
 msgid "Save"
 msgstr "保存"
 
-#: templates/labels/labels_update.html:71 templates/notes/note_form.html:157
-#: templates/notes/note_form.html:158 templates/notes/note_form.html:193
+#: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
+#: templates/notes/note_form.html:162 templates/notes/note_form.html:197
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1383,7 +1390,12 @@ msgstr "登录"
 msgid "Add note"
 msgstr "添加笔记"
 
-#: templates/notes/_task_notes.html:42
+#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:23
+#: templates/notes/note_list.html:55
+msgid "Untitled Note"
+msgstr "无标题笔记"
+
+#: templates/notes/_task_notes.html:48
 msgid "No notes for this task"
 msgstr "此任务暂无笔记"
 
@@ -1396,12 +1408,8 @@ msgstr "删除笔记"
 msgid "Are you sure you want to delete this note?"
 msgstr "您确定要删除这条笔记吗？"
 
-#: templates/notes/note_detail.html:23
-msgid "Untitled Note"
-msgstr "无标题笔记"
-
 #: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
-#: templates/notes/note_list.html:69
+#: templates/notes/note_list.html:83
 msgid "Personal"
 msgstr "个人"
 
@@ -1410,17 +1418,17 @@ msgstr "个人"
 msgid "Updated"
 msgstr "已更新"
 
-#: templates/notes/note_detail.html:60
+#: templates/notes/note_detail.html:61
 msgid "Loading content..."
 msgstr "正在加载内容…"
 
-#: templates/notes/note_detail.html:72 templates/notes/note_form.html:119
+#: templates/notes/note_detail.html:74 templates/notes/note_form.html:123
 msgid "Images"
 msgstr "图像"
 
-#: templates/notes/note_detail.html:101
-#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
-#: templates/user/user_detail.html:163
+#: templates/notes/note_detail.html:103
+#: templates/statuses/statuses_list.html:73
+#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "编辑"
 
@@ -1436,52 +1444,54 @@ msgstr "编辑笔记"
 msgid "Create note"
 msgstr "创建笔记"
 
-#: templates/notes/note_form.html:89
+#: templates/notes/note_form.html:90
 msgid "Enter note content... Use Markdown for formatting."
 msgstr "输入笔记内容…支持 Markdown 格式。"
 
-#: templates/notes/note_form.html:95 templates/notes/note_form.html:232
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:236
 msgid "Preview"
 msgstr "预览"
 
-#: templates/notes/note_form.html:104
+#: templates/notes/note_form.html:105
 msgid "Markdown supported:"
 msgstr "支持 Markdown："
 
-#: templates/notes/note_form.html:129
+#: templates/notes/note_form.html:113
+msgid "Text is optional if you attach at least one image."
+msgstr "如果附加了至少一张图片，文字可以留空。"
+
+#: templates/notes/note_form.html:133
 #, python-format
 msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
-msgstr ""
-"每个笔记最多可添加 %(max_count)s 张图片，每张不超过 %(max_mb)s MB"
-"（JPEG、PNG、GIF、WebP）。"
+msgstr "每个笔记最多可添加 %(max_count)s 张图片，每张不超过 %(max_mb)s MB（JPEG、PNG、GIF、WebP）。"
 
-#: templates/notes/note_form.html:142
+#: templates/notes/note_form.html:146
 msgid "Attached images"
 msgstr "附件图片"
 
-#: templates/notes/note_form.html:209
+#: templates/notes/note_form.html:213
 msgid "Insert Image"
 msgstr "插入图片"
 
-#: templates/notes/note_form.html:211
+#: templates/notes/note_form.html:215
 msgid "Close"
 msgstr "关闭"
 
-#: templates/notes/note_form.html:216
+#: templates/notes/note_form.html:220
 msgid "Image URL"
 msgstr "图片 URL"
 
-#: templates/notes/note_form.html:225
+#: templates/notes/note_form.html:229
 msgid "Description (alt text)"
 msgstr "描述（替代文本）"
 
-#: templates/notes/note_form.html:230
+#: templates/notes/note_form.html:234
 msgid "Image description"
 msgstr "图片描述"
 
-#: templates/notes/note_form.html:239
+#: templates/notes/note_form.html:243
 msgid "Insert"
 msgstr "插入"
 
@@ -1489,15 +1499,15 @@ msgstr "插入"
 msgid "New note"
 msgstr "新笔记"
 
-#: templates/notes/note_list.html:85
+#: templates/notes/note_list.html:101
 msgid "No notes found"
 msgstr "未找到笔记"
 
-#: templates/notes/note_list.html:86
+#: templates/notes/note_list.html:102
 msgid "Create your first note to save important information"
 msgstr "创建第一个笔记来保存重要信息"
 
-#: templates/notes/note_list.html:87
+#: templates/notes/note_list.html:103
 msgid "Create Note"
 msgstr "创建笔记"
 
@@ -1598,9 +1608,7 @@ msgstr "数据存储与安全"
 msgid ""
 "Your data is stored on secure servers. We use HTTPS encryption for all "
 "connections. Passwords are hashed and never stored in plain text."
-msgstr ""
-"您的数据存储在安全的服务器上。所有连接均使用 HTTPS 加密。密码经过哈希处理，绝"
-"不以明文存储。"
+msgstr "您的数据存储在安全的服务器上。所有连接均使用 HTTPS 加密。密码经过哈希处理，绝不以明文存储。"
 
 #: templates/privacy_policy.html:42
 msgid "Your Rights"
@@ -1658,8 +1666,8 @@ msgstr "联系方式"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback "
-"form or at:"
+"If you have questions about this privacy policy, contact us via the feedback"
+" form or at:"
 msgstr "如对本隐私政策有疑问，请通过反馈表单或以下方式联系我们："
 
 #: templates/privacy_policy.html:65
@@ -2066,8 +2074,7 @@ msgstr "上传恶意内容"
 msgid ""
 "You retain ownership of the content you create. We do not claim any rights "
 "to your tasks, notes, or other data."
-msgstr ""
-"您保留所创建内容的所有权。 我们对您的任务、笔记或其他数据不主张任何权利。"
+msgstr "您保留所创建内容的所有权。 我们对您的任务、笔记或其他数据不主张任何权利。"
 
 #: templates/terms_of_service.html:36
 msgid "Service Availability"
@@ -2077,9 +2084,7 @@ msgstr "服务可用性"
 msgid ""
 "We strive to maintain high availability but do not guarantee uninterrupted "
 "service. We may perform maintenance that temporarily affects availability."
-msgstr ""
-"我们努力保持高可用性，但我们不保证服务的不间断运行。 我们可能会进行暂时影响可"
-"用性的技术工作。"
+msgstr "我们努力保持高可用性，但我们不保证服务的不间断运行。 我们可能会进行暂时影响可用性的技术工作。"
 
 #: templates/terms_of_service.html:39
 msgid "Termination"
@@ -2099,9 +2104,7 @@ msgstr "责任限制"
 msgid ""
 "TaskMan is provided 'as is'. We are not liable for any data loss or damages "
 "arising from the use of the service."
-msgstr ""
-"TaskMan 按“原样”提供。对于因使用本服务导致的数据丢失或任何损害，我们概不负"
-"责。"
+msgstr "TaskMan 按“原样”提供。对于因使用本服务导致的数据丢失或任何损害，我们概不负责。"
 
 #: templates/user/user_create_form.html:25
 msgid "Sign up"
@@ -2173,7 +2176,8 @@ msgstr "加入团队（可选）"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work individually"
+"Enter team name to join an existing team, or leave empty to work "
+"individually"
 msgstr "输入团队名称以加入现有团队，留空则以个人模式工作"
 
 #: user/forms.py:46
