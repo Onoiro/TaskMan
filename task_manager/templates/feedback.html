@@ -34,7 +34,6 @@ document.getElementById('feedback-form').addEventListener('submit', function(e) 
   e.preventDefault();
 
   const form = this;
-  const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
   const subject = form.querySelector('[name="subject"]').value;
   const contact = form.querySelector('[name="contact"]').value;
   const message = form.querySelector('[name="message"]').value;
@@ -44,11 +43,9 @@ document.getElementById('feedback-form').addEventListener('submit', function(e) 
 
   fetch("{% url 'feedback' %}", {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken,
-    },
-    body: JSON.stringify({subject, contact, message}),
+    // FormData matches Django's request.POST; the CSRF token
+    // is already rendered inside the form.
+    body: new FormData(form),
   })
   .then(response => response.json().then(data => ({ok: response.ok, data})))
   .then(({ok, data}) => {
@@ -65,7 +62,7 @@ document.getElementById('feedback-form').addEventListener('submit', function(e) 
       const fallback = document.createElement('div');
       fallback.className = 'js-feedback-alert mt-2';
       const text = `Subject: ${subject}\nFrom: ${contact}\n\n${message}`;
-      fallback.innerHTML = '<a href="https://t.me/AndreeBo?text="'
+      fallback.innerHTML = '<a href="https://t.me/AndreeBo?text='
         + encodeURIComponent(text) + '" target="_blank" rel="noopener">'
         + '{% trans "Or send it directly via Telegram" %}</a>';
       alert.after(fallback);
