@@ -1154,8 +1154,6 @@ msgstr ""
 #| "contact you provide."
 msgid "Message sent! We will reply to the contact you provided."
 msgstr "Паем фиристода шуд! Мо ба контакте, ки нишон додед, ҷавоб медиҳем."
-"Паем фиристода шуд! Мо ба рақами тамосе, ки шумо нишон додаед, ҷавоб "
-"медиҳем."
 
 #: templates/feedback.html:70
 msgid "Or send it directly via Telegram"

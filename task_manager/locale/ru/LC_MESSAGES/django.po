@@ -1151,14 +1151,8 @@ msgstr ""
 "указанному контакту."
 
 #: templates/feedback.html:59
-#, fuzzy
-#| msgid ""
-#| "Your message will be sent to developers via Telegram. We will reply to "
-#| "the contact you provide."
 msgid "Message sent! We will reply to the contact you provided."
 msgstr "Сообщение отправлено! Мы ответим по указанному вами контакту."
-"Сообщение будет отправлено разработчикам через Telegram. Мы ответим по "
-"указанному контакту."
 
 #: templates/feedback.html:70
 msgid "Or send it directly via Telegram"

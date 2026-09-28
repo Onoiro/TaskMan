@@ -361,6 +361,13 @@ if 'test' in sys.argv:
         'level': 'ERROR',
         'propagate': False,
     }
+    # Tests trigger expected error paths (e.g. Telegram network
+    # failure); full tracebacks in output hide real failures.
+    LOGGING['loggers']['task_manager.telegram'] = {
+        'handlers': ['console'],
+        'level': 'CRITICAL',
+        'propagate': False,
+    }
 
 # Debug Toolbar configuration (development only)
 if DEBUG:

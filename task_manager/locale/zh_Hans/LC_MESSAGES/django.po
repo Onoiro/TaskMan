@@ -1117,10 +1117,6 @@ msgid ""
 msgstr "您的消息将通过 Telegram 发送给开发者。我们会回复您提供的联系方式。"
 
 #: templates/feedback.html:59
-#, fuzzy
-#| msgid ""
-#| "Your message will be sent to developers via Telegram. We will reply to "
-#| "the contact you provide."
 msgid "Message sent! We will reply to the contact you provided."
 msgstr "消息已发送！我们将回复您提供的联系方式。"
 
@@ -1458,8 +1454,8 @@ msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
 msgstr ""
-"每个音符最多可达%(mx_count)s的图像，每个不超过%(max_mb)S MB(JPEG、PNG、GIF、"
-"WebP)。"
+"每个笔记最多可添加 %(max_count)s 张图片，每张不超过 %(max_mb)s MB"
+"（JPEG、PNG、GIF、WebP）。"
 
 #: templates/notes/note_form.html:142
 msgid "Attached images"
@@ -1955,7 +1951,7 @@ msgstr "您确定要退出该团队吗"
 msgid ""
 "Are you sure you want to remove user %(username)s from the team "
 "%(team_name)s?"
-msgstr "您确定要将用户 %(uername)s 从团队 %(tam_name)s 中移除吗？"
+msgstr "您确定要将用户 %(username)s 从团队 %(team_name)s 中移除吗？"
 
 #: templates/teams/team_exit.html:25
 msgid "Yes, exit"
@@ -1972,7 +1968,7 @@ msgstr "通过邀请加入团队"
 #: templates/teams/team_join_invite.html:15
 #, python-format
 msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
-msgstr "您已成功加入团队 <strong>%(tam_name)s</strong>。"
+msgstr "您已成功加入团队 <strong>%(team_name)s</strong>。"
 
 #: templates/teams/team_join_invite.html:28
 msgid "Home"
