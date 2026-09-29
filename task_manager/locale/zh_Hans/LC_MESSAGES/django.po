@@ -3,16 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 01:06+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"PO-Revision-Date: 2026-09-29 22:14+0000\n"
+"Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: zh-hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -153,7 +152,7 @@ msgstr "标题"
 msgid "Content"
 msgstr "内容"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:94
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -182,7 +181,7 @@ msgid "Updated at"
 msgstr "更新日期"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:80 templates/notes/note_form.html:25
+#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
 #: templates/notes/note_form.html:153
 msgid "Note"
 msgstr "笔记"
@@ -208,11 +207,11 @@ msgstr "上载日期"
 
 #: notes/models.py:117
 msgid "Note image"
-msgstr "笔记的图像"
+msgstr "笔记图片"
 
 #: notes/models.py:118
 msgid "Note images"
-msgstr "笔记图像"
+msgstr "笔记图片"
 
 #: notes/validators.py:18
 #, python-format
@@ -253,7 +252,7 @@ msgstr "笔记已删除"
 
 #: notes/views.py:317
 msgid "Image deleted successfully"
-msgstr "图像已成功删除"
+msgstr "图片已成功删除"
 
 #: notifications/models.py:9
 msgid "Task assigned"
@@ -1228,7 +1227,7 @@ msgstr "创建"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:106 templates/notes/note_form.html:186
+#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
 #: templates/notes/note_form.html:190 templates/notes/note_form.html:240
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
@@ -1273,7 +1272,7 @@ msgid "New label"
 msgstr "新标签"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:94 templates/notes/note_form.html:43
+#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
 #: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
@@ -1292,7 +1291,7 @@ msgstr "创建第一个标签来整理任务"
 msgid "Create Label"
 msgstr "创建标签"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
+#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:45
 #: templates/notes/note_form.html:27
 #: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
@@ -1390,7 +1389,7 @@ msgstr "登录"
 msgid "Add note"
 msgstr "添加笔记"
 
-#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:23
+#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:24
 #: templates/notes/note_list.html:55
 msgid "Untitled Note"
 msgstr "无标题笔记"
@@ -1408,29 +1407,49 @@ msgstr "删除笔记"
 msgid "Are you sure you want to delete this note?"
 msgstr "您确定要删除这条笔记吗？"
 
-#: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
+#: templates/notes/note_detail.html:33 templates/notes/note_form.html:39
 #: templates/notes/note_list.html:83
 msgid "Personal"
 msgstr "个人"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:378
+#: templates/notes/note_detail.html:49 templates/tasks/task_filter.html:378
 #: templates/tasks/task_filter.html:425 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "已更新"
 
-#: templates/notes/note_detail.html:61
+#: templates/notes/note_detail.html:62
 msgid "Loading content..."
 msgstr "正在加载内容…"
 
-#: templates/notes/note_detail.html:74 templates/notes/note_form.html:123
+#: templates/notes/note_detail.html:75 templates/notes/note_form.html:123
 msgid "Images"
-msgstr "图像"
+msgstr "图片"
 
-#: templates/notes/note_detail.html:103
+#: templates/notes/note_detail.html:104
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "编辑"
+
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+msgid "Close"
+msgstr "关闭"
+
+#: templates/notes/note_detail.html:123
+msgid "Zoom controls"
+msgstr "缩放控制"
+
+#: templates/notes/note_detail.html:125
+msgid "Zoom out"
+msgstr "缩小"
+
+#: templates/notes/note_detail.html:129
+msgid "Reset zoom"
+msgstr "重置缩放"
+
+#: templates/notes/note_detail.html:133
+msgid "Zoom in"
+msgstr "放大"
 
 #: templates/notes/note_form.html:38
 msgid "Personal note"
@@ -1474,10 +1493,6 @@ msgstr "附件图片"
 #: templates/notes/note_form.html:213
 msgid "Insert Image"
 msgstr "插入图片"
-
-#: templates/notes/note_form.html:215
-msgid "Close"
-msgstr "关闭"
 
 #: templates/notes/note_form.html:220
 msgid "Image URL"
@@ -1870,7 +1885,7 @@ msgstr "应用"
 #: templates/tasks/task_filter.html:362 templates/tasks/task_filter.html:451
 #: templates/tasks/task_update.html:55
 msgid "Time left: "
-msgstr "剩余时间："
+msgstr "剩余时间： "
 
 #: templates/tasks/task_filter.html:363 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:56

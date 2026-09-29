@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 01:06+0300\n"
-"PO-Revision-Date: 2026-04-04 23:17+0300\n"
+"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -114,10 +114,8 @@ msgid "team notes"
 msgstr "командных заметок"
 
 #: limit_service.py:45
-#, fuzzy
-#| msgid "Insert Image"
 msgid "note images"
-msgstr "Вставить изображение"
+msgstr "изображений в заметках"
 
 #: limit_service.py:46
 msgid "checklist items"
@@ -155,7 +153,7 @@ msgstr "Заголовок"
 msgid "Content"
 msgstr "Содержимое"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:94
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -184,7 +182,7 @@ msgid "Updated at"
 msgstr "Дата обновления"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:80 templates/notes/note_form.html:25
+#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
 #: templates/notes/note_form.html:153
 msgid "Note"
 msgstr "Заметка"
@@ -197,10 +195,8 @@ msgid "Notes"
 msgstr "Заметки"
 
 #: notes/models.py:104
-#, fuzzy
-#| msgid "Image URL"
 msgid "Image"
-msgstr "URL изображения"
+msgstr "Изображение"
 
 #: notes/models.py:108
 msgid "Order"
@@ -259,8 +255,6 @@ msgid "Note deleted successfully"
 msgstr "Заметка успешно удалена"
 
 #: notes/views.py:317
-#, fuzzy
-#| msgid "Label deleted successfully"
 msgid "Image deleted successfully"
 msgstr "Изображение успешно удалено"
 
@@ -477,17 +471,15 @@ msgstr "Киргизский"
 
 #: settings.py:226 templates/index.html:111
 msgid "Spanish"
-msgstr ""
+msgstr "Испанский"
 
 #: settings.py:227 templates/index.html:120
-#, fuzzy
-#| msgid "Simple view"
 msgid "Simplified Chinese"
-msgstr "Упрощённый вид"
+msgstr "Упрощённый китайский"
 
 #: settings.py:228 templates/index.html:129
 msgid "Kazakh"
-msgstr ""
+msgstr "Казахский"
 
 #: statuses/forms.py:19 statuses/forms.py:22 statuses/models.py:48
 #: tasks/models.py:38 teams/forms.py:27 teams/models.py:32
@@ -987,7 +979,7 @@ msgstr "Невозможно удалить команду, так как в н�
 
 #: teams/views.py:739
 msgid "Cannot delete a team because it has other members."
-msgstr "Невозможно удалить команду, потому что в ней есть другие участники"
+msgstr "Невозможно удалить команду, потому что в ней есть другие участники."
 
 #: teams/views.py:748
 msgid "Team deleted successfully"
@@ -1262,7 +1254,7 @@ msgstr "Создать"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:106 templates/notes/note_form.html:186
+#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
 #: templates/notes/note_form.html:190 templates/notes/note_form.html:240
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
@@ -1307,7 +1299,7 @@ msgid "New label"
 msgstr "Новая метка"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:94 templates/notes/note_form.html:43
+#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
 #: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
@@ -1326,7 +1318,7 @@ msgstr "Создайте первую метку, чтобы удобнее ор
 msgid "Create Label"
 msgstr "Создать метку"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
+#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:45
 #: templates/notes/note_form.html:27
 #: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
@@ -1424,7 +1416,7 @@ msgstr "Войти"
 msgid "Add note"
 msgstr "Добавить заметку"
 
-#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:23
+#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:24
 #: templates/notes/note_list.html:55
 msgid "Untitled Note"
 msgstr "Заметка без названия"
@@ -1440,31 +1432,51 @@ msgstr "Удаление заметки"
 
 #: templates/notes/note_confirm_delete.html:16
 msgid "Are you sure you want to delete this note?"
-msgstr "Вы уверены, что хотите удалить эту заметку"
+msgstr "Вы уверены, что хотите удалить эту заметку?"
 
-#: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
+#: templates/notes/note_detail.html:33 templates/notes/note_form.html:39
 #: templates/notes/note_list.html:83
 msgid "Personal"
 msgstr "Личная"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:378
+#: templates/notes/note_detail.html:49 templates/tasks/task_filter.html:378
 #: templates/tasks/task_filter.html:425 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Обновлено"
 
-#: templates/notes/note_detail.html:61
+#: templates/notes/note_detail.html:62
 msgid "Loading content..."
 msgstr "Загрузка содержимого..."
 
-#: templates/notes/note_detail.html:74 templates/notes/note_form.html:123
+#: templates/notes/note_detail.html:75 templates/notes/note_form.html:123
 msgid "Images"
 msgstr "Изображения"
 
-#: templates/notes/note_detail.html:103
+#: templates/notes/note_detail.html:104
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Изменить"
+
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/notes/note_detail.html:123
+msgid "Zoom controls"
+msgstr "Управление масштабом"
+
+#: templates/notes/note_detail.html:125
+msgid "Zoom out"
+msgstr "Уменьшить масштаб"
+
+#: templates/notes/note_detail.html:129
+msgid "Reset zoom"
+msgstr "Сбросить масштаб"
+
+#: templates/notes/note_detail.html:133
+msgid "Zoom in"
+msgstr "Увеличить масштаб"
 
 #: templates/notes/note_form.html:38
 msgid "Personal note"
@@ -1510,10 +1522,6 @@ msgstr "Прикрепленные изображения"
 #: templates/notes/note_form.html:213
 msgid "Insert Image"
 msgstr "Вставить изображение"
-
-#: templates/notes/note_form.html:215
-msgid "Close"
-msgstr "Закрыть"
 
 #: templates/notes/note_form.html:220
 msgid "Image URL"
@@ -1793,8 +1801,6 @@ msgstr "Создать задачу"
 
 #: templates/tasks/task_create_form.html:38
 #: templates/tasks/task_update.html:100
-#, fuzzy
-#| msgid "Quick Task Creation"
 msgid "Quick deadline"
 msgstr "Быстрый дедлайн"
 
@@ -1946,7 +1952,7 @@ msgstr "Добавьте элемент чеклиста"
 
 #: templates/tasks/task_update.html:176
 msgid "Add item..."
-msgstr "Добавить пункт"
+msgstr "Добавить пункт..."
 
 #: templates/tasks/task_update.html:484
 msgid "Delete this item?"

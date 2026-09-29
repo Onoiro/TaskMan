@@ -3,16 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-29 01:06+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"PO-Revision-Date: 2026-09-29 22:14+0000\n"
+"Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -106,7 +105,7 @@ msgstr "etiquetas personales"
 
 #: limit_service.py:42
 msgid "team labels"
-msgstr "etiquetas de comando"
+msgstr "etiquetas de equipo"
 
 #: limit_service.py:43
 msgid "personal notes"
@@ -118,7 +117,7 @@ msgstr "notas de equipo"
 
 #: limit_service.py:45
 msgid "note images"
-msgstr "Insertar imagen"
+msgstr "imágenes de notas"
 
 #: limit_service.py:46
 msgid "checklist items"
@@ -156,7 +155,7 @@ msgstr "Título"
 msgid "Content"
 msgstr "Contenido"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:94
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -185,7 +184,7 @@ msgid "Updated at"
 msgstr "Fecha de actualización"
 
 #: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:80 templates/notes/note_form.html:25
+#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
 #: templates/notes/note_form.html:153
 msgid "Note"
 msgstr "Nota"
@@ -229,13 +228,13 @@ msgid ""
 "Image '%(name)s' has unsupported format. Allowed formats: JPEG, PNG, GIF, "
 "WebP."
 msgstr ""
-"El formato de imagen \"%(name) s\" no es compatible. Formatos válidos: JPEG,"
-" PNG, GIF, WebP."
+"El formato de imagen \"%(name)s\" no es compatible. Formatos válidos: JPEG, "
+"PNG, GIF, WebP."
 
 #: notes/validators.py:32 notes/validators.py:35
 #, python-format
 msgid "Image '%(name)s' is corrupted or not a valid image."
-msgstr "El archivo \"%(name) s\" está dañado o no es una imagen."
+msgstr "El archivo \"%(name)s\" está dañado o no es una imagen."
 
 #: notes/views.py:90
 msgid "Note created successfully"
@@ -307,7 +306,7 @@ msgstr "Invitación al equipo"
 
 #: notifications/models.py:34
 msgid "Team deleted"
-msgstr "Comando eliminado"
+msgstr "Equipo eliminado"
 
 #: notifications/models.py:40
 msgid "Recipient"
@@ -383,7 +382,7 @@ msgstr "Tarea' {task_name} ' completada"
 #: notifications/services.py:146
 #, python-brace-format
 msgid "{username} wants to join team '{team_name}'"
-msgstr "{username} quiere unirse al comando ' {team_name}'"
+msgstr "{username} quiere unirse al equipo '{team_name}'"
 
 #: notifications/services.py:187
 #, python-brace-format
@@ -403,22 +402,22 @@ msgstr "Su solicitud para unirse al equipo '{team_name}' ha sido rechazada"
 #: notifications/services.py:260
 #, python-brace-format
 msgid "You have been removed from team '{team_name}'"
-msgstr "Se ha eliminado del comando ' {team_name}'"
+msgstr "Ha sido eliminado del equipo '{team_name}'"
 
 #: notifications/services.py:279
 #, python-brace-format
 msgid "Your role in team '{team_name}' has been changed to {role}"
-msgstr "Su función en el comando '{team_name} ' ha cambiado a {role}"
+msgstr "Su función en el equipo '{team_name}' ha cambiado a {role}"
 
 #: notifications/services.py:300
 #, python-brace-format
 msgid "You have been invited to join team '{team_name}'"
-msgstr "Estás invitado al comando ' {team_name}'"
+msgstr "Ha sido invitado a unirse al equipo '{team_name}'"
 
 #: notifications/services.py:320
 #, python-brace-format
 msgid "Team '{team_name}' has been deleted"
-msgstr "Comando' {team_name} ' eliminado"
+msgstr "El equipo '{team_name}' ha sido eliminado"
 
 #: permissions.py:7
 msgid "You are not authorized! Please login."
@@ -762,8 +761,8 @@ msgid ""
 "If you have an invite link, paste it here. Otherwise, enter team name and "
 "password below."
 msgstr ""
-"Si tiene un enlace de invitación, péguelo aquí. Si no hay un enlace, ingrese"
-" el nombre y la contraseña del comando a continuación."
+"Si tiene un enlace de invitación, péguelo aquí. De lo contrario, introduzca "
+"el nombre y la contraseña del equipo a continuación."
 
 #: teams/forms.py:125 templates/teams/team_detail.html:59
 msgid "Team name"
@@ -775,11 +774,11 @@ msgstr "Introduzca el nombre del equipo"
 
 #: teams/forms.py:136 teams/models.py:27 user/forms.py:44
 msgid "Team password"
-msgstr "Contraseña del comando"
+msgstr "Contraseña del equipo"
 
 #: teams/forms.py:140
 msgid "Enter team password"
-msgstr "Introduzca la contraseña del comando"
+msgstr "Introduzca la contraseña del equipo"
 
 #: teams/forms.py:215 teams/views.py:586
 msgid "Invalid or expired invite link"
@@ -791,7 +790,7 @@ msgstr "No existe un equipo con ese nombre"
 
 #: teams/forms.py:252 teams/forms.py:291 user/forms.py:219
 msgid "Invalid team password"
-msgstr "Contraseña de comando incorrecta"
+msgstr "Contraseña del equipo incorrecta"
 
 #: teams/forms.py:272 user/forms.py:237
 msgid "You already have a pending request to join this team"
@@ -803,7 +802,7 @@ msgstr "Ya eres miembro de este equipo"
 
 #: teams/forms.py:288
 msgid "Team does not exist"
-msgstr "El comando no existe"
+msgstr "El equipo no existe"
 
 #: teams/forms.py:317
 msgid "Either provide an invite link or team name and password"
@@ -828,7 +827,7 @@ msgstr "Administrador"
 
 #: teams/models.py:78 user/forms.py:156
 msgid "Member"
-msgstr "Participante"
+msgstr "Miembro"
 
 #: teams/models.py:81 templates/user/user_list.html:57
 msgid "Pending"
@@ -884,7 +883,7 @@ msgstr "Usado"
 
 #: teams/views.py:40
 msgid "Team not found"
-msgstr "Comando no encontrado"
+msgstr "Equipo no encontrado"
 
 #: teams/views.py:67
 msgid "Switched to individual mode"
@@ -893,7 +892,7 @@ msgstr "Cambiado al modo individual"
 #: teams/views.py:79
 #, python-brace-format
 msgid "Switched to team: {team}"
-msgstr "Cambiado al comando: {team}"
+msgstr "Cambiado al equipo: {team}"
 
 #: teams/views.py:177
 msgid "You are not a member of this team"
@@ -943,7 +942,7 @@ msgstr ""
 
 #: teams/views.py:389
 msgid "Team created successfully"
-msgstr "Comando creado con éxito"
+msgstr "Equipo creado correctamente"
 
 #: teams/views.py:451 teams/views.py:661
 #, python-brace-format
@@ -966,7 +965,7 @@ msgstr ""
 
 #: teams/views.py:540
 msgid "Team has reached the maximum number of members"
-msgstr "El equipo alcanzó el máximo número de participantes"
+msgstr "El equipo ha alcanzado el número máximo de miembros"
 
 #: teams/views.py:590 teams/views.py:598
 msgid "Invite link has been used"
@@ -978,19 +977,19 @@ msgstr "El enlace de invitación ha caducado"
 
 #: teams/views.py:713
 msgid "Team updated successfully"
-msgstr "Comando modificado con éxito"
+msgstr "Equipo actualizado correctamente"
 
 #: teams/views.py:731
 msgid "Cannot delete a team because it has tasks."
-msgstr "No se puede eliminar el comando porque tiene tareas."
+msgstr "No se puede eliminar el equipo porque tiene tareas."
 
 #: teams/views.py:739
 msgid "Cannot delete a team because it has other members."
-msgstr "No se puede eliminar un comando porque hay otros miembros en él"
+msgstr "No se puede eliminar el equipo porque tiene otros miembros."
 
 #: teams/views.py:748
 msgid "Team deleted successfully"
-msgstr "Comando eliminado con éxito"
+msgstr "Equipo eliminado correctamente"
 
 #: teams/views.py:779
 #, python-brace-format
@@ -1266,7 +1265,7 @@ msgstr "Crear"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:106 templates/notes/note_form.html:186
+#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
 #: templates/notes/note_form.html:190 templates/notes/note_form.html:240
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
@@ -1311,7 +1310,7 @@ msgid "New label"
 msgstr "Nueva etiqueta"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:94 templates/notes/note_form.html:43
+#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
 #: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
@@ -1330,7 +1329,7 @@ msgstr "Cree la primera etiqueta para organizar las tareas más fácilmente"
 msgid "Create Label"
 msgstr "Crear etiqueta"
 
-#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:44
+#: templates/labels/labels_update.html:22 templates/notes/note_detail.html:45
 #: templates/notes/note_form.html:27
 #: templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
@@ -1398,7 +1397,7 @@ msgstr "Más equipos"
 
 #: templates/limits/limits_info.html:47
 msgid "More team members"
-msgstr "Más participantes en el equipo"
+msgstr "Más miembros del equipo"
 
 #: templates/limits/limits_info.html:51
 msgid "Increased task limits"
@@ -1428,7 +1427,7 @@ msgstr "Entrar"
 msgid "Add note"
 msgstr "Añadir una nota"
 
-#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:23
+#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:24
 #: templates/notes/note_list.html:55
 msgid "Untitled Note"
 msgstr "Nota sin título"
@@ -1444,31 +1443,51 @@ msgstr "Eliminar una nota"
 
 #: templates/notes/note_confirm_delete.html:16
 msgid "Are you sure you want to delete this note?"
-msgstr "¿Está seguro de que desea eliminar esta nota"
+msgstr "¿Está seguro de que desea eliminar esta nota?"
 
-#: templates/notes/note_detail.html:32 templates/notes/note_form.html:39
+#: templates/notes/note_detail.html:33 templates/notes/note_form.html:39
 #: templates/notes/note_list.html:83
 msgid "Personal"
 msgstr "Personal"
 
-#: templates/notes/note_detail.html:48 templates/tasks/task_filter.html:378
+#: templates/notes/note_detail.html:49 templates/tasks/task_filter.html:378
 #: templates/tasks/task_filter.html:425 templates/tasks/task_update.html:36
 msgid "Updated"
 msgstr "Novedoso"
 
-#: templates/notes/note_detail.html:61
+#: templates/notes/note_detail.html:62
 msgid "Loading content..."
 msgstr "Carga de contenido..."
 
-#: templates/notes/note_detail.html:74 templates/notes/note_form.html:123
+#: templates/notes/note_detail.html:75 templates/notes/note_form.html:123
 msgid "Images"
-msgstr "Imagenes"
+msgstr "Imágenes"
 
-#: templates/notes/note_detail.html:103
+#: templates/notes/note_detail.html:104
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Editar"
+
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+msgid "Close"
+msgstr "Cerrar"
+
+#: templates/notes/note_detail.html:123
+msgid "Zoom controls"
+msgstr "Controles de zoom"
+
+#: templates/notes/note_detail.html:125
+msgid "Zoom out"
+msgstr "Alejar"
+
+#: templates/notes/note_detail.html:129
+msgid "Reset zoom"
+msgstr "Restablecer zoom"
+
+#: templates/notes/note_detail.html:133
+msgid "Zoom in"
+msgstr "Acercar"
 
 #: templates/notes/note_form.html:38
 msgid "Personal note"
@@ -1504,7 +1523,7 @@ msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
 msgstr ""
-"Hasta %(mx_count)s imágenes por nota, cada uno como máximo % (max_mb)s MB "
+"Hasta %(max_count)s imágenes por nota, cada uno como máximo %(max_mb)s MB "
 "(JPEG, PNG, GIF, WebP)."
 
 #: templates/notes/note_form.html:146
@@ -1514,10 +1533,6 @@ msgstr "Imágenes adjuntas"
 #: templates/notes/note_form.html:213
 msgid "Insert Image"
 msgstr "Insertar imagen"
-
-#: templates/notes/note_form.html:215
-msgid "Close"
-msgstr "Cerrar"
 
 #: templates/notes/note_form.html:220
 msgid "Image URL"
@@ -1841,7 +1856,7 @@ msgstr "Eliminar una tarea"
 
 #: templates/tasks/task_filter.html:13
 msgid "New task"
-msgstr "Nuevo reto"
+msgstr "Nueva tarea"
 
 #: templates/tasks/task_filter.html:32
 msgid "Sort"
@@ -1923,7 +1938,7 @@ msgstr "Aplicar"
 #: templates/tasks/task_filter.html:362 templates/tasks/task_filter.html:451
 #: templates/tasks/task_update.html:55
 msgid "Time left: "
-msgstr "Queda:"
+msgstr "Queda: "
 
 #: templates/tasks/task_filter.html:363 templates/tasks/task_filter.html:452
 #: templates/tasks/task_update.html:56
@@ -1948,7 +1963,7 @@ msgstr "Agregue un elemento de lista de verificación"
 
 #: templates/tasks/task_update.html:176
 msgid "Add item..."
-msgstr "Añadir párrafo"
+msgstr "Añadir elemento..."
 
 #: templates/tasks/task_update.html:484
 msgid "Delete this item?"
@@ -1965,11 +1980,11 @@ msgstr "Eliminar usuario"
 
 #: templates/teams/team_delete.html:14
 msgid "Delete team"
-msgstr "Eliminar un comando"
+msgstr "Eliminar equipo"
 
 #: templates/teams/team_detail.html:14
 msgid "Team details"
-msgstr "Datos del comando"
+msgstr "Detalles del equipo"
 
 #: templates/teams/team_detail.html:26
 msgid "No description"
@@ -2013,8 +2028,8 @@ msgid ""
 "Are you sure you want to remove user %(username)s from the team "
 "%(team_name)s?"
 msgstr ""
-"¿Está seguro de que desea excluir al usuario %(username) s del comando "
-"%(tam_name)s?"
+"¿Está seguro de que desea eliminar al usuario %(username)s del equipo "
+"%(team_name)s?"
 
 #: templates/teams/team_exit.html:25
 msgid "Yes, exit"
@@ -2031,7 +2046,7 @@ msgstr "Únete al equipo por invitación"
 #: templates/teams/team_join_invite.html:15
 #, python-format
 msgid "You have successfully joined the team <strong>%(team_name)s</strong>."
-msgstr "Se ha Unido con éxito al comando <strong > %(team_name) s</strong>."
+msgstr "Se ha unido correctamente al equipo <strong>%(team_name)s</strong>."
 
 #: templates/teams/team_join_invite.html:28
 msgid "Home"
@@ -2063,7 +2078,7 @@ msgstr "¿Estás seguro de que quieres eliminar a este miembro del equipo?"
 
 #: templates/teams/team_member_role_update.html:70
 msgid "Remove from team"
-msgstr "Excluir del comando"
+msgstr "Eliminar del equipo"
 
 #: templates/terms_of_service.html:11
 msgid "Acceptance of Terms"
@@ -2200,7 +2215,7 @@ msgstr "Nunca"
 
 #: templates/user/user_detail.html:138
 msgid "No teams"
-msgstr "No hay comandos"
+msgstr "Sin equipos"
 
 #: templates/user/user_detail.html:169
 msgid "Change Role"
