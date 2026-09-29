@@ -1,0 +1,113 @@
+{
+  "_comment": "Глоссарий TaskMan: термин продукта -> альтернативы подстрок в переводе (через |). Проверяется командой glossary: в коротких строках-метках термин должен переводиться согласованно.",
+  "task": {
+    "en": "task",
+    "ru": "задач",
+    "az": "tapşırıq",
+    "ky": "тапшырма",
+    "tg": "вазифа",
+    "es": "tarea",
+    "zh-hans": "任务",
+    "kk": "тапсырма"
+  },
+  "team": {
+    "en": "team",
+    "ru": "команд",
+    "az": "komanda",
+    "ky": "команда",
+    "tg": "даста",
+    "es": "equipo",
+    "zh-hans": "团队",
+    "kk": "команда"
+  },
+  "label": {
+    "en": "label",
+    "ru": "метк|меток",
+    "az": "etiket",
+    "ky": "тег",
+    "tg": "барчасп",
+    "es": "etiqueta",
+    "zh-hans": "标签",
+    "kk": "белгі"
+  },
+  "status": {
+    "en": "status",
+    "ru": "статус",
+    "az": "status",
+    "ky": "статус",
+    "tg": "ҳолат",
+    "es": "estatus",
+    "zh-hans": "状态",
+    "kk": "күй"
+  },
+  "note": {
+    "en": "note",
+    "ru": "заметк|заметок",
+    "az": "qeyd",
+    "ky": "эскертүү",
+    "tg": "эзоҳ",
+    "es": "nota",
+    "zh-hans": "笔记",
+    "kk": "жазба"
+  },
+  "notification": {
+    "en": "notification",
+    "ru": "уведомлен",
+    "az": "bildiriş",
+    "ky": "билдирме",
+    "tg": "огоҳинома",
+    "es": "notificaci",
+    "zh-hans": "通知",
+    "kk": "хабарландыру"
+  },
+  "checklist": {
+    "en": "checklist",
+    "ru": "чек-лист",
+    "az": "yoxlama siyahısı",
+    "ky": "текшерүү тизмеси",
+    "tg": "рӯйхати санҷиш",
+    "es": "lista de verificación",
+    "zh-hans": "清单",
+    "kk": "тексеру тізімі"
+  },
+  "deadline": {
+    "en": "deadline",
+    "ru": "дедлайн",
+    "az": "son tarix",
+    "ky": "мөөнөт",
+    "tg": "мӯҳлат",
+    "es": "fecha límite",
+    "zh-hans": "截止日期",
+    "kk": "мерзім"
+  },
+  "image": {
+    "en": "image",
+    "ru": "изображен|картинк",
+    "az": "şəkil",
+    "ky": "сүрөт",
+    "tg": "тасвир",
+    "es": "imagen",
+    "zh-hans": "图片",
+    "kk": "сурет"
+  },
+  "password": {
+    "en": "password",
+    "ru": "пароль",
+    "az": "şifrə",
+    "ky": "сырсөз",
+    "tg": "рамз",
+    "es": "contraseña",
+    "zh-hans": "密码",
+    "kk": "құпиясөз"
+  },
+  "member": {
+    "en": "member",
+    "ru": "участник",
+    "az": "üzv",
+    "ky": "мүчө",
+    "tg": "иштирокч",
+    "es": "miembro",
+    "zh-hans": "成员",
+    "kk": "мүше"
+  }
+}
