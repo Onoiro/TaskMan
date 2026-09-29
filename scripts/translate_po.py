@@ -3,8 +3,9 @@
 
 Scans all language .po files under task_manager/locale/, identifies entries
 with empty or fuzzy msgstr, and automatically translates them via the
-Yandex Cloud Translate API. Placeholder strings like ``%(name)s`` and ``%d``
-are preserved during translation.
+Yandex Cloud Translate API. Placeholder strings like ``%(name)s``, ``%d``
+and ``{task_name}`` are replaced by markers before the request and restored
+afterwards, so the API cannot split or rename them.
 
 By default, translates from English to all target languages except Russian.
 Supports two-stage translation workflow:
@@ -99,12 +100,21 @@ FROM_RU_TARGETS = ["az", "ky", "tg", "es", "zh-hans", "kk"]
 # Placeholder helpers
 # ---------------------------------------------------------------------------
 
-# Pattern matches: %(name)s, %(count)d, %s, %d
+# Matches %(name)s, %(count)d, %s, %d and {brace} placeholders.
+# The closing bracket must come before the conversion letter, otherwise
+# "%(name)s" is never matched and is sent to the API as plain text.
 PLACEHOLDER_RE = re.compile(
-    r"%\([^)]+?[sd]\)"
+    r"%\([A-Za-z_][A-Za-z0-9_]*\)[sd]"
     r"|"
-    r"%(?=[sd])"
+    r"%[sd]"
+    r"|"
+    r"\{[A-Za-z_][A-Za-z0-9_]*\}"
 )
+
+# Marker that replaces a placeholder while the text is being translated.
+# The index inside the marker points back to the original placeholder, so
+# a reordered marker cannot put the wrong placeholder into the result.
+MARKER_RE = re.compile(r"__PH(\d+)__")
 
 _PLACEHOLDER_COUNTER = 0
 
@@ -140,6 +150,9 @@ def escape_placeholders(text):
 def restore_placeholders(text, originals):
     """Restore original placeholder tokens into an escaped string.
 
+    The marker carries the index of its placeholder, so a marker moved
+    by the translator still gets its own placeholder back.
+
     Args:
         text: String containing ``__PH0000__`` markers.
         originals: List of the original placeholder strings (in order).
@@ -147,17 +160,13 @@ def restore_placeholders(text, originals):
     Returns:
         String with markers replaced by their originals.
     """
-    counter = 0
-
     def _repl(m):
-        nonlocal counter
-        idx = counter
-        counter += 1
+        idx = int(m.group(1))
         if idx < len(originals):
             return originals[idx]
         return m.group(0)
 
-    return PLACEHOLDER_RE.sub(_repl, text)
+    return MARKER_RE.sub(_repl, text)
 
 
 def verify_placeholders(original, translated):
@@ -329,18 +338,30 @@ def _apply_single_translation(entry, i, translated_raw, originals):
         originals: Original placeholder list.
 
     Returns:
-        Tuple (success, needs_fuzzy).
+        Tuple (success, needs_fuzzy, msgstr).
         success=False means API returned no translation.
         needs_fuzzy=True means placeholders didn't match.
+        msgstr is the restored text, ready to be written to the entry.
     """
     if translated_raw is None:
         print(
             f"  WARNING: no translation for entry {i + 1}. "
             "Marking fuzzy."
         )
-        return False, False
+        return False, False, ""
 
     ph_list = originals[i]
+
+    if len(MARKER_RE.findall(translated_raw)) != len(ph_list):
+        # The API dropped or duplicated a marker. Restoring the remaining
+        # ones would silently misplace placeholders, so the entry is
+        # marked fuzzy and left for manual translation.
+        print(
+            f"  WARNING: entry {i + 1} — placeholder markers changed. "
+            "Marking fuzzy."
+        )
+        return False, True, ""
+
     translated = restore_placeholders(translated_raw, ph_list)
 
     if not verify_placeholders(entry.msgid, translated):
@@ -348,9 +369,9 @@ def _apply_single_translation(entry, i, translated_raw, originals):
             f"  WARNING: entry {i + 1} — placeholders mismatch. "
             "Marking fuzzy."
         )
-        return False, True
+        return False, True, ""
 
-    return True, False
+    return True, False, translated
 
 
 def _write_back(pob, po_path):
@@ -619,21 +640,24 @@ def _apply_translations(entry_indices, originals, translated_texts):
     warning_count = 0
 
     for i, entry in enumerate(entry_indices):
-        success, needs_fuzzy = _apply_single_translation(
+        success, needs_fuzzy, msgstr = _apply_single_translation(
             entry, i, translated_texts[i], originals
         )
 
-        if not success:
-            warning_count += 1
-            continue
-
         if needs_fuzzy:
+            # Checked before success: a broken placeholder is not a
+            # missing translation, and the entry must be marked fuzzy so
+            # msgfmt keeps the English string instead of a corrupt one.
             entry.fuzzy = True
             entry.msgstr = ""
             warning_count += 1
             continue
 
-        entry.msgstr = translated_texts[i]
+        if not success:
+            warning_count += 1
+            continue
+
+        entry.msgstr = msgstr
         entry.fuzzy = False
         translated_count += 1
 
@@ -739,6 +763,18 @@ def _validate_config():
         sys.exit(1)
 
 
+def _normalize_lang(dir_name):
+    """Turn a locale directory name into a language code.
+
+    Django stores zh-hans as the directory zh_Hans, while every other
+    place in the project (and the Yandex API) uses the code.
+    """
+    for code, directory in LOCALE_DIR_NAMES.items():
+        if directory == dir_name:
+            return code
+    return dir_name
+
+
 def _get_available_langs():
     """Get sorted list of available language codes.
 
@@ -746,7 +782,7 @@ def _get_available_langs():
         List of language codes that have a django.po file.
     """
     return sorted(
-        d.name
+        _normalize_lang(d.name)
         for d in LOCALE_DIR.iterdir()
         if d.is_dir()
         and (d / "LC_MESSAGES" / "django.po").exists()
@@ -838,7 +874,7 @@ def show_untranslated(lang_code):
         lang_code: Language code, e.g. ``"ru"``.
     """
     po_path = (
-        LOCALE_DIR / lang_code
+        LOCALE_DIR / LOCALE_DIR_NAMES.get(lang_code, lang_code)
         / "LC_MESSAGES" / "django.po"
     )
     if not po_path.exists():
@@ -877,13 +913,7 @@ def main():
         return
 
     if command == "list":
-        available_langs = sorted(
-            d.name
-            for d in LOCALE_DIR.iterdir()
-            if d.is_dir()
-            and (d / "LC_MESSAGES" / "django.po").exists()
-        )
-        for lang in available_langs:
+        for lang in _get_available_langs():
             show_untranslated(lang)
             print()
         return

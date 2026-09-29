@@ -223,7 +223,7 @@ make shell       # or make db-shell for Docker
 ```
 ### Internationalization
 
-The application supports 8 languages: English, Russian, Tajik, Azerbaijani, Kyrgyz, Spanish, Simplified Chinese, and Kazakh.
+The application supports 8 languages: English, Russian, Tajik, Azerbaijani, Kyrgyz, Spanish, Simplified Chinese (`zh-hans`, stored as `zh_Hans`), and Kazakh.
 Translations are automated using **Yandex Translate API** with a two-stage workflow for quality control.
 
 #### Why Two-Stage Translation?
@@ -239,13 +239,19 @@ This ensures quality: you control the Russian translation, and other languages a
 
 **Step 1: Extract new translatable strings from code**
 ```bash
-make messages    # or make d-messages for Docker
+# Run from the task_manager/ directory: django-admin is not in PATH
+# outside Poetry, and a root-level locale/ directory would be created
+# instead of the one Django actually reads.
+cd task_manager && poetry run django-admin makemessages -a && cd ..
 ```
 This creates/updates `task_manager/locale/*/LC_MESSAGES/django.po` files with new English strings.
 
+New strings are marked `fuzzy` and get the translation of a *similar* old msgid, which
+`msgfmt` then skips entirely. Such entries are translated again in step 2.
+
 **Step 2: Translate English → Russian**
 ```bash
-make translate-ru    # or make d-translate-ru for Docker
+make translate-ru
 ```
 This uses Yandex Translate API to translate new English strings to Russian.
 
@@ -256,28 +262,41 @@ This uses Yandex Translate API to translate new English strings to Russian.
 # "Next" → "Следующая" (not "Следующий")
 # "Add checklist item" → "Добавьте пункт в чеклист" (context-aware)
 ```
-This is the **most important step** — you ensure Russian translations are correct and context-appropriate.
+This is the **most important step** — you ensure Russian translations are correct and context-appropriate. Yandex has no idea about the application context, so it happily translates
+`team` as «отряд» and `note images` as «обратите внимание на изображения».
 
 **Step 4: Translate other languages from verified Russian**
 ```bash
-make translate-from-ru    # or make d-translate-from-ru for Docker
+make translate-from-ru
 ```
-This translates Tajik, Azerbaijani, and Kyrgyz from the **verified Russian** translations, not from English.
+This translates Azerbaijani, Kyrgyz, Tajik, Spanish, Simplified Chinese and Kazakh from the
+**verified Russian** translations, not from English. Entries without a Russian translation are
+skipped and listed at the end of the run.
 
-**Step 5: Compile translations**
+**Step 5: Check the result mechanically, then compile**
 ```bash
+poetry run python .agents/skills/translation-checker/check_po.py fix --dry-run
+poetry run python .agents/skills/translation-checker/check_po.py fix
+poetry run python .agents/skills/translation-checker/check_po.py check
 make compile    # or make d-compile for Docker
 ```
-This compiles `.po` files to `.mo` (binary format used by Django).
+`check_po.py` (see `.agents/skills/translation-checker/SKILL.md`) catches what is objectively
+wrong: broken placeholders, HTML tags, fuzzy entries, stale `#| msgid` leftovers, missing
+punctuation and inconsistent product terms. `fix` repairs the placeholder damage the API
+causes (`%(name) s`, `%(tam_name)s`, `<strong >`).
+
+`make compile` compiles `.po` files to `.mo` (binary format used by Django). The `.mo` files are
+tracked in the repository, so commit them together with the `.po` files.
 
 #### Environment Variables for Translation
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `YANDEX_API_KEY` | Yandex Translate API key | `your_api_key` |
+| `YANDEX_TRANSLATE_API_KEY` | Yandex Cloud API key | `your_api_key` |
+| `YANDEX_FOLDER_ID` | Yandex Cloud folder ID | `b1g...` |
 | `SKIP_LANGS` | Comma-separated list of languages to skip | `ru,az` |
 | `TARGET_LANG` | Translate only one language | `ru` |
-| `FROM_RU=1` | Use Russian as source for az/ky/tg | `1` |
+| `FROM_RU=1` | Use Russian as source for az/ky/tg/es/zh-hans/kk | `1` |
 | `DRY_RUN=1` | Preview without API calls | `1` |
 
 #### Additional Commands
@@ -287,7 +306,7 @@ This compiles `.po` files to `.mo` (binary format used by Django).
 TARGET_LANG=ru make translate
 
 # Translate from Russian to all other languages (skip English and Russian)
-FROM_RU=1 make translate
+make translate-from-ru
 
 # Skip specific languages (e.g., skip Russian and Azerbaijani)
 SKIP_LANGS=ru,az make translate
@@ -295,8 +314,11 @@ SKIP_LANGS=ru,az make translate
 # Preview what would be translated without making changes
 DRY_RUN=1 make translate
 
-# List Russian translations (check coverage)
-make list-ru
+# List untranslated strings with line numbers (Russian only)
+make translate-dry-ru
+
+# List untranslated strings for every language
+poetry run python scripts/translate_po.py list
 ```
 
 #### Yandex Translate API Setup
@@ -307,7 +329,7 @@ To use automatic translation, you need a Yandex Cloud API key:
 2. Create a new project or select existing
 3. Enable the **Machine Translation** API
 4. Create an API key in the service account settings
-5. Set the key in your environment: `export YANDEX_API_KEY=your_key_here`
+5. Set `YANDEX_TRANSLATE_API_KEY` and `YANDEX_FOLDER_ID` in your `.env` file
 
 **Note:** The script uses `polib` library (already in dev dependencies) and `urllib.request` (stdlib) — no additional HTTP clients required.
 
