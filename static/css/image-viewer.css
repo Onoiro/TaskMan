@@ -1,0 +1,88 @@
+/**
+ * Image Viewer Styles
+ * Zoom and pan for images inside the note detail modal
+ */
+
+#imageModal .modal-body {
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+
+#imageModal .modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.image-viewer-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 85vh;
+    height: 85dvh;
+    overflow: hidden;
+    /* Gestures are handled by JS, so the browser must not scroll or zoom */
+    touch-action: none;
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.image-viewer-stage.is-dragging {
+    cursor: grabbing;
+}
+
+.image-viewer-stage.is-animated .image-viewer-img {
+    transition: transform 0.2s ease-out;
+}
+
+.image-viewer-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform-origin: center center;
+    will-change: transform;
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.image-viewer-controls {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+    padding: 0.25rem;
+    border-radius: 2rem;
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 10;
+}
+
+.image-viewer-controls .btn {
+    border: none;
+    color: #fff;
+}
+
+.image-viewer-controls .btn:hover,
+.image-viewer-controls .btn:focus-visible {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Keeps the close button above the stage and its controls */
+#imageModal .z-index-10 { z-index: 10; }
+
+@media (max-width: 767.98px) {
+    .image-viewer-stage {
+        height: 80vh;
+        height: 80dvh;
+    }
+}

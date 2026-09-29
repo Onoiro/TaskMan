@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/markdown-editor.css' %}">
+<link rel="stylesheet" href="{% static 'css/image-viewer.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -116,8 +117,24 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body p-0">
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-index-10" data-bs-dismiss="modal" aria-label="Close"></button>
-                <img id="modalImage" src="" alt="" class="img-fluid">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-index-10" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+                <div class="image-viewer-stage">
+                    <img id="modalImage" src="" alt="" class="image-viewer-img">
+                    <div class="image-viewer-controls" role="group" aria-label="{% trans 'Zoom controls' %}">
+                        <button type="button" class="btn btn-sm" data-zoom-out
+                                title="{% trans 'Zoom out' %}" aria-label="{% trans 'Zoom out' %}">
+                            <i class="bi bi-zoom-out"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm" data-zoom-reset
+                                title="{% trans 'Reset zoom' %}" aria-label="{% trans 'Reset zoom' %}">
+                            <i class="bi bi-arrows-fullscreen"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm" data-zoom-in
+                                title="{% trans 'Zoom in' %}" aria-label="{% trans 'Zoom in' %}">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -136,19 +153,26 @@
 <script src="{% static 'js/vendor/languages/xml.min.js' %}"></script>
 <script src="{% static 'js/vendor/languages/css.min.js' %}"></script>
 <script src="{% static 'js/vendor/languages/yaml.min.js' %}"></script>
+<script src="{% static 'js/image-viewer.js' %}"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Gallery thumbnails open the same modal as inline images
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const viewer = imageModal ? new ImageViewer(imageModal) : null;
+
+    // Opens the zoom viewer: images from the gallery and from Markdown content
+    function openImageViewer(src, alt) {
+        if (!imageModal || !modalImage || !viewer) return;
+
+        viewer.open(src, alt);
+        bootstrap.Modal.getOrCreateInstance(imageModal).show();
+    }
+
+    // Gallery thumbnails open the same viewer as inline images
     document.querySelectorAll('.note-gallery-thumb').forEach((img) => {
         img.addEventListener('click', function() {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            if (modal && modalImg) {
-                modalImg.src = this.src;
-                modalImg.alt = this.alt || '';
-                new bootstrap.Modal(modal).show();
-            }
+            openImageViewer(this.src, this.alt);
         });
     });
 
@@ -188,13 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
             img.style.cursor = 'pointer';
 
             img.addEventListener('click', function() {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('modalImage');
-                if (modal && modalImg) {
-                    modalImg.src = this.src;
-                    modalImg.alt = this.alt || '';
-                    new bootstrap.Modal(modal).show();
-                }
+                openImageViewer(this.src, this.alt);
             });
         });
 
@@ -220,26 +238,5 @@ document.addEventListener('DOMContentLoaded', function() {
     .note-content { font-size: 1rem; }
     .card-body { padding: 1rem !important; }
 }
-
-#imageModal .modal-body {
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 50vh;
-}
-
-#imageModal .modal-content {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-#modalImage {
-    max-height: 85vh;
-    object-fit: contain;
-}
-
-.z-index-10 { z-index: 10; }
 </style>
 {% endblock %}

@@ -1,6 +1,7 @@
 import os
 import tempfile
 
+from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -244,6 +245,42 @@ class NoteImageTestCase(TestCase):
         response = self.client.get(self._detail_url())
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'note-gallery-thumb')
+
+    # --- Image viewer (zoom / pan) ---
+
+    def test_detail_page_has_image_viewer(self):
+        """Note detail includes the zoomable image viewer markup."""
+        NoteImage.objects.create(
+            note=self.note, image=make_image_file('photo.png'), order=0
+        )
+        response = self.client.get(self._detail_url())
+        self.assertContains(response, 'image-viewer-stage')
+        self.assertContains(response, 'image-viewer-img')
+        self.assertContains(response, 'data-zoom-in')
+        self.assertContains(response, 'data-zoom-out')
+        self.assertContains(response, 'data-zoom-reset')
+
+    def test_detail_page_loads_image_viewer_assets(self):
+        """Image viewer CSS and JS are linked on the note detail page."""
+        response = self.client.get(self._detail_url())
+        # Hashed names in production, so match the path without extension
+        self.assertContains(response, 'css/image-viewer')
+        self.assertContains(response, 'js/image-viewer')
+
+    def test_detail_page_has_viewer_without_images(self):
+        """Viewer modal exists even for notes without attachments."""
+        response = self.client.get(self._detail_url())
+        self.assertContains(response, 'image-viewer-stage')
+
+    def test_image_viewer_script_defined(self):
+        """Static image viewer script exposes the ImageViewer class."""
+        path = os.path.join(
+            settings.BASE_DIR, 'static', 'js', 'image-viewer.js'
+        )
+        with open(path, encoding='utf-8') as fh:
+            content = fh.read()
+        self.assertIn('class ImageViewer', content)
+        self.assertIn('window.ImageViewer', content)
 
     def test_team_member_can_view_team_note_image(self):
         """Team members can view images of their team's note."""
