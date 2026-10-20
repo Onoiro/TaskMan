@@ -20,6 +20,7 @@ class PlanLimits:
     max_personal_notes: int
     max_team_notes: int
     max_note_images: int
+    max_note_files: int
     max_checklist_items: int
 
 
@@ -34,6 +35,7 @@ FREE_PLAN = PlanLimits(
     max_personal_notes=50,
     max_team_notes=100,
     max_note_images=10,
+    max_note_files=10,
     max_checklist_items=20,
 )
 

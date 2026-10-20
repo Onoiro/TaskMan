@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"POT-Creation-Date: 2026-10-20 00:29+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,29 +117,33 @@ msgid "note images"
 msgstr "笔记图片"
 
 #: limit_service.py:46
+msgid "note files"
+msgstr "笔记文件"
+
+#: limit_service.py:47
 msgid "checklist items"
 msgstr "清单项"
 
-#: notes/forms.py:36 statuses/forms.py:25 teams/forms.py:29
+#: notes/forms.py:54 statuses/forms.py:25 teams/forms.py:29
 #: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "可选"
 
-#: notes/forms.py:62
-msgid "Add some text or attach at least one image."
-msgstr "请添加文字或至少附加一张图片。"
+#: notes/forms.py:109
+msgid "Add some text, attach at least one image or file."
+msgstr "添加文字，或至少附加一张图片或一个文件。"
 
-#: notes/forms.py:105
+#: notes/forms.py:134
 msgid "Task must be from the same team."
 msgstr "任务必须属于同一个团队。"
 
-#: notes/forms.py:109
+#: notes/forms.py:138
 msgid "Cannot attach note to team task in individual mode."
 msgstr "个人模式下不能为团队任务附加笔记。"
 
-#: notes/forms.py:111
+#: notes/forms.py:140
 msgid "You can only attach notes to your own tasks."
 msgstr "只能为您的任务附加笔记。"
 
@@ -152,7 +156,7 @@ msgstr "标题"
 msgid "Content"
 msgstr "内容"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:120
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -180,9 +184,9 @@ msgstr "创建日期"
 msgid "Updated at"
 msgstr "更新日期"
 
-#: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
-#: templates/notes/note_form.html:153
+#: notes/models.py:75 notes/models.py:100 notes/models.py:158
+#: templates/feedback.html:28 templates/notes/note_detail.html:81
+#: templates/notes/note_form.html:25 templates/notes/note_form.html:153
 msgid "Note"
 msgstr "笔记"
 
@@ -197,11 +201,11 @@ msgstr "笔记"
 msgid "Image"
 msgstr "图片"
 
-#: notes/models.py:108
+#: notes/models.py:108 notes/models.py:170
 msgid "Order"
 msgstr "排序"
 
-#: notes/models.py:112
+#: notes/models.py:112 notes/models.py:174
 msgid "Uploaded at"
 msgstr "上载日期"
 
@@ -212,6 +216,22 @@ msgstr "笔记图片"
 #: notes/models.py:118
 msgid "Note images"
 msgstr "笔记图片"
+
+#: notes/models.py:162
+msgid "File"
+msgstr "文件"
+
+#: notes/models.py:166
+msgid "Original name"
+msgstr "原始名称"
+
+#: notes/models.py:179
+msgid "Note file"
+msgstr "笔记文件"
+
+#: notes/models.py:180
+msgid "Note files"
+msgstr "笔记文件"
 
 #: notes/validators.py:18
 #, python-format
@@ -230,29 +250,47 @@ msgstr "不支持\"%(name)s\"的图片格式。允许的格式：JPEG、PNG、GI
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "\"%(name)s\"文件已损坏或不是有效的图片。"
 
-#: notes/views.py:90
+#: notes/validators.py:49
+#, python-format
+msgid "File '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr "文件\"%(name)s\"过大。最大为 %(max)s MB。"
+
+#: notes/validators.py:56
+#, python-format
+msgid ""
+"File '%(name)s' has unsupported format. Allowed formats: PDF, DOC, DOCX, "
+"XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR, TAR, "
+"GZ, TGZ, EML, MSG."
+msgstr ""
+"不支持\"%(name)s\"的文件格式。允许的格式：PDF、DOC、DOCX、XLS、XLSX、PPT、PPTX、ODT、ODS、ODP、RTF、TXT、MD、CSV、ZIP、7Z、RAR、TAR、GZ、TGZ、EML、MSG。"
+
+#: notes/views.py:122
 msgid "Note created successfully"
 msgstr "笔记创建成功"
 
-#: notes/views.py:159 notes/views.py:334
+#: notes/views.py:191 notes/views.py:366 notes/views.py:438
 msgid "Note can only be edited by its author or team admin."
 msgstr "笔记只能由其作者或团队管理员编辑。"
 
-#: notes/views.py:181
+#: notes/views.py:213
 msgid "Note can only be deleted by its author or team admin."
 msgstr "笔记只能由其作者或团队管理员删除。"
 
-#: notes/views.py:198
+#: notes/views.py:230
 msgid "Note updated successfully"
 msgstr "笔记更新成功"
 
-#: notes/views.py:254
+#: notes/views.py:286
 msgid "Note deleted successfully"
 msgstr "笔记已删除"
 
-#: notes/views.py:317
+#: notes/views.py:349
 msgid "Image deleted successfully"
 msgstr "图片已成功删除"
+
+#: notes/views.py:421
+msgid "File deleted successfully"
+msgstr "文件已成功删除"
 
 #: notifications/models.py:9
 msgid "Task assigned"
@@ -1216,7 +1254,7 @@ msgstr "语言支持"
 msgid "Create label"
 msgstr "创建标签"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:181
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:231
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1227,8 +1265,8 @@ msgstr "创建"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
-#: templates/notes/note_form.html:190 templates/notes/note_form.html:240
+#: templates/notes/note_detail.html:132 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:240 templates/notes/note_form.html:290
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1272,8 +1310,8 @@ msgid "New label"
 msgstr "新标签"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:43
+#: templates/notes/note_list.html:91 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1312,7 +1350,7 @@ msgstr "创建者"
 msgid "Label"
 msgstr "标签"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:179
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:229
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
@@ -1320,7 +1358,8 @@ msgid "Save"
 msgstr "保存"
 
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
-#: templates/notes/note_form.html:162 templates/notes/note_form.html:197
+#: templates/notes/note_form.html:162 templates/notes/note_form.html:212
+#: templates/notes/note_form.html:213 templates/notes/note_form.html:247
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1394,7 +1433,11 @@ msgstr "添加笔记"
 msgid "Untitled Note"
 msgstr "无标题笔记"
 
-#: templates/notes/_task_notes.html:48
+#: templates/notes/_task_notes.html:39 templates/notes/note_list.html:87
+msgid "Has attachments"
+msgstr "有附件"
+
+#: templates/notes/_task_notes.html:51
 msgid "No notes for this task"
 msgstr "此任务暂无笔记"
 
@@ -1425,29 +1468,37 @@ msgstr "正在加载内容…"
 msgid "Images"
 msgstr "图片"
 
-#: templates/notes/note_detail.html:104
+#: templates/notes/note_detail.html:96 templates/notes/note_form.html:175
+msgid "Attachments"
+msgstr "附件"
+
+#: templates/notes/note_detail.html:108
+msgid "Download"
+msgstr "下载"
+
+#: templates/notes/note_detail.html:129
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "编辑"
 
-#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+#: templates/notes/note_detail.html:145 templates/notes/note_form.html:265
 msgid "Close"
 msgstr "关闭"
 
-#: templates/notes/note_detail.html:123
+#: templates/notes/note_detail.html:148
 msgid "Zoom controls"
 msgstr "缩放控制"
 
-#: templates/notes/note_detail.html:125
+#: templates/notes/note_detail.html:150
 msgid "Zoom out"
 msgstr "缩小"
 
-#: templates/notes/note_detail.html:129
+#: templates/notes/note_detail.html:154
 msgid "Reset zoom"
 msgstr "重置缩放"
 
-#: templates/notes/note_detail.html:133
+#: templates/notes/note_detail.html:158
 msgid "Zoom in"
 msgstr "放大"
 
@@ -1467,7 +1518,7 @@ msgstr "创建笔记"
 msgid "Enter note content... Use Markdown for formatting."
 msgstr "输入笔记内容…支持 Markdown 格式。"
 
-#: templates/notes/note_form.html:96 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:286
 msgid "Preview"
 msgstr "预览"
 
@@ -1476,8 +1527,8 @@ msgid "Markdown supported:"
 msgstr "支持 Markdown："
 
 #: templates/notes/note_form.html:113
-msgid "Text is optional if you attach at least one image."
-msgstr "如果附加了至少一张图片，文字可以留空。"
+msgid "Text is optional if you attach at least one image or file."
+msgstr "如果已附加至少一张图片或一个文件，则文字不是必填的。"
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1490,23 +1541,32 @@ msgstr "每个笔记最多可添加 %(max_count)s 张图片，每张不超过 %(
 msgid "Attached images"
 msgstr "附件图片"
 
-#: templates/notes/note_form.html:213
+#: templates/notes/note_form.html:184
+#, python-format
+msgid "Up to %(max_count)s files per note, %(max_mb)s MB each."
+msgstr "每个笔记最多可添加 %(max_count)s 个文件，每个不超过 %(max_mb)s MB。"
+
+#: templates/notes/note_form.html:197
+msgid "Attached files"
+msgstr "附件文件"
+
+#: templates/notes/note_form.html:263
 msgid "Insert Image"
 msgstr "插入图片"
 
-#: templates/notes/note_form.html:220
+#: templates/notes/note_form.html:270
 msgid "Image URL"
 msgstr "图片 URL"
 
-#: templates/notes/note_form.html:229
+#: templates/notes/note_form.html:279
 msgid "Description (alt text)"
 msgstr "描述（替代文本）"
 
-#: templates/notes/note_form.html:234
+#: templates/notes/note_form.html:284
 msgid "Image description"
 msgstr "图片描述"
 
-#: templates/notes/note_form.html:243
+#: templates/notes/note_form.html:293
 msgid "Insert"
 msgstr "插入"
 
@@ -1514,15 +1574,15 @@ msgstr "插入"
 msgid "New note"
 msgstr "新笔记"
 
-#: templates/notes/note_list.html:101
+#: templates/notes/note_list.html:104
 msgid "No notes found"
 msgstr "未找到笔记"
 
-#: templates/notes/note_list.html:102
+#: templates/notes/note_list.html:105
 msgid "Create your first note to save important information"
 msgstr "创建第一个笔记来保存重要信息"
 
-#: templates/notes/note_list.html:103
+#: templates/notes/note_list.html:106
 msgid "Create Note"
 msgstr "创建笔记"
 

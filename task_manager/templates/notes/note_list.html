@@ -83,6 +83,9 @@
                                         <i class="bi bi-person"></i> {% trans "Personal" %}
                                     </span>
                                     {% endif %}
+                                    {% if note.files.exists %}
+                                    <i class="bi bi-paperclip text-muted" title="{% trans 'Has attachments' %}"></i>
+                                    {% endif %}
                                 </div>
                                 <span class="text-muted small">
                                     <i class="bi bi-person"></i> {{ note.author.display_name|default:_("Deleted user") }}

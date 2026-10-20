@@ -90,6 +90,16 @@
     "zh-hans": "图片",
     "kk": "сурет"
   },
+  "file": {
+    "en": "file",
+    "ru": "файл",
+    "az": "fayl",
+    "ky": "файл",
+    "tg": "файл",
+    "es": "archivo",
+    "zh-hans": "文件",
+    "kk": "файл"
+  },
   "password": {
     "en": "password",
     "ru": "пароль",

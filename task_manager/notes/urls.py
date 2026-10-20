@@ -8,6 +8,8 @@ from task_manager.notes.views import (
     NoteDeleteView,
     NoteImageDetailView,
     NoteImageDeleteView,
+    NoteFileDownloadView,
+    NoteFileDeleteView,
 )
 
 
@@ -36,4 +38,10 @@ urlpatterns = [
     path('images/<int:pk>/delete/',
          NoteImageDeleteView.as_view(),
          name='note-image-delete'),
+    path('<uuid:uuid>/files/<int:pk>/download/',
+         NoteFileDownloadView.as_view(),
+         name='note-file-download'),
+    path('files/<int:pk>/delete/',
+         NoteFileDeleteView.as_view(),
+         name='note-file-delete'),
 ]

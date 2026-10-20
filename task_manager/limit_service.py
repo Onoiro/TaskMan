@@ -43,6 +43,7 @@ class LimitService:
         'personal_notes': _('personal notes'),
         'team_notes': _('team notes'),
         'note_images': _('note images'),
+        'note_files': _('note files'),
         'checklist_items': _('checklist items'),
     }
 
@@ -249,6 +250,23 @@ class LimitService:
             allowed=allowed,
             current=current,
             maximum=max_images,
+            message=message
+        )
+
+    def can_add_note_files(self, note, additional: int) -> LimitCheckResult:
+        """Check if more files can be attached to a note."""
+        current = note.files.count() if note.pk else 0
+        max_files = self.limits.max_note_files
+
+        allowed = current + additional <= max_files
+        message = ""
+        if not allowed:
+            message = self._get_limit_message('note_files', max_files)
+
+        return LimitCheckResult(
+            allowed=allowed,
+            current=current,
+            maximum=max_files,
             message=message
         )
 

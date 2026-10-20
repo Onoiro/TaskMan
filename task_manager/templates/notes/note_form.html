@@ -110,7 +110,7 @@
                                 ```code```
                                 <br>
                                 <i class="bi bi-info-circle"></i>
-                                {% trans "Text is optional if you attach at least one image." %}
+                                {% trans "Text is optional if you attach at least one image or file." %}
                             </div>
                         </div>
 
@@ -166,6 +166,56 @@
                                 </div>
                                 {% endfor %}
                             </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Attachments upload -->
+                        <div class="mb-3">
+                            <label class="form-label small text-muted mb-1" for="id_attachments">
+                                {% trans "Attachments" %}
+                            </label>
+                            <input type="file"
+                                   class="form-control"
+                                   name="attachments"
+                                   id="id_attachments"
+                                   multiple>
+                            <div class="form-text">
+                                <i class="bi bi-paperclip"></i>
+                                {% blocktrans trimmed with max_mb=10 max_count=10 %}
+                                Up to {{ max_count }} files per note, {{ max_mb }} MB each.
+                                {% endblocktrans %}
+                            </div>
+                            <!-- List of newly selected files -->
+                            <ul id="attachment-upload-names"
+                                 class="list-unstyled mb-0 mt-2 d-none"></ul>
+                        </div>
+
+                        <!-- Existing files (edit mode) -->
+                        {% if object.pk and object.files.all %}
+                        <div class="mb-3">
+                            <span class="form-label small text-muted mb-1 d-block">
+                                {% trans "Attached files" %}
+                            </span>
+                            <ul class="list-group">
+                                {% for attachment in object.files.all %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center" id="existing-file-{{ attachment.pk }}">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-file-earmark text-muted"></i>
+                                        <span class="small">{{ attachment.original_name }}</span>
+                                        <span class="text-muted small">{{ attachment.file.size|filesizeformat }}</span>
+                                    </div>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-danger"
+                                            data-delete-file
+                                            data-delete-url="{% url 'notes:note-file-delete' attachment.pk %}"
+                                            data-file-id="existing-file-{{ attachment.pk }}"
+                                            aria-label="{% trans 'Delete' %}"
+                                            title="{% trans 'Delete' %}">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </li>
+                                {% endfor %}
+                            </ul>
                         </div>
                         {% endif %}
                     </div>
@@ -340,6 +390,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // File names of newly selected attachments (no content preview)
+    const fileInput = document.getElementById('id_attachments');
+    const fileList = document.getElementById('attachment-upload-names');
+    if (fileInput && fileList) {
+        fileInput.addEventListener('change', function() {
+            fileList.innerHTML = '';
+            fileList.classList.toggle('d-none', this.files.length === 0);
+            Array.from(this.files).forEach((file) => {
+                const li = document.createElement('li');
+                li.className = 'small text-muted text-truncate';
+                li.title = file.name;
+                li.textContent = file.name;
+                fileList.appendChild(li);
+            });
+        });
+    }
+
     // Delete existing images without leaving the form
     document.querySelectorAll('[data-delete-image]').forEach((btn) => {
         btn.addEventListener('click', function() {
@@ -355,6 +422,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }).then((response) => {
                 if (response.ok) {
                     const el = document.getElementById(imageId);
+                    if (el) el.remove();
+                }
+            }).catch(() => {});
+        });
+    });
+
+    // Delete existing attachments without leaving the form
+    document.querySelectorAll('[data-delete-file]').forEach((btn) => {
+        btn.addEventListener('click', function() {
+            const url = this.dataset.deleteUrl;
+            const rowId = this.dataset.fileId;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector(
+                        '[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    const el = document.getElementById(rowId);
                     if (el) el.remove();
                 }
             }).catch(() => {});

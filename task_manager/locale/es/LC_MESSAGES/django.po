@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"POT-Creation-Date: 2026-10-20 00:29+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,29 +120,33 @@ msgid "note images"
 msgstr "imágenes de notas"
 
 #: limit_service.py:46
+msgid "note files"
+msgstr "archivos de notas"
+
+#: limit_service.py:47
 msgid "checklist items"
 msgstr "artículos de la lista de verificación"
 
-#: notes/forms.py:36 statuses/forms.py:25 teams/forms.py:29
+#: notes/forms.py:54 statuses/forms.py:25 teams/forms.py:29
 #: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "Opcional"
 
-#: notes/forms.py:62
-msgid "Add some text or attach at least one image."
-msgstr "Agregue texto o adjunte al menos una imagen."
+#: notes/forms.py:109
+msgid "Add some text, attach at least one image or file."
+msgstr "Agregue texto o adjunte al menos una imagen o un archivo."
 
-#: notes/forms.py:105
+#: notes/forms.py:134
 msgid "Task must be from the same team."
 msgstr "La tarea debe pertenecer al mismo equipo."
 
-#: notes/forms.py:109
+#: notes/forms.py:138
 msgid "Cannot attach note to team task in individual mode."
 msgstr "No puede adjuntar una nota a una tarea de equipo en modo individual."
 
-#: notes/forms.py:111
+#: notes/forms.py:140
 msgid "You can only attach notes to your own tasks."
 msgstr "Solo puede adjuntar notas a sus tareas."
 
@@ -155,7 +159,7 @@ msgstr "Título"
 msgid "Content"
 msgstr "Contenido"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:120
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -183,9 +187,9 @@ msgstr "Fecha de creación"
 msgid "Updated at"
 msgstr "Fecha de actualización"
 
-#: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
-#: templates/notes/note_form.html:153
+#: notes/models.py:75 notes/models.py:100 notes/models.py:158
+#: templates/feedback.html:28 templates/notes/note_detail.html:81
+#: templates/notes/note_form.html:25 templates/notes/note_form.html:153
 msgid "Note"
 msgstr "Nota"
 
@@ -200,11 +204,11 @@ msgstr "Notas"
 msgid "Image"
 msgstr "URL de la imagen"
 
-#: notes/models.py:108
+#: notes/models.py:108 notes/models.py:170
 msgid "Order"
 msgstr "Orden"
 
-#: notes/models.py:112
+#: notes/models.py:112 notes/models.py:174
 msgid "Uploaded at"
 msgstr "Fecha de carga"
 
@@ -215,6 +219,22 @@ msgstr "Imagen de la nota"
 #: notes/models.py:118
 msgid "Note images"
 msgstr "Imágenes de notas"
+
+#: notes/models.py:162
+msgid "File"
+msgstr "Archivo"
+
+#: notes/models.py:166
+msgid "Original name"
+msgstr "Nombre original"
+
+#: notes/models.py:179
+msgid "Note file"
+msgstr "Archivo de la nota"
+
+#: notes/models.py:180
+msgid "Note files"
+msgstr "Archivos de notas"
 
 #: notes/validators.py:18
 #, python-format
@@ -236,29 +256,50 @@ msgstr ""
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "El archivo \"%(name)s\" está dañado o no es una imagen."
 
-#: notes/views.py:90
+#: notes/validators.py:49
+#, python-format
+msgid "File '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr ""
+"El archivo \"%(name)s\" es demasiado grande. El tamaño máximo es %(max)s MB."
+
+#: notes/validators.py:56
+#, python-format
+msgid ""
+"File '%(name)s' has unsupported format. Allowed formats: PDF, DOC, DOCX, "
+"XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR, TAR, "
+"GZ, TGZ, EML, MSG."
+msgstr ""
+"El formato del archivo \"%(name)s\" no es compatible. Formatos válidos: PDF,"
+" DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z,"
+" RAR, TAR, GZ, TGZ, EML, MSG."
+
+#: notes/views.py:122
 msgid "Note created successfully"
 msgstr "Nota creada correctamente"
 
-#: notes/views.py:159 notes/views.py:334
+#: notes/views.py:191 notes/views.py:366 notes/views.py:438
 msgid "Note can only be edited by its author or team admin."
 msgstr "Solo el autor o el administrador del equipo pueden modificar la nota."
 
-#: notes/views.py:181
+#: notes/views.py:213
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Solo el autor o el administrador del equipo pueden eliminar una nota."
 
-#: notes/views.py:198
+#: notes/views.py:230
 msgid "Note updated successfully"
 msgstr "Nota modificada con éxito"
 
-#: notes/views.py:254
+#: notes/views.py:286
 msgid "Note deleted successfully"
 msgstr "Nota eliminada con éxito"
 
-#: notes/views.py:317
+#: notes/views.py:349
 msgid "Image deleted successfully"
 msgstr "Imagen eliminada con éxito"
+
+#: notes/views.py:421
+msgid "File deleted successfully"
+msgstr "Archivo eliminado con éxito"
 
 #: notifications/models.py:9
 msgid "Task assigned"
@@ -1254,7 +1295,7 @@ msgstr "Soporte de idiomas"
 msgid "Create label"
 msgstr "Crear etiqueta"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:181
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:231
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1265,8 +1306,8 @@ msgstr "Crear"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
-#: templates/notes/note_form.html:190 templates/notes/note_form.html:240
+#: templates/notes/note_detail.html:132 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:240 templates/notes/note_form.html:290
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1310,8 +1351,8 @@ msgid "New label"
 msgstr "Nueva etiqueta"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:43
+#: templates/notes/note_list.html:91 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1350,7 +1391,7 @@ msgstr "Creador"
 msgid "Label"
 msgstr "Etiqueta"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:179
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:229
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
@@ -1358,7 +1399,8 @@ msgid "Save"
 msgstr "Guardar"
 
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
-#: templates/notes/note_form.html:162 templates/notes/note_form.html:197
+#: templates/notes/note_form.html:162 templates/notes/note_form.html:212
+#: templates/notes/note_form.html:213 templates/notes/note_form.html:247
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1432,7 +1474,11 @@ msgstr "Añadir una nota"
 msgid "Untitled Note"
 msgstr "Nota sin título"
 
-#: templates/notes/_task_notes.html:48
+#: templates/notes/_task_notes.html:39 templates/notes/note_list.html:87
+msgid "Has attachments"
+msgstr "Hay archivos adjuntos"
+
+#: templates/notes/_task_notes.html:51
 msgid "No notes for this task"
 msgstr "No hay notas para esta tarea"
 
@@ -1463,29 +1509,37 @@ msgstr "Carga de contenido..."
 msgid "Images"
 msgstr "Imágenes"
 
-#: templates/notes/note_detail.html:104
+#: templates/notes/note_detail.html:96 templates/notes/note_form.html:175
+msgid "Attachments"
+msgstr "Adjuntos"
+
+#: templates/notes/note_detail.html:108
+msgid "Download"
+msgstr "Descargar"
+
+#: templates/notes/note_detail.html:129
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Editar"
 
-#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+#: templates/notes/note_detail.html:145 templates/notes/note_form.html:265
 msgid "Close"
 msgstr "Cerrar"
 
-#: templates/notes/note_detail.html:123
+#: templates/notes/note_detail.html:148
 msgid "Zoom controls"
 msgstr "Controles de zoom"
 
-#: templates/notes/note_detail.html:125
+#: templates/notes/note_detail.html:150
 msgid "Zoom out"
 msgstr "Alejar"
 
-#: templates/notes/note_detail.html:129
+#: templates/notes/note_detail.html:154
 msgid "Reset zoom"
 msgstr "Restablecer zoom"
 
-#: templates/notes/note_detail.html:133
+#: templates/notes/note_detail.html:158
 msgid "Zoom in"
 msgstr "Acercar"
 
@@ -1505,7 +1559,7 @@ msgstr "Crear una nota"
 msgid "Enter note content... Use Markdown for formatting."
 msgstr "Escriba el texto de la nota... Use Markdown para formatear."
 
-#: templates/notes/note_form.html:96 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:286
 msgid "Preview"
 msgstr "Vista previa"
 
@@ -1514,8 +1568,8 @@ msgid "Markdown supported:"
 msgstr "Compatible Con Markdown:"
 
 #: templates/notes/note_form.html:113
-msgid "Text is optional if you attach at least one image."
-msgstr "El texto es opcional si adjunta al menos una imagen."
+msgid "Text is optional if you attach at least one image or file."
+msgstr "El texto es opcional si adjunta al menos una imagen o un archivo."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1530,23 +1584,33 @@ msgstr ""
 msgid "Attached images"
 msgstr "Imágenes adjuntas"
 
-#: templates/notes/note_form.html:213
+#: templates/notes/note_form.html:184
+#, python-format
+msgid "Up to %(max_count)s files per note, %(max_mb)s MB each."
+msgstr ""
+"Hasta %(max_count)s archivos por nota, %(max_mb)s MB como máximo cada uno."
+
+#: templates/notes/note_form.html:197
+msgid "Attached files"
+msgstr "Archivos adjuntos"
+
+#: templates/notes/note_form.html:263
 msgid "Insert Image"
 msgstr "Insertar imagen"
 
-#: templates/notes/note_form.html:220
+#: templates/notes/note_form.html:270
 msgid "Image URL"
 msgstr "URL de la imagen"
 
-#: templates/notes/note_form.html:229
+#: templates/notes/note_form.html:279
 msgid "Description (alt text)"
 msgstr "Descripción (texto alt)"
 
-#: templates/notes/note_form.html:234
+#: templates/notes/note_form.html:284
 msgid "Image description"
 msgstr "Descripción de la imagen"
 
-#: templates/notes/note_form.html:243
+#: templates/notes/note_form.html:293
 msgid "Insert"
 msgstr "Insertar"
 
@@ -1554,15 +1618,15 @@ msgstr "Insertar"
 msgid "New note"
 msgstr "Nueva nota"
 
-#: templates/notes/note_list.html:101
+#: templates/notes/note_list.html:104
 msgid "No notes found"
 msgstr "No hay notas"
 
-#: templates/notes/note_list.html:102
+#: templates/notes/note_list.html:105
 msgid "Create your first note to save important information"
 msgstr "Crea una primera nota para guardar información importante"
 
-#: templates/notes/note_list.html:103
+#: templates/notes/note_list.html:106
 msgid "Create Note"
 msgstr "Crear una nota"
 

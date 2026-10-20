@@ -1012,7 +1012,7 @@ class NoteIntegrationTestCase(TestCase):
         self.assertFalse(Note.objects.exists())
         self.assertContains(
             response,
-            _("Add some text or attach at least one image.")
+            _("Add some text, attach at least one image or file.")
         )
 
     def test_textless_note_shown_with_placeholder_in_list(self):
@@ -1242,11 +1242,11 @@ class NoteFormTestCase(TestCase):
         )
 
     def test_form_rejects_note_without_text_and_images(self):
-        """A note needs text or at least one image."""
+        """A note needs text or at least one attachment."""
         form = self._form({'content': ''})
         self.assertFalse(form.is_valid())
         self.assertIn(
-            _("Add some text or attach at least one image."),
+            _("Add some text, attach at least one image or file."),
             form.non_field_errors()
         )
 

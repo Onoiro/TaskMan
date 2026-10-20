@@ -1,3 +1,4 @@
+import mimetypes
 import os
 
 from django.contrib import messages
@@ -9,9 +10,12 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from task_manager.notes.models import Note, NoteImage
+from task_manager.notes.models import Note, NoteImage, NoteFile
 from task_manager.notes.forms import NoteForm
-from task_manager.notes.validators import validate_image_upload
+from task_manager.notes.validators import (
+    validate_file_upload,
+    validate_image_upload,
+)
 from task_manager.permissions import CustomPermissions
 from task_manager.limit_service import LimitService
 
@@ -39,8 +43,9 @@ class NoteListView(CustomPermissions, ListView):
         if task_uuid:
             queryset = queryset.filter(task__uuid=task_uuid)
 
-        return queryset.select_related('author', 'task'
-                                       ).prefetch_related('team', 'images')
+        return queryset.select_related(
+            'author', 'task'
+        ).prefetch_related('team', 'images', 'files')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -49,11 +54,12 @@ class NoteListView(CustomPermissions, ListView):
 
 
 class NoteImagesMixin:
-    """Shared logic for attaching uploaded images to a note."""
+    """Shared logic for attaching uploaded images/files to a note."""
 
     def form_valid(self, form):
         response = super().form_valid(form)
         self._attach_images(form.instance)
+        self._attach_files(form.instance)
         return response
 
     def _attach_images(self, note):
@@ -77,6 +83,32 @@ class NoteImagesMixin:
             NoteImage.objects.create(
                 note=note,
                 image=uploaded_file,
+                order=order
+            )
+            order += 1
+
+    def _attach_files(self, note):
+        """Validate and save uploaded files for the note."""
+        files = self.request.FILES.getlist('attachments')
+        if not files:
+            return
+
+        service = LimitService(self.request.user)
+        result = service.can_add_note_files(note, len(files))
+        if not result.allowed:
+            messages.warning(self.request, result.message)
+            return
+
+        order = note.files.count()
+        for uploaded_file in files:
+            error = validate_file_upload(uploaded_file)
+            if error:
+                messages.error(self.request, error)
+                continue
+            NoteFile.objects.create(
+                note=note,
+                file=uploaded_file,
+                original_name=uploaded_file.name,
                 order=order
             )
             order += 1
@@ -318,6 +350,78 @@ class NoteImageDeleteView(CustomPermissions, DeleteView):
 
     def get_queryset(self):
         return NoteImage.objects.select_related('note')
+
+    def dispatch(self, request, *args, **kwargs):
+        note = self.get_object().note
+        is_author = note.author == request.user
+        is_team_admin = (
+            note.team
+            and note.team.is_admin(request.user)
+        )
+        is_superuser = request.user.is_superuser
+
+        if not is_author and not is_team_admin and not is_superuser:
+            messages.error(
+                request,
+                _("Note can only be edited by its author or team admin.")
+            )
+            return redirect('notes:note-list')
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'notes:note-detail',
+            kwargs={'uuid': self.object.note.uuid}
+        )
+
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super().form_valid(form)
+
+
+# ---------------------------------------------------------------------------
+# NoteFile views — download & delete
+# ---------------------------------------------------------------------------
+
+
+class NoteFileDownloadView(CustomPermissions, DetailView):
+    """Serve note file attachments privately."""
+
+    model = NoteFile
+
+    def get(self, request, *args, **kwargs):
+        note = get_accessible_note(
+            request.user,
+            getattr(request, 'active_team', None),
+            kwargs['uuid']
+        )
+        fobj = get_object_or_404(NoteFile, pk=kwargs['pk'], note=note)
+
+        if not fobj.file:
+            raise Http404
+
+        fobj.file.open('rb')
+        mime_type, _ = mimetypes.guess_type(fobj.original_name)
+
+        # Django builds a RFC 6266 safe header from original_name
+        return FileResponse(
+            fobj.file.file,
+            content_type=mime_type or 'application/octet-stream',
+            as_attachment=True,
+            filename=fobj.original_name,
+            headers={'X-Content-Type-Options': 'nosniff'}
+        )
+
+
+class NoteFileDeleteView(CustomPermissions, DeleteView):
+    """Delete a single file from a note."""
+
+    model = NoteFile
+    success_message = _('File deleted successfully')
+
+    def get_queryset(self):
+        return NoteFile.objects.select_related('note')
 
     def dispatch(self, request, *args, **kwargs):
         note = self.get_object().note

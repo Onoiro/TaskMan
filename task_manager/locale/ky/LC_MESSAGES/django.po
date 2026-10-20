@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-30 01:13+0300\n"
+"POT-Creation-Date: 2026-10-20 00:29+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Kyrgyz\n"
@@ -118,29 +118,33 @@ msgid "note images"
 msgstr "эскертүү сүрөттөрү"
 
 #: limit_service.py:46
+msgid "note files"
+msgstr "эскертүү файлдары"
+
+#: limit_service.py:47
 msgid "checklist items"
 msgstr "текшерүү тизмесинин пункттары"
 
-#: notes/forms.py:36 statuses/forms.py:25 teams/forms.py:29
+#: notes/forms.py:54 statuses/forms.py:25 teams/forms.py:29
 #: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "Милдеттүү эмес"
 
-#: notes/forms.py:62
-msgid "Add some text or attach at least one image."
-msgstr "Текст кошуңуз же жок дегенде бир сүрөт тиркеңиз."
+#: notes/forms.py:109
+msgid "Add some text, attach at least one image or file."
+msgstr "Текст кошуңуз же жок дегенде бир сүрөттү же файлды тиркеңиз."
 
-#: notes/forms.py:105
+#: notes/forms.py:134
 msgid "Task must be from the same team."
 msgstr "Тапшырма ошол эле командадан болушу керек."
 
-#: notes/forms.py:109
+#: notes/forms.py:138
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Жеке режимде эскертүүнү командалык тапшырмага тиркөөгө болбойт."
 
-#: notes/forms.py:111
+#: notes/forms.py:140
 msgid "You can only attach notes to your own tasks."
 msgstr "Эскертүүлөрдү өзүңүздүн тапшырмаларыңызга гана тиркей аласыз."
 
@@ -153,7 +157,7 @@ msgstr "Аталышы"
 msgid "Content"
 msgstr "Мазмуну"
 
-#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:95
+#: notes/models.py:46 tasks/filters.py:33 templates/notes/note_detail.html:120
 #: templates/notes/note_form.html:42 templates/tasks/task_filter.html:463
 #: templates/tasks/task_update.html:23 templates/user/user_detail.html:80
 #: templates/user/user_detail.html:103 templates/user/user_detail.html:129
@@ -181,9 +185,9 @@ msgstr "Түзүлгөн күнү"
 msgid "Updated at"
 msgstr "Жаңыртылган күнү"
 
-#: notes/models.py:75 notes/models.py:100 templates/feedback.html:28
-#: templates/notes/note_detail.html:81 templates/notes/note_form.html:25
-#: templates/notes/note_form.html:153
+#: notes/models.py:75 notes/models.py:100 notes/models.py:158
+#: templates/feedback.html:28 templates/notes/note_detail.html:81
+#: templates/notes/note_form.html:25 templates/notes/note_form.html:153
 msgid "Note"
 msgstr "Эскертүү"
 
@@ -198,11 +202,11 @@ msgstr "Эскертүүлөр"
 msgid "Image"
 msgstr "Сүрөттүн URL"
 
-#: notes/models.py:108
+#: notes/models.py:108 notes/models.py:170
 msgid "Order"
 msgstr "Тартиби"
 
-#: notes/models.py:112
+#: notes/models.py:112 notes/models.py:174
 msgid "Uploaded at"
 msgstr "Жүктөлгөн күнү"
 
@@ -213,6 +217,22 @@ msgstr "Белгинин сүрөтү"
 #: notes/models.py:118
 msgid "Note images"
 msgstr "Белги сүрөттөрү"
+
+#: notes/models.py:162
+msgid "File"
+msgstr "Файл"
+
+#: notes/models.py:166
+msgid "Original name"
+msgstr "Түпнуска аты"
+
+#: notes/models.py:179
+msgid "Note file"
+msgstr "Эскертүү файлы"
+
+#: notes/models.py:180
+msgid "Note files"
+msgstr "Эскертүү файлдары"
 
 #: notes/validators.py:18
 #, python-format
@@ -233,29 +253,49 @@ msgstr ""
 msgid "Image '%(name)s' is corrupted or not a valid image."
 msgstr "«%(name)s» файлы бузулган же сүрөт эмес."
 
-#: notes/views.py:90
+#: notes/validators.py:49
+#, python-format
+msgid "File '%(name)s' is too large. Maximum size is %(max)s MB."
+msgstr "«%(name)s» файлы өтө чоң. Максималдуу өлчөмү — %(max)s МБ."
+
+#: notes/validators.py:56
+#, python-format
+msgid ""
+"File '%(name)s' has unsupported format. Allowed formats: PDF, DOC, DOCX, "
+"XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR, TAR, "
+"GZ, TGZ, EML, MSG."
+msgstr ""
+"«%(name)s» файлынын форматы колдоого алынбайт. Уруксат берилген форматтар: "
+"PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP,"
+" 7Z, RAR, TAR, GZ, TGZ, EML, MSG."
+
+#: notes/views.py:122
 msgid "Note created successfully"
 msgstr "Эскертүү ийгиликтүү түзүлдү"
 
-#: notes/views.py:159 notes/views.py:334
+#: notes/views.py:191 notes/views.py:366 notes/views.py:438
 msgid "Note can only be edited by its author or team admin."
 msgstr "Эскертүүнү анын автору же команда админи гана өзгөртө алат."
 
-#: notes/views.py:181
+#: notes/views.py:213
 msgid "Note can only be deleted by its author or team admin."
 msgstr "Эскертүүнү анын автору же команда админи гана өчүрө алат."
 
-#: notes/views.py:198
+#: notes/views.py:230
 msgid "Note updated successfully"
 msgstr "Эскертүү ийгиликтүү жаңыртылды"
 
-#: notes/views.py:254
+#: notes/views.py:286
 msgid "Note deleted successfully"
 msgstr "Эскертүү ийгиликтүү өчүрүлдү"
 
-#: notes/views.py:317
+#: notes/views.py:349
 msgid "Image deleted successfully"
 msgstr "Сүрөт ийгиликтүү өчүрүлдү"
+
+#: notes/views.py:421
+msgid "File deleted successfully"
+msgstr "Файл ийгиликтүү өчүрүлдү"
 
 #: notifications/models.py:9
 msgid "Task assigned"
@@ -1241,7 +1281,7 @@ msgstr "Тил колдоосу"
 msgid "Create label"
 msgstr "Тег түзүү"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:181
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:231
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1252,8 +1292,8 @@ msgstr "Түзүү"
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
 #: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:107 templates/notes/note_form.html:186
-#: templates/notes/note_form.html:190 templates/notes/note_form.html:240
+#: templates/notes/note_detail.html:132 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:240 templates/notes/note_form.html:290
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
@@ -1297,8 +1337,8 @@ msgid "New label"
 msgstr "Жаңы тег"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
-#: templates/notes/note_detail.html:95 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:88 templates/tasks/task_filter.html:464
+#: templates/notes/note_detail.html:120 templates/notes/note_form.html:43
+#: templates/notes/note_list.html:91 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1337,7 +1377,7 @@ msgstr "Түзүүчү"
 msgid "Label"
 msgstr "Тег"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:179
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:229
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
@@ -1345,7 +1385,8 @@ msgid "Save"
 msgstr "Сактоо"
 
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
-#: templates/notes/note_form.html:162 templates/notes/note_form.html:197
+#: templates/notes/note_form.html:162 templates/notes/note_form.html:212
+#: templates/notes/note_form.html:213 templates/notes/note_form.html:247
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1419,7 +1460,11 @@ msgstr "Эскертүү кошуу"
 msgid "Untitled Note"
 msgstr "Аталышсыз эскертме"
 
-#: templates/notes/_task_notes.html:48
+#: templates/notes/_task_notes.html:39 templates/notes/note_list.html:87
+msgid "Has attachments"
+msgstr "Тиркемелер бар"
+
+#: templates/notes/_task_notes.html:51
 msgid "No notes for this task"
 msgstr "Бул тапшырма үчүн эскертүүлөр жок"
 
@@ -1450,29 +1495,37 @@ msgstr "Мазмун жүктөлүүдө..."
 msgid "Images"
 msgstr "Сүрөттөр"
 
-#: templates/notes/note_detail.html:104
+#: templates/notes/note_detail.html:96 templates/notes/note_form.html:175
+msgid "Attachments"
+msgstr "Тиркемелер"
+
+#: templates/notes/note_detail.html:108
+msgid "Download"
+msgstr "Жүктөп алуу"
+
+#: templates/notes/note_detail.html:129
 #: templates/statuses/statuses_list.html:73
 #: templates/teams/team_update.html:26 templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Өзгөртүү"
 
-#: templates/notes/note_detail.html:120 templates/notes/note_form.html:215
+#: templates/notes/note_detail.html:145 templates/notes/note_form.html:265
 msgid "Close"
 msgstr "Жабуу"
 
-#: templates/notes/note_detail.html:123
+#: templates/notes/note_detail.html:148
 msgid "Zoom controls"
 msgstr "Масштабды башкаруу"
 
-#: templates/notes/note_detail.html:125
+#: templates/notes/note_detail.html:150
 msgid "Zoom out"
 msgstr "Кичирейтүү"
 
-#: templates/notes/note_detail.html:129
+#: templates/notes/note_detail.html:154
 msgid "Reset zoom"
 msgstr "Масштабды баштапкы абалга келтирүү"
 
-#: templates/notes/note_detail.html:133
+#: templates/notes/note_detail.html:158
 msgid "Zoom in"
 msgstr "Чоңойтуу"
 
@@ -1493,7 +1546,7 @@ msgid "Enter note content... Use Markdown for formatting."
 msgstr ""
 "Эскертүүнүн мазмунун киргизиңиз... Форматтоо үчүн Markdown'ду колдонуңуз."
 
-#: templates/notes/note_form.html:96 templates/notes/note_form.html:236
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:286
 msgid "Preview"
 msgstr "Алдын ала көрүү"
 
@@ -1502,8 +1555,8 @@ msgid "Markdown supported:"
 msgstr "Markdown колдоого алынат:"
 
 #: templates/notes/note_form.html:113
-msgid "Text is optional if you attach at least one image."
-msgstr "Эгер Сиз жок дегенде бир сүрөт тиркесеңиз, Текст милдеттүү эмес."
+msgid "Text is optional if you attach at least one image or file."
+msgstr "Эгер жок дегенде бир сүрөт же файл тиркесеңиз, текст милдеттүү эмес."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1518,23 +1571,34 @@ msgstr ""
 msgid "Attached images"
 msgstr "Тиркелген сүрөттөр"
 
-#: templates/notes/note_form.html:213
+#: templates/notes/note_form.html:184
+#, python-format
+msgid "Up to %(max_count)s files per note, %(max_mb)s MB each."
+msgstr ""
+"Ар бир эскертүү үчүн %(max_count)s файлга чейин, ар бири %(max_mb)s МБ "
+"ашпаган."
+
+#: templates/notes/note_form.html:197
+msgid "Attached files"
+msgstr "Тиркелген файлдар"
+
+#: templates/notes/note_form.html:263
 msgid "Insert Image"
 msgstr "Сүрөт киргизүү"
 
-#: templates/notes/note_form.html:220
+#: templates/notes/note_form.html:270
 msgid "Image URL"
 msgstr "Сүрөттүн URL-дареги"
 
-#: templates/notes/note_form.html:229
+#: templates/notes/note_form.html:279
 msgid "Description (alt text)"
 msgstr "Сүрөттөмө (alt-текст)"
 
-#: templates/notes/note_form.html:234
+#: templates/notes/note_form.html:284
 msgid "Image description"
 msgstr "Сүрөттүн сүрөттөмөсү"
 
-#: templates/notes/note_form.html:243
+#: templates/notes/note_form.html:293
 msgid "Insert"
 msgstr "Киргизүү"
 
@@ -1542,15 +1606,15 @@ msgstr "Киргизүү"
 msgid "New note"
 msgstr "Жаңы эскертүү"
 
-#: templates/notes/note_list.html:101
+#: templates/notes/note_list.html:104
 msgid "No notes found"
 msgstr "Эскертүүлөр табылган жок"
 
-#: templates/notes/note_list.html:102
+#: templates/notes/note_list.html:105
 msgid "Create your first note to save important information"
 msgstr "Маанилүү маалыматты сактоо үчүн биринчи эскертүүңүздү түзүңүз"
 
-#: templates/notes/note_list.html:103
+#: templates/notes/note_list.html:106
 msgid "Create Note"
 msgstr "Эскертүү түзүү"
 
