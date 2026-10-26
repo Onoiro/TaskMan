@@ -124,8 +124,11 @@ class SwitchTeamView(View):
         if ('/tasks/' in referer
                 and ('/update/' in referer or '/delete/' in referer)):
             return 'tasks:tasks-list'
+        # Every note page except "create" points to one team-owned note.
+        # After a switch that note is outside the active team, so the URL
+        # would return 404 (detail, update, delete, image and file pages).
         if ('/notes/' in referer
-                and ('/update/' in referer or '/delete/' in referer)):
+                and '/notes/create/' not in referer):
             return 'notes:note-list'
         # Redirect to tasks list if no referer provided
         return referer or 'tasks:tasks-list'

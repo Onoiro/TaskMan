@@ -1,6 +1,7 @@
 from task_manager.user.models import User
 from task_manager.teams.models import Team, TeamMembership
 from task_manager.teams.views import TeamExitView
+from task_manager.notes.models import Note
 from task_manager.limit_service import LimitService
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -2456,6 +2457,73 @@ class TeamTestCase(TestCase):
 
         # check redirect to notes list
         self.assertRedirects(response, reverse('notes:note-list'))
+
+    def test_switch_team_redirect_from_note_detail(self):
+        """test redirect to notes list when switching from a note
+        detail page of the previous team (404 regression)"""
+        # ensure user is a member of both teams
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+        other_team = Team.objects.get(pk=2)
+        if not other_team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=other_team,
+                role='admin'
+            )
+
+        # note belongs to the first team
+        note = Note.objects.create(
+            title='Team note',
+            content='Content',
+            author=self.admin_user,
+            team=self.team
+        )
+
+        # active team is the note's team
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+
+        # switch to the other team from the note detail page
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(other_team.uuid)},
+            HTTP_REFERER=f'/notes/{note.uuid}/',
+            follow=True
+        )
+
+        # must not stay on note detail (it 404s in the new team context)
+        self.assertRedirects(response, reverse('notes:note-list'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_switch_team_keeps_note_create_page(self):
+        """test redirect keeps note create page when switching teams"""
+        # ensure user is a member of the team
+        if not self.team.is_member(self.admin_user):
+            TeamMembership.objects.create(
+                user=self.admin_user,
+                team=self.team,
+                role='admin'
+            )
+
+        # switch to team from the note create page
+        response = self.c.post(
+            reverse('teams:switch-team'),
+            {'team_uuid': str(self.team.uuid)},
+            HTTP_REFERER='/notes/create/',
+            follow=False
+        )
+
+        # create page is not team-bound, stay there
+        self.assertRedirects(
+            response, '/notes/create/',
+            status_code=302, fetch_redirect_response=False
+        )
 
     # Switch team without referer test
 
