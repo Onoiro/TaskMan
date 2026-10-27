@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
 
-            <form method="post" enctype="multipart/form-data" class="h-100 d-flex flex-column">
+            <form method="post" enctype="multipart/form-data" class="h-100 d-flex flex-column" id="note-form">
                 {% csrf_token %}
 
                 <!-- Meta information block -->
@@ -224,12 +224,15 @@
                 <!-- Action bar -->
                 <div class="d-grid gap-2 d-md-flex align-items-md-center justify-content-md-between mb-5">
                     <div class="d-grid gap-2 d-md-flex">
-                        <button type="submit" class="btn btn-primary px-md-4 py-2 fw-bold">
-                            {% if object.pk %}
-                                {% trans "Save" %}
-                            {% else %}
-                                {% trans "Create" %}
-                            {% endif %}
+                        <button type="submit" class="btn btn-primary px-md-4 py-2 fw-bold" id="note-submit-btn">
+                            <span class="spinner-border spinner-border-sm me-2 d-none" id="note-submit-spinner" role="status" aria-hidden="true"></span>
+                            <span id="note-submit-label">
+                                {% if object.pk %}
+                                    {% trans "Save" %}
+                                {% else %}
+                                    {% trans "Create" %}
+                                {% endif %}
+                            </span>
                         </button>
                         {% if request.GET.task %}
                         <a href="{% url 'tasks:task-update' request.GET.task %}" class="btn btn-outline-secondary px-md-4 py-2">
@@ -404,6 +407,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 li.textContent = file.name;
                 fileList.appendChild(li);
             });
+        });
+    }
+
+    // Disable submit button and show spinner on form submit
+    var noteForm = document.getElementById('note-form');
+    if (noteForm) {
+        var submitBtn = document.getElementById('note-submit-btn');
+        var submitSpinner = document.getElementById('note-submit-spinner');
+        var submitLabel = document.getElementById('note-submit-label');
+        var submitText = submitLabel.textContent.trim();
+        noteForm.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitSpinner.classList.remove('d-none');
+            submitLabel.textContent = '{% trans "Saving..." %}';
+        });
+        // Coming back via browser back button (bfcache) must restore the button
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                submitBtn.disabled = false;
+                submitSpinner.classList.add('d-none');
+                submitLabel.textContent = submitText;
+            }
         });
     }
 

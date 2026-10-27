@@ -1383,6 +1383,10 @@ msgstr "Белгі"
 msgid "Save"
 msgstr "Сақтау"
 
+#: templates/notes/note_form.html:231
+msgid "Saving..."
+msgstr "Сақталуда..."
+
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
 #: templates/notes/note_form.html:162 templates/notes/note_form.html:212
 #: templates/notes/note_form.html:213 templates/notes/note_form.html:247
