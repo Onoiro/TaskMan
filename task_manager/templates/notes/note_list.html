@@ -47,7 +47,7 @@
                                         {{ note.title }}
                                     </a>
                                     {% elif note.content %}
-                                    <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-muted small stretched-link">
+                                    <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-muted small stretched-link text-break">
                                         {{ note.content|truncatechars:80 }}
                                     </a>
                                     {% else %}
@@ -63,7 +63,7 @@
                             </div>
 
                             {% if note.title and note.content %}
-                            <p class="text-muted small mb-2 text-truncate-2">{{ note.content|truncatechars:100 }}</p>
+                            <p class="text-muted small mb-2 text-truncate-2 text-break">{{ note.content|truncatechars:100 }}</p>
                             {% endif %}
 
                             <!-- Bottom row: Task link + Author -->

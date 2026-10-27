@@ -16,6 +16,13 @@
     text-overflow: ellipsis;
 }
 
+/* Bootstrap has no min-width utility. Flex children default to min-width:auto,
+   so a long unbreakable word (file name, note content) pushes the row wider
+   than the screen and hides the buttons on mobile. */
+.min-width-0 {
+    min-width: 0;
+}
+
 .tiny-text {
     font-size: 0.75rem;
 }

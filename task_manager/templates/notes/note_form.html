@@ -199,13 +199,13 @@
                             <ul class="list-group">
                                 {% for attachment in object.files.all %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center" id="existing-file-{{ attachment.pk }}">
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex align-items-center gap-2 min-width-0">
                                         <i class="bi bi-file-earmark text-muted"></i>
-                                        <span class="small">{{ attachment.original_name }}</span>
+                                        <span class="small text-break">{{ attachment.original_name }}</span>
                                         <span class="text-muted small">{{ attachment.file.size|filesizeformat }}</span>
                                     </div>
                                     <button type="button"
-                                            class="btn btn-sm btn-outline-danger"
+                                            class="btn btn-sm btn-outline-danger flex-shrink-0"
                                             data-delete-file
                                             data-delete-url="{% url 'notes:note-file-delete' attachment.pk %}"
                                             data-file-id="existing-file-{{ attachment.pk }}"
