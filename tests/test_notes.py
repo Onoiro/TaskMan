@@ -997,23 +997,21 @@ class NoteIntegrationTestCase(TestCase):
         self.assertEqual(note.content, '')
         self.assertEqual(note.images.count(), 1)
 
-    def test_create_note_without_text_and_images_is_rejected(self):
-        """An empty note is not saved and the form reports the problem."""
+    def test_create_note_without_text_is_accepted(self):
+        """A note without content can be created with a title."""
         session = self.c.session
         session['active_team_uuid'] = str(self.team.uuid)
         session.save()
 
         response = self.c.post(
             reverse('notes:note-create'),
-            {'content': ''},
+            {'title': 'My Note', 'content': ''},
+            follow=True
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Note.objects.exists())
-        self.assertContains(
-            response,
-            _("Add some text, attach at least one image or file.")
-        )
+        note = Note.objects.get(title='My Note')
+        self.assertEqual(note.content, '')
 
     def test_textless_note_shown_with_placeholder_in_list(self):
         """A textless note is marked as untitled in the note list."""
@@ -1241,20 +1239,15 @@ class NoteFormTestCase(TestCase):
             request=request
         )
 
-    def test_form_rejects_note_without_text_and_images(self):
-        """A note needs text or at least one attachment."""
+    def test_form_accepts_note_without_text_and_images(self):
+        """An empty note is valid: a placeholder note can be filled later."""
         form = self._form({'content': ''})
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            _("Add some text, attach at least one image or file."),
-            form.non_field_errors()
-        )
+        self.assertTrue(form.is_valid())
 
-    def test_form_rejects_whitespace_only_content(self):
-        """Whitespace-only content counts as missing text."""
+    def test_form_accepts_whitespace_only_content(self):
+        """Whitespace-only content is stored as given."""
         form = self._form({'content': '   \n  '})
-        self.assertFalse(form.is_valid())
-        self.assertTrue(form.non_field_errors())
+        self.assertTrue(form.is_valid())
 
     def test_form_accepts_text_without_images(self):
         """Text alone is still enough."""
@@ -1269,47 +1262,21 @@ class NoteFormTestCase(TestCase):
         )
         self.assertTrue(form.is_valid())
 
-    def test_form_rejects_textless_note_with_invalid_file(self):
-        """A rejected file cannot justify a textless note."""
+    def test_form_does_not_validate_uploaded_files(self):
+        """File validation lives in the views, the form accepts any files."""
         form = self._form(
             {'content': ''},
             files={'images': [make_text_file('fake.png')]}
         )
-        self.assertFalse(form.is_valid())
-        self.assertIn(
-            "fake.png", str(form.non_field_errors())
-        )
-
-    def test_form_rejects_textless_note_over_image_limit(self):
-        """Files beyond the image limit cannot justify a textless note."""
-        files = [make_image_file(f'{i}.png') for i in range(11)]
-        form = self._form({'content': ''}, files={'images': files})
-        self.assertFalse(form.is_valid())
-        self.assertTrue(form.non_field_errors())
-
-    def test_form_keeps_text_note_with_invalid_file(self):
-        """A file error must not block a note that has text."""
-        form = self._form(
-            {'content': 'Some text'},
-            files={'images': [make_text_file('fake.png')]}
-        )
         self.assertTrue(form.is_valid())
 
-    def test_form_accepts_textless_update_when_images_exist(self):
-        """Existing images keep a note valid when its text is removed."""
-        note = Note.objects.create(
-            title='Note',
-            content='Content',
-            author=self.user,
-            team=None
-        )
-        note.images.create(image=make_image_file('photo.png'), order=0)
-
-        form = self._form({'content': ''}, instance=note)
+    def test_form_accepts_note_with_title_only(self):
+        """A note with a title and no content is valid."""
+        form = self._form({'title': 'Only title', 'content': ''})
         self.assertTrue(form.is_valid())
 
-    def test_form_rejects_textless_update_without_images(self):
-        """Removing the last text from a textless note is not allowed."""
+    def test_form_accepts_content_update_to_empty(self):
+        """Removing the text from a note is allowed."""
         note = Note.objects.create(
             title='Note',
             content='Content',
@@ -1318,8 +1285,7 @@ class NoteFormTestCase(TestCase):
         )
 
         form = self._form({'content': ''}, instance=note)
-        self.assertFalse(form.is_valid())
-        self.assertTrue(form.non_field_errors())
+        self.assertTrue(form.is_valid())
 
 
 class NoteViewsEdgeCasesTestCase(TestCase):

@@ -1,29 +1,17 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from task_manager.limit_service import LimitService
 from task_manager.notes.models import Note
-from task_manager.notes.validators import (
-    validate_file_upload,
-    validate_image_upload,
-)
 from task_manager.tasks.models import Task
-
-
-# Upload inputs of the note form: input name, validator, limit check.
-# Templates render these inputs directly, so the form only validates them.
-UPLOAD_KINDS = [
-    ('images', validate_image_upload, LimitService.can_add_note_images),
-    ('attachments', validate_file_upload, LimitService.can_add_note_files),
-]
 
 
 class NoteForm(forms.ModelForm):
     """Note fields.
 
     Uploads ('images' and 'attachments') are not form fields: templates
-    render the inputs and views read them from request.FILES, so the form
-    only has to reject a note that would end up completely empty.
+    render the inputs and views read them from request.FILES and validate
+    them there. A note may be saved with any combination of fields, even
+    an empty one, so users can keep a placeholder and fill it in later.
     """
 
     class Meta:
@@ -52,62 +40,6 @@ class NoteForm(forms.ModelForm):
         # Make task field not required
         self.fields['task'].required = False
         self.fields['task'].help_text = _("Optional")
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        content = (cleaned_data.get('content') or '').strip()
-        if content:
-            return cleaned_data
-
-        error = self._get_textless_note_error()
-        if error is not None:
-            raise forms.ValidationError(error)
-
-        return cleaned_data
-
-    def _has_existing_uploads(self):
-        """Check whether the saved note already keeps any attachment."""
-        if not self.instance.pk:
-            return False
-        return self.instance.images.exists() or self.instance.files.exists()
-
-    def _get_upload_error(self, files, validate, limit_check):
-        """Validate one upload input and check the plan limit for it."""
-        for uploaded_file in files:
-            error = validate(uploaded_file)
-            if error is not None:
-                return error
-
-        if self.request is None or not self.request.user.is_authenticated:
-            return None
-
-        service = LimitService(self.request.user)
-        result = limit_check(service, self.instance, len(files))
-        return result.message if not result.allowed else None
-
-    def _get_textless_note_error(self):
-        """Return an error message when the textless note cannot be saved.
-
-        Text is optional only while the note keeps an image or a file, so
-        uploads have to pass both the format check and the plan limit.
-        """
-        if self._has_existing_uploads():
-            return None
-
-        uploaded_any = False
-        for input_name, validate, limit_check in UPLOAD_KINDS:
-            files = self.files.getlist(input_name)
-            if not files:
-                continue
-            error = self._get_upload_error(files, validate, limit_check)
-            if error is not None:
-                return error
-            uploaded_any = True
-
-        if not uploaded_any:
-            return _("Add some text, attach at least one image or file.")
-        return None
 
     def clean_task(self):
         task = self.cleaned_data.get('task')

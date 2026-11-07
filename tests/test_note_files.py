@@ -372,16 +372,18 @@ class NoteFileFormTestCase(TestCase):
         self.assertEqual(note.content, '')
         self.assertEqual(note.files.count(), 1)
 
-    def test_create_note_without_text_and_files_is_rejected(self):
-        """Empty note is rejected and the message mentions files too."""
+    def test_create_note_without_text_is_accepted(self):
+        """A note without text and files is created as a placeholder."""
         response = self.client.post(
             reverse('notes:note-create'),
-            {'content': ''},
+            {'title': 'Placeholder', 'content': ''},
+            follow=True
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Note.objects.exists())
-        self.assertContains(response, 'attachments')
+        note = Note.objects.get(author=self.user)
+        self.assertEqual(note.title, 'Placeholder')
+        self.assertEqual(note.content, '')
 
     def test_textless_note_kept_when_files_exist(self):
         """Existing attachments keep a note valid when its text is removed."""
