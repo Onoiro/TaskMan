@@ -1470,3 +1470,98 @@ class NoteViewsEdgeCasesTestCase(TestCase):
 
         self.assertFalse(Note.objects.filter(pk=note.pk).exists())
         self.assertRedirects(response, reverse('notes:note-list'))
+
+
+# ---------------------------------------------------------------------------
+# Integration tests for markdown-lite rendering in note lists
+# ---------------------------------------------------------------------------
+
+
+class NoteMarkdownLiteIntegrationTestCase(TestCase):
+    """Verify that note list renders markdown-lite and not raw syntax."""
+
+    fixtures = [
+        "tests/fixtures/test_users.json",
+        "tests/fixtures/test_teams.json",
+        "tests/fixtures/test_teams_memberships.json",
+        "tests/fixtures/test_statuses.json",
+        "tests/fixtures/test_tasks.json",
+        "tests/fixtures/test_labels.json",
+    ]
+
+    def setUp(self):
+        self.user = User.objects.get(username='me')
+        self.team = Team.objects.get(pk=1)
+        self.task = Task.objects.get(name="first task")
+        self.c = Client()
+        self.c.force_login(self.user)
+
+    def test_heading_markers_stripped_in_list(self):
+        """Raw '##' must not appear in the rendered note list."""
+        Note.objects.create(
+            title="",
+            content="## Heading content",
+            author=self.user,
+            team=None
+        )
+        session = self.c.session
+        session['active_team_uuid'] = None
+        session.save()
+        response = self.c.get(reverse('notes:note-list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("## Heading content", response.content.decode())
+        # Heading markers removed, content rendered as lite HTML
+        self.assertIn("md-lite", response.content.decode())
+
+    def test_bold_rendered_in_list(self):
+        """**bold** should appear as <strong> in the note list."""
+        Note.objects.create(
+            title="",
+            content="Some **bold** text",
+            author=self.user,
+            team=None
+        )
+        session = self.c.session
+        session['active_team_uuid'] = None
+        session.save()
+        response = self.c.get(reverse('notes:note-list'))
+        self.assertIn("<strong>bold</strong>", response.content.decode())
+
+    def test_xss_safe_in_list(self):
+        """Raw HTML / script tags must be escaped in the note list."""
+        Note.objects.create(
+            title="",
+            content="<script>alert('xss')</script>",
+            author=self.user,
+            team=None
+        )
+        session = self.c.session
+        session['active_team_uuid'] = None
+        session.save()
+        response = self.c.get(reverse('notes:note-list'))
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        # The note content itself must be escaped
+        self.assertNotIn("<script>alert('xss')</script>", html)
+        self.assertIn("&lt;script&gt;", html)
+
+    def test_task_notes_section_rendered(self):
+        """Notes attached to a task should render markdown-lite in section."""
+        Note.objects.create(
+            title="",
+            content="**task note** content",
+            author=self.user,
+            team=self.team,
+            task=self.task
+        )
+        session = self.c.session
+        session['active_team_uuid'] = str(self.team.uuid)
+        session.save()
+        response = self.c.get(
+            reverse('tasks:task-update', args=[self.task.uuid])
+        )
+        self.assertEqual(response.status_code, 200)
+        # Markdown should be rendered, not raw
+        self.assertIn("<strong>task note</strong>", response.content.decode())
+        self.assertNotIn("**task note**", response.content.decode())
+        self.assertIn("md-lite", response.content.decode())

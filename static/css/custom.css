@@ -336,3 +336,37 @@ footer {
     flex-shrink: 0;
     background-color: #dee2e6;
 }
+
+/* ===== Markdown-lite in note lists ===== */
+
+/* Headings are flattened to bold text, not real h1-h6: a list card must
+   stay compact, so size grows only slightly over the snippet body. */
+.md-lite-h {
+    font-weight: 700;
+    font-size: 1.05em;
+    color: var(--bs-body-color);
+}
+
+/* Blockquote keeps the em style and a left rule to read as a quote. */
+.md-lite-quote {
+    padding-left: 0.4em;
+    border-left: 2px solid var(--bs-border-color);
+    color: var(--bs-secondary-color);
+}
+
+/* Inline code on a muted small snippet needs its own contrast,
+   otherwise the pale background disappears in dark theme. */
+.md-lite code,
+.md-lite-inline code {
+    padding: 0.1em 0.3em;
+    border-radius: 0.25rem;
+    background-color: var(--tm-bg-secondary);
+    font-size: 0.9em;
+    word-break: break-word;
+}
+
+/* Paragraph breaks rendered as <br> must not add empty lines
+   when several appear from a truncated block. */
+.md-lite br + br {
+    display: none;
+}

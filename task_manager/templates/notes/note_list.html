@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% load i18n %}
+{% load note_markdown %}
 
 {% block content %}
 <div class="container wrapper flex-grow-1 py-3 py-lg-4">
@@ -48,7 +49,7 @@
                                     </a>
                                     {% elif note.content %}
                                     <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-muted small stretched-link text-break">
-                                        {{ note.content|truncatechars:80 }}
+                                        {{ note.content|md_lite_plain:80 }}
                                     </a>
                                     {% else %}
                                     <a href="{% url 'notes:note-detail' note.uuid %}" class="text-decoration-none text-muted small fst-italic stretched-link">
@@ -63,7 +64,7 @@
                             </div>
 
                             {% if note.title and note.content %}
-                            <p class="text-muted small mb-2 text-truncate-2 text-break">{{ note.content|truncatechars:100 }}</p>
+                            <p class="text-muted small mb-2 text-truncate-2 text-break">{{ note.content|md_lite:100 }}</p>
                             {% endif %}
 
                             <!-- Bottom row: Task link + Author -->

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 {% load i18n %}
+{% load note_markdown %}
 
 {% block title %}
   {% trans "Delete note" %}
@@ -21,7 +22,7 @@
             {% endif %}
 
             <p class="text-muted small mb-0">
-                {{ object.content|truncatechars:150 }}
+                {{ object.content|md_lite:150 }}
             </p>
         </div>
     </div>
