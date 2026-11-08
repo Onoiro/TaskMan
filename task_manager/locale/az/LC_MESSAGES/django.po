@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 00:29+0300\n"
+"POT-Creation-Date: 2026-11-08 11:23+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Azerbaijani\n"
@@ -44,11 +44,11 @@ msgstr "Ad"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
-" #, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
 msgstr ""
-"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <,"
-" >, #, & simvollarına icazə verilmir."
+"Yalnız hərflər, rəqəmlər, boşluqlar və -_.,!? simvollarına icazə verilir. <, "
+">, #, & simvollarına icazə verilmir."
 
 #: labels/views.py:37
 msgid "Label created successfully"
@@ -70,12 +70,12 @@ msgstr "Etiketi silmək mümkün deyil, çünki o istifadə olunur"
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way —"
-" we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way — "
+"we're working on it!"
 msgstr ""
 "Siz aktiv istifadəçisiniz! %(resource)s üçün limitə (%(max)s) çatdınız. "
-"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır"
-" — biz bunun üzərində işləyirik!"
+"Artıq lazım olmayanları silməyə çalışın. Məhdudiyyətsiz TaskMan Pro yoldadır "
+"— biz bunun üzərində işləyirik!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -125,26 +125,22 @@ msgstr "qeyd faylları"
 msgid "checklist items"
 msgstr "yoxlama siyahısı bəndləri"
 
-#: notes/forms.py:54 statuses/forms.py:25 teams/forms.py:29
+#: notes/forms.py:42 statuses/forms.py:25 teams/forms.py:29
 #: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "İstəyə bağlı"
 
-#: notes/forms.py:109
-msgid "Add some text, attach at least one image or file."
-msgstr "Mətn yazın və ya ən azı bir şəkil və ya fayl əlavə edin."
-
-#: notes/forms.py:134
+#: notes/forms.py:66
 msgid "Task must be from the same team."
 msgstr "Tapşırıq eyni komandaya aid olmalıdır."
 
-#: notes/forms.py:138
+#: notes/forms.py:70
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Fərdi rejimdə qeydi komanda tapşırığına əlavə etmək olmaz."
 
-#: notes/forms.py:140
+#: notes/forms.py:72
 msgid "You can only attach notes to your own tasks."
 msgstr "Qeydləri yalnız öz tapşırıqlarınıza əlavə edə bilərsiniz."
 
@@ -164,8 +160,8 @@ msgstr "Məzmun"
 msgid "Author"
 msgstr "Müəllif"
 
-#: notes/models.py:54 tasks/models.py:47
-#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
+#: templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Komanda"
 
@@ -194,7 +190,7 @@ msgstr "Qeyd"
 #: notes/models.py:76 templates/base.html:132 templates/base.html:157
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:406
+#: templates/notes/_task_notes.html:8 templates/tasks/task_filter.html:406
 msgid "Notes"
 msgstr "Qeydlər"
 
@@ -265,9 +261,9 @@ msgid ""
 "XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR, TAR, "
 "GZ, TGZ, EML, MSG."
 msgstr ""
-"«%(name)s» faylının formatı dəstəklənmir. İcazə verilən formatlar: PDF, DOC,"
-" DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR,"
-" TAR, GZ, TGZ, EML, MSG."
+"«%(name)s» faylının formatı dəstəklənmir. İcazə verilən formatlar: PDF, DOC, "
+"DOCX, XLS, XLSX, PPT, PPTX, ODT, ODS, ODP, RTF, TXT, MD, CSV, ZIP, 7Z, RAR, "
+"TAR, GZ, TGZ, EML, MSG."
 
 #: notes/views.py:122
 msgid "Note created successfully"
@@ -359,11 +355,10 @@ msgid "Message"
 msgstr "Mesaj"
 
 #: notifications/models.py:51
-msgid ""
-"Legacy field. Use message_key and message_params for new notifications."
+msgid "Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
-"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə"
-" edin."
+"Köhnəlmiş sahə. Yeni bildirişlər üçün message_key və message_params istifadə "
+"edin."
 
 #: notifications/models.py:58
 msgid "Message key"
@@ -467,8 +462,7 @@ msgid "You don't have permissions to modify another user."
 msgstr "Başqa istifadəçini dəyişdirmək üçün icazəniz yoxdur."
 
 #: permissions.py:40
-msgid ""
-"You don't have permissions to modify this. Only team admin can do this."
+msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "Bunu dəyişdirmək üçün icazəniz yoxdur. Bunu yalnız komanda administratoru "
 "edə bilər."
@@ -816,7 +810,7 @@ msgstr "Komanda şifrəsi"
 msgid "Enter team password"
 msgstr "Komanda şifrəsini daxil edin"
 
-#: teams/forms.py:215 teams/views.py:586
+#: teams/forms.py:215 teams/views.py:589
 msgid "Invalid or expired invite link"
 msgstr "Etibarsız və ya müddəti bitmiş dəvət linki"
 
@@ -832,7 +826,7 @@ msgstr "Yanlış komanda şifrəsi"
 msgid "You already have a pending request to join this team"
 msgstr "Bu komandaya qoşulmaq üçün artıq gözləmədə olan sorğunuz var"
 
-#: teams/forms.py:273 teams/views.py:619 user/forms.py:240
+#: teams/forms.py:273 teams/views.py:622 user/forms.py:240
 msgid "You are already a member of this team"
 msgstr "Siz artıq bu komandanın üzvüsünüz"
 
@@ -929,11 +923,11 @@ msgstr "Fərdi rejimə keçildi"
 msgid "Switched to team: {team}"
 msgstr "Komandaya keçildi: {team}"
 
-#: teams/views.py:177
+#: teams/views.py:180
 msgid "You are not a member of this team"
 msgstr "Siz bu komandanın üzvü deyilsiniz"
 
-#: teams/views.py:183
+#: teams/views.py:186
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -941,7 +935,7 @@ msgstr ""
 "Komanda administratorları komandanı tərk edə bilməz. Zəhmət olmasa əvvəlcə "
 "administrator hüquqlarını başqa üzvə verin."
 
-#: teams/views.py:201
+#: teams/views.py:204
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -949,42 +943,42 @@ msgstr ""
 "Komanda üzvlərini idarə etmək üçün icazəniz yoxdur. Bunu yalnız komanda "
 "administratoru edə bilər."
 
-#: teams/views.py:206
+#: teams/views.py:209
 msgid "User is not a member of this team"
 msgstr "İstifadəçi bu komandanın üzvü deyil"
 
-#: teams/views.py:283
+#: teams/views.py:286
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Siz {team} komandasını uğurla tərk etdiniz"
 
-#: teams/views.py:289
+#: teams/views.py:292
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "İstifadəçi {username} {team} komandasından çıxarıldı."
 
-#: teams/views.py:303
+#: teams/views.py:306
 msgid "Team membership not found"
 msgstr "Komanda üzvlüyü tapılmadı."
 
-#: teams/views.py:339
+#: teams/views.py:342
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this"
-" team."
+"You cannot exit the team because you are author or executor of tasks in this "
+"team."
 msgstr ""
 "Siz komandadan çıxa bilməzsiniz, çünki bu komandada tapşırıqların müəllifi "
 "və ya icraçısısınız."
 
-#: teams/views.py:389
+#: teams/views.py:392
 msgid "Team created successfully"
 msgstr "Komanda uğurla yaradıldı"
 
-#: teams/views.py:451 teams/views.py:661
+#: teams/views.py:454 teams/views.py:664
 #, python-brace-format
 msgid "You have successfully joined the team {team}"
 msgstr "Siz {team} komandasına uğurla qoşuldunuz"
 
-#: teams/views.py:468 user/views.py:259 user/views.py:303
+#: teams/views.py:471 user/views.py:259 user/views.py:303
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -992,54 +986,54 @@ msgstr ""
 "{team} komandasına qoşulmaq üçün sorğunuz göndərildi. Administratorun "
 "təsdiqini gözləyin."
 
-#: teams/views.py:520
+#: teams/views.py:523
 msgid "Invite link generated successfully. Scroll down to copy."
 msgstr "Dəvət linki uğurla yaradıldı. Kopyalamaq üçün aşağı sürüşdürün."
 
-#: teams/views.py:540
+#: teams/views.py:543
 msgid "Team has reached the maximum number of members"
 msgstr "Komanda maksimum üzv sayına çatıb"
 
-#: teams/views.py:590 teams/views.py:598
+#: teams/views.py:593 teams/views.py:601
 msgid "Invite link has been used"
 msgstr "Dəvət linki artıq istifadə edilib"
 
-#: teams/views.py:594
+#: teams/views.py:597
 msgid "Invite link has expired"
 msgstr "Dəvət linkinin müddəti bitib"
 
-#: teams/views.py:713
+#: teams/views.py:716
 msgid "Team updated successfully"
 msgstr "Komanda uğurla yeniləndi"
 
-#: teams/views.py:731
+#: teams/views.py:734
 msgid "Cannot delete a team because it has tasks."
 msgstr "Komandanı silmək mümkün deyil, çünki onun tapşırıqları var."
 
-#: teams/views.py:739
+#: teams/views.py:742
 msgid "Cannot delete a team because it has other members."
 msgstr "Komandanı silmək mümkün deyil, çünki onun başqa üzvləri var."
 
-#: teams/views.py:748
+#: teams/views.py:751
 msgid "Team deleted successfully"
 msgstr "Komanda uğurla silindi"
 
-#: teams/views.py:779
+#: teams/views.py:782
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "İstifadəçi {username} komanda administratoru təyin edildi."
 
-#: teams/views.py:786
+#: teams/views.py:789
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "İstifadəçi {username} komanda üzvü edildi."
 
-#: teams/views.py:797
+#: teams/views.py:800
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "İstifadəçi {username} təsdiqləndi və artıq komandanın üzvüdür."
 
-#: teams/views.py:805
+#: teams/views.py:808
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "İstifadəçi {username} üzvlüyü gözləmə statusuna keçirildi."
@@ -1056,8 +1050,8 @@ msgstr "Telegram-a mesaj göndərmək mümkün olmayıb."
 msgid "Failed to send message to Telegram. Please try again later."
 msgstr ""
 "Mesajı Telegram-a göndərmək mümkün olmadı. Xahiş edirəm daha sonra yenidən "
-"cəhd edin.Telegram-a mesaj göndərmək mümkün olmayıb. Xahiş edirəm daha sonra"
-" yenidən cəhd edin."
+"cəhd edin.Telegram-a mesaj göndərmək mümkün olmayıb. Xahiş edirəm daha sonra "
+"yenidən cəhd edin."
 
 #: templates/base.html:50 templates/base.html:84 views.py:35
 msgid "TaskMan"
@@ -1158,8 +1152,8 @@ msgstr "Ətraflı"
 msgid "Go back"
 msgstr "Geri qayıt"
 
-#: templates/base.html:434 templates/feedback.html:7
-#: templates/feedback.html:12 views.py:66
+#: templates/base.html:434 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:66
 msgid "Feedback"
 msgstr "Əks əlaqə"
 
@@ -1285,7 +1279,7 @@ msgstr "Dil dəstəyi"
 msgid "Create label"
 msgstr "Etiket yarat"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:231
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:233
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1295,17 +1289,17 @@ msgstr "Yarat"
 #: templates/labels/labels_create.html:22
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
-#: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:132 templates/notes/note_form.html:236
-#: templates/notes/note_form.html:240 templates/notes/note_form.html:290
+#: templates/notes/note_confirm_delete.html:38
+#: templates/notes/note_detail.html:132 templates/notes/note_form.html:239
+#: templates/notes/note_form.html:243 templates/notes/note_form.html:293
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:91
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:230
-#: templates/teams/team_create_form.html:31
-#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
-#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:91 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:230
+#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
+#: templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1329,7 +1323,7 @@ msgid "Are you sure you want to delete"
 msgstr "Silmək istədiyinizə əminsiniz"
 
 #: templates/labels/labels_delete.html:20
-#: templates/notes/note_confirm_delete.html:34
+#: templates/notes/note_confirm_delete.html:35
 #: templates/statuses/statuses_delete.html:20
 #: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
 #: templates/user/user_delete.html:19
@@ -1342,7 +1336,7 @@ msgstr "Yeni etiket"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:120 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:91 templates/tasks/task_filter.html:464
+#: templates/notes/note_list.html:92 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1361,8 +1355,7 @@ msgid "Create Label"
 msgstr "Etiket yarat"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:45
-#: templates/notes/note_form.html:27
-#: templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1381,20 +1374,16 @@ msgstr "Yaradan"
 msgid "Label"
 msgstr "Etiket"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:229
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:231
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
 msgid "Save"
 msgstr "Yadda saxla"
 
-#: templates/notes/note_form.html:231
-msgid "Saving..."
-msgstr "Saxlanılır..."
-
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
 #: templates/notes/note_form.html:162 templates/notes/note_form.html:212
-#: templates/notes/note_form.html:213 templates/notes/note_form.html:247
+#: templates/notes/note_form.html:213 templates/notes/note_form.html:250
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1459,34 +1448,34 @@ msgstr "Geri"
 msgid "Log in"
 msgstr "Daxil ol"
 
-#: templates/notes/_task_notes.html:14
+#: templates/notes/_task_notes.html:15
 msgid "Add note"
 msgstr "Qeyd əlavə et"
 
-#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:24
-#: templates/notes/note_list.html:55
+#: templates/notes/_task_notes.html:36 templates/notes/note_detail.html:24
+#: templates/notes/note_list.html:56
 msgid "Untitled Note"
 msgstr "Başlıqsız qeyd"
 
-#: templates/notes/_task_notes.html:39 templates/notes/note_list.html:87
+#: templates/notes/_task_notes.html:40 templates/notes/note_list.html:88
 msgid "Has attachments"
 msgstr "Əlavələr var"
 
-#: templates/notes/_task_notes.html:51
+#: templates/notes/_task_notes.html:52
 msgid "No notes for this task"
 msgstr "Bu tapşırıq üçün qeyd yoxdur"
 
-#: templates/notes/note_confirm_delete.html:6
-#: templates/notes/note_confirm_delete.html:11
+#: templates/notes/note_confirm_delete.html:7
+#: templates/notes/note_confirm_delete.html:12
 msgid "Delete note"
 msgstr "Qeydi sil"
 
-#: templates/notes/note_confirm_delete.html:16
+#: templates/notes/note_confirm_delete.html:17
 msgid "Are you sure you want to delete this note?"
 msgstr "Bu qeydi silmək istədiyinizə əminsiniz?"
 
 #: templates/notes/note_detail.html:33 templates/notes/note_form.html:39
-#: templates/notes/note_list.html:83
+#: templates/notes/note_list.html:84
 msgid "Personal"
 msgstr "Şəxsi"
 
@@ -1512,12 +1501,12 @@ msgid "Download"
 msgstr "Yüklə"
 
 #: templates/notes/note_detail.html:129
-#: templates/statuses/statuses_list.html:73
-#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
+#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
+#: templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Redaktə et"
 
-#: templates/notes/note_detail.html:145 templates/notes/note_form.html:265
+#: templates/notes/note_detail.html:145 templates/notes/note_form.html:268
 msgid "Close"
 msgstr "Bağla"
 
@@ -1551,10 +1540,9 @@ msgstr "Qeyd yarat"
 
 #: templates/notes/note_form.html:90
 msgid "Enter note content... Use Markdown for formatting."
-msgstr ""
-"Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
+msgstr "Qeydin məzmununu daxil edin... Formatlama üçün Markdown istifadə edin."
 
-#: templates/notes/note_form.html:96 templates/notes/note_form.html:286
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:289
 msgid "Preview"
 msgstr "İlkin baxış"
 
@@ -1563,8 +1551,8 @@ msgid "Markdown supported:"
 msgstr "Markdown dəstəklənir:"
 
 #: templates/notes/note_form.html:113
-msgid "Text is optional if you attach at least one image or file."
-msgstr "Ən azı bir şəkil və ya fayl əlavə etsəniz, mətn isteğe bağlıdır."
+msgid "All fields are optional: save a note now and fill it in later."
+msgstr ""
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1590,39 +1578,43 @@ msgstr ""
 msgid "Attached files"
 msgstr "Əlavə olunmuş fayllar"
 
-#: templates/notes/note_form.html:263
+#: templates/notes/note_form.html:266
 msgid "Insert Image"
 msgstr "Şəkil əlavə et"
 
-#: templates/notes/note_form.html:270
+#: templates/notes/note_form.html:273
 msgid "Image URL"
 msgstr "Şəkil URL-i"
 
-#: templates/notes/note_form.html:279
+#: templates/notes/note_form.html:282
 msgid "Description (alt text)"
 msgstr "Təsvir (alt mətn)"
 
-#: templates/notes/note_form.html:284
+#: templates/notes/note_form.html:287
 msgid "Image description"
 msgstr "Şəklin təsviri"
 
-#: templates/notes/note_form.html:293
+#: templates/notes/note_form.html:296
 msgid "Insert"
 msgstr "Əlavə et"
 
-#: templates/notes/note_list.html:12
+#: templates/notes/note_form.html:423
+msgid "Saving..."
+msgstr "Saxlanılır..."
+
+#: templates/notes/note_list.html:13
 msgid "New note"
 msgstr "Yeni qeyd"
 
-#: templates/notes/note_list.html:104
+#: templates/notes/note_list.html:105
 msgid "No notes found"
 msgstr "Qeyd yoxdur"
 
-#: templates/notes/note_list.html:105
+#: templates/notes/note_list.html:106
 msgid "Create your first note to save important information"
 msgstr "Vacib məlumatı saxlamaq üçün ilk qeydinizi yaradın"
 
-#: templates/notes/note_list.html:106
+#: templates/notes/note_list.html:107
 msgid "Create Note"
 msgstr "Qeyd yarat"
 
@@ -1790,8 +1782,8 @@ msgstr "Əlaqə"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback"
-" form or at:"
+"If you have questions about this privacy policy, contact us via the feedback "
+"form or at:"
 msgstr ""
 "Bu məxfilik siyasəti ilə bağlı sualınız varsa, bizimlə əks əlaqə forması və "
 "ya aşağıdakı vasitə ilə əlaqə saxlayın:"
@@ -2321,8 +2313,7 @@ msgstr "Komandaya qoşul (istəyə bağlı)"
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work "
-"individually"
+"Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
 "Mövcud komandaya qoşulmaq üçün komanda adını daxil edin və ya fərdi işləmək "
 "üçün boş saxlayın"
@@ -2392,6 +2383,12 @@ msgstr "Siz sistemdən çıxdınız"
 msgid "You are sending messages too often. Please wait a minute."
 msgstr "Çox tez-tez mesaj göndərirsiniz. Xahiş edirəm bir dəqiqə gözləyin."
 
+#~ msgid "Add some text, attach at least one image or file."
+#~ msgstr "Mətn yazın və ya ən azı bir şəkil və ya fayl əlavə edin."
+
+#~ msgid "Text is optional if you attach at least one image or file."
+#~ msgstr "Ən azı bir şəkil və ya fayl əlavə etsəniz, mətn isteğe bağlıdır."
+
 #~ msgid "Telegram opened! Send your message there."
 #~ msgstr "Telegram açıldı! Mesajınızı orada göndərin."
 
@@ -2402,11 +2399,11 @@ msgstr "Çox tez-tez mesaj göndərirsiniz. Xahiş edirəm bir dəqiqə gözləy
 #~ msgstr "Bir neçə üçün Ctrl / Cmd"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
-#~ "password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name "
+#~ "and password below."
 #~ msgstr ""
-#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda komandanın"
-#~ " adını və şifrəsini daxil edin."
+#~ "Dəvət linkiniz varsa, onu yuxarıya yapışdırın. Əks halda, aşağıda "
+#~ "komandanın adını və şifrəsini daxil edin."
 
 #~ msgid "Email address (optional)"
 #~ msgstr "E-poçt ünvanı (istəyə bağlı)"

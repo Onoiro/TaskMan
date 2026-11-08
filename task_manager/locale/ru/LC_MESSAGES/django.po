@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 00:29+0300\n"
+"POT-Creation-Date: 2026-11-08 11:23+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -13,7 +13,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: forms.py:8
 msgid "Specify the subject:"
@@ -44,8 +46,8 @@ msgstr "Название"
 #: labels/models.py:24 notes/models.py:29 statuses/models.py:26
 #: tasks/models.py:28
 msgid ""
-"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >,"
-" #, & are not allowed."
+"Only letters, numbers, spaces, and -_.,!? symbols are allowed. Symbols <, >, "
+"#, & are not allowed."
 msgstr ""
 "Разрешены только буквы, цифры, пробелы и символы -_.,!?. Символы <, >, #, & "
 "не разрешены."
@@ -70,12 +72,12 @@ msgstr "Невозможно удалить метку, потому что он
 #, python-format
 msgid ""
 "You're a power user! The %(resource)s limit (%(max)s) has been reached. Try "
-"removing ones you no longer need. TaskMan Pro without limits is on its way —"
-" we're working on it!"
+"removing ones you no longer need. TaskMan Pro without limits is on its way — "
+"we're working on it!"
 msgstr ""
-"Вы активно используете сервис! Достигнут лимит для ресурса «%(resource)s» "
-"(%(max)s). Попробуйте удалить то, что вам больше не нужно. TaskMan Pro без "
-"ограничений уже в разработке — мы над этим работаем!"
+"Вы активно используете сервис! Достигнут лимит для ресурса "
+"«%(resource)s» (%(max)s). Попробуйте удалить то, что вам больше не нужно. "
+"TaskMan Pro без ограничений уже в разработке — мы над этим работаем!"
 
 #: limit_service.py:36
 msgid "teams"
@@ -125,26 +127,22 @@ msgstr "файлов в заметках"
 msgid "checklist items"
 msgstr "пунктов чек-листа"
 
-#: notes/forms.py:54 statuses/forms.py:25 teams/forms.py:29
+#: notes/forms.py:42 statuses/forms.py:25 teams/forms.py:29
 #: templates/notes/note_form.html:74
 #: templates/statuses/statuses_create_form.html:60 user/forms.py:15
 #: user/forms.py:16 user/forms.py:17
 msgid "Optional"
 msgstr "Необязательно"
 
-#: notes/forms.py:109
-msgid "Add some text, attach at least one image or file."
-msgstr "Добавьте текст или прикрепите хотя бы одно изображение либо файл."
-
-#: notes/forms.py:134
+#: notes/forms.py:66
 msgid "Task must be from the same team."
 msgstr "Задача должна принадлежать той же команде."
 
-#: notes/forms.py:138
+#: notes/forms.py:70
 msgid "Cannot attach note to team task in individual mode."
 msgstr "Нельзя прикрепить заметку к командной задаче в индивидуальном режиме."
 
-#: notes/forms.py:140
+#: notes/forms.py:72
 msgid "You can only attach notes to your own tasks."
 msgstr "Вы можете прикреплять заметки только к своим задачам."
 
@@ -164,8 +162,8 @@ msgstr "Содержимое"
 msgid "Author"
 msgstr "Автор"
 
-#: notes/models.py:54 tasks/models.py:47
-#: templates/labels/labels_update.html:29 templates/notes/note_form.html:34
+#: notes/models.py:54 tasks/models.py:47 templates/labels/labels_update.html:29
+#: templates/notes/note_form.html:34
 msgid "Team"
 msgstr "Команда"
 
@@ -194,7 +192,7 @@ msgstr "Заметка"
 #: notes/models.py:76 templates/base.html:132 templates/base.html:157
 #: templates/includes/limits_usage.html:72
 #: templates/includes/team_limits_usage.html:84
-#: templates/notes/_task_notes.html:7 templates/tasks/task_filter.html:406
+#: templates/notes/_task_notes.html:8 templates/tasks/task_filter.html:406
 msgid "Notes"
 msgstr "Заметки"
 
@@ -359,8 +357,7 @@ msgid "Message"
 msgstr "Сообщение"
 
 #: notifications/models.py:51
-msgid ""
-"Legacy field. Use message_key and message_params for new notifications."
+msgid "Legacy field. Use message_key and message_params for new notifications."
 msgstr ""
 "Устаревшее поле. Используйте message_key и message_params для новых "
 "уведомлений."
@@ -467,8 +464,7 @@ msgid "You don't have permissions to modify another user."
 msgstr "У вас нет прав для изменения другого пользователя."
 
 #: permissions.py:40
-msgid ""
-"You don't have permissions to modify this. Only team admin can do this."
+msgid "You don't have permissions to modify this. Only team admin can do this."
 msgstr ""
 "У вас нет прав, чтобы изменить это. Это может сделать только администратор "
 "команды."
@@ -724,8 +720,7 @@ msgstr "Задачу может удалить только ее автор ил
 #: tasks/views.py:98 tasks/views.py:456
 msgid "Task can only be updated by its author, executors or team admin."
 msgstr ""
-"Задачу может изменить только ее автор, исполнители или администратор "
-"команды."
+"Задачу может изменить только ее автор, исполнители или администратор команды."
 
 #: tasks/views.py:196
 msgid "Filter saved as default"
@@ -816,7 +811,7 @@ msgstr "Пароль команды"
 msgid "Enter team password"
 msgstr "Введите пароль команды"
 
-#: teams/forms.py:215 teams/views.py:586
+#: teams/forms.py:215 teams/views.py:589
 msgid "Invalid or expired invite link"
 msgstr "Недействительная или просроченная ссылка для приглашения"
 
@@ -832,7 +827,7 @@ msgstr "Неверный пароль команды"
 msgid "You already have a pending request to join this team"
 msgstr "У вас уже есть неподтверждённая заявка на вступление в эту команду"
 
-#: teams/forms.py:273 teams/views.py:619 user/forms.py:240
+#: teams/forms.py:273 teams/views.py:622 user/forms.py:240
 msgid "You are already a member of this team"
 msgstr "Вы уже участник этой команды"
 
@@ -929,11 +924,11 @@ msgstr "Переключено на индивидуальный режим"
 msgid "Switched to team: {team}"
 msgstr "Переключено на команду: {team}"
 
-#: teams/views.py:177
+#: teams/views.py:180
 msgid "You are not a member of this team"
 msgstr "Вы не являетесь участником этой команды"
 
-#: teams/views.py:183
+#: teams/views.py:186
 msgid ""
 "Team administrators cannot leave the team. Please transfer admin rights to "
 "another member first."
@@ -941,7 +936,7 @@ msgstr ""
 "Администраторы команды не могут покинуть команду. Сначала передайте права "
 "администратора другому участнику."
 
-#: teams/views.py:201
+#: teams/views.py:204
 msgid ""
 "You do not have rights to manage team members. This can only be done by the "
 "team administrator"
@@ -949,42 +944,42 @@ msgstr ""
 "У вас нет прав, чтобы управлять участниками команды. Это может сделать "
 "только администратор команды."
 
-#: teams/views.py:206
+#: teams/views.py:209
 msgid "User is not a member of this team"
 msgstr "Пользователь не является участником этой команды"
 
-#: teams/views.py:283
+#: teams/views.py:286
 #, python-brace-format
 msgid "You have successfully left the team {team}"
 msgstr "Вы успешно покинули команду {team}"
 
-#: teams/views.py:289
+#: teams/views.py:292
 #, python-brace-format
 msgid "User {username} has been removed from the team {team}"
 msgstr "Пользователь {username} удалён из команды {team}."
 
-#: teams/views.py:303
+#: teams/views.py:306
 msgid "Team membership not found"
 msgstr "Участие в команде не найдено."
 
-#: teams/views.py:339
+#: teams/views.py:342
 msgid ""
-"You cannot exit the team because you are author or executor of tasks in this"
-" team."
+"You cannot exit the team because you are author or executor of tasks in this "
+"team."
 msgstr ""
 "Вы не можете покинуть команду, так как являетесь автором или исполнителем "
 "задач в этой команде."
 
-#: teams/views.py:389
+#: teams/views.py:392
 msgid "Team created successfully"
 msgstr "Команда успешно создана"
 
-#: teams/views.py:451 teams/views.py:661
+#: teams/views.py:454 teams/views.py:664
 #, python-brace-format
 msgid "You have successfully joined the team {team}"
 msgstr "Вы успешно присоединились к команде {team}"
 
-#: teams/views.py:468 user/views.py:259 user/views.py:303
+#: teams/views.py:471 user/views.py:259 user/views.py:303
 #, python-brace-format
 msgid ""
 "Your request to join team {team} has been sent. Waiting for admin approval."
@@ -992,55 +987,55 @@ msgstr ""
 "Ваша заявка на вступление в команду {team} отправлена. Ожидайте одобрения "
 "администратора."
 
-#: teams/views.py:520
+#: teams/views.py:523
 msgid "Invite link generated successfully. Scroll down to copy."
 msgstr ""
 "Ссылка для приглашения успешно создана. Прокрутите вниз, чтобы скопировать."
 
-#: teams/views.py:540
+#: teams/views.py:543
 msgid "Team has reached the maximum number of members"
 msgstr "Команда достигла максимального количества участников"
 
-#: teams/views.py:590 teams/views.py:598
+#: teams/views.py:593 teams/views.py:601
 msgid "Invite link has been used"
 msgstr "Ссылка для приглашения уже использована"
 
-#: teams/views.py:594
+#: teams/views.py:597
 msgid "Invite link has expired"
 msgstr "Срок действия ссылки для приглашения истек"
 
-#: teams/views.py:713
+#: teams/views.py:716
 msgid "Team updated successfully"
 msgstr "Команда успешно изменена"
 
-#: teams/views.py:731
+#: teams/views.py:734
 msgid "Cannot delete a team because it has tasks."
 msgstr "Невозможно удалить команду, так как в ней есть задачи."
 
-#: teams/views.py:739
+#: teams/views.py:742
 msgid "Cannot delete a team because it has other members."
 msgstr "Невозможно удалить команду, потому что в ней есть другие участники."
 
-#: teams/views.py:748
+#: teams/views.py:751
 msgid "Team deleted successfully"
 msgstr "Команда успешно удалена"
 
-#: teams/views.py:779
+#: teams/views.py:782
 #, python-brace-format
 msgid "User {username} has been promoted to team admin."
 msgstr "Пользователь {username} назначен администратором команды."
 
-#: teams/views.py:786
+#: teams/views.py:789
 #, python-brace-format
 msgid "User {username} has been demoted to team member."
 msgstr "Пользователь {username} стал участником команды."
 
-#: teams/views.py:797
+#: teams/views.py:800
 #, python-brace-format
 msgid "User {username} has been approved and is now a member of the team."
 msgstr "Пользователь {username} одобрен и теперь является участником команды."
 
-#: teams/views.py:805
+#: teams/views.py:808
 #, python-brace-format
 msgid "User {username} membership has been set to pending."
 msgstr "Заявка пользователя {username} переведена в статус ожидания."
@@ -1157,8 +1152,8 @@ msgstr "Подробнее"
 msgid "Go back"
 msgstr "Назад"
 
-#: templates/base.html:434 templates/feedback.html:7
-#: templates/feedback.html:12 views.py:66
+#: templates/base.html:434 templates/feedback.html:7 templates/feedback.html:12
+#: views.py:66
 msgid "Feedback"
 msgstr "Обратная связь"
 
@@ -1283,7 +1278,7 @@ msgstr "Поддержка языков"
 msgid "Create label"
 msgstr "Создать метку"
 
-#: templates/labels/labels_create.html:19 templates/notes/note_form.html:231
+#: templates/labels/labels_create.html:19 templates/notes/note_form.html:233
 #: templates/statuses/statuses_create_form.html:82
 #: templates/tasks/task_create_form.html:88
 #: templates/teams/team_create_form.html:28
@@ -1293,17 +1288,17 @@ msgstr "Создать"
 #: templates/labels/labels_create.html:22
 #: templates/labels/labels_delete.html:23
 #: templates/labels/labels_update.html:66
-#: templates/notes/note_confirm_delete.html:37
-#: templates/notes/note_detail.html:132 templates/notes/note_form.html:236
-#: templates/notes/note_form.html:240 templates/notes/note_form.html:290
+#: templates/notes/note_confirm_delete.html:38
+#: templates/notes/note_detail.html:132 templates/notes/note_form.html:239
+#: templates/notes/note_form.html:243 templates/notes/note_form.html:293
 #: templates/statuses/statuses_create_form.html:85
 #: templates/statuses/statuses_delete.html:23
 #: templates/statuses/statuses_update.html:70
-#: templates/tasks/task_create_form.html:91
-#: templates/tasks/task_delete.html:23 templates/tasks/task_update.html:230
-#: templates/teams/team_create_form.html:31
-#: templates/teams/team_delete.html:22 templates/teams/team_detail.html:79
-#: templates/teams/team_exit.html:28 templates/teams/team_join_form.html:31
+#: templates/tasks/task_create_form.html:91 templates/tasks/task_delete.html:23
+#: templates/tasks/task_update.html:230
+#: templates/teams/team_create_form.html:31 templates/teams/team_delete.html:22
+#: templates/teams/team_detail.html:79 templates/teams/team_exit.html:28
+#: templates/teams/team_join_form.html:31
 #: templates/teams/team_member_role_update.html:55
 #: templates/teams/team_update.html:29 templates/user/user_create_form.html:28
 #: templates/user/user_delete.html:22 templates/user/user_detail.html:174
@@ -1327,7 +1322,7 @@ msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
 #: templates/labels/labels_delete.html:20
-#: templates/notes/note_confirm_delete.html:34
+#: templates/notes/note_confirm_delete.html:35
 #: templates/statuses/statuses_delete.html:20
 #: templates/tasks/task_delete.html:20 templates/teams/team_delete.html:19
 #: templates/user/user_delete.html:19
@@ -1340,7 +1335,7 @@ msgstr "Новая метка"
 
 #: templates/labels/labels_list.html:57 templates/labels/labels_update.html:38
 #: templates/notes/note_detail.html:120 templates/notes/note_form.html:43
-#: templates/notes/note_list.html:91 templates/tasks/task_filter.html:464
+#: templates/notes/note_list.html:92 templates/tasks/task_filter.html:464
 #: templates/tasks/task_update.html:25 templates/tasks/task_update.html:41
 #: user/models.py:22
 msgid "Deleted user"
@@ -1359,8 +1354,7 @@ msgid "Create Label"
 msgstr "Создать метку"
 
 #: templates/labels/labels_update.html:22 templates/notes/note_detail.html:45
-#: templates/notes/note_form.html:27
-#: templates/statuses/statuses_update.html:20
+#: templates/notes/note_form.html:27 templates/statuses/statuses_update.html:20
 #: templates/tasks/task_filter.html:378 templates/tasks/task_filter.html:418
 #: templates/tasks/task_update.html:19
 msgid "Created"
@@ -1379,20 +1373,16 @@ msgstr "Создатель"
 msgid "Label"
 msgstr "Метка"
 
-#: templates/labels/labels_update.html:63 templates/notes/note_form.html:229
+#: templates/labels/labels_update.html:63 templates/notes/note_form.html:231
 #: templates/statuses/statuses_update.html:67
 #: templates/tasks/task_filter.html:321 templates/tasks/task_update.html:227
 #: templates/user/user_update.html:17
 msgid "Save"
 msgstr "Сохранить"
 
-#: templates/notes/note_form.html:231
-msgid "Saving..."
-msgstr "Сохранение..."
-
 #: templates/labels/labels_update.html:71 templates/notes/note_form.html:161
 #: templates/notes/note_form.html:162 templates/notes/note_form.html:212
-#: templates/notes/note_form.html:213 templates/notes/note_form.html:247
+#: templates/notes/note_form.html:213 templates/notes/note_form.html:250
 #: templates/statuses/statuses_list.html:76
 #: templates/statuses/statuses_update.html:75
 #: templates/tasks/task_update.html:161 templates/tasks/task_update.html:235
@@ -1457,34 +1447,34 @@ msgstr "Назад"
 msgid "Log in"
 msgstr "Войти"
 
-#: templates/notes/_task_notes.html:14
+#: templates/notes/_task_notes.html:15
 msgid "Add note"
 msgstr "Добавить заметку"
 
-#: templates/notes/_task_notes.html:35 templates/notes/note_detail.html:24
-#: templates/notes/note_list.html:55
+#: templates/notes/_task_notes.html:36 templates/notes/note_detail.html:24
+#: templates/notes/note_list.html:56
 msgid "Untitled Note"
 msgstr "Заметка без названия"
 
-#: templates/notes/_task_notes.html:39 templates/notes/note_list.html:87
+#: templates/notes/_task_notes.html:40 templates/notes/note_list.html:88
 msgid "Has attachments"
 msgstr "Есть вложения"
 
-#: templates/notes/_task_notes.html:51
+#: templates/notes/_task_notes.html:52
 msgid "No notes for this task"
 msgstr "Для этой задачи заметок нет"
 
-#: templates/notes/note_confirm_delete.html:6
-#: templates/notes/note_confirm_delete.html:11
+#: templates/notes/note_confirm_delete.html:7
+#: templates/notes/note_confirm_delete.html:12
 msgid "Delete note"
 msgstr "Удаление заметки"
 
-#: templates/notes/note_confirm_delete.html:16
+#: templates/notes/note_confirm_delete.html:17
 msgid "Are you sure you want to delete this note?"
 msgstr "Вы уверены, что хотите удалить эту заметку?"
 
 #: templates/notes/note_detail.html:33 templates/notes/note_form.html:39
-#: templates/notes/note_list.html:83
+#: templates/notes/note_list.html:84
 msgid "Personal"
 msgstr "Личная"
 
@@ -1510,12 +1500,12 @@ msgid "Download"
 msgstr "Скачать"
 
 #: templates/notes/note_detail.html:129
-#: templates/statuses/statuses_list.html:73
-#: templates/teams/team_update.html:26 templates/user/user_detail.html:163
+#: templates/statuses/statuses_list.html:73 templates/teams/team_update.html:26
+#: templates/user/user_detail.html:163
 msgid "Edit"
 msgstr "Изменить"
 
-#: templates/notes/note_detail.html:145 templates/notes/note_form.html:265
+#: templates/notes/note_detail.html:145 templates/notes/note_form.html:268
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1551,7 +1541,7 @@ msgstr "Создание заметки"
 msgid "Enter note content... Use Markdown for formatting."
 msgstr "Введите текст заметки... Используйте Markdown для форматирования."
 
-#: templates/notes/note_form.html:96 templates/notes/note_form.html:286
+#: templates/notes/note_form.html:96 templates/notes/note_form.html:289
 msgid "Preview"
 msgstr "Предпросмотр"
 
@@ -1560,9 +1550,8 @@ msgid "Markdown supported:"
 msgstr "Поддерживается Markdown:"
 
 #: templates/notes/note_form.html:113
-msgid "Text is optional if you attach at least one image or file."
+msgid "All fields are optional: save a note now and fill it in later."
 msgstr ""
-"Текст необязателен, если вы прикрепите хотя бы одно изображение или файл."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1586,39 +1575,43 @@ msgstr "До %(max_count)s файлов на заметку, каждый не �
 msgid "Attached files"
 msgstr "Прикрепленные файлы"
 
-#: templates/notes/note_form.html:263
+#: templates/notes/note_form.html:266
 msgid "Insert Image"
 msgstr "Вставить изображение"
 
-#: templates/notes/note_form.html:270
+#: templates/notes/note_form.html:273
 msgid "Image URL"
 msgstr "URL изображения"
 
-#: templates/notes/note_form.html:279
+#: templates/notes/note_form.html:282
 msgid "Description (alt text)"
 msgstr "Описание (alt-текст)"
 
-#: templates/notes/note_form.html:284
+#: templates/notes/note_form.html:287
 msgid "Image description"
 msgstr "Описание изображения"
 
-#: templates/notes/note_form.html:293
+#: templates/notes/note_form.html:296
 msgid "Insert"
 msgstr "Вставить"
 
-#: templates/notes/note_list.html:12
+#: templates/notes/note_form.html:423
+msgid "Saving..."
+msgstr "Сохранение..."
+
+#: templates/notes/note_list.html:13
 msgid "New note"
 msgstr "Новая заметка"
 
-#: templates/notes/note_list.html:104
+#: templates/notes/note_list.html:105
 msgid "No notes found"
 msgstr "Заметок нет"
 
-#: templates/notes/note_list.html:105
+#: templates/notes/note_list.html:106
 msgid "Create your first note to save important information"
 msgstr "Создайте первую заметку, чтобы сохранить важную информацию"
 
-#: templates/notes/note_list.html:106
+#: templates/notes/note_list.html:107
 msgid "Create Note"
 msgstr "Создать заметку"
 
@@ -1786,8 +1779,8 @@ msgstr "Контакты"
 
 #: templates/privacy_policy.html:62
 msgid ""
-"If you have questions about this privacy policy, contact us via the feedback"
-" form or at:"
+"If you have questions about this privacy policy, contact us via the feedback "
+"form or at:"
 msgstr ""
 "Если у вас есть вопросы по этой политике конфиденциальности, свяжитесь с "
 "нами через форму обратной связи или по адресу:"
@@ -2220,8 +2213,8 @@ msgid ""
 "service. We may perform maintenance that temporarily affects availability."
 msgstr ""
 "Мы стремимся поддерживать высокую доступность, но не гарантируем "
-"бесперебойную работу сервиса. Мы можем проводить технические работы, которые"
-" временно влияют на доступность."
+"бесперебойную работу сервиса. Мы можем проводить технические работы, которые "
+"временно влияют на доступность."
 
 #: templates/terms_of_service.html:39
 msgid "Termination"
@@ -2317,8 +2310,7 @@ msgstr "Присоединиться к команде (необязательн
 
 #: user/forms.py:38
 msgid ""
-"Enter team name to join an existing team, or leave empty to work "
-"individually"
+"Enter team name to join an existing team, or leave empty to work individually"
 msgstr ""
 "Введите название команды, чтобы присоединиться к существующей команде, или "
 "оставьте поле пустым, чтобы работать индивидуально."
@@ -2338,8 +2330,8 @@ msgstr "Присоединиться к другой команде (необя�
 #: user/forms.py:168
 msgid "Enter team name to join another team, or leave empty"
 msgstr ""
-"Введите название команды, к которой хотите присоединиться, или оставьте поле"
-" пустым"
+"Введите название команды, к которой хотите присоединиться, или оставьте поле "
+"пустым"
 
 #: user/forms.py:203
 msgid "Team password is required when joining a team"
@@ -2355,8 +2347,7 @@ msgstr "Добро пожаловать! Ваш аккаунт создан, и 
 
 #: user/views.py:266
 msgid "Welcome! You can create a team or work individually"
-msgstr ""
-"Добро пожаловать! Вы можете создать команду или работать индивидуально"
+msgstr "Добро пожаловать! Вы можете создать команду или работать индивидуально"
 
 #: user/views.py:281
 msgid "User updated successfully"
@@ -2390,6 +2381,13 @@ msgstr "Вы вышли из системы"
 msgid "You are sending messages too often. Please wait a minute."
 msgstr "Вы отправляете сообщения слишком часто. Подождите минуту."
 
+#~ msgid "Add some text, attach at least one image or file."
+#~ msgstr "Добавьте текст или прикрепите хотя бы одно изображение либо файл."
+
+#~ msgid "Text is optional if you attach at least one image or file."
+#~ msgstr ""
+#~ "Текст необязателен, если вы прикрепите хотя бы одно изображение или файл."
+
 #~ msgid "Telegram opened! Send your message there."
 #~ msgstr "Telegram открыт. Отправьте сообщение там."
 
@@ -2400,14 +2398,15 @@ msgstr "Вы отправляете сообщения слишком часто
 #~ msgstr "Ctrl/Cmd для нескольких"
 
 #~ msgid ""
-#~ "If you have an invite link, paste it above. Otherwise, enter team name and "
-#~ "password below."
+#~ "If you have an invite link, paste it above. Otherwise, enter team name "
+#~ "and password below."
 #~ msgstr ""
 #~ "Если у вас есть ссылка-приглашение, вставьте её выше. Если ссылки нет, "
 #~ "введите название и пароль команды ниже."
 
 #~ msgid "Team name is required when not using invite link"
-#~ msgstr "Название команды обязательно, если не используется ссылка-приглашение"
+#~ msgstr ""
+#~ "Название команды обязательно, если не используется ссылка-приглашение"
 
 #~ msgid "Team password is required when not using invite link"
 #~ msgstr "Пароль команды обязателен, если не используется ссылка-приглашение"
