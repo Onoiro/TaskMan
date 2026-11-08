@@ -354,11 +354,14 @@ LOGGING = {
     },
 }
 
-# Disable django.request logs in tests (only show 5xx errors)
+# Silence django.request logs in tests. Django logs every 4xx/5xx
+# response through this logger (5xx at ERROR level), but tests create
+# such responses on purpose (e.g. feedback 502). A failing test still
+# shows as FAIL/ERROR in the unittest report.
 if 'test' in sys.argv:
     LOGGING['loggers']['django.request'] = {
         'handlers': ['console'],
-        'level': 'ERROR',
+        'level': 'CRITICAL',
         'propagate': False,
     }
     # Tests trigger expected error paths (e.g. Telegram network

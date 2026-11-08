@@ -1,5 +1,5 @@
 import warnings
-from datetime import date
+from datetime import date, datetime
 from task_manager.tasks.models import Task
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
@@ -7,6 +7,17 @@ from task_manager.user.models import User
 from task_manager.teams.models import TeamMembership
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.utils import timezone
+
+
+def _aware_deadline(year, month, day, hour=12):
+    """Timezone-aware deadline for direct Task.objects.create() calls.
+
+    Forms convert naive input via clean_deadline(), but tests create
+    tasks straight in the DB and must pass aware datetimes,
+    otherwise Django emits a RuntimeWarning (USE_TZ is active).
+    """
+    return timezone.make_aware(datetime(year, month, day, hour))
 
 
 def _get_filter_session_keys(session, team):
@@ -1629,13 +1640,13 @@ class CompletionToggleTestCase(TestCase):
                 status=self.final_status,
                 team=self.team,
                 author=self.user,
-                deadline='2030-01-01 12:00'
+                deadline=_aware_deadline(2030, 1, 1)
             )
         return Task.objects.create(
             name='finished task',
             status=self.final_status,
             author=self.user,
-            deadline='2030-01-01 12:00'
+            deadline=_aware_deadline(2030, 1, 1)
         )
 
     def _list_ids(self):
@@ -1797,7 +1808,7 @@ class HasDeadlineFilterTestCase(TestCase):
     def test_has_deadline_returns_only_tasks_with_deadline(self):
         with_deadline = self._create_task(
             'with deadline', self.active_status,
-            deadline='2030-06-01 12:00'
+            deadline=_aware_deadline(2030, 6, 1)
         )
         self._create_task('without deadline', self.active_status)
 
@@ -1807,7 +1818,6 @@ class HasDeadlineFilterTestCase(TestCase):
             self.assertIsNotNone(task.deadline)
 
     def test_has_deadline_includes_overdue_tasks(self):
-        from django.utils import timezone
         overdue = self._create_task(
             'overdue task', self.active_status,
             deadline=timezone.now() - timezone.timedelta(days=1)
@@ -1817,13 +1827,13 @@ class HasDeadlineFilterTestCase(TestCase):
     def test_has_deadline_excludes_completed_tasks(self):
         finished = self._create_task(
             'finished task', self.final_status,
-            deadline='2030-01-01 12:00'
+            deadline=_aware_deadline(2030, 1, 1)
         )
         self.assertNotIn(finished.id, self._filtered_ids())
 
     def test_has_deadline_false_returns_all_active_tasks(self):
         self._create_task('with deadline', self.active_status,
-                          deadline='2030-06-01 12:00')
+                          deadline=_aware_deadline(2030, 6, 1))
         response = self.c.get(reverse('tasks:tasks-list'))
         ids = set(
             response.context['filter'].qs.values_list('id', flat=True)
