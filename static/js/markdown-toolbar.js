@@ -204,19 +204,24 @@ class MarkdownToolbar {
 
         const markdownText = this.textarea.value;
 
-        if (typeof marked !== 'undefined') {
-            const html = marked.parse(markdownText);
-            this.preview.innerHTML = html;
-
-            // Apply syntax highlighting
-            if (typeof hljs !== 'undefined') {
-                this.preview.querySelectorAll('pre code').forEach((block) => {
-                    hljs.highlightElement(block);
-                });
-            }
-        } else {
-            // Fallback: plain text
+        if (typeof marked === 'undefined') {
+            // Older Safari cannot parse the bundled marked bundle: plain
+            // text preview is better than an empty one
             this.preview.textContent = markdownText;
+            return;
+        }
+
+        const html = marked.parse(markdownText);
+        // Preview shows user input, so the rendered HTML is sanitized
+        this.preview.innerHTML = typeof DOMPurify !== 'undefined'
+            ? DOMPurify.sanitize(html)
+            : html;
+
+        // Apply syntax highlighting
+        if (typeof hljs !== 'undefined') {
+            this.preview.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
         }
     }
 }

@@ -169,6 +169,7 @@
 
 {% block extra_js %}
 <script src="{% static 'js/vendor/marked.min.js' %}"></script>
+<script src="{% static 'js/vendor/purify.min.js' %}"></script>
 <script src="{% static 'js/vendor/highlight.min.js' %}"></script>
 <script src="{% static 'js/vendor/languages/python.min.js' %}"></script>
 <script src="{% static 'js/vendor/languages/javascript.min.js' %}"></script>
@@ -212,15 +213,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const markdownText = JSON.parse(dataEl.textContent) || '';
 
-    // Настройка marked.js
+    // Older Safari cannot parse the bundled marked (ES2022 syntax) and
+    // DOMPurify may fail to load: show plain text instead of a spinner.
+    if (typeof marked === 'undefined' || typeof DOMPurify === 'undefined') {
+        contentDiv.textContent = markdownText;
+        return;
+    }
+
     marked.setOptions({
         breaks: true,
-        gfm: true,
-        sanitize: false
+        gfm: true
     });
 
     try {
-        const html = marked.parse(markdownText);
+        // Note content is user input, so the rendered HTML is sanitized
+        const html = DOMPurify.sanitize(marked.parse(markdownText));
         contentDiv.innerHTML = html;
 
         // Подсветка синтаксиса

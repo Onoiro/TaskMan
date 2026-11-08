@@ -307,6 +307,7 @@
 {% block extra_js %}
 <!-- Marked.js for Markdown parsing -->
 <script src="{% static 'js/vendor/marked.min.js' %}"></script>
+<script src="{% static 'js/vendor/purify.min.js' %}"></script>
 
 <!-- Highlight.js for code highlighting -->
 <script src="{% static 'js/vendor/highlight.min.js' %}"></script>
@@ -324,24 +325,18 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Настройка marked.js
-    marked.setOptions({
-        breaks: true,
-        gfm: true,
-        highlight: function(code, lang) {
-            if (typeof hljs !== 'undefined' && lang && hljs.getLanguage(lang)) {
-                try {
-                    return hljs.highlight(code, { language: lang }).value;
-                } catch (e) {}
-            }
-            return hljs.highlightAuto(code).value;
-        }
-    });
-
-    // Инициализация toolbar
+    // Initialize the toolbar first: it must work even when marked is not
+    // available (older Safari cannot parse the bundled marked bundle).
     const textarea = document.getElementById('id_content');
     if (textarea) {
         window.markdownToolbar = new MarkdownToolbar('id_content', 'markdown-preview');
+    }
+
+    if (typeof marked !== 'undefined') {
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
     }
 
     // Обработчик для модального окна изображений
