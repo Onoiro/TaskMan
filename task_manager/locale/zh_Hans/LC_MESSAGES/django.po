@@ -1523,7 +1523,7 @@ msgstr "支持 Markdown："
 
 #: templates/notes/note_form.html:113
 msgid "All fields are optional: save a note now and fill it in later."
-msgstr ""
+msgstr "所有字段都是可选的：您现在可以保存笔记并稍后填写。"
 
 #: templates/notes/note_form.html:133
 #, python-format

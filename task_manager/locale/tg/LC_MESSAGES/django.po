@@ -210,11 +210,11 @@ msgstr "Санаи боргузорӣ"
 
 #: notes/models.py:117
 msgid "Note image"
-msgstr "Тасвири ёддошт"
+msgstr "Тасвири эзоҳ"
 
 #: notes/models.py:118
 msgid "Note images"
-msgstr "Тасвирҳои ёддошт"
+msgstr "Тасвирҳои эзоҳ"
 
 #: notes/models.py:162
 msgid "File"
@@ -1557,6 +1557,8 @@ msgstr "Markdown дастгирӣ мешавад:"
 #: templates/notes/note_form.html:113
 msgid "All fields are optional: save a note now and fill it in later."
 msgstr ""
+"Ҳамаи майдонҳо ҳатмӣ нестанд: метавонед эзоҳро ҳоло сабт карда, баъдтар пур "
+"кунед."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1564,7 +1566,7 @@ msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
 msgstr ""
-"То %(max_count)s тасвир барои ҳар ёддошт, ҳар кадоме на зиёда аз %(max_mb)s "
+"То %(max_count)s тасвир барои ҳар эзоҳ, ҳар кадоме на зиёда аз %(max_mb)s "
 "МБ (JPEG, PNG, GIF, WebP)."
 
 #: templates/notes/note_form.html:146

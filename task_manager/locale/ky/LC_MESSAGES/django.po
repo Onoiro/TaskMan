@@ -208,11 +208,11 @@ msgstr "Жүктөлгөн күнү"
 
 #: notes/models.py:117
 msgid "Note image"
-msgstr "Белгинин сүрөтү"
+msgstr "Эскертүүнүн сүрөтү"
 
 #: notes/models.py:118
 msgid "Note images"
-msgstr "Белги сүрөттөрү"
+msgstr "Эскертүү сүрөттөрү"
 
 #: notes/models.py:162
 msgid "File"
@@ -1451,7 +1451,7 @@ msgstr "Эскертүү кошуу"
 #: templates/notes/_task_notes.html:36 templates/notes/note_detail.html:24
 #: templates/notes/note_list.html:56
 msgid "Untitled Note"
-msgstr "Аталышсыз эскертме"
+msgstr "Аталышсыз эскертүү"
 
 #: templates/notes/_task_notes.html:40 templates/notes/note_list.html:88
 msgid "Has attachments"
@@ -1550,6 +1550,8 @@ msgstr "Markdown колдоого алынат:"
 #: templates/notes/note_form.html:113
 msgid "All fields are optional: save a note now and fill it in later."
 msgstr ""
+"Бардык талаалар милдеттүү эмес: эскертүүнү азыр сактап, кийинчерээк "
+"толтурсаңыз болот."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1557,8 +1559,8 @@ msgid ""
 "Up to %(max_count)s images per note, %(max_mb)s MB each (JPEG, PNG, GIF, "
 "WebP)."
 msgstr ""
-"Ар бир белги үчүн %(max_count)s сүрөткө чейин, ар бири %(max_mb)s МБ ашпаган "
-"(JPEG, PNG, GIF, WebP)."
+"Ар бир эскертүү үчүн %(max_count)s сүрөткө чейин, ар бири %(max_mb)s МБ "
+"ашпаган (JPEG, PNG, GIF, WebP)."
 
 #: templates/notes/note_form.html:146
 msgid "Attached images"

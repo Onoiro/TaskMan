@@ -1545,6 +1545,8 @@ msgstr "Markdown қолдауы бар:"
 #: templates/notes/note_form.html:113
 msgid "All fields are optional: save a note now and fill it in later."
 msgstr ""
+"Барлық өрістер міндетті емес: жазбаны қазір сақтап, кейінірек толтыруға "
+"болады."
 
 #: templates/notes/note_form.html:133
 #, python-format
