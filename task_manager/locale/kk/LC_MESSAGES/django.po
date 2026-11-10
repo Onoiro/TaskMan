@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 11:23+0300\n"
+"POT-Creation-Date: 2026-11-10 18:34+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1590,7 +1590,7 @@ msgstr "Сурет сипаттамасы"
 msgid "Insert"
 msgstr "Кірістіру"
 
-#: templates/notes/note_form.html:423
+#: templates/notes/note_form.html:418
 msgid "Saving..."
 msgstr "Сақталуда..."
 
@@ -1780,11 +1780,15 @@ msgstr ""
 "Құпиялылық саясаты туралы сұрақтарыңыз болса, кері байланыс формасы арқылы "
 "хабарласыңыз:"
 
-#: templates/privacy_policy.html:65
+#: templates/privacy_policy.html:64
+msgid "TaskMan, developed by Bogatyrev Andrey"
+msgstr "TaskMan, Bogatyrev Andrey жасаған"
+
+#: templates/privacy_policy.html:66
 msgid "Changes"
 msgstr "Өзгерістер"
 
-#: templates/privacy_policy.html:66
+#: templates/privacy_policy.html:67
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."

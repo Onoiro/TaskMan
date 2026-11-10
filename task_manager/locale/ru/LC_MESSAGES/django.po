@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TaskMan\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 11:23+0300\n"
+"POT-Creation-Date: 2026-11-10 18:34+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: Russian\n"
@@ -1552,8 +1552,7 @@ msgstr "Поддерживается Markdown:"
 #: templates/notes/note_form.html:113
 msgid "All fields are optional: save a note now and fill it in later."
 msgstr ""
-"Все поля необязательны: можно сохранить заметку сейчас, а заполнить "
-"позже."
+"Все поля необязательны: можно сохранить заметку сейчас, а заполнить позже."
 
 #: templates/notes/note_form.html:133
 #, python-format
@@ -1597,7 +1596,7 @@ msgstr "Описание изображения"
 msgid "Insert"
 msgstr "Вставить"
 
-#: templates/notes/note_form.html:423
+#: templates/notes/note_form.html:418
 msgid "Saving..."
 msgstr "Сохранение..."
 
@@ -1787,11 +1786,15 @@ msgstr ""
 "Если у вас есть вопросы по этой политике конфиденциальности, свяжитесь с "
 "нами через форму обратной связи или по адресу:"
 
-#: templates/privacy_policy.html:65
+#: templates/privacy_policy.html:64
+msgid "TaskMan, developed by Bogatyrev Andrey"
+msgstr "TaskMan, разработчик: Bogatyrev Andrey"
+
+#: templates/privacy_policy.html:66
 msgid "Changes"
 msgstr "Изменения"
 
-#: templates/privacy_policy.html:66
+#: templates/privacy_policy.html:67
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 11:23+0300\n"
+"POT-Creation-Date: 2026-11-10 18:34+0300\n"
 "PO-Revision-Date: 2026-09-29 22:14+0000\n"
 "Last-Translator: TaskMan Contributors\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1567,7 +1567,7 @@ msgstr "图片描述"
 msgid "Insert"
 msgstr "插入"
 
-#: templates/notes/note_form.html:423
+#: templates/notes/note_form.html:418
 msgid "Saving..."
 msgstr "正在保存..."
 
@@ -1748,11 +1748,15 @@ msgid ""
 "form or at:"
 msgstr "如对本隐私政策有疑问，请通过反馈表单或以下方式联系我们："
 
-#: templates/privacy_policy.html:65
+#: templates/privacy_policy.html:64
+msgid "TaskMan, developed by Bogatyrev Andrey"
+msgstr "TaskMan，开发者：Bogatyrev Andrey"
+
+#: templates/privacy_policy.html:66
 msgid "Changes"
 msgstr "变更"
 
-#: templates/privacy_policy.html:66
+#: templates/privacy_policy.html:67
 msgid ""
 "We may update this policy. Changes will be posted on this page with an "
 "updated date."
